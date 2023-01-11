@@ -29,4 +29,22 @@ describe("select", () => {
         3
     `);
   });
+
+  it(`formats function call to single line`, () => {
+    expect(pretty(`SELECT sqrt(1, 2, 3)`, { printWidth: 15 })).toBe(dedent`
+      SELECT
+        sqrt(1, 2, 3)
+    `);
+  });
+
+  it(`formats function call to multiple lines`, () => {
+    expect(pretty(`SELECT sqrt(1, 2, 3)`, { printWidth: 10 })).toBe(dedent`
+      SELECT
+        sqrt(
+          1,
+          2,
+          3
+        )
+    `);
+  });
 });
