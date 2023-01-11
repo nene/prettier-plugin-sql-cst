@@ -1,13 +1,16 @@
-const { parse } = require("sql-parser-cst");
-const prettier = require("prettier");
+import { Node, parse } from "sql-parser-cst";
+import {
+  doc,
+  AstPath,
+  Doc,
+  Parser,
+  ParserOptions,
+  SupportLanguage,
+} from "prettier";
 
-const {
-  doc: {
-    builders: { join, line, indent },
-  },
-} = prettier;
+const { join, line, indent } = doc.builders;
 
-const languages = [
+export const languages: Partial<SupportLanguage>[] = [
   {
     extensions: [".sql"],
     name: "SQL",
@@ -15,7 +18,7 @@ const languages = [
   },
 ];
 
-const parsers = {
+export const parsers: Record<string, Parser> = {
   "sql-parse": {
     parse: (text) => parse(text, { dialect: "sqlite", includeRange: true }),
     astFormat: "sql-ast",
@@ -24,7 +27,11 @@ const parsers = {
   },
 };
 
-function printSql(path, options, print) {
+function printSql(
+  path: AstPath<Node>,
+  options: ParserOptions<Node>,
+  print: (path: AstPath<Node> | string) => Doc
+) {
   const node = path.getValue();
 
   switch (node.type) {
@@ -35,7 +42,7 @@ function printSql(path, options, print) {
     case "select_clause":
       return [
         print("selectKw"),
-        indent([line, join([",", line], print("columns"))]),
+        indent([line, join([",", line], print("columns") as Doc[])]),
       ];
     case "list_expr":
       return path.map(print, "items");
@@ -48,14 +55,8 @@ function printSql(path, options, print) {
   }
 }
 
-const printers = {
+export const printers = {
   "sql-ast": {
     print: printSql,
   },
-};
-
-module.exports = {
-  languages,
-  parsers,
-  printers,
 };
