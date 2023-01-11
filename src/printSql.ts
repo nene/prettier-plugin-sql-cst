@@ -7,7 +7,7 @@ export function printSql(
   path: AstPath<Node>,
   options: ParserOptions<Node>,
   print: (path: AstPath<Node> | string) => Doc
-) {
+): Doc {
   const node = path.getValue();
 
   switch (node.type) {
@@ -16,12 +16,9 @@ export function printSql(
     case "select_stmt":
       return path.map(print, "clauses");
     case "select_clause":
-      return [
-        print("selectKw"),
-        indent([line, join([",", line], print("columns") as Doc[])]),
-      ];
+      return [print("selectKw"), indent([line, print("columns")])];
     case "list_expr":
-      return path.map(print, "items");
+      return join([",", line], path.map(print, "items"));
     case "keyword":
       return node.text;
     case "number_literal":
