@@ -1,8 +1,8 @@
 import { Node, parse } from "sql-parser-cst";
-import { Parser, SupportLanguage } from "prettier";
+import { Parser, Printer, SupportLanguage } from "prettier";
 import { printSql } from "./printSql";
 
-export const languages: Partial<SupportLanguage>[] = [
+export const languages: SupportLanguage[] = [
   {
     extensions: [".sql"],
     name: "SQL",
@@ -19,8 +19,8 @@ export const parsers: Record<string, Parser<Node>> = {
   },
 };
 
-export const printers = {
+export const printers: Record<string, Printer> = {
   "sql-ast": {
-    print: printSql,
+    print: printSql as Printer["print"],
   },
 };

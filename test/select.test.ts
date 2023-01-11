@@ -1,13 +1,11 @@
 import { format } from "prettier";
-import { resolve } from "path";
 import dedent from "dedent-js";
-
-const pluginPath = resolve(__dirname, "../dist/index.js");
+import * as plugin from "../src/index";
 
 const pretty = (sql: string) => {
   return format(sql, {
     parser: "sql-parse",
-    plugins: [pluginPath],
+    plugins: [plugin],
   });
 };
 
