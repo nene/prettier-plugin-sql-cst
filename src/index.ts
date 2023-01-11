@@ -13,14 +13,14 @@ export const languages: SupportLanguage[] = [
 export const parsers: Record<string, Parser<Node>> = {
   "sql-parser-cst": {
     parse: (text) => parse(text, { dialect: "sqlite", includeRange: true }),
-    astFormat: "sql-ast",
+    astFormat: "sql-cst",
     locStart: (node) => node.range?.[0] as number,
     locEnd: (node) => node.range?.[1] as number,
   },
 };
 
 export const printers: Record<string, Printer> = {
-  "sql-ast": {
+  "sql-cst": {
     print: printSql as Printer["print"],
   },
 };
