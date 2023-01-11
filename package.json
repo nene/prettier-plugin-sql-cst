@@ -6,7 +6,6 @@
   "license": "GPL-3.0-or-later",
   "main": "dist/index.js",
   "scripts": {
-    "example": "prettier --plugin . example.sql",
     "build": "tsc -p tsconfig.json --outDir dist",
     "test": "jest"
   },
