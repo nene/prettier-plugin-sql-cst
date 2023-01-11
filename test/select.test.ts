@@ -47,4 +47,16 @@ describe("select", () => {
         )
     `);
   });
+
+  it(`formats comments`, () => {
+    expect(
+      pretty(
+        `/*leading comment*/
+        SELECT 1`
+      )
+    ).toBe(dedent`
+      /*leading comment*/
+      SELECT 1
+    `);
+  });
 });
