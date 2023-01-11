@@ -6,12 +6,12 @@ export const languages: SupportLanguage[] = [
   {
     extensions: [".sql"],
     name: "SQL",
-    parsers: ["sql-parse"],
+    parsers: ["sql-parser-cst"],
   },
 ];
 
 export const parsers: Record<string, Parser<Node>> = {
-  "sql-parse": {
+  "sql-parser-cst": {
     parse: (text) => parse(text, { dialect: "sqlite", includeRange: true }),
     astFormat: "sql-ast",
     locStart: (node) => node.range?.[0] as number,

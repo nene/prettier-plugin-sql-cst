@@ -4,7 +4,7 @@ import * as plugin from "../src/index";
 
 const pretty = (sql: string) => {
   return format(sql, {
-    parser: "sql-parse",
+    parser: "sql-parser-cst",
     plugins: [plugin],
   });
 };
