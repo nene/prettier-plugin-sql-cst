@@ -1,7 +1,7 @@
 import { Node } from "sql-parser-cst";
 import { doc, AstPath, Doc, ParserOptions } from "prettier";
 
-const { join, line, indent } = doc.builders;
+const { join, line, indent, group } = doc.builders;
 
 export function printSql(
   path: AstPath<Node>,
@@ -16,7 +16,7 @@ export function printSql(
     case "select_stmt":
       return path.map(print, "clauses");
     case "select_clause":
-      return [print("selectKw"), indent([line, print("columns")])];
+      return group([print("selectKw"), indent([line, print("columns")])]);
     case "list_expr":
       return join([",", line], path.map(print, "items"));
     case "keyword":

@@ -2,16 +2,27 @@ import { format } from "prettier";
 import dedent from "dedent-js";
 import * as plugin from "../src/index";
 
-const pretty = (sql: string) => {
+interface PrettyOptions {
+  printWidth?: number;
+}
+
+const pretty = (sql: string, opts: PrettyOptions = {}) => {
   return format(sql, {
     parser: "sql-parser-cst",
     plugins: [plugin],
+    ...opts,
   });
 };
 
 describe("select", () => {
-  it(`formats select`, () => {
-    expect(pretty(`SELECT 1, 2, 3`)).toBe(dedent`
+  it(`formats select in single line`, () => {
+    expect(pretty(`SELECT 1, 2, 3`, { printWidth: 80 })).toBe(dedent`
+      SELECT 1, 2, 3
+    `);
+  });
+
+  it(`formats select on multiple lines`, () => {
+    expect(pretty(`SELECT 1, 2, 3`, { printWidth: 10 })).toBe(dedent`
       SELECT
         1,
         2,
