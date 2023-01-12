@@ -1,7 +1,7 @@
 import { Node, Whitespace } from "sql-parser-cst";
 import { doc, AstPath, Doc, ParserOptions } from "prettier";
 
-const { join, line, softline, indent, group } = doc.builders;
+const { join, line, softline, indent, group, lineSuffix } = doc.builders;
 
 type PrintFn = (path: AstPath<Node> | string) => Doc;
 
@@ -26,7 +26,13 @@ function withComments(path: AstPath<Node>, doc: Doc): Doc {
 }
 
 function printComments(ws: Whitespace[] = []): Doc[] {
-  return ws.map((c) => [c.text, line]);
+  return ws.map((c) => {
+    if (c.type === "line_comment") {
+      return [lineSuffix([" ", c.text])];
+    } else {
+      return [c.text, line];
+    }
+  });
 }
 
 function printNode(
