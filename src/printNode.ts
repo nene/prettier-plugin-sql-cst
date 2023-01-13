@@ -1,6 +1,6 @@
 import { Node } from "sql-parser-cst";
 import { AstPath, Doc, ParserOptions } from "prettier";
-import { join, line, softline, indent, group } from "./print_utils";
+import { join, line, hardline, softline, indent, group } from "./print_utils";
 import { PrintFn } from "./PrintFn";
 
 type NodeByType<T> = Extract<Node, { type: T }>;
@@ -15,8 +15,26 @@ type CstToDocMap = {
   [K in Node["type"]]: ToDocFn<NodeByType<K>>;
 };
 
+const printLines = <T>(
+  path: AstPath<T>,
+  childrenAttr: any,
+  print: PrintFn<T>
+): Doc => {
+  return path.map((childPath, i, all) => {
+    const node: Node = childPath.getValue() as any;
+    if (i === 0) {
+      return print(childPath as any);
+    } else if (i < all.length - 1 || node.type !== "empty") {
+      return [";", hardline, print(childPath as any)];
+    } else {
+      return [";", print(childPath as any)];
+    }
+  }, childrenAttr);
+};
+
 const transformMap: Partial<CstToDocMap> = {
-  program: (path, print) => path.map(print, "statements"),
+  program: (path, print) => printLines(path, "statements", print),
+  empty: () => [],
   select_stmt: (path, print) => path.map(print, "clauses"),
   select_clause: (path, print) =>
     group([print("selectKw"), indent([line, print("columns")])]),
