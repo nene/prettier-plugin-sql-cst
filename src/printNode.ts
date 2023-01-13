@@ -1,13 +1,14 @@
 import { Node } from "sql-parser-cst";
 import { AstPath, Doc, ParserOptions } from "prettier";
-import { join, line, softline, indent, group, PrintFnFor } from "./print_utils";
+import { join, line, softline, indent, group } from "./print_utils";
+import { PrintFn } from "./PrintFn";
 
 type NodeByType<T> = Extract<Node, { type: T }>;
 
 type ToDocFn<TNode> = (
   path: AstPath<TNode>,
-  print: PrintFnFor<Node>,
-  options: ParserOptions<Node>
+  print: PrintFn<TNode>,
+  options: ParserOptions<TNode>
 ) => Doc;
 
 type CstToDocMap = {
@@ -38,7 +39,7 @@ const transformMap: Partial<CstToDocMap> = {
 export function printNode(
   path: AstPath<Node>,
   options: ParserOptions<Node>,
-  print: PrintFnFor<Node>
+  print: PrintFn<Node>
 ) {
   const node = path.getValue();
   const fn = transformMap[node.type] as ToDocFn<

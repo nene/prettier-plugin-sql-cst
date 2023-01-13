@@ -1,12 +1,13 @@
 import { Node, Whitespace } from "sql-parser-cst";
 import { AstPath, Doc, ParserOptions } from "prettier";
 import { printNode } from "./printNode";
-import { line, lineSuffix, PrintFnFor } from "./print_utils";
+import { line, lineSuffix } from "./print_utils";
+import { PrintFn } from "./PrintFn";
 
 export function printSql(
   path: AstPath<Node>,
   options: ParserOptions<Node>,
-  print: PrintFnFor<Node>
+  print: PrintFn<Node>
 ): Doc {
   return withComments(path, printNode(path, options, print));
 }
