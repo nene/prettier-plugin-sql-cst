@@ -41,6 +41,20 @@ const transformMap: Partial<CstToDocMap> = {
     group([print("selectKw"), indent([line, print("columns")])]),
   from_clause: (path, print) => [print("fromKw"), " ", print("expr")],
   where_clause: (path, print) => [print("whereKw"), " ", print("expr")],
+  order_by_clause: (path, print) =>
+    group([
+      join(" ", path.map(print, "orderByKw")),
+      " ",
+      print("specifications"),
+    ]),
+  sort_specification: (path, print) =>
+    join(
+      " ",
+      [
+        print("expr"),
+        path.getValue().orderKw ? print("orderKw") : undefined,
+      ].filter(isDefined)
+    ),
   alias: (path, print) =>
     join(
       " ",

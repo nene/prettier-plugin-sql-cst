@@ -44,6 +44,14 @@ describe("select", () => {
     `);
   });
 
+  it(`formats ORDER BY`, () => {
+    expect(pretty(`SELECT * FROM tbl ORDER BY foo, bar DESC`)).toBe(dedent`
+      SELECT *
+      FROM tbl
+      ORDER BY foo, bar DESC
+    `);
+  });
+
   it(`formats aliases`, () => {
     expect(pretty(`SELECT 1 AS a, 2 AS b, 3 c`, { printWidth: 20 }))
       .toBe(dedent`
