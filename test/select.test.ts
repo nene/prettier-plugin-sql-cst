@@ -36,8 +36,15 @@ describe("select", () => {
     `);
   });
 
-  it(`formats SELECT..FROM..WHERE`, () => {
+  it(`formats SELECT..FROM..WHERE on single line`, () => {
     expect(pretty(`SELECT a, b, c FROM tbl WHERE x > y`)).toBe(dedent`
+      SELECT a, b, c FROM tbl WHERE x > y
+    `);
+  });
+
+  it(`formats SELECT..FROM..WHERE on multiple lines`, () => {
+    expect(pretty(`SELECT a, b, c FROM tbl WHERE x > y`, { printWidth: 15 }))
+      .toBe(dedent`
       SELECT a, b, c
       FROM tbl
       WHERE x > y
@@ -45,7 +52,9 @@ describe("select", () => {
   });
 
   it(`formats ORDER BY`, () => {
-    expect(pretty(`SELECT * FROM tbl ORDER BY foo, bar DESC`)).toBe(dedent`
+    expect(
+      pretty(`SELECT * FROM tbl ORDER BY foo, bar DESC`, { printWidth: 22 })
+    ).toBe(dedent`
       SELECT *
       FROM tbl
       ORDER BY foo, bar DESC
