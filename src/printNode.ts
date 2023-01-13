@@ -44,8 +44,7 @@ const transformMap: Partial<CstToDocMap> = {
   order_by_clause: (path, print) =>
     group([
       join(" ", path.map(print, "orderByKw")),
-      " ",
-      print("specifications"),
+      indent([line, print("specifications")]),
     ]),
   sort_specification: (path, print) =>
     join(

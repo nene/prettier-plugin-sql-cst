@@ -61,6 +61,18 @@ describe("select", () => {
     `);
   });
 
+  it(`formats ORDER BY to multiple lines`, () => {
+    expect(
+      pretty(`SELECT * FROM tbl ORDER BY foo ASC, bar DESC`, { printWidth: 22 })
+    ).toBe(dedent`
+      SELECT *
+      FROM tbl
+      ORDER BY
+        foo ASC,
+        bar DESC
+    `);
+  });
+
   it(`formats aliases`, () => {
     expect(pretty(`SELECT 1 AS a, 2 AS b, 3 c`, { printWidth: 20 }))
       .toBe(dedent`
