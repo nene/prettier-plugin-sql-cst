@@ -41,10 +41,14 @@ describe("select", () => {
   });
 
   it(`formats binary expressions`, () => {
-    expect(pretty(`SELECT 1 + 2 / 3 * (5 - 1)`, { printWidth: 20 }))
-      .toBe(dedent`
+    expect(
+      pretty(`SELECT 1 + 2 / 3 * (5 - 1), true OR false AND true`, {
+        printWidth: 20,
+      })
+    ).toBe(dedent`
       SELECT
-        1 + 2 / 3 * (5 - 1)
+        1 + 2 / 3 * (5 - 1),
+        true OR false AND true
     `);
   });
 

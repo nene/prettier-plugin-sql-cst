@@ -69,6 +69,7 @@ const transformMap: Partial<CstToDocMap> = {
   func_args: (path, print) => print("args"),
   keyword: (path) => path.getValue().text,
   number_literal: (path) => path.getValue().text,
+  boolean_literal: (path) => path.getValue().text,
   identifier: (path) => path.getValue().text,
 };
 
