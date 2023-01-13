@@ -51,6 +51,21 @@ describe("select", () => {
     `);
   });
 
+  it(`formats FROM & WHERE on multiple lines`, () => {
+    expect(
+      pretty(
+        `SELECT * FROM my_table_name WHERE my_table_name.x > my_table_name.y`,
+        { printWidth: 15 }
+      )
+    ).toBe(dedent`
+      SELECT *
+      FROM
+        my_table_name
+      WHERE
+        my_table_name.x > my_table_name.y
+    `);
+  });
+
   it(`formats ORDER BY`, () => {
     expect(
       pretty(`SELECT * FROM tbl ORDER BY foo, bar DESC`, { printWidth: 22 })

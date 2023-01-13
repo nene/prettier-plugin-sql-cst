@@ -39,8 +39,10 @@ const transformMap: Partial<CstToDocMap> = {
   select_stmt: (path, print) => group(join(line, path.map(print, "clauses"))),
   select_clause: (path, print) =>
     group([print("selectKw"), indent([line, print("columns")])]),
-  from_clause: (path, print) => [print("fromKw"), " ", print("expr")],
-  where_clause: (path, print) => [print("whereKw"), " ", print("expr")],
+  from_clause: (path, print) =>
+    group([print("fromKw"), indent([line, print("expr")])]),
+  where_clause: (path, print) =>
+    group([print("whereKw"), indent([line, print("expr")])]),
   order_by_clause: (path, print) =>
     group([
       join(" ", path.map(print, "orderByKw")),
@@ -80,6 +82,7 @@ const transformMap: Partial<CstToDocMap> = {
       print("right"),
     ]);
   },
+  member_expr: (path, print) => [print("object"), ".", print("property")],
   func_call: (path, print) => group([print("name"), print("args")]),
   func_args: (path, print) => print("args"),
   keyword: (path) => path.getValue().text,
