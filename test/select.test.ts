@@ -40,6 +40,14 @@ describe("select", () => {
     `);
   });
 
+  it(`formats binary expressions`, () => {
+    expect(pretty(`SELECT 1 + 2 / 3 * (5 - 1)`, { printWidth: 20 }))
+      .toBe(dedent`
+      SELECT
+        1 + 2 / 3 * (5 - 1)
+    `);
+  });
+
   it(`formats function call to single line`, () => {
     expect(pretty(`SELECT sqrt(1, 2, 3)`, { printWidth: 15 })).toBe(dedent`
       SELECT

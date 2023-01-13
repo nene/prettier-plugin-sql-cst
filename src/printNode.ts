@@ -2,7 +2,7 @@ import { Node } from "sql-parser-cst";
 import { AstPath, Doc, ParserOptions } from "prettier";
 import { join, line, hardline, softline, indent, group } from "./print_utils";
 import { PrintFn } from "./PrintFn";
-import { isDefined } from "./utils";
+import { isDefined, isString } from "./utils";
 
 type NodeByType<T> = Extract<Node, { type: T }>;
 
@@ -56,6 +56,14 @@ const transformMap: Partial<CstToDocMap> = {
     } else {
       return ["(", print("expr"), ")"];
     }
+  },
+  binary_expr: (path, print) => {
+    const op = path.getValue().operator;
+    return join(" ", [
+      print("left"),
+      isString(op) ? op : print("operator"),
+      print("right"),
+    ]);
   },
   func_call: (path, print) => group([print("name"), print("args")]),
   func_args: (path, print) => print("args"),
