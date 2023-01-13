@@ -30,6 +30,16 @@ describe("select", () => {
     `);
   });
 
+  it(`formats aliases`, () => {
+    expect(pretty(`SELECT 1 AS a, 2 AS b, 3 c`, { printWidth: 20 }))
+      .toBe(dedent`
+      SELECT
+        1 AS a,
+        2 AS b,
+        3 c
+    `);
+  });
+
   it(`formats function call to single line`, () => {
     expect(pretty(`SELECT sqrt(1, 2, 3)`, { printWidth: 15 })).toBe(dedent`
       SELECT

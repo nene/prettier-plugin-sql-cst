@@ -2,6 +2,7 @@ import { Node } from "sql-parser-cst";
 import { AstPath, Doc, ParserOptions } from "prettier";
 import { join, line, hardline, softline, indent, group } from "./print_utils";
 import { PrintFn } from "./PrintFn";
+import { isDefined } from "./utils";
 
 type NodeByType<T> = Extract<Node, { type: T }>;
 
@@ -38,6 +39,15 @@ const transformMap: Partial<CstToDocMap> = {
   select_stmt: (path, print) => path.map(print, "clauses"),
   select_clause: (path, print) =>
     group([print("selectKw"), indent([line, print("columns")])]),
+  alias: (path, print) =>
+    join(
+      " ",
+      [
+        print("expr"),
+        path.getValue().asKw ? print("asKw") : undefined,
+        print("alias"),
+      ].filter(isDefined)
+    ),
   list_expr: (path, print) => join([",", line], path.map(print, "items")),
   paren_expr: (path, print) => {
     const parent = path.getParentNode() as Node;
