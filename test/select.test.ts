@@ -30,6 +30,14 @@ describe("select", () => {
     `);
   });
 
+  it(`formats SELECT..FROM..WHERE`, () => {
+    expect(pretty(`SELECT a, b, c FROM tbl WHERE x > y`)).toBe(dedent`
+      SELECT a, b, c
+      FROM tbl
+      WHERE x > y
+    `);
+  });
+
   it(`formats aliases`, () => {
     expect(pretty(`SELECT 1 AS a, 2 AS b, 3 c`, { printWidth: 20 }))
       .toBe(dedent`

@@ -36,9 +36,11 @@ const printLines = <T>(
 const transformMap: Partial<CstToDocMap> = {
   program: (path, print) => printLines(path, "statements", print),
   empty: () => [],
-  select_stmt: (path, print) => path.map(print, "clauses"),
+  select_stmt: (path, print) => join(line, path.map(print, "clauses")),
   select_clause: (path, print) =>
     group([print("selectKw"), indent([line, print("columns")])]),
+  from_clause: (path, print) => [print("fromKw"), " ", print("expr")],
+  where_clause: (path, print) => [print("whereKw"), " ", print("expr")],
   alias: (path, print) =>
     join(
       " ",
