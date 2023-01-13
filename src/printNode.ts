@@ -73,6 +73,7 @@ const transformMap: Partial<CstToDocMap> = {
   number_literal: (path) => path.getValue().text,
   boolean_literal: (path) => path.getValue().text,
   identifier: (path) => path.getValue().text,
+  all_columns: () => "*",
 };
 
 export function printNode(

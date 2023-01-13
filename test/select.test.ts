@@ -15,6 +15,12 @@ const pretty = (sql: string, opts: PrettyOptions = {}) => {
 };
 
 describe("select", () => {
+  it(`formats SELECT *`, () => {
+    expect(pretty(`SELECT *`)).toBe(dedent`
+      SELECT *
+    `);
+  });
+
   it(`formats select in single line`, () => {
     expect(pretty(`SELECT 1, 2, 3`, { printWidth: 80 })).toBe(dedent`
       SELECT 1, 2, 3
