@@ -7,8 +7,8 @@ import { isArray, isString } from "./utils";
 type NodeByType<T> = Extract<Node, { type: T }>;
 
 type ToDocFn<TNode> = (
-  path: AstPath<TNode>,
   print: PrintFn<TNode>,
+  path: AstPath<TNode>,
   options: ParserOptions<TNode>
 ) => Doc;
 
@@ -30,24 +30,24 @@ const printLineWith =
   };
 
 const transformMap: Partial<CstToDocMap> = {
-  program: (path, print) => path.map(printLineWith(print), "statements"),
+  program: (print, path) => path.map(printLineWith(print), "statements"),
   empty: () => [],
-  select_stmt: (path, print) => group(join(line, print("clauses"))),
-  select_clause: (path, print) =>
+  select_stmt: (print) => group(join(line, print("clauses"))),
+  select_clause: (print) =>
     group([print("selectKw"), indent([line, print("columns")])]),
-  from_clause: (path, print) =>
+  from_clause: (print) =>
     group([print("fromKw"), indent([line, print("expr")])]),
-  where_clause: (path, print) =>
+  where_clause: (print) =>
     group([print("whereKw"), indent([line, print("expr")])]),
-  order_by_clause: (path, print) =>
+  order_by_clause: (print) =>
     group([
       join(" ", print("orderByKw")),
       indent([line, print("specifications")]),
     ]),
-  sort_specification: (path, print) => join(" ", print(["expr", "orderKw"])),
-  alias: (path, print) => join(" ", print(["expr", "asKw", "alias"])),
-  list_expr: (path, print) => join([",", line], print("items")),
-  paren_expr: (path, print) => {
+  sort_specification: (print) => join(" ", print(["expr", "orderKw"])),
+  alias: (print) => join(" ", print(["expr", "asKw", "alias"])),
+  list_expr: (print) => join([",", line], print("items")),
+  paren_expr: (print, path) => {
     const parent = path.getParentNode() as Node;
     if (parent?.type === "func_call") {
       return ["(", indent([softline, print("expr")]), softline, ")"];
@@ -55,14 +55,14 @@ const transformMap: Partial<CstToDocMap> = {
       return ["(", print("expr"), ")"];
     }
   },
-  binary_expr: (path, print) => join(" ", print(["left", "operator", "right"])),
-  member_expr: (path, print) => [print("object"), ".", print("property")],
-  func_call: (path, print) => group([print("name"), print("args")]),
-  func_args: (path, print) => print("args"),
-  keyword: (path) => path.getValue().text,
-  number_literal: (path) => path.getValue().text,
-  boolean_literal: (path) => path.getValue().text,
-  identifier: (path) => path.getValue().text,
+  binary_expr: (print) => join(" ", print(["left", "operator", "right"])),
+  member_expr: (print) => [print("object"), ".", print("property")],
+  func_call: (print) => group([print("name"), print("args")]),
+  func_args: (print) => print("args"),
+  keyword: (print, path) => path.getValue().text,
+  number_literal: (print, path) => path.getValue().text,
+  boolean_literal: (print, path) => path.getValue().text,
+  identifier: (print, path) => path.getValue().text,
   all_columns: () => "*",
 };
 
@@ -91,5 +91,5 @@ export function printNode(
     throw new Error(`Unexpected node type: ${node.type}`);
   }
 
-  return fn(path, print, options);
+  return fn(print, path, options);
 }
