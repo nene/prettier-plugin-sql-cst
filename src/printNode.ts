@@ -16,25 +16,21 @@ type CstToDocMap = {
   [K in Node["type"]]: ToDocFn<NodeByType<K>>;
 };
 
-const printLines = <T>(
-  path: AstPath<T>,
-  childrenAttr: any,
-  print: PrintFn<T>
-): Doc => {
-  return path.map((childPath, i, all) => {
-    const node: Node = childPath.getValue() as any;
+const printLineWith =
+  <T extends Node>(print: (x: AstPath<T>) => Doc) =>
+  (childPath: AstPath<T>, i: number, all: T[]): Doc => {
+    const node = childPath.getValue();
     if (i === 0) {
-      return print(childPath as any);
+      return print(childPath);
     } else if (i < all.length - 1 || node.type !== "empty") {
-      return [";", hardline, print(childPath as any)];
+      return [";", hardline, print(childPath)];
     } else {
-      return [";", print(childPath as any)];
+      return [";", print(childPath)];
     }
-  }, childrenAttr);
-};
+  };
 
 const transformMap: Partial<CstToDocMap> = {
-  program: (path, print) => printLines(path, "statements", print),
+  program: (path, print) => path.map(printLineWith(print), "statements"),
   empty: () => [],
   select_stmt: (path, print) => group(join(line, print("clauses") as Doc[])),
   select_clause: (path, print) =>
