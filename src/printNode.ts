@@ -3,18 +3,7 @@ import { AstPath, Doc, ParserOptions } from "prettier";
 import { join, line, hardline, softline, indent, group } from "./print_utils";
 import { PrintFn } from "./PrintFn";
 import { isArray, isString } from "./utils";
-
-type NodeByType<TType, TNode> = Extract<TNode, { type: TType }>;
-
-type ToDocFn<TNode> = (
-  print: PrintFn<TNode>,
-  path: AstPath<TNode>,
-  options: ParserOptions<TNode>
-) => Doc;
-
-type CstToDocMap<TNode extends Node> = {
-  [TType in TNode["type"]]: ToDocFn<NodeByType<TType, TNode>>;
-};
+import { CstToDocMap, NodeByType, ToDocFn } from "./CstToDocMap";
 
 const printLineWith =
   <T extends Node>(print: (x: AstPath<T>) => Doc) =>
