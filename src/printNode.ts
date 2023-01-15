@@ -1,5 +1,5 @@
 import { Node } from "sql-parser-cst";
-import { AstPath, ParserOptions } from "prettier";
+import { AstPath, Doc, ParserOptions } from "prettier";
 import { PrintFn } from "./PrintFn";
 import { isArray, isString } from "./utils";
 import { NodeByType, ToDocFn } from "./CstToDocMap";
@@ -9,7 +9,7 @@ export function printNode(
   path: AstPath<Node>,
   options: ParserOptions<Node>,
   print: PrintFn<Node>
-) {
+): Doc {
   const node = path.getValue();
 
   if (isArray(node)) {
