@@ -4,7 +4,7 @@ import { join, line, hardline, softline, indent, group } from "./print_utils";
 import { PrintFn } from "./PrintFn";
 import { isArray, isString } from "./utils";
 
-type NodeByType<T> = Extract<Node, { type: T }>;
+type NodeByType<TType, TNode> = Extract<TNode, { type: TType }>;
 
 type ToDocFn<TNode> = (
   print: PrintFn<TNode>,
@@ -12,8 +12,8 @@ type ToDocFn<TNode> = (
   options: ParserOptions<TNode>
 ) => Doc;
 
-type CstToDocMap = {
-  [K in Node["type"]]: ToDocFn<NodeByType<K>>;
+type CstToDocMap<TNode extends Node> = {
+  [TType in TNode["type"]]: ToDocFn<NodeByType<TType, TNode>>;
 };
 
 const printLineWith =
@@ -29,7 +29,7 @@ const printLineWith =
     }
   };
 
-const transformMap: Partial<CstToDocMap> = {
+const transformMap: Partial<CstToDocMap<Node>> = {
   program: (print, path) => path.map(printLineWith(print), "statements"),
   empty: () => [],
   select_stmt: (print) => group(join(line, print("clauses"))),
@@ -81,7 +81,7 @@ export function printNode(
   }
 
   const fn = transformMap[node.type] as ToDocFn<
-    NodeByType<(typeof node)["type"]>
+    NodeByType<(typeof node)["type"], Node>
   >;
 
   if (!fn) {
