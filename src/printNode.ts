@@ -45,22 +45,8 @@ const transformMap: Partial<CstToDocMap> = {
       indent([line, print("specifications")]),
     ]),
   sort_specification: (path, print) =>
-    join(
-      " ",
-      [
-        print("expr"),
-        path.getValue().orderKw ? print("orderKw") : undefined,
-      ].filter(isDefined)
-    ),
-  alias: (path, print) =>
-    join(
-      " ",
-      [
-        print("expr"),
-        path.getValue().asKw ? print("asKw") : undefined,
-        print("alias"),
-      ].filter(isDefined)
-    ),
+    join(" ", print(["expr", "orderKw"]) as Doc[]),
+  alias: (path, print) => join(" ", print(["expr", "asKw", "alias"]) as Doc[]),
   list_expr: (path, print) => join([",", line], print("items") as []),
   paren_expr: (path, print) => {
     const parent = path.getParentNode() as Node;
