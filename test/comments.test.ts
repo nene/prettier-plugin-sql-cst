@@ -5,12 +5,16 @@ describe("comments", () => {
   it(`formats block comments`, () => {
     expect(
       pretty(
-        `/*leading comment*/
-        SELECT 1`
+        `/* leading comment */
+        SELECT
+          1 /*com1*/,
+          2 /*com2*/`
       )
     ).toBe(dedent`
-      /*leading comment*/
-      SELECT 1
+      /* leading comment */
+      SELECT
+        1, /*com1*/
+        2 /*com2*/
     `);
   });
 
