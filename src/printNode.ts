@@ -60,9 +60,9 @@ const transformMap: Partial<CstToDocMap> = {
   func_call: (print) => group([print("name"), print("args")]),
   func_args: (print) => print("args"),
   keyword: (print, path) => path.getValue().text,
-  number_literal: (print, path) => path.getValue().text,
-  boolean_literal: (print, path) => path.getValue().text,
-  identifier: (print, path) => path.getValue().text,
+  number_literal: (print) => print("text"),
+  boolean_literal: (print) => print("text"),
+  identifier: (print) => print("text"),
   all_columns: () => "*",
 };
 
