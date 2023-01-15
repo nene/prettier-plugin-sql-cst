@@ -1,7 +1,8 @@
-import { Node, parse } from "sql-parser-cst";
+import { Node, parse, Program, Whitespace } from "sql-parser-cst";
 import { Parser, Printer, SupportLanguage } from "prettier";
 import { printSql } from "./printSql";
-import { isString } from "./utils";
+import { isNode } from "./utils";
+import { visitAllNodes } from "./visitAllNodes";
 
 export const languages: SupportLanguage[] = [
   {
@@ -14,11 +15,11 @@ export const languages: SupportLanguage[] = [
 export const parsers: Record<string, Parser<Node>> = {
   "sql-parser-cst": {
     parse: (text) =>
-      addComments(
-        text,
+      moveCommentsToRoot(
         parse(text, {
           dialect: "sqlite",
           includeRange: true,
+          preserveComments: true,
         })
       ),
     astFormat: "sql-cst",
@@ -27,37 +28,22 @@ export const parsers: Record<string, Parser<Node>> = {
   },
 };
 
-const addComments = (
-  text: string,
-  ast: Node
-): Node & { comments: Comment[] } => {
+const moveCommentsToRoot = (
+  cst: Program
+): Program & { comments: Whitespace[] } => {
   return {
-    ...ast,
-    comments: detectComments(text),
+    ...cst,
+    comments: extractComments(cst),
   };
 };
 
-type Comment = { type: "comment"; text: string; range: [number, number] };
-
-const detectComments = (text: string): Comment[] => {
-  const comments: Comment[] = [];
-  let index = 0;
-  while (text.length > 0) {
-    let m = text.match(/^\/\*.*?\*\/|^--.*$/);
-    if (m) {
-      const len = m[0].length;
-      comments.push({
-        type: "comment",
-        text: m[0],
-        range: [index, index + len],
-      });
-      text = text.slice(len);
-      index += len;
-    } else {
-      text = text.slice(1);
-      index++;
-    }
-  }
+const extractComments = (cst: Program): Whitespace[] => {
+  const comments: Whitespace[] = [];
+  visitAllNodes(cst, (node) => {
+    comments.push(...(node.leading || []), ...(node.trailing || []));
+    delete node.leading;
+    delete node.trailing;
+  });
   return comments;
 };
 
@@ -67,8 +53,6 @@ export const printers: Record<string, Printer> = {
     printComment: (path) => {
       return path.getValue().text;
     },
-    canAttachComment: (node) => {
-      return isString(node?.type) && node.type !== "comment";
-    },
+    canAttachComment: isNode,
   },
 };
