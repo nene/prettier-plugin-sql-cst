@@ -2,7 +2,7 @@ import { Node, parse } from "sql-parser-cst";
 import { Parser, Printer, SupportLanguage } from "prettier";
 import { printSql } from "./printSql";
 import { isNode } from "./utils";
-import { moveCommentsToRoot } from "comments";
+import { moveCommentsToRoot } from "./comments";
 
 export const languages: SupportLanguage[] = [
   {
