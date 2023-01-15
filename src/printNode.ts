@@ -2,7 +2,7 @@ import { Node } from "sql-parser-cst";
 import { AstPath, Doc, ParserOptions } from "prettier";
 import { join, line, hardline, softline, indent, group } from "./print_utils";
 import { PrintFn } from "./PrintFn";
-import { isDefined, isString } from "./utils";
+import { isArray, isDefined, isString } from "./utils";
 
 type NodeByType<T> = Extract<Node, { type: T }>;
 
@@ -36,7 +36,7 @@ const printLines = <T>(
 const transformMap: Partial<CstToDocMap> = {
   program: (path, print) => printLines(path, "statements", print),
   empty: () => [],
-  select_stmt: (path, print) => group(join(line, path.map(print, "clauses"))),
+  select_stmt: (path, print) => group(join(line, print("clauses") as Doc[])),
   select_clause: (path, print) =>
     group([print("selectKw"), indent([line, print("columns")])]),
   from_clause: (path, print) =>
@@ -45,7 +45,7 @@ const transformMap: Partial<CstToDocMap> = {
     group([print("whereKw"), indent([line, print("expr")])]),
   order_by_clause: (path, print) =>
     group([
-      join(" ", path.map(print, "orderByKw")),
+      join(" ", print("orderByKw") as Doc[]),
       indent([line, print("specifications")]),
     ]),
   sort_specification: (path, print) =>
@@ -65,7 +65,7 @@ const transformMap: Partial<CstToDocMap> = {
         print("alias"),
       ].filter(isDefined)
     ),
-  list_expr: (path, print) => join([",", line], path.map(print, "items")),
+  list_expr: (path, print) => join([",", line], print("items") as []),
   paren_expr: (path, print) => {
     const parent = path.getParentNode() as Node;
     if (parent?.type === "func_call") {
@@ -98,6 +98,11 @@ export function printNode(
   print: PrintFn<Node>
 ) {
   const node = path.getValue();
+
+  if (isArray(node)) {
+    return path.map(print);
+  }
+
   const fn = transformMap[node.type] as ToDocFn<
     NodeByType<(typeof node)["type"]>
   >;
