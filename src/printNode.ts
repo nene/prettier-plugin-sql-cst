@@ -2,21 +2,8 @@ import { Node } from "sql-parser-cst";
 import { AstPath, ParserOptions } from "prettier";
 import { PrintFn } from "./PrintFn";
 import { isArray, isString } from "./utils";
-import { CstToDocMap, NodeByType, ToDocFn } from "./CstToDocMap";
-import { aliasMap } from "./syntax/alias";
-import { exprMap } from "./syntax/expr";
-import { programMap } from "./syntax/program";
-import { selectMap } from "./syntax/select";
-
-const transformMap: Partial<CstToDocMap<Node>> = {
-  ...aliasMap,
-  ...exprMap,
-  ...programMap,
-  ...selectMap,
-  empty: () => [],
-  keyword: (print, path) => path.getValue().text,
-  all_columns: () => "*",
-};
+import { NodeByType, ToDocFn } from "./CstToDocMap";
+import { transformMap } from "./syntax";
 
 export function printNode(
   path: AstPath<Node>,
