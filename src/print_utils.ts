@@ -1,4 +1,11 @@
-import { doc } from "prettier";
+import { Doc, doc } from "prettier";
+import { isArray } from "./utils";
 
-export const { join, line, hardline, softline, indent, group, lineSuffix } =
+export const { line, hardline, softline, indent, group, lineSuffix } =
   doc.builders;
+
+const { join: origJoin } = doc.builders;
+
+/** Improved join() that also accepts a non-array docs parameter */
+export const join = (sep: Doc, docs: Doc): Doc =>
+  isArray(docs) ? origJoin(sep, docs) : docs;

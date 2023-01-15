@@ -32,7 +32,7 @@ const printLineWith =
 const transformMap: Partial<CstToDocMap> = {
   program: (path, print) => path.map(printLineWith(print), "statements"),
   empty: () => [],
-  select_stmt: (path, print) => group(join(line, print("clauses") as Doc[])),
+  select_stmt: (path, print) => group(join(line, print("clauses"))),
   select_clause: (path, print) =>
     group([print("selectKw"), indent([line, print("columns")])]),
   from_clause: (path, print) =>
@@ -41,13 +41,12 @@ const transformMap: Partial<CstToDocMap> = {
     group([print("whereKw"), indent([line, print("expr")])]),
   order_by_clause: (path, print) =>
     group([
-      join(" ", print("orderByKw") as Doc[]),
+      join(" ", print("orderByKw")),
       indent([line, print("specifications")]),
     ]),
-  sort_specification: (path, print) =>
-    join(" ", print(["expr", "orderKw"]) as Doc[]),
-  alias: (path, print) => join(" ", print(["expr", "asKw", "alias"]) as Doc[]),
-  list_expr: (path, print) => join([",", line], print("items") as []),
+  sort_specification: (path, print) => join(" ", print(["expr", "orderKw"])),
+  alias: (path, print) => join(" ", print(["expr", "asKw", "alias"])),
+  list_expr: (path, print) => join([",", line], print("items")),
   paren_expr: (path, print) => {
     const parent = path.getParentNode() as Node;
     if (parent?.type === "func_call") {
