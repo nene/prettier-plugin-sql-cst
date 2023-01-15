@@ -2,7 +2,7 @@ import { Node } from "sql-parser-cst";
 import { AstPath, Doc, ParserOptions } from "prettier";
 import { join, line, hardline, softline, indent, group } from "./print_utils";
 import { PrintFn } from "./PrintFn";
-import { isArray, isDefined, isString } from "./utils";
+import { isArray, isString } from "./utils";
 
 type NodeByType<T> = Extract<Node, { type: T }>;
 
@@ -56,14 +56,8 @@ const transformMap: Partial<CstToDocMap> = {
       return ["(", print("expr"), ")"];
     }
   },
-  binary_expr: (path, print) => {
-    const op = path.getValue().operator;
-    return join(" ", [
-      print("left"),
-      isString(op) ? op : print("operator"),
-      print("right"),
-    ]);
-  },
+  binary_expr: (path, print) =>
+    join(" ", [print("left"), print("operator"), print("right")]),
   member_expr: (path, print) => [print("object"), ".", print("property")],
   func_call: (path, print) => group([print("name"), print("args")]),
   func_args: (path, print) => print("args"),
@@ -83,6 +77,9 @@ export function printNode(
 
   if (isArray(node)) {
     return path.map(print);
+  }
+  if (isString(node)) {
+    return node;
   }
 
   const fn = transformMap[node.type] as ToDocFn<
