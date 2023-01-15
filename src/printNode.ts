@@ -55,8 +55,7 @@ const transformMap: Partial<CstToDocMap> = {
       return ["(", print("expr"), ")"];
     }
   },
-  binary_expr: (path, print) =>
-    join(" ", [print("left"), print("operator"), print("right")]),
+  binary_expr: (path, print) => join(" ", print(["left", "operator", "right"])),
   member_expr: (path, print) => [print("object"), ".", print("property")],
   func_call: (path, print) => group([print("name"), print("args")]),
   func_args: (path, print) => print("args"),
