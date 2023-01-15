@@ -1,8 +1,8 @@
-import { Node, parse, Program, Whitespace } from "sql-parser-cst";
+import { Node, parse } from "sql-parser-cst";
 import { Parser, Printer, SupportLanguage } from "prettier";
 import { printSql } from "./printSql";
 import { isNode } from "./utils";
-import { visitAllNodes } from "./visitAllNodes";
+import { moveCommentsToRoot } from "comments";
 
 export const languages: SupportLanguage[] = [
   {
@@ -26,25 +26,6 @@ export const parsers: Record<string, Parser<Node>> = {
     locStart: (node) => node.range?.[0] as number,
     locEnd: (node) => node.range?.[1] as number,
   },
-};
-
-const moveCommentsToRoot = (
-  cst: Program
-): Program & { comments: Whitespace[] } => {
-  return {
-    ...cst,
-    comments: extractComments(cst),
-  };
-};
-
-const extractComments = (cst: Program): Whitespace[] => {
-  const comments: Whitespace[] = [];
-  visitAllNodes(cst, (node) => {
-    comments.push(...(node.leading || []), ...(node.trailing || []));
-    delete node.leading;
-    delete node.trailing;
-  });
-  return comments;
 };
 
 export const printers: Record<string, Printer> = {
