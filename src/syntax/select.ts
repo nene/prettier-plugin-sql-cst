@@ -17,5 +17,7 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
     ]),
   group_by_clause: (print) =>
     group([join(" ", print("groupByKw")), indent([line, print("columns")])]),
+  having_clause: (print) =>
+    group([print("havingKw"), indent([line, print("expr")])]),
   sort_specification: (print) => join(" ", print(["expr", "orderKw"])),
 };

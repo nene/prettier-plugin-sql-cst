@@ -98,6 +98,33 @@ describe("select", () => {
     `);
   });
 
+  it(`formats HAVING`, () => {
+    expect(
+      pretty(`SELECT * FROM tbl GROUP BY foo HAVING foo > bar`, {
+        printWidth: 22,
+      })
+    ).toBe(dedent`
+      SELECT *
+      FROM tbl
+      GROUP BY foo
+      HAVING foo > bar
+    `);
+  });
+
+  it(`formats HAVING to multiple lines`, () => {
+    expect(
+      pretty(`SELECT * FROM tbl GROUP BY foo HAVING foo > some_long_col_name`, {
+        printWidth: 22,
+      })
+    ).toBe(dedent`
+      SELECT *
+      FROM tbl
+      GROUP BY foo
+      HAVING
+        foo > some_long_col_name
+    `);
+  });
+
   it(`formats aliases`, () => {
     expect(pretty(`SELECT 1 AS a, 2 AS b, 3 c`, { printWidth: 20 }))
       .toBe(dedent`
