@@ -36,14 +36,15 @@ function printNode(
     return node;
   }
 
+  if (!node?.type) {
+    throw new Error(`No type field on node: ${JSON.stringify(node)}`);
+  }
+
   const fn = transformMap[node.type] as ToDocFn<
     NodeByType<(typeof node)["type"], Node>
   >;
 
   if (!fn) {
-    if (!node.type) {
-      throw new Error(`No type field on node: ${JSON.stringify(node)}`);
-    }
     throw new Error(`Unexpected node type: ${node.type}`);
   }
 
