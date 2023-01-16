@@ -75,6 +75,29 @@ describe("select", () => {
     `);
   });
 
+  it(`formats GROUP BY`, () => {
+    expect(pretty(`SELECT * FROM tbl GROUP BY foo, bar`, { printWidth: 22 }))
+      .toBe(dedent`
+      SELECT *
+      FROM tbl
+      GROUP BY foo, bar
+    `);
+  });
+
+  it(`formats GROUP BY to multiple lines`, () => {
+    expect(
+      pretty(`SELECT * FROM tbl GROUP BY long_col, even_longer_col`, {
+        printWidth: 22,
+      })
+    ).toBe(dedent`
+      SELECT *
+      FROM tbl
+      GROUP BY
+        long_col,
+        even_longer_col
+    `);
+  });
+
   it(`formats aliases`, () => {
     expect(pretty(`SELECT 1 AS a, 2 AS b, 3 c`, { printWidth: 20 }))
       .toBe(dedent`
