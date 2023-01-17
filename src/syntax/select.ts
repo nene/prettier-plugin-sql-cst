@@ -14,12 +14,13 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
     group(
       join(" ", [
         join(" ", print("operator")),
-        join(" ", print(["right", "specification"])),
+        [print("right"), indent([line, print("specification")])],
       ])
     ),
   ],
-  join_on_specification: (print) => join(" ", print(["onKw", "expr"])),
-  join_using_specification: (print) => join(" ", print(["usingKw", "expr"])),
+  join_on_specification: (print) => group(join(" ", print(["onKw", "expr"]))),
+  join_using_specification: (print) =>
+    group(join(" ", print(["usingKw", "expr"]))),
   where_clause: (print) =>
     group([print("whereKw"), indent([line, print("expr")])]),
   order_by_clause: (print) =>
