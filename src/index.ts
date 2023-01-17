@@ -41,7 +41,7 @@ export const printers: Record<string, Printer> = {
 export const options: SupportOptions = {
   keywordCase: {
     type: "choice",
-    category: "Global",
+    category: "SQL",
     since: "0.0.0",
     default: "preserve",
     description: "Enforces upper/lower case for SQL keywords",
