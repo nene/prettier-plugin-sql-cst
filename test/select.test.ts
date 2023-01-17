@@ -53,6 +53,16 @@ describe("select", () => {
     `);
   });
 
+  it(`formats FROM with short join to single line`, () => {
+    expect(
+      pretty(`SELECT * FROM client NATURAL JOIN client_sale`, {
+        printWidth: 80,
+      })
+    ).toBe(dedent`
+      SELECT * FROM client NATURAL JOIN client_sale
+    `);
+  });
+
   it(`formats FROM with a join to multiple lines`, () => {
     expect(
       pretty(
