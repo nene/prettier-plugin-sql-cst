@@ -3,6 +3,7 @@ import * as plugin from "../src/index";
 
 interface PrettyOptions {
   printWidth?: number;
+  keywordCase?: "preserve" | "upper" | "lower";
 }
 
 export const pretty = (sql: string, opts: PrettyOptions = {}) => {
