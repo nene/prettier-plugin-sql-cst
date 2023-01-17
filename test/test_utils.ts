@@ -1,9 +1,9 @@
 import { format } from "prettier";
 import * as plugin from "../src/index";
+import { SqlPluginOptions } from "../src/options";
 
-interface PrettyOptions {
+interface PrettyOptions extends Partial<SqlPluginOptions> {
   printWidth?: number;
-  sqlKeywordCase?: "preserve" | "upper" | "lower";
 }
 
 export const pretty = (sql: string, opts: PrettyOptions = {}) => {

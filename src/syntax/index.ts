@@ -18,15 +18,13 @@ export const transformMap: Partial<CstToDocMap<Node>> = {
   ...selectMap,
   empty: () => [],
   keyword: (print, path, options) => {
-    switch ((options as any).sqlKeywordCase) {
+    switch (options.sqlKeywordCase) {
       case "preserve":
         return path.getValue().text;
       case "upper":
         return path.getValue().text.toUpperCase();
       case "lower":
         return path.getValue().text.toLowerCase();
-      default:
-        throw new Error("!");
     }
   },
   all_columns: () => "*",

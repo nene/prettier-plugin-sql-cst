@@ -4,10 +4,11 @@ import { PrintFn } from "./PrintFn";
 import { isArray, isDefined, isString } from "./utils";
 import { transformMap } from "./syntax";
 import { NodeByType, ToDocFn } from "./CstToDocMap";
+import { SqlPluginOptions } from "options";
 
 export function printSql(
   path: AstPath<Node>,
-  options: ParserOptions<Node>,
+  options: ParserOptions<Node> & SqlPluginOptions,
   oldPrint: PrintFn<Node>
 ): Doc {
   const print: PrintFn<Node> = (selector): Doc => {
@@ -24,7 +25,7 @@ export function printSql(
 
 function printNode(
   path: AstPath<Node>,
-  options: ParserOptions<Node>,
+  options: ParserOptions<Node> & SqlPluginOptions,
   print: PrintFn<Node>
 ): Doc {
   const node = path.getValue();
