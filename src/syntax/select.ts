@@ -8,6 +8,18 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
     group([print("selectKw"), indent([line, print("columns")])]),
   from_clause: (print) =>
     group([print("fromKw"), indent([line, print("expr")])]),
+  join_expr: (print) => [
+    print("left"),
+    line,
+    group(
+      join(" ", [
+        join(" ", print("operator")),
+        join(" ", print(["right", "specification"])),
+      ])
+    ),
+  ],
+  join_on_specification: (print) => join(" ", print(["onKw", "expr"])),
+  join_using_specification: (print) => join(" ", print(["usingKw", "expr"])),
   where_clause: (print) =>
     group([print("whereKw"), indent([line, print("expr")])]),
   order_by_clause: (print) =>
