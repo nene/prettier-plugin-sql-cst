@@ -18,7 +18,7 @@ export const transformMap: Partial<CstToDocMap<Node>> = {
   ...selectMap,
   empty: () => [],
   keyword: (print, path, options) => {
-    switch ((options as any).keywordCase) {
+    switch ((options as any).sqlKeywordCase) {
       case "preserve":
         return path.getValue().text;
       case "upper":

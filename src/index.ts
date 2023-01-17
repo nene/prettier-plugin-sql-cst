@@ -39,7 +39,7 @@ export const printers: Record<string, Printer> = {
 };
 
 export const options: SupportOptions = {
-  keywordCase: {
+  sqlKeywordCase: {
     type: "choice",
     category: "SQL",
     since: "0.0.0",
