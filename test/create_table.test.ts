@@ -23,7 +23,8 @@ describe("create table", () => {
         name VARCHAR,
         PRIMARY KEY (id, name),
         UNIQUE (name),
-        CHECK (id > 0)
+        CHECK (id > 0),
+        FOREIGN KEY (id, org_id) REFERENCES organization (id, org_id)
       )
     `;
     expect(pretty(sql)).toBe(sql);
