@@ -36,6 +36,14 @@ describe("create table", () => {
     `);
   });
 
+  it(`formats CREATE TABLE with named column constraints`, () => {
+    test(dedent`
+      CREATE TABLE client (
+        id INT CONSTRAINT NOT NULL CONSTRAINT prim_key PRIMARY KEY
+      )
+    `);
+  });
+
   it(`formats CREATE TABLE with named table constraints`, () => {
     test(dedent`
       CREATE TABLE client (
