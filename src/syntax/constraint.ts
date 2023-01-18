@@ -1,4 +1,3 @@
-import { Doc } from "prettier";
 import { AllConstraintNodes } from "sql-parser-cst";
 import { arrayWrap } from "../utils";
 import { CstToDocMap } from "../CstToDocMap";
@@ -17,18 +16,13 @@ export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
   constraint_not_null: (print) => group(join(" ", print("notNullKw"))),
   constraint_default: (print) => group(join(" ", print(["defaultKw", "expr"]))),
   constraint_primary_key: (print) =>
-    group(
-      join(" ", [...(print("primaryKeyKw") as Doc[]), ...print(["columns"])])
-    ),
+    group(join(" ", [...print("primaryKeyKw"), ...print(["columns"])])),
   constraint_unique: (print) =>
     group(join(" ", [...arrayWrap(print("uniqueKw")), ...print(["columns"])])),
   constraint_check: (print) => group(join(" ", print(["checkKw", "expr"]))),
   constraint_foreign_key: (print) =>
     group(
-      join(" ", [
-        ...(print("foreignKeyKw") as Doc[]),
-        ...print(["columns", "references"]),
-      ])
+      join(" ", [...print("foreignKeyKw"), ...print(["columns", "references"])])
     ),
   references_specification: (print) =>
     join(" ", print(["referencesKw", "table", "columns"])),
