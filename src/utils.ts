@@ -16,3 +16,5 @@ export const isNode = (value: any): value is Node =>
 
 const isCommentType = (type: string) =>
   type === "block_comment" || type === "line_comment";
+
+export const arrayWrap = <T>(x: T | T[]): T[] => (isArray(x) ? x : [x]);
