@@ -2,9 +2,18 @@ import { Doc } from "prettier";
 import { AllConstraintNodes } from "sql-parser-cst";
 import { arrayWrap } from "../utils";
 import { CstToDocMap } from "../CstToDocMap";
-import { group, join } from "../print_utils";
+import { group, join, indent, line } from "../print_utils";
 
 export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
+  constraint: (print, path) => {
+    const node = path.getValue();
+    if (node.name) {
+      return group([print("name"), indent([line, print("constraint")])]);
+    } else {
+      return print("constraint");
+    }
+  },
+  constraint_name: (print) => join(" ", print(["constraintKw", "name"])),
   constraint_not_null: (print) => group(join(" ", print("notNullKw"))),
   constraint_primary_key: (print) =>
     group(join(" ", [...(print("primaryKeyKw") as Doc[]), print("columns")])),

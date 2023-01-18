@@ -29,4 +29,16 @@ describe("create table", () => {
     `;
     expect(pretty(sql)).toBe(sql);
   });
+
+  it(`formats CREATE TABLE with named table constraints`, () => {
+    const sql = dedent`
+      CREATE TABLE client (
+        id INT,
+        CONSTRAINT prim_key PRIMARY KEY (id, name),
+        CONSTRAINT org_for_key
+          FOREIGN KEY (id, org_id) REFERENCES organization (id, org_id)
+      )
+    `;
+    expect(pretty(sql)).toBe(sql);
+  });
 });
