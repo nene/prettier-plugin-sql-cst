@@ -18,24 +18,16 @@ export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
   constraint_default: (print) => group(join(" ", print(["defaultKw", "expr"]))),
   constraint_primary_key: (print) =>
     group(
-      join(" ", [
-        ...(print("primaryKeyKw") as Doc[]),
-        ...(print(["columns"]) as Doc[]),
-      ])
+      join(" ", [...(print("primaryKeyKw") as Doc[]), ...print(["columns"])])
     ),
   constraint_unique: (print) =>
-    group(
-      join(" ", [
-        ...arrayWrap(print("uniqueKw")),
-        ...(print(["columns"]) as Doc[]),
-      ])
-    ),
+    group(join(" ", [...arrayWrap(print("uniqueKw")), ...print(["columns"])])),
   constraint_check: (print) => group(join(" ", print(["checkKw", "expr"]))),
   constraint_foreign_key: (print) =>
     group(
       join(" ", [
         ...(print("foreignKeyKw") as Doc[]),
-        ...(print(["columns", "references"]) as Doc[]),
+        ...print(["columns", "references"]),
       ])
     ),
   references_specification: (print) =>

@@ -11,14 +11,14 @@ export function printSql(
   options: ParserOptions<Node> & SqlPluginOptions,
   oldPrint: PrintFn<Node>
 ): Doc {
-  const print: PrintFn<Node> = (selector): Doc => {
+  const print: PrintFn<Node> = ((selector): Doc => {
     if (isArray(selector)) {
       const node = path.getValue();
       return selector.filter((sel) => isDefined(node[sel])).map(oldPrint);
     } else {
       return oldPrint(selector);
     }
-  };
+  }) as PrintFn<Node>;
 
   return printNode(path, options, print);
 }
@@ -31,7 +31,7 @@ function printNode(
   const node = path.getValue();
 
   if (isArray(node)) {
-    return path.map(print);
+    return path.map(print as (x: AstPath<Node>) => Doc);
   }
   if (isString(node)) {
     return node;
