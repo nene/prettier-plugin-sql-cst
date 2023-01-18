@@ -5,9 +5,20 @@ describe("create table", () => {
   it(`formats CREATE TABLE always on multiple lines`, () => {
     test(dedent`
       CREATE TABLE client (
-        id INT NOT NULL,
+        id INT,
         name VARCHAR(100),
-        organization_id INT
+        org_id INT
+      )
+    `);
+  });
+
+  it(`formats CREATE TABLE with column constraints`, () => {
+    test(dedent`
+      CREATE TABLE client (
+        id INT NOT NULL PRIMARY KEY,
+        name VARCHAR(100) UNIQUE,
+        age VARCHAR(6) DEFAULT 0,
+        organization_id INT REFERENCES organization (id)
       )
     `);
   });
