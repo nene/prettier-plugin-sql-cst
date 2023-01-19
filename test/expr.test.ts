@@ -107,4 +107,8 @@ describe("expr", () => {
         )
     `);
   });
+
+  it(`formats CAST expression`, () => {
+    test(`SELECT CAST(127 AS INT)`);
+  });
 });
