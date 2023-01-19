@@ -14,11 +14,8 @@ export const exprMap: Partial<CstToDocMap<Node>> = {
   },
   paren_expr: (print, path) => {
     const parent = path.getParentNode() as Node;
-    if (isFuncCall(parent) || isCreateTableStmt(parent)) {
-      return ["(", indent([softline, print("expr")]), softline, ")"];
-    } else {
-      return group(["(", print("expr"), ")"]);
-    }
+    const lineStyle = isCreateTableStmt(parent) ? hardline : softline;
+    return group(["(", indent([lineStyle, print("expr")]), lineStyle, ")"]);
   },
   binary_expr: (print) =>
     join(" ", [print("left"), ...arrayWrap(print("operator")), print("right")]),

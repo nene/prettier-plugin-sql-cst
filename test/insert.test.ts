@@ -35,4 +35,28 @@ describe("insert", () => {
         (3, 'Peter', 'Tucker', 11, TRUE)
     `);
   });
+
+  it(`formats INSERT statement with very long column names and values lists`, () => {
+    test(dedent`
+      INSERT INTO client
+        (
+          id,
+          first_name,
+          last_name,
+          organization_id,
+          project_access_enabled,
+          delivery_status
+        )
+      VALUES
+        (
+          1,
+          'Johnathan Sigfried Jr.',
+          'Dolittle',
+          2745612,
+          TRUE,
+          'permanently_disabled'
+        ),
+        (2, 'Alicia', 'Namis', 31, FALSE, 'allows_accepting')
+    `);
+  });
 });

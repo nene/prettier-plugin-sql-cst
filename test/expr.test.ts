@@ -5,7 +5,7 @@ describe("expr", () => {
   it(`formats binary expressions`, () => {
     expect(
       pretty(`SELECT 1 + 2 / 3 * (5 - 1), true OR false AND true`, {
-        printWidth: 20,
+        printWidth: 25,
       })
     ).toBe(dedent`
       SELECT
