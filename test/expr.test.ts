@@ -108,6 +108,14 @@ describe("expr", () => {
     `);
   });
 
+  it(`formats count(*) func call`, () => {
+    test(`SELECT count(*)`);
+  });
+
+  it(`formats count(DISTINCT) func call`, () => {
+    test(`SELECT count(DISTINCT id)`);
+  });
+
   it(`formats CAST expression`, () => {
     test(`SELECT CAST(127 AS INT)`);
   });
