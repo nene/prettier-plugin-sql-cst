@@ -43,6 +43,17 @@ describe("expr", () => {
     );
   });
 
+  it(`formats EXISTS expressions`, () => {
+    test(
+      dedent`
+        SELECT
+          EXISTS (SELECT * FROM tbl),
+          NOT EXISTS (SELECT col FROM tbl2)
+      `,
+      { printWidth: 60 }
+    );
+  });
+
   it(`formats function call to single line`, () => {
     expect(pretty(`SELECT sqrt(1, 2, 3)`, { printWidth: 15 })).toBe(dedent`
       SELECT

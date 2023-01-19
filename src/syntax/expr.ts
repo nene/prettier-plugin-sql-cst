@@ -15,6 +15,8 @@ export const exprMap: Partial<CstToDocMap<Node>> = {
   },
   binary_expr: (print) =>
     join(" ", [print("left"), ...arrayWrap(print("operator")), print("right")]),
+  prefix_op_expr: (print) =>
+    join(" ", [...arrayWrap(print("operator")), print("expr")]),
   between_expr: (print) =>
     join(" ", [
       print("left"),
