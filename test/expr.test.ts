@@ -14,8 +14,22 @@ describe("expr", () => {
     `);
   });
 
-  it(`formats IN and NOT IN expressions`, () => {
+  it(`formats IN expressions`, () => {
     test(`SELECT col1 IN (1, 2, 3), col2 NOT IN (4, 5, 6)`);
+  });
+
+  it(`formats LIKE expressions`, () => {
+    test(`SELECT fname LIKE 'Mar%', lname NOT LIKE '%ony'`);
+  });
+
+  it(`formats IS expressions`, () => {
+    test(dedent`
+      SELECT
+        x IS NOT NULL,
+        y IS NULL,
+        z IS DISTINCT FROM NULL,
+        q IS NOT DISTINCT FROM NULL
+    `);
   });
 
   it(`formats function call to single line`, () => {

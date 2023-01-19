@@ -20,5 +20,7 @@ export const exprMap: Partial<CstToDocMap<Node>> = {
   func_args: (print) => print("args"),
   number_literal: (print) => print("text"),
   boolean_literal: (print) => print("text"),
+  string_literal: (print) => print("text"),
+  null_literal: (print) => print("text"),
   identifier: (print) => print("text"),
 };
