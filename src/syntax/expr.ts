@@ -13,7 +13,7 @@ export const exprMap: Partial<CstToDocMap<Node>> = {
   },
   paren_expr: (print, path) => {
     const parent = path.getParentNode() as Node;
-    if (parent?.type === "func_call" || parent?.type === "create_table_stmt") {
+    if (isFuncCall(parent) || isCreateTableStmt(parent)) {
       return ["(", indent([softline, print("expr")]), softline, ")"];
     } else {
       return group(["(", print("expr"), ")"]);
@@ -53,3 +53,5 @@ export const exprMap: Partial<CstToDocMap<Node>> = {
 };
 
 const isValuesClause = (node?: Node) => node?.type === "values_clause";
+const isFuncCall = (node?: Node) => node?.type === "func_call";
+const isCreateTableStmt = (node?: Node) => node?.type === "create_table_stmt";
