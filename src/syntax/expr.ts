@@ -17,6 +17,8 @@ export const exprMap: Partial<CstToDocMap<Node>> = {
     join(" ", [print("left"), ...arrayWrap(print("operator")), print("right")]),
   prefix_op_expr: (print) =>
     join(" ", [...arrayWrap(print("operator")), print("expr")]),
+  postfix_op_expr: (print) =>
+    join(" ", [print("expr"), ...arrayWrap(print("operator"))]),
   between_expr: (print) =>
     join(" ", [
       print("left"),

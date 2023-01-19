@@ -54,6 +54,10 @@ describe("expr", () => {
     );
   });
 
+  it(`formats ISNULL / NOTNULL / NOT NULL expressions`, () => {
+    test(`SELECT fname ISNULL, xname NOTNULL, lname NOT NULL`);
+  });
+
   it(`formats function call to single line`, () => {
     expect(pretty(`SELECT sqrt(1, 2, 3)`, { printWidth: 15 })).toBe(dedent`
       SELECT
