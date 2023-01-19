@@ -58,6 +58,38 @@ describe("expr", () => {
     test(`SELECT fname ISNULL, xname NOTNULL, lname NOT NULL`);
   });
 
+  it(`formats CASE expression always on multiple lines`, () => {
+    test(dedent`
+      SELECT
+        CASE x
+          WHEN 1 THEN 'A'
+          ELSE 'B'
+        END
+    `);
+  });
+
+  it(`formats CASE expression with base expression`, () => {
+    test(dedent`
+      SELECT
+        CASE status
+          WHEN 1 THEN 'good'
+          WHEN 2 THEN 'bad'
+          ELSE 'unknown'
+        END
+    `);
+  });
+
+  it(`formats CASE expression without base expression`, () => {
+    test(dedent`
+      SELECT
+        CASE
+          WHEN status = 1 THEN 'good'
+          WHEN status = 2 THEN 'bad'
+          ELSE 'unknown'
+        END
+    `);
+  });
+
   it(`formats function call to single line`, () => {
     expect(pretty(`SELECT sqrt(1, 2, 3)`, { printWidth: 15 })).toBe(dedent`
       SELECT

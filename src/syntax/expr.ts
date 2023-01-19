@@ -1,7 +1,7 @@
 import { Node } from "sql-parser-cst";
 import { arrayWrap } from "../utils";
 import { CstToDocMap } from "../CstToDocMap";
-import { join, line, softline, indent, group } from "../print_utils";
+import { join, line, softline, hardline, indent, group } from "../print_utils";
 
 export const exprMap: Partial<CstToDocMap<Node>> = {
   list_expr: (print) => join([",", line], print("items")),
@@ -25,6 +25,15 @@ export const exprMap: Partial<CstToDocMap<Node>> = {
       ...arrayWrap(print("betweenKw")),
       ...print(["begin", "andKw", "end"]),
     ]),
+  case_expr: (print) => [
+    join(" ", print(["caseKw", "expr"])),
+    indent([hardline, join(hardline, print("clauses"))]),
+    hardline,
+    print("endKw"),
+  ],
+  case_when: (print) =>
+    join(" ", print(["whenKw", "condition", "thenKw", "result"])),
+  case_else: (print) => join(" ", print(["elseKw", "result"])),
   member_expr: (print) => [print("object"), ".", print("property")],
   func_call: (print) => group(print(["name", "args"])),
   func_args: (print) => print("args"),
