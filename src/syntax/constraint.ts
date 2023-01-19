@@ -28,4 +28,11 @@ export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
     ),
   references_specification: (print) =>
     join(" ", print(["referencesKw", "table", "columns"])),
+  constraint_generated: (print, path) => {
+    const node = path.getValue();
+    const kw = node.generatedKw
+      ? join(" ", [...arrayWrap(print("generatedKw")), print("asKw")])
+      : print("asKw");
+    return join(" ", [kw, ...print(["expr", "storageKw"])]);
+  },
 };

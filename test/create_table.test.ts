@@ -18,7 +18,9 @@ describe("create table", () => {
         id INT NOT NULL PRIMARY KEY,
         name VARCHAR(100) UNIQUE COLLATE RTRIM,
         age VARCHAR(6) DEFAULT 0,
-        organization_id INT REFERENCES organization (id)
+        organization_id INT REFERENCES organization (id),
+        byear1 INT GENERATED ALWAYS AS (today - age) VIRTUAL,
+        byear2 INT AS (today - age)
       )
     `);
   });
