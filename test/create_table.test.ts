@@ -16,7 +16,7 @@ describe("create table", () => {
     test(dedent`
       CREATE TABLE client (
         id INT NOT NULL PRIMARY KEY,
-        name VARCHAR(100) UNIQUE,
+        name VARCHAR(100) UNIQUE COLLATE RTRIM,
         age VARCHAR(6) DEFAULT 0,
         organization_id INT REFERENCES organization (id)
       )

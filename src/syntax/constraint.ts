@@ -20,6 +20,8 @@ export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
   constraint_unique: (print) =>
     group(join(" ", [...arrayWrap(print("uniqueKw")), ...print(["columns"])])),
   constraint_check: (print) => group(join(" ", print(["checkKw", "expr"]))),
+  constraint_collate: (print) =>
+    group(join(" ", print(["collateKw", "collation"]))),
   constraint_foreign_key: (print) =>
     group(
       join(" ", [...print("foreignKeyKw"), ...print(["columns", "references"])])
