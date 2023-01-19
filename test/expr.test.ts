@@ -32,6 +32,17 @@ describe("expr", () => {
     `);
   });
 
+  it(`formats BETWEEN expressions`, () => {
+    test(
+      dedent`
+        SELECT
+          x BETWEEN 1 AND 10,
+          y NOT BETWEEN 2 AND 8
+      `,
+      { printWidth: 40 }
+    );
+  });
+
   it(`formats function call to single line`, () => {
     expect(pretty(`SELECT sqrt(1, 2, 3)`, { printWidth: 15 })).toBe(dedent`
       SELECT

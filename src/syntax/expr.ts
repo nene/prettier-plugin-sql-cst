@@ -15,6 +15,12 @@ export const exprMap: Partial<CstToDocMap<Node>> = {
   },
   binary_expr: (print) =>
     join(" ", [print("left"), ...arrayWrap(print("operator")), print("right")]),
+  between_expr: (print) =>
+    join(" ", [
+      print("left"),
+      ...arrayWrap(print("betweenKw")),
+      ...print(["begin", "andKw", "end"]),
+    ]),
   member_expr: (print) => [print("object"), ".", print("property")],
   func_call: (print) => group(print(["name", "args"])),
   func_args: (print) => print("args"),

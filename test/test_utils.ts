@@ -15,5 +15,5 @@ export const pretty = (sql: string, opts: PrettyOptions = {}): string => {
 };
 
 export const test = (sql: string, opts: PrettyOptions = {}): void => {
-  expect(pretty(sql)).toBe(sql);
+  expect(pretty(sql, opts)).toBe(sql);
 };
