@@ -4,13 +4,19 @@ import { CstToDocMap } from "../CstToDocMap";
 import { join, line, softline, hardline, indent, group } from "../print_utils";
 
 export const exprMap: Partial<CstToDocMap<Node>> = {
-  list_expr: (print) => join([",", line], print("items")),
+  list_expr: (print, path) => {
+    const parent = path.getParentNode() as Node;
+    return join(
+      [",", isValuesClause(parent) ? hardline : line],
+      print("items").map((it) => group(it))
+    );
+  },
   paren_expr: (print, path) => {
     const parent = path.getParentNode() as Node;
     if (parent?.type === "func_call" || parent?.type === "create_table_stmt") {
       return ["(", indent([softline, print("expr")]), softline, ")"];
     } else {
-      return ["(", print("expr"), ")"];
+      return group(["(", print("expr"), ")"]);
     }
   },
   binary_expr: (print) =>
@@ -45,3 +51,5 @@ export const exprMap: Partial<CstToDocMap<Node>> = {
   null_literal: (print) => print("text"),
   identifier: (print) => print("text"),
 };
+
+const isValuesClause = (node?: Node) => node?.type === "values_clause";
