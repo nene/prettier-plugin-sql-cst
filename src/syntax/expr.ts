@@ -2,6 +2,7 @@ import { Node } from "sql-parser-cst";
 import { arrayWrap } from "../utils";
 import { CstToDocMap } from "../CstToDocMap";
 import { join, line, softline, hardline, indent, group } from "../print_utils";
+import { isCreateTableStmt, isFuncCall, isValuesClause } from "../node_utils";
 
 export const exprMap: Partial<CstToDocMap<Node>> = {
   list_expr: (print, path) => {
@@ -51,7 +52,3 @@ export const exprMap: Partial<CstToDocMap<Node>> = {
   null_literal: (print) => print("text"),
   identifier: (print) => print("text"),
 };
-
-const isValuesClause = (node?: Node) => node?.type === "values_clause";
-const isFuncCall = (node?: Node) => node?.type === "func_call";
-const isCreateTableStmt = (node?: Node) => node?.type === "create_table_stmt";
