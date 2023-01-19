@@ -12,5 +12,5 @@ export const insertMap: Partial<CstToDocMap<AllInsertNodes>> = {
     ]);
   },
   values_clause: (print) =>
-    group([print("valuesKw"), indent([line, print("values")])]),
+    group([print("valuesKw"), indent([hardline, print("values")])]),
 };

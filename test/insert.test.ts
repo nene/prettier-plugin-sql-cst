@@ -5,7 +5,8 @@ describe("insert", () => {
   it(`formats INSERT statement without column names`, () => {
     test(dedent`
       INSERT INTO client
-      VALUES (1, 'John', 'Doe', 27)
+      VALUES
+        (1, 'John', 'Doe', 27)
     `);
   });
 
@@ -13,7 +14,8 @@ describe("insert", () => {
     test(dedent`
       INSERT INTO client
         (id, fname, lname, org_id)
-      VALUES (1, 'John', 'Doe', 27)
+      VALUES
+        (1, 'John', 'Doe', 27)
     `);
   });
 
