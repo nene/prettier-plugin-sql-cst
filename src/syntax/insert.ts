@@ -8,7 +8,7 @@ export const insertMap: Partial<CstToDocMap<AllInsertNodes>> = {
     const node = path.getValue();
     return group([
       join(" ", print(["insertKw", "intoKw", "table"])),
-      node.columns ? indent([line, print("columns")]) : [],
+      node.columns ? indent([hardline, print("columns")]) : [],
     ]);
   },
   values_clause: (print) =>
