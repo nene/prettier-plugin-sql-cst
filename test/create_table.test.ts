@@ -25,6 +25,14 @@ describe("create table", () => {
     `);
   });
 
+  it(`formats SQLite PRIMARY KEY modifiers`, () => {
+    test(dedent`
+      CREATE TABLE client (
+        id INTEGER PRIMARY KEY ASC AUTOINCREMENT
+      )
+    `);
+  });
+
   it(`formats CREATE TABLE with table constraints`, () => {
     test(dedent`
       CREATE TABLE client (

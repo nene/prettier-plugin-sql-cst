@@ -16,7 +16,13 @@ export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
   constraint_not_null: (print) => group(join(" ", print("notNullKw"))),
   constraint_default: (print) => group(join(" ", print(["defaultKw", "expr"]))),
   constraint_primary_key: (print) =>
-    group(join(" ", [...print("primaryKeyKw"), ...print(["columns"])])),
+    group(
+      join(" ", [
+        ...print("primaryKeyKw"),
+        ...print(["orderKw"]),
+        ...print(["columns"]),
+      ])
+    ),
   constraint_unique: (print) =>
     group(join(" ", [...arrayWrap(print("uniqueKw")), ...print(["columns"])])),
   constraint_check: (print) => group(join(" ", print(["checkKw", "expr"]))),
@@ -35,4 +41,5 @@ export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
       : print("asKw");
     return join(" ", [kw, ...print(["expr", "storageKw"])]);
   },
+  constraint_auto_increment: (print) => print("autoIncrementKw"),
 };
