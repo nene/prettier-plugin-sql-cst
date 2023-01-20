@@ -6,7 +6,7 @@ export const insertMap: Partial<CstToDocMap<AllInsertNodes>> = {
   insert_stmt: (print) => join(hardline, print("clauses")),
   insert_clause: (print, node) =>
     group([
-      join(" ", print(["insertKw", "intoKw", "table"])),
+      print.spaced(["insertKw", "intoKw", "table"]),
       node.columns ? indent([hardline, print("columns")]) : [],
     ]),
   values_clause: (print) =>

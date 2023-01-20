@@ -27,6 +27,8 @@ export function printSql(
     const docs = arrayWrap(selector)
       .filter((sel) => isDefined(node[sel]))
       .map(oldPrint)
+      // skip empty arrays
+      .filter((doc) => !(isArray(doc) && doc.length === 0))
       .map((doc) => join(" ", doc));
     return docs.length > 0 ? [join(" ", docs)] : [];
   };

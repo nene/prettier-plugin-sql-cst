@@ -13,7 +13,7 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
     line,
     group(
       join(" ", [
-        join(" ", print("operator")),
+        print.spaced("operator"),
         [
           print("right"),
           node.specification ? indent([line, print(["specification"])]) : [],
@@ -21,19 +21,15 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
       ])
     ),
   ],
-  join_on_specification: (print) => group(join(" ", print(["onKw", "expr"]))),
-  join_using_specification: (print) =>
-    group(join(" ", print(["usingKw", "expr"]))),
+  join_on_specification: (print) => group(print.spaced(["onKw", "expr"])),
+  join_using_specification: (print) => group(print.spaced(["usingKw", "expr"])),
   where_clause: (print) =>
     group([print("whereKw"), indent([line, print("expr")])]),
   order_by_clause: (print) =>
-    group([
-      join(" ", print("orderByKw")),
-      indent([line, print("specifications")]),
-    ]),
+    group([print.spaced("orderByKw"), indent([line, print("specifications")])]),
   group_by_clause: (print) =>
-    group([join(" ", print("groupByKw")), indent([line, print("columns")])]),
+    group([print.spaced("groupByKw"), indent([line, print("columns")])]),
   having_clause: (print) =>
     group([print("havingKw"), indent([line, print("expr")])]),
-  sort_specification: (print) => join(" ", print(["expr", "orderKw"])),
+  sort_specification: (print) => print.spaced(["expr", "orderKw"]),
 };
