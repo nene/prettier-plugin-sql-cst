@@ -1,7 +1,7 @@
 import { Node } from "sql-parser-cst";
 import { AstPath, Doc, ParserOptions } from "prettier";
 import { OldPrintFn, PrintableKey, PrintFn } from "./PrintFn";
-import { arrayWrap, isArray, isDefined, isString } from "./utils";
+import { arrayWrap, isArray, isDefined, isEmptyArray, isString } from "./utils";
 import { transformMap } from "./syntax";
 import { NodeByType, ToDocFn } from "./CstToDocMap";
 import { SqlPluginOptions } from "./options";
@@ -28,7 +28,7 @@ export function printSql(
       .filter((sel) => isDefined(node[sel]))
       .map((sel) => [sel, oldPrint(sel)] as [PrintableKey<Node>, Doc])
       // skip empty arrays
-      .filter(([sel, doc]) => !(isArray(doc) && doc.length === 0))
+      .filter(([sel, doc]) => !isEmptyArray(doc))
       // only join with spaces when input to print was Node[]
       .map(([sel, doc]) => (isArray(node[sel]) ? join(" ", doc) : doc));
     return docs.length > 0 ? [join(" ", docs)] : [];
