@@ -12,7 +12,26 @@ export function printSql(
   options: ParserOptions<Node> & SqlPluginOptions,
   oldPrint: OldPrintFn
 ): Doc {
-  const print: PrintFn<Node> = ((selector): Doc => {
+  return printNode(path, options, createPrintFn(path, oldPrint));
+}
+
+let cachedPrintFn: PrintFn<Node>;
+let cachedPath: AstPath<Node>;
+
+function createPrintFn(
+  path: AstPath<Node>,
+  oldPrint: OldPrintFn
+): PrintFn<Node> {
+  // The path parameter will reference the same AstPath instance
+  // during the whole printing cycle.
+  // So we can keep using the same print function as long as
+  // the path stays the same.
+  if (cachedPath === path) {
+    return cachedPrintFn;
+  }
+
+  cachedPath = path;
+  cachedPrintFn = ((selector): Doc => {
     if (isArray(selector)) {
       const node = path.getValue();
       return selector.filter((sel) => isDefined(node[sel])).map(oldPrint);
@@ -20,7 +39,8 @@ export function printSql(
       return oldPrint(selector);
     }
   }) as PrintFn<Node>;
-  print.spaced = (
+
+  cachedPrintFn.spaced = (
     selector: PrintableKey<Node> | PrintableKey<Node>[]
   ): Doc[] => {
     const node = path.getValue();
@@ -34,7 +54,7 @@ export function printSql(
     return docs.length > 0 ? [join(" ", docs)] : [];
   };
 
-  return printNode(path, options, print);
+  return cachedPrintFn;
 }
 
 function printNode(
