@@ -20,7 +20,9 @@ export function printSql(
       return oldPrint(selector);
     }
   }) as PrintFn<Node>;
-  print.kw = (selector: PrintableKey<Node> | PrintableKey<Node>[]): Doc[] => {
+  print.spaced = (
+    selector: PrintableKey<Node> | PrintableKey<Node>[]
+  ): Doc[] => {
     const node = path.getValue();
     const docs = arrayWrap(selector)
       .filter((sel) => isDefined(node[sel]))

@@ -12,10 +12,9 @@ export type PrintFn<T, K = PrintableKey<T>> = {
   // when print(["x", "y", "z"])
   (path: K[]): Doc[];
 
-  // Helper for printing sequence of keywords
-  // Automatically inserts spaces between multiple keywords
-  kw(path: K): Doc[];
-  kw(path: K[]): Doc[];
+  // Helper for printing space-separated list of docs
+  spaced(path: K): Doc[];
+  spaced(path: K[]): Doc[];
 };
 
 export type PrintableKey<T> = Exclude<keyof T, ReservedKey>;
