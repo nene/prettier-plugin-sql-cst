@@ -1,10 +1,11 @@
 import { Node } from "sql-parser-cst";
 import { AstPath, Doc, ParserOptions } from "prettier";
-import { OldPrintFn, PrintFn } from "./PrintFn";
-import { isArray, isDefined, isString } from "./utils";
+import { OldPrintFn, PrintableKey, PrintFn } from "./PrintFn";
+import { arrayWrap, isArray, isDefined, isString } from "./utils";
 import { transformMap } from "./syntax";
 import { NodeByType, ToDocFn } from "./CstToDocMap";
-import { SqlPluginOptions } from "options";
+import { SqlPluginOptions } from "./options";
+import { join } from "./print_utils";
 
 export function printSql(
   path: AstPath<Node>,
@@ -19,6 +20,14 @@ export function printSql(
       return oldPrint(selector);
     }
   }) as PrintFn<Node>;
+  print.kw = (selector: PrintableKey<Node> | PrintableKey<Node>[]): Doc[] => {
+    const node = path.getValue();
+    const docs = arrayWrap(selector)
+      .filter((sel) => isDefined(node[sel]))
+      .map(oldPrint)
+      .map((doc) => join(" ", doc));
+    return docs.length > 0 ? [join(" ", docs)] : [];
+  };
 
   return printNode(path, options, print);
 }

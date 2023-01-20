@@ -1,5 +1,4 @@
 import { AllConstraintNodes } from "sql-parser-cst";
-import { arrayWrap } from "../utils";
 import { CstToDocMap } from "../CstToDocMap";
 import { group, join, indent, line } from "../print_utils";
 
@@ -12,18 +11,14 @@ export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
     }
   },
   constraint_name: (print) => join(" ", print(["constraintKw", "name"])),
-  constraint_not_null: (print) => group(join(" ", print("notNullKw"))),
+  constraint_not_null: (print) => group(print.kw("notNullKw")),
   constraint_default: (print) => group(join(" ", print(["defaultKw", "expr"]))),
   constraint_primary_key: (print) =>
     group(
-      join(" ", [
-        ...print("primaryKeyKw"),
-        ...print(["orderKw"]),
-        ...print(["columns"]),
-      ])
+      join(" ", [print.kw(["primaryKeyKw", "orderKw"]), ...print(["columns"])])
     ),
   constraint_unique: (print) =>
-    group(join(" ", [...arrayWrap(print("uniqueKw")), ...print(["columns"])])),
+    group(join(" ", [...print.kw("uniqueKw"), ...print(["columns"])])),
   constraint_check: (print) => group(join(" ", print(["checkKw", "expr"]))),
   constraint_collate: (print) =>
     group(join(" ", print(["collateKw", "collation"]))),
@@ -33,11 +28,11 @@ export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
     ),
   references_specification: (print) =>
     join(" ", print(["referencesKw", "table", "columns"])),
-  constraint_generated: (print, node) => {
-    const kw = node.generatedKw
-      ? join(" ", [...arrayWrap(print("generatedKw")), print("asKw")])
-      : print("asKw");
-    return join(" ", [kw, ...print(["expr", "storageKw"])]);
+  constraint_generated: (print) => {
+    return join(" ", [
+      print.kw(["generatedKw", "asKw"]),
+      ...print(["expr", "storageKw"]),
+    ]);
   },
   constraint_auto_increment: (print) => print("autoIncrementKw"),
 };
