@@ -7,6 +7,7 @@ export type NodeByType<TType, TNode> = Extract<TNode, { type: TType }>;
 
 export type ToDocFn<TNode> = (
   print: PrintFn<TNode>,
+  node: TNode,
   path: AstPath<TNode>,
   options: ParserOptions<TNode> & SqlPluginOptions
 ) => Doc;

@@ -49,5 +49,5 @@ function printNode(
     throw new Error(`Unexpected node type: ${node.type}`);
   }
 
-  return fn(print, path, options);
+  return fn(print, node, path, options);
 }

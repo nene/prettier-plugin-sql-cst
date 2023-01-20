@@ -4,8 +4,7 @@ import { CstToDocMap } from "../CstToDocMap";
 import { group, join, indent, line } from "../print_utils";
 
 export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
-  constraint: (print, path) => {
-    const node = path.getValue();
+  constraint: (print, node) => {
     if (node.name) {
       return group([print("name"), indent([line, print("constraint")])]);
     } else {
@@ -34,8 +33,7 @@ export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
     ),
   references_specification: (print) =>
     join(" ", print(["referencesKw", "table", "columns"])),
-  constraint_generated: (print, path) => {
-    const node = path.getValue();
+  constraint_generated: (print, node) => {
     const kw = node.generatedKw
       ? join(" ", [...arrayWrap(print("generatedKw")), print("asKw")])
       : print("asKw");

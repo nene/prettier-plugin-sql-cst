@@ -2,17 +2,17 @@ import { Node } from "sql-parser-cst";
 import { arrayWrap } from "../utils";
 import { CstToDocMap } from "../CstToDocMap";
 import { join, line, softline, hardline, indent, group } from "../print_utils";
-import { isCreateTableStmt, isFuncCall, isValuesClause } from "../node_utils";
+import { isCreateTableStmt, isValuesClause } from "../node_utils";
 
 export const exprMap: Partial<CstToDocMap<Node>> = {
-  list_expr: (print, path) => {
+  list_expr: (print, node, path) => {
     const parent = path.getParentNode() as Node;
     return join(
       [",", isValuesClause(parent) ? hardline : line],
       print("items").map((it) => group(it))
     );
   },
-  paren_expr: (print, path) => {
+  paren_expr: (print, node, path) => {
     const parent = path.getParentNode() as Node;
     const lineStyle = isCreateTableStmt(parent) ? hardline : softline;
     return group(["(", indent([lineStyle, print("expr")]), lineStyle, ")"]);

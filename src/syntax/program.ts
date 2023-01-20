@@ -4,7 +4,7 @@ import { hardline } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
 export const programMap: CstToDocMap<Program> = {
-  program: (print, path) => path.map(printLineWith(print), "statements"),
+  program: (print, node, path) => path.map(printLineWith(print), "statements"),
 };
 
 const printLineWith =
