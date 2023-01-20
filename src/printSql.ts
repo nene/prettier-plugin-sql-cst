@@ -26,10 +26,11 @@ export function printSql(
     const node = path.getValue();
     const docs = arrayWrap(selector)
       .filter((sel) => isDefined(node[sel]))
-      .map(oldPrint)
+      .map((sel) => [sel, oldPrint(sel)] as [PrintableKey<Node>, Doc])
       // skip empty arrays
-      .filter((doc) => !(isArray(doc) && doc.length === 0))
-      .map((doc) => join(" ", doc));
+      .filter(([sel, doc]) => !(isArray(doc) && doc.length === 0))
+      // only join with spaces when input to print was Node[]
+      .map(([sel, doc]) => (isArray(node[sel]) ? join(" ", doc) : doc));
     return docs.length > 0 ? [join(" ", docs)] : [];
   };
 
