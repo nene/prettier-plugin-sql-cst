@@ -80,4 +80,12 @@ describe("create table", () => {
       )
     `);
   });
+
+  it(`formats SQLite table options`, () => {
+    test(dedent`
+      CREATE TABLE foo (
+        id INT
+      ) WITHOUT ROWID, STRICT
+    `);
+  });
 });
