@@ -62,6 +62,17 @@ describe("create table", () => {
     `);
   });
 
+  it(`formats FOREIGN KEY constraint with options`, () => {
+    test(dedent`
+      CREATE TABLE client (
+        id INT,
+        FOREIGN KEY (org_id1) REFERENCES organization (id1) ON DELETE SET NULL,
+        FOREIGN KEY (org_id2) REFERENCES organization (id2) ON UPDATE CASCADE,
+        FOREIGN KEY (org_id3) REFERENCES organization (id3) MATCH FULL
+      )
+    `);
+  });
+
   it(`formats CREATE TABLE with named column constraints`, () => {
     test(dedent`
       CREATE TABLE client (

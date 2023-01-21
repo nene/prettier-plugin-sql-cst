@@ -24,7 +24,9 @@ export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
   constraint_foreign_key: (print) =>
     group(print.spaced(["foreignKeyKw", "columns", "references"])),
   references_specification: (print) =>
-    print.spaced(["referencesKw", "table", "columns"]),
+    print.spaced(["referencesKw", "table", "columns", "options"]),
+  referential_action: (print) => print.spaced(["onKw", "eventKw", "actionKw"]),
+  referential_match: (print) => print.spaced(["matchKw", "typeKw"]),
   constraint_generated: (print) =>
     print.spaced(["generatedKw", "asKw", "expr", "storageKw"]),
   constraint_auto_increment: (print) => print("autoIncrementKw"),
