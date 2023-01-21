@@ -12,6 +12,22 @@ describe("create table", () => {
     `);
   });
 
+  it(`formats CREATE TEMPORARY TABLE`, () => {
+    test(dedent`
+      CREATE TEMPORARY TABLE foo (
+        id INT
+      )
+    `);
+  });
+
+  it(`formats IF NOT EXISTS`, () => {
+    test(dedent`
+      CREATE TABLE IF NOT EXISTS foo (
+        id INT
+      )
+    `);
+  });
+
   it(`formats CREATE TABLE with column constraints`, () => {
     test(dedent`
       CREATE TABLE client (
