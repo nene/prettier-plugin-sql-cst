@@ -81,6 +81,17 @@ describe("create table", () => {
     `);
   });
 
+  it(`formats constraints with ON CONFLICT clause`, () => {
+    test(dedent`
+      CREATE TABLE client (
+        id INT,
+        name VARCHAR(100) NOT NULL ON CONFLICT FAIL,
+        uuid INT UNIQUE ON CONFLICT ROLLBACK,
+        CONSTRAINT prim_key PRIMARY KEY (id) ON CONFLICT ABORT
+      )
+    `);
+  });
+
   it(`formats SQLite table options`, () => {
     test(dedent`
       CREATE TABLE foo (

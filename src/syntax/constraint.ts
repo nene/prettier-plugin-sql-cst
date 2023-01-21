@@ -11,11 +11,13 @@ export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
     }
   },
   constraint_name: (print) => print.spaced(["constraintKw", "name"]),
-  constraint_not_null: (print) => group(print.spaced("notNullKw")),
+  constraint_not_null: (print) =>
+    group(print.spaced(["notNullKw", "onConflict"])),
   constraint_default: (print) => group(print.spaced(["defaultKw", "expr"])),
   constraint_primary_key: (print) =>
-    group(print.spaced(["primaryKeyKw", "orderKw", "columns"])),
-  constraint_unique: (print) => group(print.spaced(["uniqueKw", "columns"])),
+    group(print.spaced(["primaryKeyKw", "orderKw", "columns", "onConflict"])),
+  constraint_unique: (print) =>
+    group(print.spaced(["uniqueKw", "columns", "onConflict"])),
   constraint_check: (print) => group(print.spaced(["checkKw", "expr"])),
   constraint_collate: (print) =>
     group(print.spaced(["collateKw", "collation"])),
@@ -26,4 +28,5 @@ export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
   constraint_generated: (print) =>
     print.spaced(["generatedKw", "asKw", "expr", "storageKw"]),
   constraint_auto_increment: (print) => print("autoIncrementKw"),
+  on_conflict_clause: (print) => print.spaced(["onConflictKw", "resolutionKw"]),
 };
