@@ -2,7 +2,7 @@ import { Doc } from "prettier";
 import { AllConstraintNodes, Constraint } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
 import { PrintFn } from "../PrintFn";
-import { group, indent, line, hardline } from "../print_utils";
+import { group, indent, line, hardline, join } from "../print_utils";
 
 export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
   constraint: (print, node) => {
@@ -30,8 +30,17 @@ export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
     group(print.spaced(["collateKw", "collation"])),
   constraint_foreign_key: (print) =>
     group(print.spaced(["foreignKeyKw", "columns", "references"])),
-  references_specification: (print) =>
-    print.spaced(["referencesKw", "table", "columns", "options"]),
+  references_specification: (print, node) => {
+    const baseDoc = print.spaced(["referencesKw", "table", "columns"]);
+    if (node.options.length > 0) {
+      return group([
+        baseDoc,
+        indent([hardline, join(hardline, print("options"))]),
+      ]);
+    } else {
+      return baseDoc;
+    }
+  },
   referential_action: (print) => print.spaced(["onKw", "eventKw", "actionKw"]),
   referential_match: (print) => print.spaced(["matchKw", "typeKw"]),
   constraint_generated: (print) =>

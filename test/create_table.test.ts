@@ -66,9 +66,11 @@ describe("create table", () => {
     test(dedent`
       CREATE TABLE client (
         id INT,
-        FOREIGN KEY (org_id1) REFERENCES organization (id1) ON DELETE SET NULL,
-        FOREIGN KEY (org_id2) REFERENCES organization (id2) ON UPDATE CASCADE,
-        FOREIGN KEY (org_id3) REFERENCES organization (id3) MATCH FULL
+        FOREIGN KEY (org_id1) REFERENCES organization (id1)
+          ON DELETE SET NULL
+          ON UPDATE CASCADE,
+        FOREIGN KEY (org_id3) REFERENCES organization (id3)
+          MATCH FULL
       )
     `);
   });
