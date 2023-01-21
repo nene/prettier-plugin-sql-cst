@@ -1,16 +1,23 @@
-import { AllConstraintNodes } from "sql-parser-cst";
+import { Doc } from "prettier";
+import { AllConstraintNodes, Constraint } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
-import { group, indent, line } from "../print_utils";
+import { PrintFn } from "../PrintFn";
+import { group, indent, line, hardline } from "../print_utils";
 
 export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
   constraint: (print, node) => {
     if (node.name) {
-      return group([print("name"), indent([line, print("constraint")])]);
+      return group([
+        print("name"),
+        indent([line, printUnnamedConstraint(print, node)]),
+      ]);
     } else {
-      return print("constraint");
+      return printUnnamedConstraint(print, node);
     }
   },
   constraint_name: (print) => print.spaced(["constraintKw", "name"]),
+  constraint_deferrable: (print) =>
+    print.spaced(["deferrableKw", "initiallyKw"]),
   constraint_not_null: (print) =>
     group(print.spaced(["notNullKw", "onConflict"])),
   constraint_default: (print) => group(print.spaced(["defaultKw", "expr"])),
@@ -31,4 +38,18 @@ export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
     print.spaced(["generatedKw", "asKw", "expr", "storageKw"]),
   constraint_auto_increment: (print) => print("autoIncrementKw"),
   on_conflict_clause: (print) => print.spaced(["onConflictKw", "resolutionKw"]),
+};
+
+const printUnnamedConstraint = <T>(
+  print: PrintFn<Constraint<T>>,
+  node: Constraint<T>
+): Doc => {
+  if (node.deferrable) {
+    return group([
+      print("constraint"),
+      indent([hardline, print("deferrable")]),
+    ]);
+  } else {
+    return print("constraint");
+  }
 };

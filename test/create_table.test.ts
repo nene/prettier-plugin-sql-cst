@@ -73,6 +73,19 @@ describe("create table", () => {
     `);
   });
 
+  it(`formats deferrable FOREIGN KEY constraint`, () => {
+    test(dedent`
+      CREATE TABLE client (
+        id INT,
+        CONSTRAINT fkey
+          FOREIGN KEY (org_id1) REFERENCES organization (id1)
+            DEFERRABLE,
+        FOREIGN KEY (org_id2) REFERENCES organization (id2)
+          NOT DEFERRABLE INITIALLY DEFERRED
+      )
+    `);
+  });
+
   it(`formats CREATE TABLE with named column constraints`, () => {
     test(dedent`
       CREATE TABLE client (
