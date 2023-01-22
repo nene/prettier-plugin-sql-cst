@@ -84,4 +84,17 @@ describe("insert", () => {
       SELECT * FROM tbl
     `);
   });
+
+  it("formats upsert clauses", () => {
+    test(dedent`
+      INSERT INTO client
+      VALUES
+        (1, 2, 3)
+      ON CONFLICT DO NOTHING
+      ON CONFLICT (name, price) DO NOTHING
+      ON CONFLICT (id) WHERE id > 10 DO UPDATE
+        SET id = uuid + 1
+        WHERE id < 100
+    `);
+  });
 });
