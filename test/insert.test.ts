@@ -77,4 +77,11 @@ describe("insert", () => {
       DEFAULT VALUES
     `);
   });
+
+  it("formats insertion of query", () => {
+    test(dedent`
+      INSERT INTO employee
+      SELECT * FROM tbl
+    `);
+  });
 });
