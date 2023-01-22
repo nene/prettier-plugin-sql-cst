@@ -62,4 +62,12 @@ describe("insert", () => {
         (2, 'Alicia', 'Namis', 31, FALSE, 'allows_accepting')
     `);
   });
+
+  it(`formats OR ABORT modifier`, () => {
+    test(dedent`
+      INSERT OR ABORT INTO employee
+      VALUES
+        (1, 2, 3)
+    `);
+  });
 });

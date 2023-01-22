@@ -29,4 +29,11 @@ describe("update", () => {
         (resigned, status) = (FALSE, 'active')
     `);
   });
+
+  it(`formats OR ABORT modifier`, () => {
+    test(dedent`
+      UPDATE OR ABORT employee
+      SET salary = 1000
+    `);
+  });
 });
