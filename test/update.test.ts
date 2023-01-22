@@ -20,4 +20,13 @@ describe("update", () => {
       WHERE id = 11
     `);
   });
+
+  it(`formats UPDATE with parenthesized column groups`, () => {
+    test(dedent`
+      UPDATE employee
+      SET
+        (name, salary) = ('John Doe', 1000),
+        (resigned, status) = (FALSE, 'active')
+    `);
+  });
 });
