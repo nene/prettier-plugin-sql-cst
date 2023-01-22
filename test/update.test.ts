@@ -8,4 +8,14 @@ describe("update", () => {
       SET salary = 1000
     `);
   });
+
+  it(`formats UPDATE statement with multiple assignments`, () => {
+    test(dedent`
+      UPDATE employee
+      SET
+        name = 'John Doe',
+        salary = 1000,
+        resigned = FALSE
+    `);
+  });
 });
