@@ -125,4 +125,20 @@ describe("create table", () => {
       ) WITHOUT ROWID, STRICT
     `);
   });
+
+  it(`formats CREATE TABLE AS`, () => {
+    test(dedent`
+      CREATE TABLE foo AS
+        SELECT * FROM tbl WHERE x > 0
+    `);
+  });
+
+  it(`formats CREATE TABLE AS with long query`, () => {
+    test(dedent`
+      CREATE TABLE foo AS
+        SELECT column1, column2, column3
+        FROM external_client
+        WHERE external_client.payment > external_client.income
+    `);
+  });
 });

@@ -11,6 +11,7 @@ export const createTableMap: Partial<CstToDocMap<AllCreateTableNodes>> = {
       "ifNotExistsKw",
       "name",
       "columns",
+      "clauses",
     ]),
     node.options ? [" ", group(print("options"))] : [],
   ],
