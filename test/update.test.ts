@@ -6,6 +6,7 @@ describe("update", () => {
     test(dedent`
       UPDATE employee
       SET salary = 1000
+      WHERE id = 10
     `);
   });
 
@@ -16,6 +17,7 @@ describe("update", () => {
         name = 'John Doe',
         salary = 1000,
         resigned = FALSE
+      WHERE id = 11
     `);
   });
 });
