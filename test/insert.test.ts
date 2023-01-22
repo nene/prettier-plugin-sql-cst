@@ -70,4 +70,11 @@ describe("insert", () => {
         (1, 2, 3)
     `);
   });
+
+  it("formats insertion of DEFAULT VALUES", () => {
+    test(dedent`
+      INSERT INTO employee
+      DEFAULT VALUES
+    `);
+  });
 });

@@ -12,4 +12,5 @@ export const insertMap: Partial<CstToDocMap<AllInsertNodes>> = {
   values_clause: (print) =>
     group([print("valuesKw"), indent([hardline, print("values")])]),
   or_alternate_action: (print) => print.spaced(["orKw", "actionKw"]),
+  default_values: (print) => print.spaced("kw"),
 };
