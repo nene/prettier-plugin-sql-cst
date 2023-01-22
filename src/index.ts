@@ -37,5 +37,6 @@ export const printers: Record<string, Printer> = {
       return path.getValue().text;
     },
     canAttachComment: isNode,
+    isBlockComment: (node) => node.type === "block_comment",
   },
 };

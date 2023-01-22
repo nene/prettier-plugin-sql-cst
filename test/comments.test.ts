@@ -5,9 +5,7 @@ describe("comments", () => {
   it(`formats block comments`, () => {
     test(dedent`
       /* leading comment */
-      SELECT
-        1, /*com1*/
-        2 /*com2*/
+      SELECT 1, /*com1*/ 2 /*com2*/
     `);
   });
 
@@ -19,17 +17,19 @@ describe("comments", () => {
     `);
   });
 
-  it(`moves block comments before comma to line ends`, () => {
+  it(`moves line comments before comma to line ends`, () => {
     expect(
       pretty(`
         SELECT
-          1 /*com1*/,
-          2
+          1 -- com1
+          ,2 -- com2
+          ,3 -- com3
       `)
     ).toBe(dedent`
       SELECT
-        1, /*com1*/
-        2
+        1, -- com1
+        2, -- com2
+        3 -- com3
     `);
   });
 });
