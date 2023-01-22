@@ -1,17 +1,13 @@
 import dedent from "dedent-js";
-import { pretty } from "./test_utils";
+import { pretty, test } from "./test_utils";
 
 describe("select", () => {
   it(`formats SELECT *`, () => {
-    expect(pretty(`SELECT *`)).toBe(dedent`
-      SELECT *
-    `);
+    test(`SELECT *`);
   });
 
   it(`formats select in single line`, () => {
-    expect(pretty(`SELECT 1, 2, 3`, { printWidth: 80 })).toBe(dedent`
-      SELECT 1, 2, 3
-    `);
+    test(`SELECT 1, 2, 3`);
   });
 
   it(`formats select on multiple lines`, () => {
@@ -24,9 +20,7 @@ describe("select", () => {
   });
 
   it(`formats SELECT..FROM..WHERE on single line`, () => {
-    expect(pretty(`SELECT a, b, c FROM tbl WHERE x > y`)).toBe(dedent`
-      SELECT a, b, c FROM tbl WHERE x > y
-    `);
+    test(`SELECT a, b, c FROM tbl WHERE x > y`);
   });
 
   it(`forces multi-line format when the original select is already multi-line`, () => {
@@ -62,13 +56,7 @@ describe("select", () => {
   });
 
   it(`formats FROM with short join to single line`, () => {
-    expect(
-      pretty(`SELECT * FROM client NATURAL JOIN client_sale`, {
-        printWidth: 80,
-      })
-    ).toBe(dedent`
-      SELECT * FROM client NATURAL JOIN client_sale
-    `);
+    test(`SELECT * FROM client NATURAL JOIN client_sale`);
   });
 
   it(`formats FROM with a join to multiple lines`, () => {
@@ -211,12 +199,14 @@ describe("select", () => {
   });
 
   it(`formats aliases`, () => {
-    expect(pretty(`SELECT 1 AS a, 2 AS b, 3 c`, { printWidth: 20 }))
-      .toBe(dedent`
-      SELECT
-        1 AS a,
-        2 AS b,
-        3 c
-    `);
+    test(
+      dedent`
+        SELECT
+          1 AS a,
+          2 AS b,
+          3 c
+      `,
+      { printWidth: 20 }
+    );
   });
 });
