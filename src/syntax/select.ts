@@ -16,6 +16,16 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
     const lineType = containsNewline(node, opts) ? hardline : line;
     return group(join(lineType, print("clauses")));
   },
+  with_clause: (print) =>
+    group([
+      print.spaced(["withKw", "recursiveKw"]),
+      indent([line, print("tables")]),
+    ]),
+  common_table_expression: (print) => [
+    print(["table", "columns"]),
+    " ",
+    print.spaced(["asKw", "optionKw", "expr"]),
+  ],
   select_clause: (print) =>
     group([print("selectKw"), indent([line, print("columns")])]),
   from_clause: (print) =>
