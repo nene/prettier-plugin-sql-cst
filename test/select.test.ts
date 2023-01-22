@@ -31,27 +31,45 @@ describe("select", () => {
     `);
   });
 
-  it(`formats SELECT..FROM..WHERE on multiple lines`, () => {
-    expect(pretty(`SELECT a, b, c FROM tbl WHERE x > y`, { printWidth: 15 }))
-      .toBe(dedent`
-      SELECT a, b, c
+  it(`formats each SELECT clause to separate line`, () => {
+    test(dedent`
+      SELECT *
       FROM tbl
       WHERE x > y
+      GROUP BY foo, bar
+      HAVING foo > bar
+      ORDER BY foo, bar DESC
     `);
   });
 
-  it(`formats FROM & WHERE on multiple lines`, () => {
+  it(`formats each SELECT clause with indented body when it doesn't fit on a single line`, () => {
     expect(
       pretty(
-        `SELECT * FROM my_table_name WHERE my_table_name.x > my_table_name.y`,
-        { printWidth: 15 }
+        `SELECT very_long_col_name, another_long_col_name
+        FROM my_super_long_table_name
+        WHERE my_table_name.x > my_table_name.y
+        GROUP BY long_col, even_longer_col
+        HAVING foo > some_long_col_name
+        ORDER BY foo ASC, long_name DESC
+        `,
+        { printWidth: 25 }
       )
     ).toBe(dedent`
-      SELECT *
+      SELECT
+        very_long_col_name,
+        another_long_col_name
       FROM
-        my_table_name
+        my_super_long_table_name
       WHERE
         my_table_name.x > my_table_name.y
+      GROUP BY
+        long_col,
+        even_longer_col
+      HAVING
+        foo > some_long_col_name
+      ORDER BY
+        foo ASC,
+        long_name DESC
     `);
   });
 
@@ -123,78 +141,6 @@ describe("select", () => {
           ON client_sale.client_id = client.id AND client_sale.type = 287
         RIGHT OUTER JOIN client_attribute
           USING (client_attribute_id, fabulously_long_col_name)
-    `);
-  });
-
-  it(`formats ORDER BY`, () => {
-    expect(
-      pretty(`SELECT * FROM tbl ORDER BY foo, bar DESC`, { printWidth: 22 })
-    ).toBe(dedent`
-      SELECT *
-      FROM tbl
-      ORDER BY foo, bar DESC
-    `);
-  });
-
-  it(`formats ORDER BY to multiple lines`, () => {
-    expect(
-      pretty(`SELECT * FROM tbl ORDER BY foo ASC, bar DESC`, { printWidth: 22 })
-    ).toBe(dedent`
-      SELECT *
-      FROM tbl
-      ORDER BY
-        foo ASC,
-        bar DESC
-    `);
-  });
-
-  it(`formats GROUP BY`, () => {
-    expect(pretty(`SELECT * FROM tbl GROUP BY foo, bar`, { printWidth: 22 }))
-      .toBe(dedent`
-      SELECT *
-      FROM tbl
-      GROUP BY foo, bar
-    `);
-  });
-
-  it(`formats GROUP BY to multiple lines`, () => {
-    expect(
-      pretty(`SELECT * FROM tbl GROUP BY long_col, even_longer_col`, {
-        printWidth: 22,
-      })
-    ).toBe(dedent`
-      SELECT *
-      FROM tbl
-      GROUP BY
-        long_col,
-        even_longer_col
-    `);
-  });
-
-  it(`formats HAVING`, () => {
-    expect(
-      pretty(`SELECT * FROM tbl GROUP BY foo HAVING foo > bar`, {
-        printWidth: 22,
-      })
-    ).toBe(dedent`
-      SELECT *
-      FROM tbl
-      GROUP BY foo
-      HAVING foo > bar
-    `);
-  });
-
-  it(`formats HAVING to multiple lines`, () => {
-    expect(
-      pretty(`SELECT * FROM tbl GROUP BY foo HAVING foo > some_long_col_name`, {
-        printWidth: 22,
-      })
-    ).toBe(dedent`
-      SELECT *
-      FROM tbl
-      GROUP BY foo
-      HAVING
-        foo > some_long_col_name
     `);
   });
 
