@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { pretty } from "./test_utils";
+import { pretty, test } from "./test_utils";
 
 describe("comments", () => {
   it(`formats block comments`, () => {
@@ -19,8 +19,10 @@ describe("comments", () => {
   });
 
   it(`formats line comments`, () => {
-    expect(pretty(`SELECT 1 -- line comment`)).toBe(dedent`
-      SELECT 1 -- line comment
+    test(dedent`
+      -- first line comment
+      -- second line comment
+      SELECT 1 -- third line comment
     `);
   });
 });
