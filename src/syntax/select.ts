@@ -1,4 +1,6 @@
-import { AllSelectNodes } from "sql-parser-cst";
+import { Doc } from "prettier";
+import { PrintFn } from "PrintFn";
+import { AllSelectNodes, LimitClause } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
 import {
   join,
@@ -43,5 +45,20 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
     group([print("havingKw"), indent([line, print("expr")])]),
   returning_clause: (print) =>
     group([print("returningKw"), indent([line, print("columns")])]),
+  limit_clause: (print, node) =>
+    group([print("limitKw"), indent([line, printLimitValues(print, node)])]),
   sort_specification: (print) => print.spaced(["expr", "orderKw"]),
+};
+
+const printLimitValues = (
+  print: PrintFn<LimitClause>,
+  node: LimitClause
+): Doc => {
+  if (node.offsetKw) {
+    return print.spaced(["count", "offsetKw", "offset"]);
+  } else if (node.offset) {
+    return join([",", " "], print(["offset", "count"]));
+  } else {
+    return print("count");
+  }
 };

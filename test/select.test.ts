@@ -39,6 +39,7 @@ describe("select", () => {
       GROUP BY foo, bar
       HAVING foo > bar
       ORDER BY foo, bar DESC
+      LIMIT 100, 25
     `);
   });
 
@@ -51,6 +52,7 @@ describe("select", () => {
         GROUP BY long_col, even_longer_col
         HAVING foo > some_long_col_name
         ORDER BY foo ASC, long_name DESC
+        LIMIT 250 OFFSET 100000000
         `,
         { printWidth: 25 }
       )
@@ -70,7 +72,13 @@ describe("select", () => {
       ORDER BY
         foo ASC,
         long_name DESC
+      LIMIT
+        250 OFFSET 100000000
     `);
+  });
+
+  it(`formats LIMIT with just count`, () => {
+    test(`SELECT * FROM tbl LIMIT 10`);
   });
 
   it(`formats FROM with short join to single line`, () => {
