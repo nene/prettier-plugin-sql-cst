@@ -29,6 +29,14 @@ describe("select", () => {
     `);
   });
 
+  it(`forces multi-line format when the original select is already multi-line`, () => {
+    expect(pretty(`SELECT a, b, c \n FROM tbl WHERE x > y`)).toBe(dedent`
+      SELECT a, b, c
+      FROM tbl
+      WHERE x > y
+    `);
+  });
+
   it(`formats SELECT..FROM..WHERE on multiple lines`, () => {
     expect(pretty(`SELECT a, b, c FROM tbl WHERE x > y`, { printWidth: 15 }))
       .toBe(dedent`

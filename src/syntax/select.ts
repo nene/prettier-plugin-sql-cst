@@ -1,9 +1,19 @@
+import { util } from "prettier";
 import { AllSelectNodes } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
-import { join, line, indent, group } from "../print_utils";
+import { join, line, hardline, indent, group } from "../print_utils";
 
 export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
-  select_stmt: (print) => group(join(line, print("clauses"))),
+  select_stmt: (print, node, path, opts) => {
+    const lineType = util.hasNewlineInRange(
+      opts.originalText,
+      node.range?.[0] || 0,
+      node.range?.[1] || 0
+    )
+      ? hardline
+      : line;
+    return group(join(lineType, print("clauses")));
+  },
   select_clause: (print) =>
     group([print("selectKw"), indent([line, print("columns")])]),
   from_clause: (print) =>
