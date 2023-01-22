@@ -97,4 +97,13 @@ describe("insert", () => {
         WHERE id < 100
     `);
   });
+
+  it(`formats INSERT with RETURNING clause`, () => {
+    test(dedent`
+      INSERT INTO client
+      VALUES
+        (1, 2, 3)
+      RETURNING id, name, status
+    `);
+  });
 });

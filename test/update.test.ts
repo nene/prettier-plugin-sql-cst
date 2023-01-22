@@ -36,4 +36,12 @@ describe("update", () => {
       SET salary = 1000
     `);
   });
+
+  it(`formats UPDATE with RETURNING clause`, () => {
+    test(dedent`
+      UPDATE client
+      SET status = 2
+      RETURNING *
+    `);
+  });
 });
