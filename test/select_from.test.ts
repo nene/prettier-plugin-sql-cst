@@ -46,4 +46,13 @@ describe("select FROM", () => {
           USING (client_attribute_id, fabulously_long_col_name)
     `);
   });
+
+  it(`formats table aliases`, () => {
+    test(dedent`
+      SELECT *
+      FROM
+        client AS c
+        LEFT JOIN client_sale AS s ON s.client_id = c.id AND s.type = 287
+    `);
+  });
 });
