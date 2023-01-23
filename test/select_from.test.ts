@@ -94,4 +94,11 @@ describe("select FROM", () => {
       { printWidth: 30 }
     );
   });
+
+  it(`formats indexing modifiers`, () => {
+    test(dedent`
+      SELECT *
+      FROM client INDEXED BY my_idx NATURAL LEFT JOIN inventory NOT INDEXED
+    `);
+  });
 });

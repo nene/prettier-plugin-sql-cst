@@ -57,6 +57,8 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
   },
   join_on_specification: (print) => group(print.spaced(["onKw", "expr"])),
   join_using_specification: (print) => group(print.spaced(["usingKw", "expr"])),
+  indexed_table: (print) => print.spaced(["table", "indexedByKw", "index"]),
+  not_indexed_table: (print) => print.spaced(["table", "notIndexedKw"]),
   where_clause: (print) =>
     group([print("whereKw"), indent([line, print("expr")])]),
   order_by_clause: (print) =>
