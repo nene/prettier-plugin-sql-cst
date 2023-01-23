@@ -55,4 +55,43 @@ describe("select FROM", () => {
         LEFT JOIN client_sale AS s ON s.client_id = c.id AND s.type = 287
     `);
   });
+
+  it(`formats joins with subqueries`, () => {
+    test(dedent`
+      SELECT *
+      FROM
+        client
+        LEFT JOIN (SELECT * FROM inventory WHERE price > 0) AS inventory
+          ON inventory.client_id = client.id
+    `);
+  });
+
+  it(`formats joins with table functions`, () => {
+    test(dedent`
+      SELECT *
+      FROM
+        client
+        LEFT JOIN schm.gen_table(1, 2, 3) AS inventory
+          ON inventory.client_id = client.id
+    `);
+  });
+
+  it(`formats single-line comma-operator cross-joins`, () => {
+    test(dedent`
+      SELECT *
+      FROM client, inventory
+    `);
+  });
+
+  it(`formats multiline comma-operator cross-joins`, () => {
+    test(
+      dedent`
+        SELECT *
+        FROM
+          client_inventory,
+          inventory_item
+      `,
+      { printWidth: 30 }
+    );
+  });
 });
