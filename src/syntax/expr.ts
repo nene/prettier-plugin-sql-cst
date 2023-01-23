@@ -1,7 +1,7 @@
-import { Node } from "sql-parser-cst";
+import { Keyword, Node } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
 import { join, line, softline, hardline, indent, group } from "../print_utils";
-import { isCreateTableStmt, isValuesClause } from "../node_utils";
+import { isCreateTableStmt, isKeyword, isValuesClause } from "../node_utils";
 
 export const exprMap: Partial<CstToDocMap<Node>> = {
   list_expr: (print, node, path) => {
@@ -16,7 +16,12 @@ export const exprMap: Partial<CstToDocMap<Node>> = {
     const lineStyle = isCreateTableStmt(parent) ? hardline : softline;
     return group(["(", indent([lineStyle, print("expr")]), lineStyle, ")"]);
   },
-  binary_expr: (print) => print.spaced(["left", "operator", "right"]),
+  binary_expr: (print, node) => {
+    if (isKeyword(node.operator) && isBooleanOp(node.operator)) {
+      return join(line, [print("left"), print.spaced(["operator", "right"])]);
+    }
+    return print.spaced(["left", "operator", "right"]);
+  },
   prefix_op_expr: (print) => print.spaced(["operator", "expr"]),
   postfix_op_expr: (print) => print.spaced(["expr", "operator"]),
   between_expr: (print) =>
@@ -52,3 +57,5 @@ export const exprMap: Partial<CstToDocMap<Node>> = {
   null_literal: (print) => print("text"),
   identifier: (print) => print("text"),
 };
+
+const isBooleanOp = ({ name }: Keyword) => name === "AND" || name === "OR";

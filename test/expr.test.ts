@@ -58,6 +58,19 @@ describe("expr", () => {
     test(`SELECT fname ISNULL, xname NOTNULL, lname NOT NULL`);
   });
 
+  it(`formats a chain of AND/OR operators to multiple lines`, () => {
+    test(dedent`
+      SELECT *
+      FROM client
+      WHERE
+        client.country = 'Nicaragua'
+        AND client.expired IS NULL
+        AND client.yearly_income > 20000
+        AND client.monthly_income > 100
+        OR client.special = TRUE
+    `);
+  });
+
   describe("case", () => {
     it(`formats CASE expression always on multiple lines`, () => {
       test(dedent`
