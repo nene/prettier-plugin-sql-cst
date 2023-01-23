@@ -58,69 +58,73 @@ describe("expr", () => {
     test(`SELECT fname ISNULL, xname NOTNULL, lname NOT NULL`);
   });
 
-  it(`formats CASE expression always on multiple lines`, () => {
-    test(dedent`
-      SELECT
-        CASE x
-          WHEN 1 THEN 'A'
-          ELSE 'B'
-        END
-    `);
+  describe("case", () => {
+    it(`formats CASE expression always on multiple lines`, () => {
+      test(dedent`
+        SELECT
+          CASE x
+            WHEN 1 THEN 'A'
+            ELSE 'B'
+          END
+      `);
+    });
+
+    it(`formats CASE expression with base expression`, () => {
+      test(dedent`
+        SELECT
+          CASE status
+            WHEN 1 THEN 'good'
+            WHEN 2 THEN 'bad'
+            ELSE 'unknown'
+          END
+      `);
+    });
+
+    it(`formats CASE expression without base expression`, () => {
+      test(dedent`
+        SELECT
+          CASE
+            WHEN status = 1 THEN 'good'
+            WHEN status = 2 THEN 'bad'
+            ELSE 'unknown'
+          END
+      `);
+    });
   });
 
-  it(`formats CASE expression with base expression`, () => {
-    test(dedent`
-      SELECT
-        CASE status
-          WHEN 1 THEN 'good'
-          WHEN 2 THEN 'bad'
-          ELSE 'unknown'
-        END
-    `);
-  });
+  describe("function-like", () => {
+    it(`formats function call to single line`, () => {
+      expect(pretty(`SELECT sqrt(1, 2, 3)`, { printWidth: 15 })).toBe(dedent`
+        SELECT
+          sqrt(1, 2, 3)
+      `);
+    });
 
-  it(`formats CASE expression without base expression`, () => {
-    test(dedent`
-      SELECT
-        CASE
-          WHEN status = 1 THEN 'good'
-          WHEN status = 2 THEN 'bad'
-          ELSE 'unknown'
-        END
-    `);
-  });
+    it(`formats function call to multiple lines`, () => {
+      expect(pretty(`SELECT sqrt(1, 2, 3)`, { printWidth: 10 })).toBe(dedent`
+        SELECT
+          sqrt(
+            1,
+            2,
+            3
+          )
+      `);
+    });
 
-  it(`formats function call to single line`, () => {
-    expect(pretty(`SELECT sqrt(1, 2, 3)`, { printWidth: 15 })).toBe(dedent`
-      SELECT
-        sqrt(1, 2, 3)
-    `);
-  });
+    it(`formats count(*) func call`, () => {
+      test(`SELECT count(*)`);
+    });
 
-  it(`formats function call to multiple lines`, () => {
-    expect(pretty(`SELECT sqrt(1, 2, 3)`, { printWidth: 10 })).toBe(dedent`
-      SELECT
-        sqrt(
-          1,
-          2,
-          3
-        )
-    `);
-  });
+    it(`formats count(DISTINCT) func call`, () => {
+      test(`SELECT count(DISTINCT id)`);
+    });
 
-  it(`formats count(*) func call`, () => {
-    test(`SELECT count(*)`);
-  });
+    it(`formats CAST expression`, () => {
+      test(`SELECT CAST(127 AS INT)`);
+    });
 
-  it(`formats count(DISTINCT) func call`, () => {
-    test(`SELECT count(DISTINCT id)`);
-  });
-
-  it(`formats CAST expression`, () => {
-    test(`SELECT CAST(127 AS INT)`);
-  });
-
-  it(`formats RAISE expression`, () => {
-    test(`SELECT RAISE(IGNORE), RAISE(ABORT, 'Oh no!')`);
+    it(`formats RAISE expression`, () => {
+      test(`SELECT RAISE(IGNORE), RAISE(ABORT, 'Oh no!')`);
+    });
   });
 });
