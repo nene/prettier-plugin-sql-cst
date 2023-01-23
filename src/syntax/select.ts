@@ -1,6 +1,7 @@
 import { Doc } from "prettier";
 import { PrintFn } from "PrintFn";
 import { AllSelectNodes, LimitClause } from "sql-parser-cst";
+import { isDefined } from "../utils";
 import { CstToDocMap } from "../CstToDocMap";
 import {
   join,
@@ -51,6 +52,11 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
     group([print.spaced("orderByKw"), indent([line, print("specifications")])]),
   group_by_clause: (print) =>
     group([print.spaced("groupByKw"), indent([line, print("columns")])]),
+  partition_by_clause: (print) =>
+    group([
+      print.spaced("partitionByKw"),
+      indent([line, print("specifications")]),
+    ]),
   having_clause: (print) =>
     group([print("havingKw"), indent([line, print("expr")])]),
   returning_clause: (print) =>
@@ -58,6 +64,29 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
   limit_clause: (print, node) =>
     group([print("limitKw"), indent([line, printLimitValues(print, node)])]),
   sort_specification: (print) => print.spaced(["expr", "orderKw"]),
+  window_clause: (print, node) => {
+    const lineType = node.namedWindows.items.length > 1 ? hardline : line;
+    return group([
+      print("windowKw"),
+      indent([lineType, print("namedWindows")]),
+    ]);
+  },
+  named_window: (print) => print.spaced(["name", "asKw", "window"]),
+  window_definition: (print, node) => {
+    const itemCount = [
+      node.baseWindowName,
+      node.partitionBy,
+      node.orderBy,
+      node.frame,
+    ].filter(isDefined).length;
+    const lineType = itemCount > 1 ? hardline : line;
+    return group(
+      join(
+        lineType,
+        print(["baseWindowName", "partitionBy", "orderBy", "frame"])
+      )
+    );
+  },
 };
 
 const printLimitValues = (

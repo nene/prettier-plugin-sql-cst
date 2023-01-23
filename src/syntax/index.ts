@@ -7,6 +7,7 @@ import { createTableMap } from "./create_table";
 import { dataTypeMap } from "./data_type";
 import { deleteMap } from "./delete";
 import { exprMap } from "./expr";
+import { frameMap } from "./frame";
 import { insertMap } from "./insert";
 import { procClauseMap } from "./proc_clause";
 import { programMap } from "./program";
@@ -21,6 +22,7 @@ export const transformMap: Partial<CstToDocMap<Node>> = {
   ...dataTypeMap,
   ...deleteMap,
   ...exprMap,
+  ...frameMap,
   ...insertMap,
   ...procClauseMap,
   ...programMap,
