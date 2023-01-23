@@ -51,7 +51,7 @@ describe("select", () => {
         WHERE my_table_name.x > my_table_name.y
         GROUP BY long_col, even_longer_col
         HAVING foo > some_long_col_name
-        ORDER BY foo ASC, long_name DESC
+        ORDER BY foo ASC, bar DESC NULLS FIRST
         LIMIT 250 OFFSET 100000000
         `,
         { printWidth: 25 }
@@ -71,7 +71,7 @@ describe("select", () => {
         foo > some_long_col_name
       ORDER BY
         foo ASC,
-        long_name DESC
+        bar DESC NULLS FIRST
       LIMIT
         250 OFFSET 100000000
     `);

@@ -66,7 +66,8 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
     group([print("returningKw"), indent([line, print("columns")])]),
   limit_clause: (print, node) =>
     group([print("limitKw"), indent([line, printLimitValues(print, node)])]),
-  sort_specification: (print) => print.spaced(["expr", "orderKw"]),
+  sort_specification: (print) =>
+    print.spaced(["expr", "orderKw", "nullHandlingKw"]),
   window_clause: (print, node) => {
     const lineType = node.namedWindows.items.length > 1 ? hardline : line;
     return group([
