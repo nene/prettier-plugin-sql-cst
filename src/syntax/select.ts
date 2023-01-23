@@ -36,11 +36,11 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
     group([print("fromKw"), indent([line, print("expr")])]),
   join_expr: (print, node) => {
     if (node.operator === ",") {
-      return join([",", line], print(["left", "right"]));
+      return join([",", hardline], print(["left", "right"]));
     } else {
       return [
         print("left"),
-        line,
+        hardline,
         group(
           join(" ", [
             print.spaced("operator"),

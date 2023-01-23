@@ -2,8 +2,13 @@ import dedent from "dedent-js";
 import { test } from "./test_utils";
 
 describe("select FROM", () => {
-  it(`formats select with short join to single line`, () => {
-    test(`SELECT * FROM client NATURAL JOIN client_sale`);
+  it(`formats join always to multiple lines`, () => {
+    test(dedent`
+      SELECT *
+      FROM
+        client
+        NATURAL JOIN client_sale
+    `);
   });
 
   it(`formats FROM with a long join to multiple lines`, () => {
@@ -76,29 +81,21 @@ describe("select FROM", () => {
     `);
   });
 
-  it(`formats single-line comma-operator cross-joins`, () => {
+  it(`formats comma-operator cross-joins`, () => {
     test(dedent`
       SELECT *
-      FROM client, inventory
+      FROM
+        client,
+        inventory
     `);
-  });
-
-  it(`formats multiline comma-operator cross-joins`, () => {
-    test(
-      dedent`
-        SELECT *
-        FROM
-          client_inventory,
-          inventory_item
-      `,
-      { printWidth: 30 }
-    );
   });
 
   it(`formats indexing modifiers`, () => {
     test(dedent`
       SELECT *
-      FROM client INDEXED BY my_idx NATURAL LEFT JOIN inventory NOT INDEXED
+      FROM
+        client INDEXED BY my_idx
+        NATURAL LEFT JOIN inventory NOT INDEXED
     `);
   });
 });
