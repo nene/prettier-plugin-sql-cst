@@ -67,4 +67,21 @@ describe("select", () => {
       FROM tbl
     `);
   });
+
+  it("formats window function call with short FILTER clause on single line", () => {
+    test(dedent`
+      SELECT row_number() FILTER (WHERE x > 10) OVER (ORDER BY x)
+      FROM tbl
+    `);
+  });
+
+  it("formats window function call with longer FILTER and OVER clauses on multiple lines", () => {
+    test(dedent`
+      SELECT
+        group_concat(entity_name, '.')
+          FILTER (WHERE entity_type IS NOT NULL)
+          OVER (ORDER BY entity_name DESC)
+      FROM tbl
+    `);
+  });
 });

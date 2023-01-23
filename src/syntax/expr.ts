@@ -31,9 +31,17 @@ export const exprMap: Partial<CstToDocMap<Node>> = {
     print.spaced(["whenKw", "condition", "thenKw", "result"]),
   case_else: (print) => print.spaced(["elseKw", "result"]),
   member_expr: (print) => [print("object"), ".", print("property")],
-  func_call: (print) =>
-    group(join(" ", [print(["name", "args"]), ...print(["filter", "over"])])),
+  func_call: (print, node) => {
+    const fnCall = print(["name", "args"]);
+    const extras = print(["filter", "over"]);
+    if (extras.length > 1) {
+      return group([fnCall, indent([line, join(line, extras)])]);
+    } else {
+      return group(join(" ", [fnCall, ...extras]));
+    }
+  },
   func_args: (print) => print.spaced(["distinctKw", "args"]),
+  filter_arg: (print) => print.spaced(["filterKw", "where"]),
   over_arg: (print) => print.spaced(["overKw", "window"]),
   cast_expr: (print) => print(["castKw", "args"]),
   cast_arg: (print) => print.spaced(["expr", "asKw", "dataType"]),
