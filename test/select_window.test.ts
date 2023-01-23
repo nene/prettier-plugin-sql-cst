@@ -41,4 +41,30 @@ describe("select", () => {
         )
     `);
   });
+
+  it("formats basic window function calls, referencing named window", () => {
+    test(dedent`
+      SELECT row_number() OVER win1
+      FROM tbl
+      WINDOW win1 AS (ORDER BY x)
+    `);
+  });
+
+  it("formats short window function calls on single line", () => {
+    test(dedent`
+      SELECT row_number() OVER (ORDER BY x)
+      FROM tbl
+    `);
+  });
+
+  it("formats longer window function calls on multiple lines", () => {
+    test(dedent`
+      SELECT
+        row_number() OVER (
+          PARTITION BY y
+          ORDER BY x
+        )
+      FROM tbl
+    `);
+  });
 });
