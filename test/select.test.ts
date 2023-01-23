@@ -92,4 +92,17 @@ describe("select", () => {
       { printWidth: 20 }
     );
   });
+
+  it(`formats SELECT DISTINCT`, () => {
+    test(
+      dedent`
+        SELECT DISTINCT
+          col1,
+          col2,
+          col3
+        FROM tbl
+      `,
+      { printWidth: 20 }
+    );
+  });
 });
