@@ -45,6 +45,7 @@ export const exprMap: Partial<CstToDocMap<Node>> = {
   over_arg: (print) => print.spaced(["overKw", "window"]),
   cast_expr: (print) => print(["castKw", "args"]),
   cast_arg: (print) => print.spaced(["expr", "asKw", "dataType"]),
+  raise_expr: (print) => print(["raiseKw", "args"]),
   number_literal: (print) => print("text"),
   boolean_literal: (print) => print("text"),
   string_literal: (print) => print("text"),

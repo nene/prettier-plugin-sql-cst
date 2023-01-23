@@ -119,4 +119,8 @@ describe("expr", () => {
   it(`formats CAST expression`, () => {
     test(`SELECT CAST(127 AS INT)`);
   });
+
+  it(`formats RAISE expression`, () => {
+    test(`SELECT RAISE(IGNORE), RAISE(ABORT, 'Oh no!')`);
+  });
 });
