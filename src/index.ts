@@ -16,12 +16,13 @@ export const languages: SupportLanguage[] = [
 
 export const parsers: Record<string, Parser<Node>> = {
   "sql-parser-cst": {
-    parse: (text) =>
+    parse: (text, parsers, options) =>
       moveCommentsToRoot(
         parse(text, {
           dialect: "sqlite",
           includeRange: true,
           preserveComments: true,
+          filename: options.filepath,
         })
       ),
     astFormat: "sql-cst",
