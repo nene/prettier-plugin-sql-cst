@@ -17,6 +17,7 @@
     "dist/"
   ],
   "scripts": {
+    "prepublishOnly": "yarn test && yarn build",
     "clean": "rm -rf dist",
     "build": "yarn clean && tsc",
     "test": "jest"
