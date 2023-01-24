@@ -40,4 +40,14 @@ describe("sqlAliasAs option", () => {
         tbl t
     `);
   });
+
+  it(`sqlAliasAs: "never" preserves comments around AS keyword`, () => {
+    expect(
+      pretty(`SELECT 1 /*c1*/ AS /*c2*/ foo`, {
+        sqlAliasAs: "never",
+      })
+    ).toBe(dedent`
+      SELECT 1 /*c1*/ /*c2*/ foo
+    `);
+  });
 });
