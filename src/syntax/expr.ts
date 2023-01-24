@@ -1,9 +1,9 @@
-import { Keyword, Node } from "sql-parser-cst";
+import { AllExprNodes, Keyword, Node } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
 import { join, line, softline, hardline, indent, group } from "../print_utils";
 import { isCreateTableStmt, isKeyword, isValuesClause } from "../node_utils";
 
-export const exprMap: Partial<CstToDocMap<Node>> = {
+export const exprMap: Partial<CstToDocMap<AllExprNodes>> = {
   list_expr: (print, node, path) => {
     const parent = path.getParentNode() as Node;
     return join(
