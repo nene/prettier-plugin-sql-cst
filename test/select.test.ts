@@ -105,4 +105,14 @@ describe("select", () => {
       { printWidth: 20 }
     );
   });
+
+  it(`formats set operations of select statements`, () => {
+    test(dedent`
+      SELECT * FROM client WHERE status = 'inactive'
+      UNION
+      SELECT * FROM disabled_client
+      INTERSECT ALL
+      SELECT * FROM faulty_client
+    `);
+  });
 });
