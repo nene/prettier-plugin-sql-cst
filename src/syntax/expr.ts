@@ -36,7 +36,7 @@ export const exprMap: Partial<CstToDocMap<AllExprNodes>> = {
     print.spaced(["whenKw", "condition", "thenKw", "result"]),
   case_else: (print) => print.spaced(["elseKw", "result"]),
   member_expr: (print) => [print("object"), ".", print("property")],
-  func_call: (print, node) => {
+  func_call: (print) => {
     const fnCall = print(["name", "args"]);
     const extras = print(["filter", "over"]);
     if (extras.length > 1) {
