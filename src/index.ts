@@ -21,7 +21,7 @@ export const parsers: Record<string, Parser<Node>> = {
         parse(text, {
           dialect: "sqlite",
           includeRange: true,
-          preserveComments: true,
+          includeComments: true,
           filename: options.filepath,
         })
       ),

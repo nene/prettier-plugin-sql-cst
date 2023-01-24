@@ -52,9 +52,9 @@ export const exprMap: Partial<CstToDocMap<Node>> = {
   cast_arg: (print) => print.spaced(["expr", "asKw", "dataType"]),
   raise_expr: (print) => print(["raiseKw", "args"]),
   number_literal: (print) => print("text"),
-  boolean_literal: (print) => print("text"),
+  boolean_literal: (print) => print("valueKw"),
   string_literal: (print) => print("text"),
-  null_literal: (print) => print("text"),
+  null_literal: (print) => print("nullKw"),
   identifier: (print) => print("text"),
 };
 

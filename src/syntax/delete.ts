@@ -1,13 +1,8 @@
-import { DeleteStmt } from "sql-parser-cst";
+import { AllDeleteNodes } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
 import { hardline, join } from "../print_utils";
 
-export const deleteMap: CstToDocMap<DeleteStmt> = {
-  // TODO: change DeleteStmt node to use list of clauses
-  delete_stmt: (print) =>
-    join(hardline, [
-      ...print(["with"]),
-      print.spaced(["deleteKw", "fromKw", "table"]),
-      ...print(["where", "returning"]),
-    ]),
+export const deleteMap: CstToDocMap<AllDeleteNodes> = {
+  delete_stmt: (print) => join(hardline, print("clauses")),
+  delete_clause: (print) => print.spaced(["deleteKw", "fromKw", "table"]),
 };

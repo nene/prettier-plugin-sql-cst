@@ -27,7 +27,7 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
   common_table_expression: (print) => [
     print(["table", "columns"]),
     " ",
-    print.spaced(["asKw", "optionKw", "expr"]),
+    print.spaced(["asKw", "materializedKw", "expr"]),
   ],
   select_clause: (print) =>
     group([
