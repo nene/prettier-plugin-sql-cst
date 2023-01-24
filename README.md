@@ -55,12 +55,13 @@ for your editor of choice.
 
 The standard Prettier options apply. There's also one SQL-specific option:
 
-| API Option       |  Default   | Description                                       |
-| ---------------- | :--------: | ------------------------------------------------- |
-| `printWidth`     |    `80`    | [Same as in Prettier][prettier-print-width]       |
-| `tabWidth`       |    `2`     | [Same as in Prettier][prettier-tab-width]         |
-| `useTabs`        |  `false`   | [Same as in Prettier][prettier-use-tabs]          |
-| `sqlKeywordCase` | `preserve` | Converts SQL keywords to `upper` or `lower` case. |
+| API Option       |  Default   | Description                                            |
+| ---------------- | :--------: | ------------------------------------------------------ |
+| `printWidth`     |    `80`    | [Same as in Prettier][prettier-print-width]            |
+| `tabWidth`       |    `2`     | [Same as in Prettier][prettier-tab-width]              |
+| `useTabs`        |  `false`   | [Same as in Prettier][prettier-use-tabs]               |
+| `sqlKeywordCase` | `preserve` | Converts SQL keywords to `upper` or `lower` case.      |
+| `sqlAliasAs`     | `preserve` | Uses AS keyword in aliases either `always` or `never`. |
 
 ## Limitations and development status
 
