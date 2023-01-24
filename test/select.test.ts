@@ -109,9 +109,9 @@ describe("select", () => {
   it(`formats set operations of select statements`, () => {
     test(dedent`
       SELECT * FROM client WHERE status = 'inactive'
-      UNION
+      UNION ALL
       SELECT * FROM disabled_client
-      INTERSECT ALL
+      INTERSECT
       SELECT * FROM faulty_client
     `);
   });
