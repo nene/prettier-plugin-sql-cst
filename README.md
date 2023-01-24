@@ -1,4 +1,4 @@
-# Prettier plugin SQL-CST
+# Prettier plugin SQL-CST [![npm version](https://img.shields.io/npm/v/prettier-plugin-sql-cst)](https://www.npmjs.com/package/prettier-plugin-sql-cst)
 
 A [Prettier][] plugin for SQL that uses [sql-parser-cst][] and the
 actual [Prettier formatting algorithm][wadler-prettier].
