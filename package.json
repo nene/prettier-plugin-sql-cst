@@ -5,6 +5,14 @@
   "author": "Rene Saarsoo <nene@triin.net>",
   "license": "GPL-3.0-or-later",
   "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nene/prettier-plugin-sql-cst"
+  },
+  "homepage": "https://github.com/nene/prettier-plugin-sql-cst",
+  "bugs": {
+    "url": "https://github.com/nene/prettier-plugin-sql-cst/issues"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json --outDir dist",
     "test": "jest"
