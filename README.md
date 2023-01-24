@@ -53,7 +53,7 @@ for your editor of choice.
 
 ## Configuration
 
-The standard Prettier options apply. There's also one SQL-specific option:
+The standard Prettier options apply. There are also some SQL-specific options:
 
 | API Option       |  Default   | Description                                            |
 | ---------------- | :--------: | ------------------------------------------------------ |
