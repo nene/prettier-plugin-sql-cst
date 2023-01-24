@@ -19,4 +19,13 @@ describe("delete", () => {
         status AS employee_status
     `);
   });
+
+  it(`formats DELETE statement with ORDER BY and LIMIT`, () => {
+    test(dedent`
+      DELETE FROM employee
+      WHERE id = 10
+      ORDER BY name
+      LIMIT 100
+    `);
+  });
 });
