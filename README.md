@@ -14,9 +14,9 @@ SELECT a, b, c FROM tbl WHERE x > 10
 A longer query, will get each clause printed on a separate line:
 
 ```sql
-SELECT id, client.name, organization.name
-FROM client NATURAL JOIN organization
-WHERE client.id = 12
+SELECT id, client.name, client.priority
+FROM client
+WHERE client.id IN (12, 18, 121)
 ```
 
 An even longer one gets the contents of each clause indented:
