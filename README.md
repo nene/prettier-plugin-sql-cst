@@ -40,6 +40,31 @@ ORDER BY client.name
 LIMIT 100
 ```
 
+## Getting started
+
+Install it as any other Prettier plugin:
+
+```
+npm install --save-dev prettier prettier-plugin-sql-cst
+```
+
+Then use it on SQL files though Prettier command line tool or Prettier extension
+for your editor of choice.
+
+## Configuration
+
+The standard Prettier options apply. There's also one SQL-specific option:
+
+| API Option       |  Default   | Description                                       |
+| ---------------- | :--------: | ------------------------------------------------- |
+| `printWidth`     |    `80`    | [Same as in Prettier][prettier-print-width]       |
+| `tabWidth`       |    `2`     | [Same as in Prettier][prettier-tab-width]         |
+| `useTabs`        |  `false`   | [Same as in Prettier][prettier-use-tabs]          |
+| `sqlKeywordCase` | `preserve` | Converts SQL keywords to `upper` or `lower` case. |
+
 [prettier]: https://prettier.io/
+[prettier-print-width]: https://prettier.io/docs/en/options.html#print-width
+[prettier-tab-width]: https://prettier.io/docs/en/options.html#tab-width
+[prettier-use-tabs]: https://prettier.io/docs/en/options.html#tabs
 [sql-parser-cst]: https://github.com/nene/sql-parser-cst
 [wadler-prettier]: http://homepages.inf.ed.ac.uk/wadler/papers/prettier/prettier.pdf
