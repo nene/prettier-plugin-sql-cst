@@ -8,7 +8,7 @@ export const options: SupportOptions = {
   sqlKeywordCase: {
     type: "choice",
     category: "SQL",
-    since: "0.0.0",
+    since: "0.1.0",
     default: "preserve",
     description: "Enforces upper/lower case for SQL keywords",
     choices: [
