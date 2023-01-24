@@ -62,6 +62,33 @@ The standard Prettier options apply. There's also one SQL-specific option:
 | `useTabs`        |  `false`   | [Same as in Prettier][prettier-use-tabs]          |
 | `sqlKeywordCase` | `preserve` | Converts SQL keywords to `upper` or `lower` case. |
 
+## Limitations and development status
+
+Currently this plugin only supports subset of **SQLite** syntax.
+Formatting of the following SQL statements is fully implemented:
+
+- SELECT
+- UPDATE
+- INSERT
+- DELETE
+- CREATE TABLE
+
+Unlike Prettier for JavaScript, this plugin currently preserves all the syntax elements.
+For example it does not add/remove paratheses or modify the case of keywords (by default).
+It only manipulates whitespace.
+
+This will likely change in the future, with the goal of being more opinionated.
+Some possibilities:
+
+- capitalize all keywords
+- ensure all alias definitions use the `AS` keyword.
+- ensure consistent use of quotes (e.g. always quote keywords)
+- eliminate redundant parenthesis.
+
+The exact formatting style is also very much still in flux.
+The overall goal is to have no options to configure different styles,
+but rather to develop one opinionated style of formatting SQL.
+
 [prettier]: https://prettier.io/
 [prettier-print-width]: https://prettier.io/docs/en/options.html#print-width
 [prettier-tab-width]: https://prettier.io/docs/en/options.html#tab-width
