@@ -17,7 +17,7 @@
     "dist/"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json --outDir dist",
+    "build": "tsc",
     "test": "jest"
   },
   "keywords": [
