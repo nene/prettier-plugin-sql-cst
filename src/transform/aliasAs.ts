@@ -1,10 +1,9 @@
-import { ParserOptions } from "prettier";
-import { cstVisitor, Program, Node } from "sql-parser-cst";
-import { SqlPluginOptions } from "../options";
+import { cstVisitor, Program } from "sql-parser-cst";
+import { AllPrettierOptions } from "../options";
 
 export const processAliasAs = (
   cst: Program,
-  options: ParserOptions<Node> & SqlPluginOptions
+  options: AllPrettierOptions
 ): Program => {
   const mutateAliases = cstVisitor({
     alias: (node) => {

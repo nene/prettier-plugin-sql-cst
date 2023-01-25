@@ -1,15 +1,15 @@
 import { Node } from "sql-parser-cst";
-import { AstPath, Doc, ParserOptions } from "prettier";
+import { AstPath, Doc } from "prettier";
 import { OldPrintFn, PrintableKey, PrintFn } from "./PrintFn";
 import { arrayWrap, isArray, isDefined, isEmptyArray, isString } from "./utils";
 import { transformMap } from "./syntax";
 import { NodeByType, ToDocFn } from "./CstToDocMap";
-import { SqlPluginOptions } from "./options";
+import { AllPrettierOptions } from "./options";
 import { join } from "./print_utils";
 
 export function printSql(
   path: AstPath<Node>,
-  options: ParserOptions<Node> & SqlPluginOptions,
+  options: AllPrettierOptions,
   oldPrint: OldPrintFn
 ): Doc {
   return printNode(path, options, createPrintFn(path, oldPrint));
@@ -59,7 +59,7 @@ function createPrintFn(
 
 function printNode(
   path: AstPath<Node>,
-  options: ParserOptions<Node> & SqlPluginOptions,
+  options: AllPrettierOptions,
   print: PrintFn<Node>
 ): Doc {
   const node = path.getValue();

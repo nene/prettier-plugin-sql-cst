@@ -1,8 +1,8 @@
 import { Node, parse } from "sql-parser-cst";
-import { Parser, ParserOptions, Printer, SupportLanguage } from "prettier";
+import { Parser, Printer, SupportLanguage } from "prettier";
 import { printSql } from "./printSql";
 import { isNode } from "./utils";
-import { SqlPluginOptions } from "./options";
+import { AllPrettierOptions } from "./options";
 import { transformCst } from "./transform/transformCst";
 
 export { options } from "./options";
@@ -25,7 +25,7 @@ export const parsers: Record<string, Parser<Node>> = {
           includeComments: true,
           filename: options.filepath,
         }),
-        options as ParserOptions<Node> & SqlPluginOptions
+        options as AllPrettierOptions
       ),
     astFormat: "sql-cst",
     locStart: (node) => node.range?.[0] as number,

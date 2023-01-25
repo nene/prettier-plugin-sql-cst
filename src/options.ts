@@ -1,9 +1,13 @@
-import { SupportOptions } from "prettier";
+import { ParserOptions, SupportOptions } from "prettier";
+import { Node } from "sql-parser-cst";
 
 export interface SqlPluginOptions {
   sqlKeywordCase: "preserve" | "upper" | "lower";
   sqlAliasAs: "preserve" | "always" | "never";
 }
+
+// Prettier builtin options + options of this plugin
+export type AllPrettierOptions<T = Node> = ParserOptions<T> & SqlPluginOptions;
 
 export const options: SupportOptions = {
   sqlKeywordCase: {

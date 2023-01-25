@@ -1,10 +1,9 @@
-import { Program, Node } from "sql-parser-cst";
-import { ParserOptions } from "prettier";
+import { Program } from "sql-parser-cst";
 import { moveCommentsToRoot } from "./comments";
 import { processAliasAs } from "./aliasAs";
-import { SqlPluginOptions } from "../options";
+import { AllPrettierOptions } from "../options";
 
 export const transformCst = (
   cst: Program,
-  options: ParserOptions<Node> & SqlPluginOptions
+  options: AllPrettierOptions
 ): Program => moveCommentsToRoot(processAliasAs(cst, options));

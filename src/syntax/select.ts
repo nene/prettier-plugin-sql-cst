@@ -1,6 +1,6 @@
 import { Doc } from "prettier";
-import { PrintFn } from "PrintFn";
 import { AllSelectNodes, LimitClause } from "sql-parser-cst";
+import { PrintFn } from "../PrintFn";
 import { isDefined } from "../utils";
 import { CstToDocMap } from "../CstToDocMap";
 import {
