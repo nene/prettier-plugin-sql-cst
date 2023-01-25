@@ -1,6 +1,6 @@
-import { SqlPluginOptions } from "options";
 import { ParserOptions } from "prettier";
 import { cstVisitor, Program, Node } from "sql-parser-cst";
+import { SqlPluginOptions } from "../options";
 
 export const processAliasAs = (
   cst: Program,

@@ -1,5 +1,5 @@
 import { Program, Whitespace } from "sql-parser-cst";
-import { visitAllNodes } from "./visitAllNodes";
+import { visitAllNodes } from "../visitAllNodes";
 
 /**
  * Gathers comments from .leading and .trailing fields of all nodes
