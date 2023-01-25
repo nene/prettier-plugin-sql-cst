@@ -6,6 +6,7 @@ import { constraintMap } from "./constraint";
 import { createTableMap } from "./create_table";
 import { dataTypeMap } from "./data_type";
 import { deleteMap } from "./delete";
+import { dropTableMap } from "./drop_table";
 import { exprMap } from "./expr";
 import { frameMap } from "./frame";
 import { insertMap } from "./insert";
@@ -21,6 +22,7 @@ export const transformMap: Partial<CstToDocMap<Node>> = {
   ...createTableMap,
   ...dataTypeMap,
   ...deleteMap,
+  ...dropTableMap,
   ...exprMap,
   ...frameMap,
   ...insertMap,
