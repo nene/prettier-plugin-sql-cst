@@ -15,6 +15,7 @@ import { procClauseMap } from "./proc_clause";
 import { programMap } from "./program";
 import { selectMap } from "./select";
 import { updateMap } from "./update";
+import { viewMap } from "./view";
 
 export const transformMap: Partial<CstToDocMap<Node>> = {
   ...aliasMap,
@@ -32,4 +33,5 @@ export const transformMap: Partial<CstToDocMap<Node>> = {
   ...programMap,
   ...selectMap,
   ...updateMap,
+  ...viewMap,
 };
