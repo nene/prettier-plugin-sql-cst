@@ -52,4 +52,14 @@ describe("comments", () => {
         3 -- com3
     `);
   });
+
+  it(`formats comments between statements`, () => {
+    test(dedent`
+      -- comment for 1
+      SELECT 1;
+
+      -- comment for 2
+      SELECT 2;
+    `);
+  });
 });

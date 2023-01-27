@@ -14,7 +14,7 @@ const printLineWith =
     if (i === 0) {
       return print(childPath);
     } else if (i < all.length - 1 || node.type !== "empty") {
-      return [";", hardline, print(childPath)];
+      return [";", hardline, hardline, print(childPath)];
     } else {
       return [";", print(childPath)];
     }

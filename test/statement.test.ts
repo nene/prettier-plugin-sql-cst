@@ -11,7 +11,9 @@ describe("statement", () => {
   it(`formats multiple statements`, () => {
     expect(pretty(`SELECT 1; SELECT 2; SELECT 3;`)).toBe(dedent`
       SELECT 1;
+
       SELECT 2;
+
       SELECT 3;
     `);
   });
