@@ -140,4 +140,12 @@ describe("expr", () => {
       test(`SELECT RAISE(IGNORE), RAISE(ABORT, 'Oh no!')`);
     });
   });
+
+  describe("BigQuery", () => {
+    it(`formats BigQuery quoted table names`, () => {
+      test("SELECT * FROM `my-project.mydataset.mytable`", {
+        dialect: "bigquery",
+      });
+    });
+  });
 });
