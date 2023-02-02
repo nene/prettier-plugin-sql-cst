@@ -2,7 +2,7 @@ import { Node } from "sql-parser-cst";
 import { AstPath, Doc } from "prettier";
 import { OldPrintFn, PrintableKey, PrintFn } from "./PrintFn";
 import { arrayWrap, isArray, isDefined, isEmptyArray, isString } from "./utils";
-import { transformMap } from "./syntax";
+import { transformMap } from "./syntax/transformMap";
 import { NodeByType, ToDocFn } from "./CstToDocMap";
 import { AllPrettierOptions } from "./options";
 import { join } from "./print_utils";
