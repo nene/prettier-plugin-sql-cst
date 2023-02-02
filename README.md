@@ -65,7 +65,8 @@ The standard Prettier options apply. There are also some SQL-specific options:
 
 ## Limitations and development status
 
-Currently this plugin only supports subset of **SQLite** syntax.
+Currently this plugin supports most of **SQLite** syntax.
+(It also supports some **BigQuery**, but only the syntax that's subset of SQLite.)
 Formatting of the following SQL statements is fully implemented:
 
 - SELECT
