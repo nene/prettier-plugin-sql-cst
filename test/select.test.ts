@@ -6,6 +6,16 @@ describe("select", () => {
     test(`SELECT *`);
   });
 
+  it(`formats SELECT * EXCEPT`, () => {
+    test(`SELECT * EXCEPT (order_id) FROM orders`, { dialect: "bigquery" });
+  });
+
+  it(`formats SELECT * REPLACE`, () => {
+    test(`SELECT * REPLACE (order_id AS id) FROM orders`, {
+      dialect: "bigquery",
+    });
+  });
+
   it(`formats select in single line`, () => {
     test(`SELECT 1, 2, 3`);
   });

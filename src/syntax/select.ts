@@ -34,6 +34,8 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
       print.spaced(["selectKw", "distinctKw"]),
       indent([line, print("columns")]),
     ]),
+  except_columns: (print) => print.spaced(["expr", "exceptKw", "columns"]),
+  replace_columns: (print) => print.spaced(["expr", "replaceKw", "columns"]),
   from_clause: (print) =>
     group([print("fromKw"), indent([line, print("expr")])]),
   join_expr: (print, node) => {

@@ -1,4 +1,5 @@
 import { format } from "prettier";
+import { DialectName } from "sql-parser-cst";
 import * as plugin from "../src/index";
 import { SqlPluginOptions } from "../src/options";
 
@@ -6,14 +7,18 @@ interface PrettyOptions extends Partial<SqlPluginOptions> {
   printWidth?: number;
 }
 
-export const pretty = (sql: string, opts: PrettyOptions = {}): string => {
+interface TestOptions extends PrettyOptions {
+  dialect?: DialectName;
+}
+
+export const pretty = (sql: string, opts: TestOptions = {}): string => {
   return format(sql, {
-    parser: "sql-parser-cst",
+    parser: "sql-parser-cst-" + (opts.dialect ?? "sqlite"),
     plugins: [plugin],
     ...opts,
   });
 };
 
-export const test = (sql: string, opts: PrettyOptions = {}): void => {
+export const test = (sql: string, opts: TestOptions = {}): void => {
   expect(pretty(sql, opts)).toBe(sql);
 };
