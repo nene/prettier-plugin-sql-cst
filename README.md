@@ -51,6 +51,31 @@ npm install --save-dev prettier prettier-plugin-sql-cst
 Then use it on SQL files though Prettier command line tool or Prettier extension
 for your editor of choice.
 
+## Choosing an SQL dialect
+
+By default the plugin will determine SQL dialect based on file extension:
+
+- `.sql` or `.sqlite` - SQLite
+- `.bigquery` - BigQuery
+
+You can override this behavior with a prettier configuration:
+
+```json
+{
+  "overrides": [
+    {
+      "files": ["*.sql"],
+      "options": { "parser": "sql-parser-cst-bigquery" }
+    }
+  ]
+}
+```
+
+The plugin provides the following parsers:
+
+- `sql-parser-cst-sqlite`
+- `sql-parser-cst-bigquery`
+
 ## Configuration
 
 The standard Prettier options [printWidth][], [tabWidth][], [useTabs][] apply.
