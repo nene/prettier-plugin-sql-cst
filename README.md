@@ -53,13 +53,11 @@ for your editor of choice.
 
 ## Configuration
 
-The standard Prettier options apply. There are also some SQL-specific options:
+The standard Prettier options [printWidth][], [tabWidth][], [useTabs][] apply.
+There are also some SQL-specific options:
 
 | API Option       |  Default   | Description                                            |
 | ---------------- | :--------: | ------------------------------------------------------ |
-| `printWidth`     |    `80`    | [Same as in Prettier][prettier-print-width]            |
-| `tabWidth`       |    `2`     | [Same as in Prettier][prettier-tab-width]              |
-| `useTabs`        |  `false`   | [Same as in Prettier][prettier-use-tabs]               |
 | `sqlKeywordCase` | `preserve` | Converts SQL keywords to `upper` or `lower` case.      |
 | `sqlAliasAs`     | `preserve` | Uses AS keyword in aliases either `always` or `never`. |
 
@@ -94,8 +92,8 @@ The overall goal is to have no options to configure different styles,
 but rather to develop one opinionated style of formatting SQL.
 
 [prettier]: https://prettier.io/
-[prettier-print-width]: https://prettier.io/docs/en/options.html#print-width
-[prettier-tab-width]: https://prettier.io/docs/en/options.html#tab-width
-[prettier-use-tabs]: https://prettier.io/docs/en/options.html#tabs
+[printWidth]: https://prettier.io/docs/en/options.html#print-width
+[tabWidth]: https://prettier.io/docs/en/options.html#tab-width
+[useTabs]: https://prettier.io/docs/en/options.html#tabs
 [sql-parser-cst]: https://github.com/nene/sql-parser-cst
 [wadler-prettier]: http://homepages.inf.ed.ac.uk/wadler/papers/prettier/prettier.pdf
