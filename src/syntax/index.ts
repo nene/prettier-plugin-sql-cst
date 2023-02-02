@@ -10,6 +10,7 @@ import { deleteMap } from "./delete";
 import { dropTableMap } from "./drop_table";
 import { exprMap } from "./expr";
 import { frameMap } from "./frame";
+import { indexMap } from "./idx";
 import { insertMap } from "./insert";
 import { procClauseMap } from "./proc_clause";
 import { programMap } from "./program";
@@ -28,6 +29,7 @@ export const transformMap: Partial<CstToDocMap<Node>> = {
   ...dropTableMap,
   ...exprMap,
   ...frameMap,
+  ...indexMap,
   ...insertMap,
   ...procClauseMap,
   ...programMap,

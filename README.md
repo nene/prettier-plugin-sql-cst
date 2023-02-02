@@ -74,6 +74,7 @@ Formatting of the following SQL statements is fully implemented:
 - DELETE
 - CREATE / DROP / ALTER TABLE
 - CREATE / DROP VIEW
+- CREATE / DROP INDEX
 
 Unlike Prettier for JavaScript, this plugin currently preserves all the syntax elements.
 For example it does not add/remove paratheses or modify the case of keywords (by default).
