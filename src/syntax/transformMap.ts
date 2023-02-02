@@ -10,7 +10,7 @@ import { deleteMap } from "./delete";
 import { dropTableMap } from "./drop_table";
 import { exprMap } from "./expr";
 import { frameMap } from "./frame";
-import { indexMap } from "./idx";
+import { indexMap } from "./index";
 import { insertMap } from "./insert";
 import { procClauseMap } from "./proc_clause";
 import { programMap } from "./program";
