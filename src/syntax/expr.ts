@@ -2,6 +2,7 @@ import { AllExprNodes, Keyword, Node } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
 import { join, line, softline, hardline, indent, group } from "../print_utils";
 import { isCreateTableStmt, isKeyword, isValuesClause } from "../node_utils";
+import { isString } from "../utils";
 
 export const exprMap: Partial<CstToDocMap<AllExprNodes>> = {
   list_expr: (print, node, path) => {
@@ -22,7 +23,8 @@ export const exprMap: Partial<CstToDocMap<AllExprNodes>> = {
     }
     return print.spaced(["left", "operator", "right"]);
   },
-  prefix_op_expr: (print) => print.spaced(["operator", "expr"]),
+  prefix_op_expr: (print, node) =>
+    (isString(node.operator) ? print : print.spaced)(["operator", "expr"]),
   postfix_op_expr: (print) => print.spaced(["expr", "operator"]),
   between_expr: (print) =>
     print.spaced(["left", "betweenKw", "begin", "andKw", "end"]),

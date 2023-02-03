@@ -58,6 +58,14 @@ describe("expr", () => {
     test(`SELECT fname ISNULL, xname NOTNULL, lname NOT NULL`);
   });
 
+  it(`formats NOT expressions`, () => {
+    test(`SELECT NOT x > 10`);
+  });
+
+  it(`formats negation`, () => {
+    test(`SELECT -x`);
+  });
+
   it(`formats a chain of AND/OR operators to multiple lines`, () => {
     test(dedent`
       SELECT *
