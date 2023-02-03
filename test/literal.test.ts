@@ -20,4 +20,13 @@ describe("literal", () => {
       { dialect: "bigquery" }
     );
   });
+
+  it(`formats JSON literals`, () => {
+    test(
+      dedent`
+        SELECT JSON '{"foo": true}'
+      `,
+      { dialect: "bigquery" }
+    );
+  });
 });
