@@ -126,5 +126,17 @@ describe("select", () => {
         dialect: "bigquery",
       });
     });
+
+    it(`formats SELECT AS STRUCT`, () => {
+      test(`SELECT AS STRUCT 1 a, 2 b`, {
+        dialect: "bigquery",
+      });
+    });
+
+    it(`formats SELECT AS VALUE`, () => {
+      test(`SELECT AS VALUE foo()`, {
+        dialect: "bigquery",
+      });
+    });
   });
 });
