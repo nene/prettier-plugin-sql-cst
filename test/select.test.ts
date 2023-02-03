@@ -139,6 +139,29 @@ describe("select", () => {
       });
     });
 
+    it(`formats GROUP BY ROLLUP()`, () => {
+      test(`SELECT * FROM tbl GROUP BY ROLLUP(a, b, c)`, {
+        dialect: "bigquery",
+      });
+    });
+
+    it(`formats GROUP BY ROLLUP() to multiple lines`, () => {
+      test(
+        dedent`
+          SELECT *
+          FROM my_table_name
+          GROUP BY
+            ROLLUP(
+              my_table_name.column1,
+              my_table_name.column2,
+              my_table_name.column3,
+              my_table_name.column4
+            )
+        `,
+        { dialect: "bigquery" }
+      );
+    });
+
     it(`formats QUALIFY clause`, () => {
       test(`SELECT * FROM tbl QUALIFY x > 10`, {
         dialect: "bigquery",
