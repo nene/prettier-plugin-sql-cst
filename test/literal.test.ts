@@ -57,4 +57,19 @@ describe("literal", () => {
       );
     });
   });
+
+  describe("struct literals", () => {
+    it(`formats struct literals`, () => {
+      test(
+        dedent`
+          SELECT
+            -- (1, 2, 3),
+            -- (1, 'abc'),
+            STRUCT(1 AS foo, 'abc' AS bar),
+            STRUCT<INT64, FLOAT64>(128, 1.5)
+        `,
+        { dialect: "bigquery" }
+      );
+    });
+  });
 });
