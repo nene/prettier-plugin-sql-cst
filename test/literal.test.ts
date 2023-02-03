@@ -29,4 +29,17 @@ describe("literal", () => {
       { dialect: "bigquery" }
     );
   });
+
+  it(`formats INTERVAL literals`, () => {
+    test(
+      dedent`
+        SELECT
+          INTERVAL 5 DAY,
+          INTERVAL 90 MINUTE,
+          INTERVAL '10:20:30.52' HOUR TO SECOND,
+          INTERVAL '1 5:30' DAY TO MINUTE
+      `,
+      { dialect: "bigquery" }
+    );
+  });
 });
