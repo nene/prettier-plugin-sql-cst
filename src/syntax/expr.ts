@@ -57,6 +57,8 @@ export const exprMap: Partial<CstToDocMap<AllExprNodes>> = {
   interval_expr: (print) => print.spaced(["intervalKw", "expr", "unit"]),
   interval_unit_range: (print) =>
     print.spaced(["fromUnitKw", "toKw", "toUnitKw"]),
+  array_expr: (print) => ["[", print("expr"), "]"],
+  typed_expr: (print) => print(["dataType", "expr"]),
   number_literal: (print) => print("text"),
   boolean_literal: (print) => print("valueKw"),
   string_literal: (print) => print("text"),

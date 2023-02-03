@@ -42,4 +42,19 @@ describe("literal", () => {
       { dialect: "bigquery" }
     );
   });
+
+  describe("array literals", () => {
+    it(`formats array literals`, () => {
+      test(
+        dedent`
+          SELECT
+            [1, 2, 3],
+            ['x', 'y', 'xyz'],
+            ARRAY[1, 2, 3],
+            ARRAY<STRING>['x', 'y', 'xyz']
+        `,
+        { dialect: "bigquery" }
+      );
+    });
+  });
 });
