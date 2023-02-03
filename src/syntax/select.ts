@@ -76,6 +76,8 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
     ]),
   having_clause: (print) =>
     group([print("havingKw"), indent([line, print("expr")])]),
+  qualify_clause: (print) =>
+    group([print("qualifyKw"), indent([line, print("expr")])]),
   returning_clause: (print) =>
     group([print("returningKw"), indent([line, print("columns")])]),
   limit_clause: (print, node) =>

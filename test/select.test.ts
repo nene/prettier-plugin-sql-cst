@@ -138,5 +138,23 @@ describe("select", () => {
         dialect: "bigquery",
       });
     });
+
+    it(`formats QUALIFY clause`, () => {
+      test(`SELECT * FROM tbl QUALIFY x > 10`, {
+        dialect: "bigquery",
+      });
+    });
+
+    it(`formats long QUALIFY clause to multiple lines`, () => {
+      test(
+        dedent`
+          SELECT *
+          FROM my_table_name
+          QUALIFY
+            my_table_name.some_long_column_name > my_table_name.some_long_column_name2
+        `,
+        { dialect: "bigquery" }
+      );
+    });
   });
 });
