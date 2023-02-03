@@ -56,6 +56,12 @@ export const exprMap: Partial<CstToDocMap<AllExprNodes>> = {
   boolean_literal: (print) => print("valueKw"),
   string_literal: (print) => print("text"),
   null_literal: (print) => print("nullKw"),
+  numeric_literal: (print) => print.spaced(["numericKw", "string"]),
+  bignumeric_literal: (print) => print.spaced(["bignumericKw", "string"]),
+  date_literal: (print) => print.spaced(["dateKw", "string"]),
+  time_literal: (print) => print.spaced(["timeKw", "string"]),
+  datetime_literal: (print) => print.spaced(["datetimeKw", "string"]),
+  timestamp_literal: (print) => print.spaced(["timestampKw", "string"]),
   identifier: (print) => print("text"),
 };
 
