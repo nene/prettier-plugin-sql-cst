@@ -21,12 +21,15 @@ export const embedJson: Printer<Node>["embed"] = (
       ...options,
       parser: "json",
     });
+    const inlineQuote = containsSingleQuote(node.value) ? "'''" : "'";
     return [
-      ifBreak("'''", "'"),
+      ifBreak("'''", inlineQuote),
       indent([softline, stripTrailingHardline(json)]),
       softline,
-      ifBreak("'''", "'"),
+      ifBreak("'''", inlineQuote),
     ];
   }
   return null;
 };
+
+const containsSingleQuote = (json: string) => /'/.test(json);

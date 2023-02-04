@@ -86,4 +86,16 @@ describe("json", () => {
       `
     );
   });
+
+  it(`always uses triple-quotes when JSON contains single quote character`, () => {
+    expect(
+      pretty(String.raw`SELECT JSON '{"name":"It\'s Mr John"}'`, {
+        dialect: "bigquery",
+      })
+    ).toBe(
+      dedent`
+        SELECT JSON '''{ "name": "It's Mr John" }'''
+      `
+    );
+  });
 });
