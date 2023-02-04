@@ -81,7 +81,8 @@ describe("literal", () => {
             (1, 2, 3),
             (1, 'abc'),
             STRUCT(1 AS foo, 'abc' AS bar),
-            STRUCT<INT64, FLOAT64>(128, 1.5)
+            STRUCT<INT64, FLOAT64>(128, 1.5),
+            STRUCT<x INT, y INT>(1, 2)
         `,
         { dialect: "bigquery" }
       );
