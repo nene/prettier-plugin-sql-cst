@@ -11,3 +11,4 @@ export const isValuesClause = is("values_clause");
 export const isFuncCall = is("func_call");
 export const isCreateTableStmt = is("create_table_stmt");
 export const isKeyword = is("keyword");
+export const isEmpty = is("empty");

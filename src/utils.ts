@@ -20,3 +20,5 @@ const isCommentType = (type: string) =>
   type === "block_comment" || type === "line_comment";
 
 export const arrayWrap = <T>(x: T | T[]): T[] => (isArray(x) ? x : [x]);
+
+export const last = <T>(arr: T[]): T => arr[arr.length - 1];

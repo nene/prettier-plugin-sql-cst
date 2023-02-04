@@ -1,16 +1,31 @@
 import { AllExprNodes, Keyword, Node } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
 import { join, line, softline, hardline, indent, group } from "../print_utils";
-import { isCreateTableStmt, isKeyword, isValuesClause } from "../node_utils";
-import { isString } from "../utils";
+import {
+  isCreateTableStmt,
+  isKeyword,
+  isValuesClause,
+  isEmpty,
+} from "../node_utils";
+import { isString, last } from "../utils";
 
 export const exprMap: Partial<CstToDocMap<AllExprNodes>> = {
   list_expr: (print, node, path) => {
     const parent = path.getParentNode() as Node;
-    return join(
-      [",", isValuesClause(parent) ? hardline : line],
-      print("items").map((it) => group(it))
-    );
+    const children = print("items").map((it) => group(it));
+    const lineType = isValuesClause(parent) ? hardline : line;
+    // When last item is type:empty, we're dealing with a trailing comma.
+    // Don't add a space (or newline) after it.
+    // We still want to print it though, as it might have comments attached.
+    if (isEmpty(last(node.items))) {
+      return [
+        join([",", lineType], children.slice(0, -1)),
+        ",",
+        last(children),
+      ];
+    } else {
+      return join([",", lineType], children);
+    }
   },
   paren_expr: (print, node, path) => {
     const parent = path.getParentNode() as Node;

@@ -117,6 +117,24 @@ describe("select", () => {
   });
 
   describe("BigQuery", () => {
+    it(`formats trailing commas in SELECT`, () => {
+      test(`SELECT 1, 2, 3,`, { dialect: "bigquery" });
+    });
+
+    it(`formats trailing commas in multiline SELECT`, () => {
+      test(
+        dedent`
+          SELECT
+            'something long',
+            'something even longer',
+            'another thing that is extra long',
+            'and then something even more grandiose',
+          FROM my_table
+        `,
+        { dialect: "bigquery" }
+      );
+    });
+
     it(`formats SELECT * EXCEPT`, () => {
       test(`SELECT * EXCEPT (order_id) FROM orders`, { dialect: "bigquery" });
     });
