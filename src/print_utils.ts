@@ -2,7 +2,7 @@ import { Doc, doc, util } from "prettier";
 import { Node } from "sql-parser-cst";
 import { isArray } from "./utils";
 
-export const { line, hardline, softline, indent, group, lineSuffix } =
+export const { line, hardline, softline, indent, group, lineSuffix, ifBreak } =
   doc.builders;
 
 const { join: origJoin } = doc.builders;

@@ -1,6 +1,7 @@
 import { DialectName, Node, parse } from "sql-parser-cst";
 import { Parser, Printer, SupportLanguage } from "prettier";
 import { printSql } from "./printSql";
+import { embedJson } from "./embedJson";
 import { isNode } from "./utils";
 import { AllPrettierOptions } from "./options";
 import { transformCst } from "./transform/transformCst";
@@ -44,6 +45,7 @@ export const parsers: Record<string, Parser<Node>> = {
 export const printers: Record<string, Printer> = {
   "sql-cst": {
     print: printSql as Printer["print"],
+    embed: embedJson,
     printComment: (path) => {
       return path.getValue().text;
     },
