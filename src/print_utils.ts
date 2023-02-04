@@ -7,6 +7,8 @@ export const { line, hardline, softline, indent, group, lineSuffix, ifBreak } =
 
 const { join: origJoin } = doc.builders;
 
+export const { stripTrailingHardline } = doc.utils;
+
 /** Improved join() that also accepts a non-array docs parameter */
 export const join = (sep: Doc, docs: Doc): Doc =>
   isArray(docs) ? origJoin(sep, docs) : docs;

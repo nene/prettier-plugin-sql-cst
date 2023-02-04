@@ -1,9 +1,12 @@
-import { Doc, Printer } from "prettier";
+import { Printer } from "prettier";
 import { Node } from "sql-parser-cst";
-import deepEqual from "deep-equal";
 import { isJsonLiteral, isStringLiteral } from "./node_utils";
-import { isArray, last } from "./utils";
-import { ifBreak, indent, softline } from "./print_utils";
+import {
+  ifBreak,
+  indent,
+  softline,
+  stripTrailingHardline,
+} from "./print_utils";
 
 export const embedJson: Printer<Node>["embed"] = (
   path,
@@ -20,21 +23,10 @@ export const embedJson: Printer<Node>["embed"] = (
     });
     return [
       ifBreak("'''", "'"),
-      indent([softline, trimFinalNewline(json)]),
+      indent([softline, stripTrailingHardline(json)]),
       softline,
       ifBreak("'''", "'"),
     ];
   }
   return null;
-};
-
-const trimFinalNewline = (doc: Doc): Doc => {
-  return isArray(doc) && isFinalNewline(last(doc)) ? doc.slice(0, -1) : doc;
-};
-
-const isFinalNewline = (doc: Doc): boolean => {
-  return deepEqual(doc, {
-    type: "concat",
-    parts: [{ type: "line", hard: true }, { type: "break-parent" }],
-  });
 };
