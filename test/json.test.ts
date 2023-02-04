@@ -98,4 +98,17 @@ describe("json", () => {
       `
     );
   });
+
+  // Just skip formatting in this tricky case for now
+  it(`don't format JSON when it contains triple quotes`, () => {
+    expect(
+      pretty(String.raw`SELECT JSON '{"name":"It\'\'\'s Mr John"}'`, {
+        dialect: "bigquery",
+      })
+    ).toBe(
+      dedent`
+        SELECT JSON '{"name":"It\\'\\'\\'s Mr John"}'
+      `
+    );
+  });
 });

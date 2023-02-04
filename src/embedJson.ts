@@ -17,6 +17,11 @@ export const embedJson: Printer<Node>["embed"] = (
   const node = path.getValue();
   const parent = path.getParentNode();
   if (isStringLiteral(node) && isJsonLiteral(parent)) {
+    if (containsTripleQuote(node.value)) {
+      // Give up for now. Don't format JSON inside the string.
+      // Perhaps tackle this corner-case in the future.
+      return null;
+    }
     const json = textToDoc(node.value, {
       ...options,
       parser: "json",
@@ -33,3 +38,5 @@ export const embedJson: Printer<Node>["embed"] = (
 };
 
 const containsSingleQuote = (json: string) => /'/.test(json);
+
+const containsTripleQuote = (json: string) => /'''/.test(json);
