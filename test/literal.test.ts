@@ -56,6 +56,21 @@ describe("literal", () => {
         { dialect: "bigquery" }
       );
     });
+
+    it(`formats long array literal to multiple lines`, () => {
+      test(
+        dedent`
+          SELECT
+            [
+              'a somewhat large array',
+              'containing some strings',
+              'which themselves',
+              'are somewhat long.'
+            ]
+        `,
+        { dialect: "bigquery" }
+      );
+    });
   });
 
   describe("struct literals", () => {
@@ -67,6 +82,21 @@ describe("literal", () => {
             (1, 'abc'),
             STRUCT(1 AS foo, 'abc' AS bar),
             STRUCT<INT64, FLOAT64>(128, 1.5)
+        `,
+        { dialect: "bigquery" }
+      );
+    });
+
+    it(`formats long struct literal to multiple lines`, () => {
+      test(
+        dedent`
+          SELECT
+            STRUCT(
+              22541 AS id,
+              'Sherlock Holmes' AS name,
+              'Baker Street' AS address,
+              'Private detective' AS occupation
+            )
         `,
         { dialect: "bigquery" }
       );
