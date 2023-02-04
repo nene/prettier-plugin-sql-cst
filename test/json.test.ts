@@ -42,4 +42,48 @@ describe("json", () => {
       `
     );
   });
+
+  it(`converts double-quoted JSON literal to single-quoted one`, () => {
+    expect(
+      pretty(String.raw`SELECT JSON "{\"name\":\"John Doe\"}"`, {
+        dialect: "bigquery",
+      })
+    ).toBe(
+      dedent`
+        SELECT JSON '{ "name": "John Doe" }'
+      `
+    );
+  });
+
+  it(`converts triple-quoted JSON literal to single-quoted one when it fits to single line`, () => {
+    expect(
+      pretty(`SELECT JSON '''{"name":"John Doe"}'''`, {
+        dialect: "bigquery",
+      })
+    ).toBe(
+      dedent`
+        SELECT JSON '{ "name": "John Doe" }'
+      `
+    );
+  });
+
+  it(`converts triple-dbl-quoted JSON literal to triple-single-quoted`, () => {
+    expect(
+      pretty(
+        `SELECT JSON """{"firstName":"John","lastName":"Doe","inventory":["Pickaxe", "Compass", "Dirt"]}"""`,
+        { dialect: "bigquery" }
+      )
+    ).toBe(
+      dedent`
+        SELECT
+          JSON '''
+            {
+              "firstName": "John",
+              "lastName": "Doe",
+              "inventory": ["Pickaxe", "Compass", "Dirt"]
+            }
+          '''
+      `
+    );
+  });
 });
