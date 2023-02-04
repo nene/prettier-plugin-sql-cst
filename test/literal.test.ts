@@ -63,8 +63,8 @@ describe("literal", () => {
       test(
         dedent`
           SELECT
-            -- (1, 2, 3),
-            -- (1, 'abc'),
+            (1, 2, 3),
+            (1, 'abc'),
             STRUCT(1 AS foo, 'abc' AS bar),
             STRUCT<INT64, FLOAT64>(128, 1.5)
         `,
