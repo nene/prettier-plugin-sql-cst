@@ -65,7 +65,7 @@ You can override this behavior with a prettier configuration:
   "overrides": [
     {
       "files": ["*.sql"],
-      "options": { "parser": "sql-parser-cst-bigquery" }
+      "options": { "parser": "bigquery" }
     }
   ]
 }
@@ -73,8 +73,8 @@ You can override this behavior with a prettier configuration:
 
 The plugin provides the following parsers:
 
-- `sql-parser-cst-sqlite`
-- `sql-parser-cst-bigquery`
+- `sqlite`
+- `bigquery`
 
 ## Configuration
 

@@ -12,12 +12,12 @@ export const languages: SupportLanguage[] = [
   {
     extensions: [".sql", ".sqlite"],
     name: "SQLite SQL",
-    parsers: ["sql-parser-cst-sqlite"],
+    parsers: ["sqlite"],
   },
   {
     extensions: [".bigquery"],
     name: "BigQuery SQL",
-    parsers: ["sql-parser-cst-bigquery"],
+    parsers: ["bigquery"],
   },
 ];
 
@@ -38,8 +38,8 @@ const createParser = (dialect: DialectName): Parser<Node> => ({
 });
 
 export const parsers: Record<string, Parser<Node>> = {
-  "sql-parser-cst-sqlite": createParser("sqlite"),
-  "sql-parser-cst-bigquery": createParser("bigquery"),
+  sqlite: createParser("sqlite"),
+  bigquery: createParser("bigquery"),
 };
 
 export const printers: Record<string, Printer> = {

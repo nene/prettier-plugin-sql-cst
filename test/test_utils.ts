@@ -13,7 +13,7 @@ interface TestOptions extends PrettyOptions {
 
 export const rawPretty = (sql: string, opts: TestOptions = {}): string => {
   return format(sql, {
-    parser: "sql-parser-cst-" + (opts.dialect ?? "sqlite"),
+    parser: opts.dialect ?? "sqlite",
     plugins: [plugin],
     ...opts,
   });
