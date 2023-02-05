@@ -1,5 +1,5 @@
 import { Printer } from "prettier";
-import { Node } from "sql-parser-cst";
+import { Node, StringLiteral } from "sql-parser-cst";
 import { isJsonLiteral, isStringLiteral } from "./node_utils";
 import {
   ifBreak,
@@ -17,9 +17,13 @@ export const embedJson: Printer<Node>["embed"] = (
   const node = path.getValue();
   const parent = path.getParentNode();
   if (isStringLiteral(node) && isJsonLiteral(parent)) {
-    if (containsTripleQuote(node.value) || containsBackslash(node.value)) {
+    if (
+      containsTripleQuote(node.value) ||
+      containsBackslash(node.value) ||
+      isRawString(node)
+    ) {
       // Give up for now. Don't format JSON inside the string.
-      // Perhaps tackle this corner-case in the future.
+      // Tackle these corner-case in the future.
       return null;
     }
     const json = textToDoc(node.value, {
@@ -41,3 +45,4 @@ const containsSingleQuote = (json: string) => /'/.test(json);
 
 const containsTripleQuote = (json: string) => /'''/.test(json);
 const containsBackslash = (json: string) => /\\/.test(json);
+const isRawString = (node: StringLiteral) => /^R/i.test(node.text);

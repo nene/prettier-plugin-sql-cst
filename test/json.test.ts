@@ -100,7 +100,7 @@ describe("json", () => {
   });
 
   // Just skip formatting in this tricky case for now
-  it(`don't format JSON when it contains triple quotes`, () => {
+  it(`doesn't format JSON when it contains triple quotes`, () => {
     expect(
       pretty(String.raw`SELECT JSON '{"name":"It\'\'\'s Mr John"}'`, {
         dialect: "bigquery",
@@ -113,7 +113,12 @@ describe("json", () => {
   });
 
   // Also skip dealing with escapes for now
-  it(`don't format JSON when it contains escape sequences`, () => {
+  it(`doesn't format JSON when it contains escape sequences`, () => {
     test(String.raw`SELECT JSON '{ "name": "\\n" }'`, { dialect: "bigquery" });
+  });
+
+  // Also skip dealing with raw strings
+  it(`doesn't format JSON inside raw strings`, () => {
+    test(`SELECT JSON r'{"name":"John"}'`, { dialect: "bigquery" });
   });
 });
