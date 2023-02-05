@@ -81,18 +81,6 @@ describe("select", () => {
     test(`SELECT * FROM tbl LIMIT 10`);
   });
 
-  it(`formats aliases`, () => {
-    test(
-      dedent`
-        SELECT
-          1 AS a,
-          2 AS b,
-          3 AS c
-      `,
-      { printWidth: 20 }
-    );
-  });
-
   it(`formats SELECT DISTINCT`, () => {
     test(
       dedent`

@@ -6,4 +6,4 @@ import { AllPrettierOptions } from "../options";
 export const transformCst = (
   cst: Program,
   options: AllPrettierOptions
-): Program => moveCommentsToRoot(processAliasAs(cst, options));
+): Program => moveCommentsToRoot(processAliasAs(cst));
