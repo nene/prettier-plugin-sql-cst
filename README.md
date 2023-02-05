@@ -81,10 +81,10 @@ The plugin provides the following parsers:
 The standard Prettier options [printWidth][], [tabWidth][], [useTabs][] apply.
 There are also some SQL-specific options:
 
-| API Option       |  Default   | Description                                            |
-| ---------------- | :--------: | ------------------------------------------------------ |
-| `sqlKeywordCase` | `preserve` | Converts SQL keywords to `upper` or `lower` case.      |
-| `sqlAliasAs`     | `preserve` | Uses AS keyword in aliases either `always` or `never`. |
+| API Option       |  Default   | Description                                                               |
+| ---------------- | :--------: | ------------------------------------------------------------------------- |
+| `sqlKeywordCase` |  `upper`   | Converts SQL keywords to `upper` or `lower` case, or `preserve` existing. |
+| `sqlAliasAs`     | `preserve` | Uses AS keyword in aliases either `always` or `never`.                    |
 
 ## Limitations and development status
 

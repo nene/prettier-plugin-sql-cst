@@ -4,13 +4,13 @@ import { pretty, test } from "./test_utils";
 describe("expr", () => {
   it(`formats binary expressions`, () => {
     expect(
-      pretty(`SELECT 1 + 2 / 3 * (5 - 1), true OR false AND true`, {
+      pretty(`SELECT 1 + 2 / 3 * (5 - 1), TRUE OR FALSE AND TRUE`, {
         printWidth: 25,
       })
     ).toBe(dedent`
       SELECT
         1 + 2 / 3 * (5 - 1),
-        true OR false AND true
+        TRUE OR FALSE AND TRUE
     `);
   });
 
