@@ -111,4 +111,9 @@ describe("json", () => {
       `
     );
   });
+
+  // Also skip dealing with escapes for now
+  it(`don't format JSON when it contains escape sequences`, () => {
+    test(String.raw`SELECT JSON '{ "name": "\\n" }'`, { dialect: "bigquery" });
+  });
 });
