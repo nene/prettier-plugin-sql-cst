@@ -4,10 +4,12 @@ import { hardline } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
 export const programMap: CstToDocMap<Program> = {
-  program: (print, node) =>
+  program: (print, node) => [
     print("statements").map((doc, i) =>
       printStatement(doc, i, node.statements)
     ),
+    hardline,
+  ],
 };
 
 const printStatement = (doc: Doc, i: number, statements: Node[]): Doc => {
