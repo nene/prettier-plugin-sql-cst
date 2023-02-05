@@ -87,7 +87,7 @@ describe("select", () => {
         SELECT
           1 AS a,
           2 AS b,
-          3 c
+          3 AS c
       `,
       { printWidth: 20 }
     );
@@ -146,7 +146,7 @@ describe("select", () => {
     });
 
     it(`formats SELECT AS STRUCT`, () => {
-      test(`SELECT AS STRUCT 1 a, 2 b`, {
+      test(`SELECT AS STRUCT 1 AS a, 2 AS b`, {
         dialect: "bigquery",
       });
     });

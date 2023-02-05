@@ -29,7 +29,7 @@ export const options: SupportOptions = {
     type: "choice",
     category: "SQL",
     since: "0.1.1",
-    default: "preserve",
+    default: "always",
     description: "Enforce or forbid use of AS keyword in aliases",
     choices: [
       { value: "preserve", description: "keeps existing style" },
