@@ -40,6 +40,24 @@ ORDER BY client.name
 LIMIT 100
 ```
 
+## Formatting philosophy
+
+- Adapt formatting based on expression length.
+- Stick to one style and avoid configuration options.
+- Format embedded languages (like JSON data and JavaScript programs).
+- When unsure, preserve existing syntax.
+
+## Non-whitespace formatting
+
+Currently this plugin preserves most of the syntax elements
+and concentrates mainly on the layout of whitespace.
+For example it does not add/remove paratheses.
+
+There are some opinionated non-whitespace changes though:
+
+- UPPERCASE all keywords.
+- Add `AS` keyword to all alias definitions.
+
 ## Getting started
 
 Install it as any other Prettier plugin:
@@ -98,22 +116,6 @@ Formatting of the following SQL statements is fully implemented:
 - CREATE / DROP / ALTER TABLE
 - CREATE / DROP VIEW
 - CREATE / DROP INDEX
-
-Unlike Prettier for JavaScript, this plugin currently preserves all the syntax elements.
-For example it does not add/remove paratheses or modify the case of keywords (by default).
-It only manipulates whitespace.
-
-This will likely change in the future, with the goal of being more opinionated.
-Some possibilities:
-
-- capitalize all keywords
-- ensure all alias definitions use the `AS` keyword.
-- ensure consistent use of quotes (e.g. always quote keywords)
-- eliminate redundant parenthesis.
-
-The exact formatting style is also very much still in flux.
-The overall goal is to have no options to configure different styles,
-but rather to develop one opinionated style of formatting SQL.
 
 [prettier]: https://prettier.io/
 [printWidth]: https://prettier.io/docs/en/options.html#print-width
