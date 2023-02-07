@@ -113,6 +113,7 @@ Formatting of the following SQL statements is fully implemented:
 - UPDATE
 - INSERT
 - DELETE
+- TRUNCATE
 - CREATE / DROP / ALTER TABLE
 - CREATE / DROP VIEW
 - CREATE / DROP INDEX
