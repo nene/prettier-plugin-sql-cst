@@ -65,26 +65,30 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
   not_indexed_table: (print) => print.spaced(["table", "notIndexedKw"]),
   pivot_expr: (print) => [print("left"), hardline, print(["pivotKw", "args"])],
   pivot_for_in: (print) =>
-    print.spaced([
-      "aggregations",
-      "forKw",
-      "inputColumn",
-      "inKw",
-      "pivotColumns",
-    ]),
-  unpivot_expr: (print) => [
+    group(
+      join(line, [
+        group(print("aggregations")),
+        print.spaced(["forKw", "inputColumn"]),
+        print.spaced(["inKw", "pivotColumns"]),
+      ])
+    ),
+  unpivot_expr: (print, node) => [
     print("left"),
     hardline,
-    print(["unpivotKw", "nullHandlingKw", "args"]),
+    (node.nullHandlingKw ? print.spaced : print)([
+      "unpivotKw",
+      "nullHandlingKw",
+      "args",
+    ]),
   ],
   unpivot_for_in: (print) =>
-    print.spaced([
-      "valuesColumn",
-      "forKw",
-      "nameColumn",
-      "inKw",
-      "unpivotColumns",
-    ]),
+    group(
+      join(line, [
+        print("valuesColumn"),
+        print.spaced(["forKw", "nameColumn"]),
+        print.spaced(["inKw", "unpivotColumns"]),
+      ])
+    ),
   where_clause: (print) =>
     group([print("whereKw"), indent([line, print("expr")])]),
   order_by_clause: (print) =>

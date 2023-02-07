@@ -112,6 +112,22 @@ describe("select FROM", () => {
       );
     });
 
+    it(`formats long PIVOT() to multiple lines`, () => {
+      test(
+        dedent`
+          SELECT *
+          FROM
+            Produce
+            PIVOT(
+              SUM(sales) AS total_sales, COUNT(*) AS num_records
+              FOR quarter
+              IN ('Q1', 'Q2')
+            )
+        `,
+        { dialect: "bigquery" }
+      );
+    });
+
     it(`formats UNPIVOT()`, () => {
       test(
         dedent`
@@ -119,6 +135,22 @@ describe("select FROM", () => {
           FROM
             Produce
             UNPIVOT(sales FOR quarter IN (Q1, Q2, Q3, Q4))
+        `,
+        { dialect: "bigquery" }
+      );
+    });
+
+    it(`formats long UNPIVOT() with null-handling options to multiple lines`, () => {
+      test(
+        dedent`
+          SELECT *
+          FROM
+            Produce
+            UNPIVOT INCLUDE NULLS (
+              (first_half_sales, second_half_sales)
+              FOR semesters
+              IN ((Q1, Q2) AS 'semester_1', (Q3, Q4) AS 'semester_2')
+            )
         `,
         { dialect: "bigquery" }
       );
