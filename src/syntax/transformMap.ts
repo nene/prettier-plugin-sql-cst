@@ -15,6 +15,7 @@ import { insertMap } from "./insert";
 import { procClauseMap } from "./proc_clause";
 import { programMap } from "./program";
 import { selectMap } from "./select";
+import { truncateMap } from "./truncate";
 import { updateMap } from "./update";
 import { viewMap } from "./view";
 
@@ -34,6 +35,7 @@ export const transformMap: Partial<CstToDocMap<Node>> = {
   ...procClauseMap,
   ...programMap,
   ...selectMap,
+  ...truncateMap,
   ...updateMap,
   ...viewMap,
 };
