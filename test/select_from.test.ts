@@ -186,5 +186,15 @@ describe("select FROM", () => {
         { dialect: "bigquery" }
       );
     });
+
+    it.skip(`formats FOR SYSTEM_TIME AS OF`, () => {
+      test(
+        dedent`
+          SELECT *
+          FROM tbl FOR SYSTEM_TIME AS OF '2017-01-01 10:00:00-07:00'
+        `,
+        { dialect: "bigquery" }
+      );
+    });
   });
 });
