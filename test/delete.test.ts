@@ -9,6 +9,16 @@ describe("delete", () => {
     `);
   });
 
+  it(`formats DELETE without FROM`, () => {
+    test(
+      dedent`
+        DELETE employee
+        WHERE id = 10
+      `,
+      { dialect: "bigquery" }
+    );
+  });
+
   it(`formats DELETE statement with RETURNING clause`, () => {
     test(dedent`
       DELETE FROM employee
