@@ -155,5 +155,40 @@ describe("expr", () => {
         dialect: "bigquery",
       });
     });
+
+    it(`formats BigQuery array field access`, () => {
+      test(
+        dedent`
+          SELECT
+            item_array,
+            item_array[OFFSET(1)] AS item_offset,
+            item_array[ORDINAL(1)] AS item_ordinal,
+            item_array[SAFE_OFFSET(6)] AS item_safe_offset
+          FROM (SELECT ["coffee", "tea", "milk"] AS item_array)
+        `,
+        { dialect: "bigquery" }
+      );
+    });
+
+    it(`formats BigQuery array field access to multiple lines`, () => {
+      test(
+        dedent`
+          SELECT
+            ["Coffee Cup", "Tea Kettle", "Milk Glass"][
+              SAFE_OFFSET(some_really_long_index_number)
+            ]
+        `,
+        { dialect: "bigquery" }
+      );
+    });
+
+    it(`formats BigQuery JSON field access`, () => {
+      test(
+        dedent`
+          SELECT json_value.class.students[0]['name']
+        `,
+        { dialect: "bigquery" }
+      );
+    });
   });
 });

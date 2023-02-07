@@ -6,6 +6,7 @@ import {
   isKeyword,
   isValuesClause,
   isEmpty,
+  isArraySubscript,
 } from "../node_utils";
 import { isString, last } from "../utils";
 
@@ -52,8 +53,14 @@ export const exprMap: Partial<CstToDocMap<AllExprNodes>> = {
   case_when: (print) =>
     print.spaced(["whenKw", "condition", "thenKw", "result"]),
   case_else: (print) => print.spaced(["elseKw", "result"]),
-  member_expr: (print) => [print("object"), ".", print("property")],
+  member_expr: (print, node) =>
+    isArraySubscript(node.property)
+      ? print(["object", "property"])
+      : [print("object"), ".", print("property")],
   bigquery_quoted_member_expr: (print) => ["`", print("expr"), "`"],
+  array_subscript: (print) =>
+    group(["[", indent([softline, print("expr")]), softline, "]"]),
+  array_subscript_specifier: (print) => print(["specifierKw", "args"]),
   func_call: (print) => {
     const fnCall = print(["name", "args"]);
     const extras = print(["filter", "over"]);
