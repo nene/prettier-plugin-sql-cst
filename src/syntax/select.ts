@@ -72,6 +72,19 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
       "inKw",
       "pivotColumns",
     ]),
+  unpivot_expr: (print) => [
+    print("left"),
+    hardline,
+    print(["unpivotKw", "nullHandlingKw", "args"]),
+  ],
+  unpivot_for_in: (print) =>
+    print.spaced([
+      "valuesColumn",
+      "forKw",
+      "nameColumn",
+      "inKw",
+      "unpivotColumns",
+    ]),
   where_clause: (print) =>
     group([print("whereKw"), indent([line, print("expr")])]),
   order_by_clause: (print) =>
