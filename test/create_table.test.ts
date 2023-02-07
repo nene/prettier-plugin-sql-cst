@@ -28,6 +28,18 @@ describe("create table", () => {
     `);
   });
 
+  it(`formats CREATE TABLE with various data types`, () => {
+    test(dedent`
+      CREATE TABLE client (
+        id INTEGER,
+        name VARCHAR(100),
+        price DECIMAL(10, 5),
+        age UNSIGNED BIG INT,
+        organization_name NATIVE CHARACTER (70)
+      )
+    `);
+  });
+
   it(`formats CREATE TABLE with column constraints`, () => {
     test(dedent`
       CREATE TABLE client (
