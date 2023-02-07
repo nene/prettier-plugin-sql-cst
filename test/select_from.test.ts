@@ -100,6 +100,16 @@ describe("select FROM", () => {
   });
 
   describe("BigQuery", () => {
+    it(`formats UNNEST()`, () => {
+      test(
+        dedent`
+          SELECT *
+          FROM UNNEST([10, 20, 30]) AS numbers WITH OFFSET
+        `,
+        { dialect: "bigquery" }
+      );
+    });
+
     it(`formats PIVOT()`, () => {
       test(
         dedent`
