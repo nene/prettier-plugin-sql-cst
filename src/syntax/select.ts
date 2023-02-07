@@ -91,6 +91,9 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
         print.spaced(["inKw", "unpivotColumns"]),
       ])
     ),
+  tablesample_expr: (print) =>
+    group([print("left"), line, print.spaced(["tablesampleKw", "args"])]),
+  tablesample_percent: (print) => print.spaced(["percent", "percentKw"]),
   where_clause: (print) =>
     group([print("whereKw"), indent([line, print("expr")])]),
   order_by_clause: (print) =>

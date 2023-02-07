@@ -165,5 +165,26 @@ describe("select FROM", () => {
         { dialect: "bigquery" }
       );
     });
+
+    it(`formats TABLESPAMPLE operator`, () => {
+      test(
+        dedent`
+          SELECT * FROM dataset.my_table TABLESAMPLE SYSTEM (10 PERCENT)
+        `,
+        { dialect: "bigquery" }
+      );
+    });
+
+    it(`formats TABLESPAMPLE operator to multiple lines`, () => {
+      test(
+        dedent`
+          SELECT *
+          FROM
+            myLongProjectName.myCustomDatasetName.my_table_name
+            TABLESAMPLE SYSTEM (10 PERCENT)
+        `,
+        { dialect: "bigquery" }
+      );
+    });
   });
 });
