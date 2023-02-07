@@ -63,6 +63,15 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
   join_using_specification: (print) => group(print.spaced(["usingKw", "expr"])),
   indexed_table: (print) => print.spaced(["table", "indexedByKw", "index"]),
   not_indexed_table: (print) => print.spaced(["table", "notIndexedKw"]),
+  pivot_expr: (print) => [print("left"), hardline, print(["pivotKw", "args"])],
+  pivot_for_in: (print) =>
+    print.spaced([
+      "aggregations",
+      "forKw",
+      "inputColumn",
+      "inKw",
+      "pivotColumns",
+    ]),
   where_clause: (print) =>
     group([print("whereKw"), indent([line, print("expr")])]),
   order_by_clause: (print) =>
