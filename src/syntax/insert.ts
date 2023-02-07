@@ -12,6 +12,7 @@ export const insertMap: Partial<CstToDocMap<AllInsertNodes>> = {
   values_clause: (print) =>
     group([print("valuesKw"), indent([hardline, print("values")])]),
   or_alternate_action: (print) => print.spaced(["orKw", "actionKw"]),
+  default: (print) => print("defaultKw"),
   default_values: (print) => print.spaced("defaultValuesKw"),
   upsert_clause: (print) =>
     print.spaced(["onConflictKw", "columns", "where", "doKw", "action"]),

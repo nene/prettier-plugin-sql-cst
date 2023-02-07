@@ -10,6 +10,17 @@ describe("insert", () => {
     `);
   });
 
+  it(`formats INSERT statement without INTO`, () => {
+    test(
+      dedent`
+        INSERT client
+        VALUES
+          (1, 2, 3)
+      `,
+      { dialect: "bigquery" }
+    );
+  });
+
   it(`formats INSERT statement with column names`, () => {
     test(dedent`
       INSERT INTO client
@@ -76,6 +87,17 @@ describe("insert", () => {
       INSERT INTO employee
       DEFAULT VALUES
     `);
+  });
+
+  it("formats DEFAULT values among normal values", () => {
+    test(
+      dedent`
+        INSERT INTO employee
+        VALUES
+          (1, 2, DEFAULT, 3)
+      `,
+      { dialect: "bigquery" }
+    );
   });
 
   it("formats insertion of query", () => {
