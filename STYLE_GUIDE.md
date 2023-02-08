@@ -32,11 +32,11 @@ Undecided:
 
 ## Aliases
 
-- :white_check_mark: Always use explicit `AS` keyword in all aliases
+- :white_check_mark: Always use explicit `AS` keyword in all aliases. [Rule_L011][], [Rule_L012][]
 
 ## Semicolons
 
-- :heavy_check_mark: Finish all statements with a semicolon
+- :heavy_check_mark: Finish all statements with a semicolon. [Rule_L052][]
 
 Undecided:
 
@@ -71,7 +71,7 @@ This definitely needs to be configurable.
 - :white_check_mark: Surround unary keyword-operators with whitespace: `NOT foo`
 - :white_check_mark: Don't add whitespace to unary punctuation-operators: `-price`
 - :heavy_check_mark: Use `!=` instead of `<>` for "not equal to" comparisons. [Rule_L061][]
-- :heavy_check_mark: Add linebreak before binary operator:
+- :heavy_check_mark: Add linebreak before binary operator: [Rule_L007][]
 
 ```sql
 WHERE
@@ -93,13 +93,13 @@ SELECT
 ## Comma spacing
 
 - :white_check_mark: No whitespace before comma
-- :white_check_mark: Single space after comma for inline list
+- :white_check_mark: Single space after comma for inline list. [Rule_L008][]
 - :white_check_mark: Newline after comma for multiline list
 - :heavy_check_mark: Forbid trailing commas in select clause. [Rule_L038][]
 
 ## Parenthesis spacing
 
-- :white_check_mark: No space between function name and arguments. `my_func(1, 2, 3)`
+- :white_check_mark: No space between function name and arguments. `my_func(1, 2, 3)` [Rule_L017][]
 - :white_check_mark: No space between single-word type name and arguments. `VARCHAR(100)`
 - :white_check_mark: Space between multi-word type name and arguments. `UNSIGNED NUMERIC (10, 5)`
 - :white_check_mark: Space after `USING` in `JOIN`: `JOIN foo USING (col1)`
@@ -126,6 +126,7 @@ Undecided:
 
 ## Rules to possibly adopt from SQLFluff
 
+- [Rule_L022][]: Blank line after CTE.
 - [Rule_L033][]: `UNION [DISTINCT|ALL]` is preferred over just `UNION`.
 - [Rule_L034][]: Select wildcards then simple targets before calculations and aggregates.
 - [Rule_L036][]: Select targets should be on a new line unless there is only one select target.
@@ -138,7 +139,13 @@ Undecided:
 
 [Test with SQLFluff online.](https://online.sqlfluff.com/)
 
+[Rule_L007]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L007
+[Rule_L008]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L008
+[Rule_L011]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L011
+[Rule_L012]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L012
+[Rule_L017]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L017
 [Rule_L015]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L015
+[Rule_L022]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L022
 [Rule_L029]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L029
 [Rule_L033]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L033
 [Rule_L034]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L034
@@ -148,6 +155,7 @@ Undecided:
 [Rule_L047]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L047
 [Rule_L049]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L049
 [Rule_L051]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L051
+[Rule_L052]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L052
 [Rule_L053]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L053
 [Rule_L058]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L058
 [Rule_L059]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L059
