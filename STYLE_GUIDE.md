@@ -16,10 +16,10 @@ This is based on the defaults used by Prettier:
 
 ## Upper & lower case
 
-- :white_check_mark: UPPERCASE all keywords
-- :white_check_mark: UPPERCASE all type names
-- :white_check_mark: preserve case of function names
-- :white_check_mark: preserve case of all other identifiers
+- :white_check_mark: UPPERCASE all keywords. [Rule_L010][], [Rule_L040][]
+- :white_check_mark: UPPERCASE all type names. [Rule_L063][]
+- :white_check_mark: preserve case of function names. [Rule_L030][]
+- :white_check_mark: preserve case of all other identifiers. [Rule_L014][]
 
 Keywords include literal values like `NULL`, `TRUE`, `FALSE`,
 but don't include function names that SQL dialects might themselves label as keywords (like `sum()`, `count()`),
@@ -141,17 +141,21 @@ Undecided:
 
 [Rule_L007]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L007
 [Rule_L008]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L008
+[Rule_L010]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L010
 [Rule_L011]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L011
 [Rule_L012]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L012
-[Rule_L017]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L017
+[Rule_L014]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L014
 [Rule_L015]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L015
+[Rule_L017]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L017
 [Rule_L022]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L022
 [Rule_L029]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L029
+[Rule_L030]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L030
 [Rule_L033]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L033
 [Rule_L034]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L034
 [Rule_L036]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L036
 [Rule_L037]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L037
 [Rule_L038]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L038
+[Rule_L040]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L040
 [Rule_L047]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L047
 [Rule_L049]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L049
 [Rule_L051]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L051
@@ -160,4 +164,5 @@ Undecided:
 [Rule_L058]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L058
 [Rule_L059]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L059
 [Rule_L061]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L061
+[Rule_L063]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L063
 [Rule_L067]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L067
