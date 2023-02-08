@@ -162,6 +162,17 @@ describe("create table", () => {
     `);
   });
 
+  it(`formats single short BigQuery extra CREATE TABLE clause`, () => {
+    test(
+      dedent`
+        CREATE TABLE client (
+          id INT64
+        ) DEFAULT COLLATE 'und:ci'
+      `,
+      { dialect: "bigquery" }
+    );
+  });
+
   it(`formats additional BigQuery CREATE TABLE clauses`, () => {
     test(
       dedent`
@@ -172,6 +183,23 @@ describe("create table", () => {
         PARTITION BY _PARTITIONDATE
         CLUSTER BY customer_id
         OPTIONS(friendly_name = 'Clientele')
+      `,
+      { dialect: "bigquery" }
+    );
+  });
+
+  it(`formats long BigQuery OPTIONS()`, () => {
+    test(
+      dedent`
+        CREATE TABLE client (
+          id INT64
+        )
+        OPTIONS(
+          expiration_timestamp = TIMESTAMP "2025-01-01 00:00:00 UTC",
+          partition_expiration_days = 1,
+          description = "a table that expires in 2025, with each partition living for 24 hours",
+          labels = [("org_unit", "development")]
+        )
       `,
       { dialect: "bigquery" }
     );
