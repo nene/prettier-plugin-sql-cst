@@ -222,4 +222,34 @@ describe("create table", () => {
         WHERE external_client.payment > external_client.income
     `);
   });
+
+  it(`formats CREATE TABLE LIKE`, () => {
+    test(
+      dedent`
+        CREATE TABLE foo
+        LIKE my_old_table
+      `,
+      { dialect: "bigquery" }
+    );
+  });
+
+  it(`formats CREATE TABLE COPY`, () => {
+    test(
+      dedent`
+        CREATE TABLE foo
+        COPY my_old_table
+      `,
+      { dialect: "bigquery" }
+    );
+  });
+
+  it(`formats CREATE SNAPSHOT TABLE CLONE`, () => {
+    test(
+      dedent`
+        CREATE SNAPSHOT TABLE foo
+        CLONE my_old_table
+      `,
+      { dialect: "bigquery" }
+    );
+  });
 });
