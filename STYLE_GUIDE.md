@@ -50,9 +50,12 @@ Undecided:
 This might need to be configurable,
 though the support of single-quotes for strings should IMHO be available in all dialects.
 
-## Quoted identifiers
+## Identifiers
 
-There are various options here:
+- :heavy_check_mark: Don't unnecessarily quote an identifier. [Rule_L059][]
+- :heavy_check_mark: Always quote identifiers that are keywords. [Rule_L029][]
+
+For quoting style there are various options here:
 
 - :question: <del>Default to double quotes (SQL standard)</del>
   Not possible in some dialects like BigQuery.
@@ -62,11 +65,12 @@ There are various options here:
 
 This definitely needs to be configurable.
 
-## Operators spacing
+## Operators
 
 - :white_check_mark: Surround binary operators with whitespace: `1 + 2`
 - :white_check_mark: Surround unary keyword-operators with whitespace: `NOT foo`
 - :white_check_mark: Don't add whitespace to unary punctuation-operators: `-price`
+- :heavy_check_mark: Use `!=` instead of `<>` for "not equal to" comparisons. [Rule_L061][]
 - :heavy_check_mark: Add linebreak before binary operator:
 
 ```sql
@@ -91,6 +95,7 @@ SELECT
 - :white_check_mark: No whitespace before comma
 - :white_check_mark: Single space after comma for inline list
 - :white_check_mark: Newline after comma for multiline list
+- :heavy_check_mark: Forbid trailing commas in select clause. [Rule_L038][]
 
 ## Parenthesis spacing
 
@@ -112,26 +117,23 @@ WITH my_cte (c1, c2) AS SELECT 1, 2
 SELECT * FROM my_cte;
 ```
 
+- :heavy_check_mark: Top-level statements should not be wrapped in brackets. [Rule_L053][]
+- :heavy_check_mark: No parenthesis after `DISTINCT`. [Rule_L015][]
+
 Undecided:
 
 - :question: BigQuery options list: `OPTIONS(foo = bar)` v/s `OPTIONS (foo = bar)`
 
 ## Rules to possibly adopt from SQLFluff
 
-- [Rule_L015][]: `DISTINCT` used with parentheses
-- [Rule_L029][]: Keywords should not be used as identifiers.
 - [Rule_L033][]: `UNION [DISTINCT|ALL]` is preferred over just `UNION`.
 - [Rule_L034][]: Select wildcards then simple targets before calculations and aggregates.
 - [Rule_L036][]: Select targets should be on a new line unless there is only one select target.
 - [Rule_L037][]: Ambiguous ordering directions for columns in order by clause.
-- [Rule_L038][]: Forbid trailing commas within select clause.
 - [Rule_L047][]: Use consistent syntax to express "count number of rows", e.g. `count(*)` instead of `count(1)`
 - [Rule_L049][]: Comparisons with NULL should use `IS` or `IS NOT`.
 - [Rule_L051][]: Join clauses should be fully qualified, e.g. `INNER JOIN` instead of plain `JOIN`.
-- [Rule_L053][]: Top-level statements should not be wrapped in brackets.
 - [Rule_L058][]: Nested CASE statement in ELSE clause could be flattened.
-- [Rule_L059][]: Unnecessary quoted identifier.
-- [Rule_L061][]: Use `!=` instead of `<>` for "not equal to" comparisons.
 - [Rule_L067][]: Enforce consistent type casting style, e.g. use `CAST(10 AS TEXT)` instead of `10::TEXT` or `CONVERT(10, TEXT)`
 
 [Test with SQLFluff online.](https://online.sqlfluff.com/)
