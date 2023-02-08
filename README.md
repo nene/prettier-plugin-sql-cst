@@ -47,16 +47,11 @@ LIMIT 100
 - Format embedded languages (like JSON data and JavaScript programs).
 - When unsure, preserve existing syntax.
 
-## Non-whitespace formatting
-
 Currently this plugin preserves most of the syntax elements
 and concentrates mainly on the layout of whitespace.
 For example it does not add/remove paratheses.
 
-There are some opinionated non-whitespace changes though:
-
-- UPPERCASE all keywords.
-- Add `AS` keyword to all alias definitions.
+See [STYLE_GUIDE][] for overview of the SQL formatting style used.
 
 ## Getting started
 
@@ -124,3 +119,4 @@ Formatting of the following SQL statements is fully implemented:
 [useTabs]: https://prettier.io/docs/en/options.html#tabs
 [sql-parser-cst]: https://github.com/nene/sql-parser-cst
 [wadler-prettier]: http://homepages.inf.ed.ac.uk/wadler/papers/prettier/prettier.pdf
+[STYLE_GUIDE]: ./STYLE_GUIDE.md
