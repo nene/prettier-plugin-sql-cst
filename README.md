@@ -105,8 +105,7 @@ There are also some SQL-specific options:
 
 ## Limitations and development status
 
-Currently this plugin supports most of **SQLite** syntax.
-(It also supports some **BigQuery**, but only the syntax that's subset of SQLite.)
+Currently this plugin supports the most common everyday **SQLite** and **BigQuery** syntax.
 Formatting of the following SQL statements is fully implemented:
 
 - SELECT
@@ -114,7 +113,8 @@ Formatting of the following SQL statements is fully implemented:
 - INSERT
 - DELETE
 - TRUNCATE
-- CREATE / DROP / ALTER TABLE
+- CREATE / DROP TABLE
+- ALTER TABLE (only SQLite syntax, no full BigQuery support)
 - CREATE / DROP VIEW
 - CREATE / DROP INDEX
 
