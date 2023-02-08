@@ -42,6 +42,26 @@ Undecided:
 
 - :question: Should single statement without a trailing semicolon be supported?
 
+## Strings
+
+- :heavy_check_mark: Use single quotes for strings if possible.
+- :heavy_check_mark: Use different quote style when string contains single quotes or is multi-line.
+
+This might need to be configurable,
+though the support of single-quotes for strings should IMHO be available in all dialects.
+
+## Quoted identifiers
+
+There are various options here:
+
+- :question: <del>Default to double quotes (SQL standard)</del>
+  Not possible in some dialects like BigQuery.
+- :question: Default to the preferred/default quoting style of a dialect,
+  like backticks in MySQL and double quotes in SQLite.
+- :question: Preserve existing quoting style.
+
+This definitely needs to be configurable.
+
 ## Parenthesis spacing
 
 - :white_check_mark: No space between function name and arguments. `my_func(1, 2, 3)`
