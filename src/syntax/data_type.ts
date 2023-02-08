@@ -7,6 +7,7 @@ export const dataTypeMap: Partial<CstToDocMap<AllDataTypeNodes>> = {
   data_type: (print, node) =>
     (isArray(node.nameKw) ? print.spaced : print)(["nameKw", "params"]),
   generic_type_params: (print) => ["<", print("params"), ">"],
-  array_type_param: (print) => print("dataType"),
-  struct_type_param: (print) => print.spaced(["name", "dataType"]),
+  array_type_param: (print) => print.spaced(["dataType", "constraints"]),
+  struct_type_param: (print) =>
+    print.spaced(["name", "dataType", "constraints"]),
 };

@@ -3,6 +3,7 @@ import { CstToDocMap } from "../CstToDocMap";
 import { aliasMap } from "./alias";
 import { alterTableMap } from "./alter_table";
 import { baseMap } from "./base";
+import { bigqueryMap } from "./bigquery";
 import { constraintMap } from "./constraint";
 import { createTableMap } from "./create_table";
 import { dataTypeMap } from "./data_type";
@@ -23,6 +24,7 @@ export const transformMap: Partial<CstToDocMap<Node>> = {
   ...aliasMap,
   ...alterTableMap,
   ...baseMap,
+  ...bigqueryMap,
   ...constraintMap,
   ...createTableMap,
   ...dataTypeMap,

@@ -141,6 +141,19 @@ describe("create table", () => {
     `);
   });
 
+  it(`formats BigQuery data types with internal constraints`, () => {
+    test(
+      dedent`
+        CREATE TABLE client (
+          arr_field ARRAY<INT64 NOT NULL>,
+          struct_field STRUCT<name STRING NOT NULL, age INT64 DEFAULT 0>,
+          meta OPTIONS(description = 'Metadata in here')
+        )
+      `,
+      { dialect: "bigquery" }
+    );
+  });
+
   it(`formats SQLite table options`, () => {
     test(dedent`
       CREATE TABLE foo (
