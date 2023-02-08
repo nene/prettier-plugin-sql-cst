@@ -252,4 +252,15 @@ describe("create table", () => {
       { dialect: "bigquery" }
     );
   });
+
+  it.skip(`formats FOR SYSTEM_TIME AS OF`, () => {
+    test(
+      dedent`
+        CREATE SNAPSHOT TABLE foo
+        CLONE my_old_table
+        FOR SYSTEM_TIME AS OF '2017-01-01 10:00:00-07:00'
+      `,
+      { dialect: "bigquery" }
+    );
+  });
 });
