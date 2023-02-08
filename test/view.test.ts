@@ -84,15 +84,11 @@ describe("view", () => {
 
   describe("drop view", () => {
     it(`formats DROP VIEW`, () => {
-      test(dedent`
-        DROP VIEW active_client_view
-      `);
+      test(`DROP VIEW active_client_view`);
     });
 
     it(`formats DROP VIEW IF EXISTS`, () => {
-      test(dedent`
-        DROP VIEW IF EXISTS my_schema.active_client_view
-      `);
+      test(`DROP VIEW IF EXISTS my_schema.active_client_view`);
     });
 
     it(`formats DROP MATERIALIZED VIEW`, () => {
