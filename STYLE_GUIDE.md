@@ -97,6 +97,7 @@ SELECT
 - :white_check_mark: No space between function name and arguments. `my_func(1, 2, 3)`
 - :white_check_mark: No space between single-word type name and arguments. `VARCHAR(100)`
 - :white_check_mark: Space between multi-word type name and arguments. `UNSIGNED NUMERIC (10, 5)`
+- :white_check_mark: Space after `USING` in `JOIN`: `JOIN foo USING (col1)`
 - :white_check_mark: Space between table/view/CTE name and columns list:
 
 ```sql
@@ -114,3 +115,37 @@ SELECT * FROM my_cte;
 Undecided:
 
 - :question: BigQuery options list: `OPTIONS(foo = bar)` v/s `OPTIONS (foo = bar)`
+
+## Rules to possibly adopt from SQLFluff
+
+- [Rule_L015][]: `DISTINCT` used with parentheses
+- [Rule_L029][]: Keywords should not be used as identifiers.
+- [Rule_L033][]: `UNION [DISTINCT|ALL]` is preferred over just `UNION`.
+- [Rule_L034][]: Select wildcards then simple targets before calculations and aggregates.
+- [Rule_L036][]: Select targets should be on a new line unless there is only one select target.
+- [Rule_L037][]: Ambiguous ordering directions for columns in order by clause.
+- [Rule_L038][]: Forbid trailing commas within select clause.
+- [Rule_L047][]: Use consistent syntax to express "count number of rows", e.g. `count(*)` instead of `count(1)`
+- [Rule_L049][]: Comparisons with NULL should use `IS` or `IS NOT`.
+- [Rule_L051][]: Join clauses should be fully qualified, e.g. `INNER JOIN` instead of plain `JOIN`.
+- [Rule_L053][]: Top-level statements should not be wrapped in brackets.
+- [Rule_L058][]: Nested CASE statement in ELSE clause could be flattened.
+- [Rule_L059][]: Unnecessary quoted identifier.
+- [Rule_L061][]: Use `!=` instead of `<>` for "not equal to" comparisons.
+- [Rule_L067][]: Enforce consistent type casting style, e.g. use `CAST(10 AS TEXT)` instead of `10::TEXT` or `CONVERT(10, TEXT)`
+
+[Rule_L015]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L015
+[Rule_L029]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L029
+[Rule_L033]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L033
+[Rule_L034]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L034
+[Rule_L036]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L036
+[Rule_L037]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L037
+[Rule_L038]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L038
+[Rule_L047]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L047
+[Rule_L049]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L049
+[Rule_L051]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L051
+[Rule_L053]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L053
+[Rule_L058]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L058
+[Rule_L059]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L059
+[Rule_L061]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L061
+[Rule_L067]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L067
