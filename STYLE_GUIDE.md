@@ -2,6 +2,10 @@
 
 This document describes the style that Prettier plugin SQL-CST uses for formatting SQL.
 
+- :white_check_mark: - decided and implemented
+- :heavy_check_mark: - decided, but not yet implemented
+- :question: - undecided
+
 ## Generic whitespace
 
 This is based on the defaults used by Prettier:
