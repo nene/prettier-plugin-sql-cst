@@ -162,6 +162,21 @@ describe("create table", () => {
     `);
   });
 
+  it(`formats additional BigQuery CREATE TABLE clauses`, () => {
+    test(
+      dedent`
+        CREATE TABLE client (
+          id INT64
+        )
+        DEFAULT COLLATE 'und:ci'
+        PARTITION BY _PARTITIONDATE
+        CLUSTER BY customer_id
+        OPTIONS(friendly_name = 'Clientele')
+      `,
+      { dialect: "bigquery" }
+    );
+  });
+
   it(`formats CREATE TABLE AS`, () => {
     test(dedent`
       CREATE TABLE foo AS

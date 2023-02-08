@@ -106,6 +106,8 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
       print.spaced("partitionByKw"),
       indent([line, print("specifications")]),
     ]),
+  cluster_by_clause: (print) =>
+    group([print.spaced("clusterByKw"), indent([line, print("columns")])]),
   having_clause: (print) =>
     group([print("havingKw"), indent([line, print("expr")])]),
   qualify_clause: (print) =>
