@@ -92,7 +92,7 @@ describe("view", () => {
     });
 
     it(`formats DROP MATERIALIZED VIEW`, () => {
-      test(`DROP MATERIALIZED VIEW foo`);
+      test(`DROP MATERIALIZED VIEW foo`, { dialect: "bigquery" });
     });
   });
 });
