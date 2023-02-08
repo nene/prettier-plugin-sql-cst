@@ -15,7 +15,7 @@ export const createTableMap: Partial<CstToDocMap<AllCreateTableNodes>> = {
       "columns",
     ]),
     printClauses(print, node, ...rest),
-    node.options ? [" ", group(print("options"))] : [],
+    node.options ? [line, group(print("options"))] : [],
   ],
   column_definition: (print) =>
     print.spaced(["name", "dataType", "constraints"]),
@@ -26,7 +26,7 @@ const printClauses: ToDocFn<CreateTableStmt> = (print, node) => {
   if (node.clauses.length === 1 && isAsClause(node.clauses[0])) {
     return [" ", print("clauses")];
   } else if (node.clauses.length > 0) {
-    return group([line, join(line, print("clauses"))]);
+    return [line, join(line, print("clauses"))];
   } else {
     return [];
   }

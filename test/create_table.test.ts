@@ -158,7 +158,8 @@ describe("create table", () => {
     test(dedent`
       CREATE TABLE foo (
         id INT
-      ) WITHOUT ROWID, STRICT
+      )
+      WITHOUT ROWID, STRICT
     `);
   });
 
@@ -167,7 +168,8 @@ describe("create table", () => {
       dedent`
         CREATE TABLE client (
           id INT64
-        ) DEFAULT COLLATE 'und:ci'
+        )
+        DEFAULT COLLATE 'und:ci'
       `,
       { dialect: "bigquery" }
     );
