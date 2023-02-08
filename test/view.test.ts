@@ -17,6 +17,16 @@ describe("view", () => {
       `);
     });
 
+    it(`formats CREATE OR REPLACE VIEW`, () => {
+      test(
+        dedent`
+          CREATE OR REPLACE VIEW active_client_id AS
+            SELECT 1
+        `,
+        { dialect: "bigquery" }
+      );
+    });
+
     it(`formats CREATE VIEW with column list`, () => {
       test(dedent`
         CREATE VIEW foobar (col1, col2, col3) AS
@@ -35,6 +45,41 @@ describe("view", () => {
           SELECT * FROM client
       `);
     });
+
+    it(`formats CREATE VIEW with BigQuery options`, () => {
+      test(
+        dedent`
+          CREATE VIEW foo
+          OPTIONS(friendly_name = "newview")
+          AS
+            SELECT 1
+        `,
+        { dialect: "bigquery" }
+      );
+    });
+
+    it(`formats simple CREATE MATERIALIZED VIEW`, () => {
+      test(
+        dedent`
+          CREATE MATERIALIZED VIEW foo AS
+            SELECT 1
+        `,
+        { dialect: "bigquery" }
+      );
+    });
+
+    it(`formats CREATE MATERIALIZED VIEW with extra clauses`, () => {
+      test(
+        dedent`
+          CREATE MATERIALIZED VIEW foo
+          PARTITION BY DATE(col_datetime)
+          CLUSTER BY col_int
+          AS
+            SELECT 1
+        `,
+        { dialect: "bigquery" }
+      );
+    });
   });
 
   describe("drop view", () => {
@@ -48,6 +93,10 @@ describe("view", () => {
       test(dedent`
         DROP VIEW IF EXISTS my_schema.active_client_view
       `);
+    });
+
+    it(`formats DROP MATERIALIZED VIEW`, () => {
+      test(`DROP MATERIALIZED VIEW foo`);
     });
   });
 });
