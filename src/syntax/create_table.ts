@@ -9,6 +9,7 @@ export const createTableMap: Partial<CstToDocMap<AllCreateTableNodes>> = {
       "createKw",
       "orReplaceKw",
       "temporaryKw",
+      "externalKw",
       "snapshotKw",
       "tableKw",
       "ifNotExistsKw",
@@ -24,6 +25,8 @@ export const createTableMap: Partial<CstToDocMap<AllCreateTableNodes>> = {
   create_table_like_clause: (print) => print.spaced(["likeKw", "name"]),
   create_table_copy_clause: (print) => print.spaced(["copyKw", "name"]),
   create_table_clone_clause: (print) => print.spaced(["cloneKw", "name"]),
+  with_partition_columns_clause: (print) =>
+    print.spaced(["withPartitionColumnsKw", "columns"]),
 };
 
 const printClauses: ToDocFn<CreateTableStmt> = (print, node) => {

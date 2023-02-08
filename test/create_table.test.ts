@@ -263,4 +263,33 @@ describe("create table", () => {
       { dialect: "bigquery" }
     );
   });
+
+  it(`formats CREATE EXTERNAL TABLE`, () => {
+    test(
+      dedent`
+        CREATE EXTERNAL TABLE dataset.CustomTable (
+          id INT64
+        )
+        WITH CONNECTION myproj.dataset.connectionId
+        WITH PARTITION COLUMNS (field_1 STRING, field_2 INT64)
+        OPTIONS(format = 'PARQUET')
+      `,
+      { dialect: "bigquery" }
+    );
+  });
+
+  it(`formats CREATE EXTERNAL TABLE with long PARTITION COLUMNS list`, () => {
+    test(
+      dedent`
+        CREATE EXTERNAL TABLE dataset.CustomTable
+        WITH PARTITION COLUMNS (
+          first_name STRING,
+          last_name STRING,
+          average_income INT64,
+          waist_height INT64
+        )
+      `,
+      { dialect: "bigquery" }
+    );
+  });
 });
