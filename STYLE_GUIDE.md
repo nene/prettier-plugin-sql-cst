@@ -134,6 +134,8 @@ Undecided:
 - [Rule_L061][]: Use `!=` instead of `<>` for "not equal to" comparisons.
 - [Rule_L067][]: Enforce consistent type casting style, e.g. use `CAST(10 AS TEXT)` instead of `10::TEXT` or `CONVERT(10, TEXT)`
 
+[Test with SQLFluff online.](https://online.sqlfluff.com/)
+
 [Rule_L015]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L015
 [Rule_L029]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L029
 [Rule_L033]: https://docs.sqlfluff.com/en/stable/rules.html#sqlfluff.rules.Rule_L033
