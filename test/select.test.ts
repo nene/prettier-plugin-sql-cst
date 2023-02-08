@@ -105,21 +105,34 @@ describe("select", () => {
   });
 
   describe("BigQuery", () => {
-    it(`formats trailing commas in SELECT`, () => {
-      test(`SELECT 1, 2, 3,`, { dialect: "bigquery" });
+    it(`removes trailing commas from SELECT`, () => {
+      expect(pretty(`SELECT 1, 2, 3,`, { dialect: "bigquery" })).toBe(
+        `SELECT 1, 2, 3`
+      );
     });
 
-    it(`formats trailing commas in multiline SELECT`, () => {
-      test(
+    it(`removes trailing commas from multiline SELECT`, () => {
+      expect(
+        pretty(
+          dedent`
+            SELECT
+              'something long',
+              'something even longer',
+              'another thing that is extra long',
+              'and then something even more grandiose', -- comment
+            FROM my_table
+          `,
+          { dialect: "bigquery" }
+        )
+      ).toBe(
         dedent`
           SELECT
             'something long',
             'something even longer',
             'another thing that is extra long',
-            'and then something even more grandiose',
+            'and then something even more grandiose' -- comment
           FROM my_table
-        `,
-        { dialect: "bigquery" }
+        `
       );
     });
 

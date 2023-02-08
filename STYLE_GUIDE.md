@@ -95,7 +95,7 @@ SELECT
 - :white_check_mark: No whitespace before comma
 - :white_check_mark: Single space after comma for inline list. [Rule_L008][]
 - :white_check_mark: Newline after comma for multiline list
-- :heavy_check_mark: Forbid trailing commas in select clause. [Rule_L038][]
+- :white_check_mark: Forbid trailing commas in select clause. [Rule_L038][]
 
 ## Parenthesis spacing
 
