@@ -6,6 +6,7 @@ export const createTableMap: Partial<CstToDocMap<AllCreateTableNodes>> = {
   create_table_stmt: (print, node) => [
     print.spaced([
       "createKw",
+      "orReplaceKw",
       "temporaryKw",
       "tableKw",
       "ifNotExistsKw",

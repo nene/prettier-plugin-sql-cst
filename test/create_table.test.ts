@@ -28,6 +28,17 @@ describe("create table", () => {
     `);
   });
 
+  it(`formats OR REPLACE`, () => {
+    test(
+      dedent`
+        CREATE OR REPLACE TABLE foo (
+          id INT
+        )
+      `,
+      { dialect: "bigquery" }
+    );
+  });
+
   it(`formats CREATE TABLE with various data types`, () => {
     test(dedent`
       CREATE TABLE client (
