@@ -62,6 +62,36 @@ There are various options here:
 
 This definitely needs to be configurable.
 
+## Operators spacing
+
+- :white_check_mark: Surround binary operators with whitespace: `1 + 2`
+- :white_check_mark: Surround unary keyword-operators with whitespace: `NOT foo`
+- :white_check_mark: Don't add whitespace to unary punctuation-operators: `-price`
+- :heavy_check_mark: Add linebreak before binary operator:
+
+```sql
+WHERE
+  first_name = 'John'
+  AND age_bracket BETWEEN 12 AND 18
+  AND income > 1000
+```
+
+similarly:
+
+```sql
+SELECT
+  sqrt(normalized_power)
+  + interval_duration
+  + rest_duration
+  + average_speed
+```
+
+## Comma spacing
+
+- :white_check_mark: No whitespace before comma
+- :white_check_mark: Single space after comma for inline list
+- :white_check_mark: Newline after comma for multiline list
+
 ## Parenthesis spacing
 
 - :white_check_mark: No space between function name and arguments. `my_func(1, 2, 3)`
