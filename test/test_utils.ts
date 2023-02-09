@@ -20,7 +20,11 @@ export const rawPretty = (sql: string, opts: TestOptions = {}): string => {
 };
 
 export const pretty = (sql: string, opts: TestOptions = {}): string => {
-  return rawPretty(sql, opts).trimEnd();
+  return rawPretty(sql, opts).replace(/;\s*$/, "");
+};
+
+export const rawTest = (sql: string, opts: TestOptions = {}): void => {
+  expect(rawPretty(sql, opts)).toBe(sql);
 };
 
 export const test = (sql: string, opts: TestOptions = {}): void => {

@@ -4,9 +4,9 @@ import { rawPretty } from "./test_utils";
 // In these tests we use rawPretty()
 // to also test that formatted file always ends with final newline.
 describe("statement", () => {
-  it(`formats statement ending without a semicolon`, () => {
+  it(`adds semicolon to statement without a semicolon`, () => {
     expect(rawPretty(`SELECT 1`)).toBe(dedent`
-      SELECT 1
+      SELECT 1;
 
     `);
   });
@@ -20,6 +20,17 @@ describe("statement", () => {
 
   it(`formats multiple statements`, () => {
     expect(rawPretty(`SELECT 1; SELECT 2; SELECT 3;`)).toBe(dedent`
+      SELECT 1;
+
+      SELECT 2;
+
+      SELECT 3;
+
+    `);
+  });
+
+  it(`ensures semicolon after last statement`, () => {
+    expect(rawPretty(`SELECT 1; SELECT 2; SELECT 3`)).toBe(dedent`
       SELECT 1;
 
       SELECT 2;

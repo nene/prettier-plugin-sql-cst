@@ -30,7 +30,7 @@ const createParser = (dialect: DialectName): Parser<Node> => ({
         includeComments: true,
         filename: options.filepath,
       }),
-      options as AllPrettierOptions
+      text
     ),
   astFormat: "sql-cst",
   locStart: (node) => node.range?.[0] as number,
