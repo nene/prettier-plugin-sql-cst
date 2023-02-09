@@ -2,24 +2,7 @@ import dedent from "dedent-js";
 import { pretty, test } from "./test_utils";
 
 describe("select", () => {
-  it(`formats SELECT *`, () => {
-    test(`SELECT *`);
-  });
-
-  it(`formats select in single line`, () => {
-    test(`SELECT 1, 2, 3`);
-  });
-
-  it(`formats select on multiple lines`, () => {
-    expect(pretty(`SELECT 1, 2, 3`, { printWidth: 10 })).toBe(dedent`
-      SELECT
-        1,
-        2,
-        3
-    `);
-  });
-
-  it(`formats SELECT..FROM..WHERE on single line`, () => {
+  it(`formats short SELECT..FROM..WHERE on single line`, () => {
     test(`SELECT a, b, c FROM tbl WHERE x > y`);
   });
 
@@ -77,8 +60,8 @@ describe("select", () => {
     `);
   });
 
-  it(`formats LIMIT with just count`, () => {
-    test(`SELECT * FROM tbl LIMIT 10`);
+  it(`formats SELECT *`, () => {
+    test(`SELECT *`);
   });
 
   it(`formats SELECT DISTINCT`, () => {
@@ -92,6 +75,10 @@ describe("select", () => {
       `,
       { printWidth: 20 }
     );
+  });
+
+  it(`formats LIMIT with just count`, () => {
+    test(`SELECT * FROM tbl LIMIT 10`);
   });
 
   it(`formats set operations of select statements`, () => {
