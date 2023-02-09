@@ -115,7 +115,7 @@ describe("expr", () => {
 
   describe("function-like", () => {
     it(`formats function call to single line`, () => {
-      expect(pretty(`SELECT sqrt(1, 2, 3)`, { printWidth: 15 })).toBe(dedent`
+      expect(pretty(`SELECT sqrt(1, 2, 3)`, { printWidth: 16 })).toBe(dedent`
         SELECT
           sqrt(1, 2, 3)
       `);

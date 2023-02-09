@@ -1,6 +1,6 @@
 import { Node, Program } from "sql-parser-cst";
 import { Doc } from "prettier";
-import { hardline } from "../print_utils";
+import { group, hardline, softline } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
 export const programMap: CstToDocMap<Program> = {
@@ -15,10 +15,10 @@ export const programMap: CstToDocMap<Program> = {
 const printStatement = (doc: Doc, i: number, statements: Node[]): Doc => {
   const node = statements[i];
   if (i === 0) {
-    return doc;
-  } else if (i < statements.length - 1 || node.type !== "empty") {
-    return [";", hardline, hardline, doc];
+    return [doc, ";"];
+  } else if (node.type === "empty") {
+    return group([softline, doc]);
   } else {
-    return [";", doc];
+    return [hardline, hardline, doc, ";"];
   }
 };
