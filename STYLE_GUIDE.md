@@ -41,7 +41,7 @@ Undecided:
 
 ## Semicolons
 
-- :heavy_check_mark: Finish all statements with a semicolon. [Rule_L052][]
+- :white_check_mark: Finish all statements with a semicolon. [Rule_L052][]
 
 Undecided:
 
