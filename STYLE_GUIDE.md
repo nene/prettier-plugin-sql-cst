@@ -28,7 +28,12 @@ notably the parameter-less builtin functions like `current_date` aren't consider
 Undecided:
 
 - :question: Should `CAST(x AS type)` expression be lowercase (treating it as a builtin function)
-  or uppercase (treating it as a builtin expression)? (currently: UPPERCASE)
+  or uppercase (treating it as a builtin expression)?
+  SQLFluff treats `CAST()` as a function and applies upper/lower case depending on how it's
+  configured for functions.
+  Though that will lead to somewhat odd syntax when keywords are uppercase and function names lowercase,
+  resulting in `cast(x AS TYPE)`.  
+  (currently: UPPERCASE)
 
 ## Aliases
 
