@@ -10,6 +10,7 @@ import {
   indent,
   group,
   containsNewline,
+  breakParent,
 } from "../print_utils";
 
 export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
@@ -29,10 +30,11 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
     " ",
     print.spaced(["asKw", "materializedKw", "expr"]),
   ],
-  select_clause: (print) =>
+  select_clause: (print, node, path, opts) =>
     group([
       print.spaced(["selectKw", "distinctKw", "asStructOrValueKw"]),
       indent([line, print("columns")]),
+      containsNewline(node, opts) ? breakParent : [],
     ]),
   except_columns: (print) => print.spaced(["expr", "exceptKw", "columns"]),
   replace_columns: (print) => print.spaced(["expr", "replaceKw", "columns"]),

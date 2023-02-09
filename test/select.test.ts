@@ -60,6 +60,15 @@ describe("select", () => {
     `);
   });
 
+  it(`preserves multiline SELECT columns (even if they would fit on a single line)`, () => {
+    test(dedent`
+      SELECT
+        col1,
+        col2,
+        col3
+    `);
+  });
+
   it(`formats SELECT *`, () => {
     test(`SELECT *`);
   });
