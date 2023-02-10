@@ -20,7 +20,13 @@ export const rawPretty = (sql: string, opts: TestOptions = {}): string => {
 };
 
 export const pretty = (sql: string, opts: TestOptions = {}): string => {
-  return rawPretty(sql, opts).replace(/;\s*$/, "");
+  const formatted = rawPretty(sql, opts);
+  if (!/;\n$/.test(formatted)) {
+    throw new Error(
+      `Expected semicolon and newline at the end of:\n${formatted}`
+    );
+  }
+  return formatted.replace(/;\n$/, "");
 };
 
 export const rawTest = (sql: string, opts: TestOptions = {}): void => {
