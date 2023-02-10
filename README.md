@@ -8,7 +8,7 @@ this plugin formats SQL expressions differently depending on their length.
 A short SQL query will be formatted on a single line:
 
 ```sql
-SELECT a, b, c FROM tbl WHERE x > 10
+SELECT a, b, c FROM tbl WHERE x > 10;
 ```
 
 A longer query, will get each clause printed on a separate line:
@@ -16,7 +16,7 @@ A longer query, will get each clause printed on a separate line:
 ```sql
 SELECT id, client.name, client.priority
 FROM client
-WHERE client.id IN (12, 18, 121)
+WHERE client.id IN (12, 18, 121);
 ```
 
 An even longer one gets the contents of each clause indented:
@@ -37,7 +37,7 @@ WHERE
   AND order.status IN ('active', 'pending', 'processing')
 GROUP BY client.id
 ORDER BY client.name
-LIMIT 100
+LIMIT 100;
 ```
 
 ## Formatting philosophy
