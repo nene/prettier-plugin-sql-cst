@@ -187,11 +187,23 @@ describe("select FROM", () => {
       );
     });
 
-    it.skip(`formats FOR SYSTEM_TIME AS OF`, () => {
+    it(`formats FOR SYSTEM_TIME AS OF`, () => {
       test(
         dedent`
           SELECT *
           FROM tbl FOR SYSTEM_TIME AS OF '2017-01-01 10:00:00-07:00'
+        `,
+        { dialect: "bigquery" }
+      );
+    });
+
+    it(`formats long FOR SYSTEM_TIME AS OF to multiple lines`, () => {
+      test(
+        dedent`
+          SELECT *
+          FROM
+            my_favorite_table AS fancy_table_name
+            FOR SYSTEM_TIME AS OF '2017-01-01 10:00:00-07:00'
         `,
         { dialect: "bigquery" }
       );
