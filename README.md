@@ -108,8 +108,7 @@ Formatting of the following SQL statements is fully implemented:
 - INSERT
 - DELETE
 - TRUNCATE
-- CREATE / DROP TABLE
-- ALTER TABLE (only SQLite syntax, no full BigQuery support)
+- CREATE / DROP / ALTER TABLE
 - CREATE / DROP VIEW
 - CREATE / DROP INDEX
 
