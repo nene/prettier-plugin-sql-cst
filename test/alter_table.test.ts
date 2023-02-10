@@ -101,4 +101,61 @@ describe("alter table", () => {
       { dialect: "bigquery" }
     );
   });
+
+  describe("alter column", () => {
+    it(`formats ALTER COLUMN .. SET OPTIONS`, () => {
+      test(
+        dedent`
+          ALTER TABLE client
+          ALTER COLUMN price
+          SET OPTIONS(description = 'Price per unit')
+        `,
+        { dialect: "bigquery" }
+      );
+    });
+
+    it(`formats ALTER COLUMN [IF EXISTS] .. SET DEFAULT`, () => {
+      test(
+        dedent`
+          ALTER TABLE client
+          ALTER COLUMN IF EXISTS price
+          SET DEFAULT 100
+        `,
+        { dialect: "bigquery" }
+      );
+    });
+
+    it(`formats ALTER COLUMN .. DROP DEFAULT`, () => {
+      test(
+        dedent`
+          ALTER TABLE client
+          ALTER COLUMN price
+          DROP DEFAULT
+        `,
+        { dialect: "bigquery" }
+      );
+    });
+
+    it(`formats ALTER COLUMN .. DROP NOT NULL`, () => {
+      test(
+        dedent`
+          ALTER TABLE client
+          ALTER COLUMN price
+          DROP NOT NULL
+        `,
+        { dialect: "bigquery" }
+      );
+    });
+
+    it(`formats ALTER COLUMN .. SET DATA TYPE`, () => {
+      test(
+        dedent`
+          ALTER TABLE client
+          ALTER COLUMN price
+          SET DATA TYPE INT64
+        `,
+        { dialect: "bigquery" }
+      );
+    });
+  });
 });

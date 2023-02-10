@@ -20,4 +20,14 @@ export const alterTableMap: Partial<
   alter_action_set_options: (print) => print.spaced(["setKw", "options"]),
   alter_action_set_default_collate: (print) =>
     print.spaced(["setDefaultCollateKw", "collation"]),
+  alter_action_alter_column: (print) => [
+    print.spaced(["alterKw", "ifExistsKw", "column"]),
+    hardline,
+    print("action"),
+  ],
+  alter_action_set_default: (print) => print.spaced(["setDefaultKw", "expr"]),
+  alter_action_drop_default: (print) => print.spaced("dropDefaultKw"),
+  alter_action_drop_not_null: (print) => print.spaced("dropNotNullKw"),
+  alter_action_set_data_type: (print) =>
+    print.spaced(["setDataTypeKw", "dataType"]),
 };
