@@ -17,4 +17,5 @@ export const alterTableMap: Partial<
     print.spaced(["addKw", "ifNotExistsKw", "column"]),
   alter_action_drop_column: (print) =>
     print.spaced(["dropKw", "ifExistsKw", "column"]),
+  alter_action_set_options: (print) => print.spaced(["setKw", "options"]),
 };

@@ -81,4 +81,14 @@ describe("alter table", () => {
       { dialect: "bigquery" }
     );
   });
+
+  it(`formats ALTER TABLE..SET OPTIONS`, () => {
+    test(
+      dedent`
+        ALTER TABLE client
+        SET OPTIONS(description = 'Table that expires seven days from now')
+      `,
+      { dialect: "bigquery" }
+    );
+  });
 });
