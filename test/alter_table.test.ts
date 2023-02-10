@@ -91,4 +91,14 @@ describe("alter table", () => {
       { dialect: "bigquery" }
     );
   });
+
+  it(`formats ALTER TABLE..SET DEFAULT COLLATE`, () => {
+    test(
+      dedent`
+        ALTER TABLE client
+        SET DEFAULT COLLATE 'und:ci'
+      `,
+      { dialect: "bigquery" }
+    );
+  });
 });
