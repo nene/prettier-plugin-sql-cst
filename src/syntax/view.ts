@@ -1,10 +1,11 @@
 import { AllViewStatements } from "sql-parser-cst";
-import { group, hardline, indent, join } from "../print_utils";
+import { hardline, join } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
 export const viewMap: Partial<CstToDocMap<AllViewStatements>> = {
   create_view_stmt: (print, node) => {
-    const hasOptions = node.options.length > 0;
+    const hasOnlyAsClause = node.clauses.length === 1;
+    const hasManyClauses = node.clauses.length > 1;
     return [
       print.spaced([
         "createKw",
@@ -16,12 +17,8 @@ export const viewMap: Partial<CstToDocMap<AllViewStatements>> = {
         "name",
         "columns",
       ]),
-      hasOptions ? [hardline, join(hardline, print("options"))] : [],
-      [
-        hasOptions ? hardline : " ",
-        print("asKw"),
-        indent([hardline, group(print("expr"))]),
-      ],
+      hasOnlyAsClause ? [" ", print("clauses")] : [],
+      hasManyClauses ? [hardline, join(hardline, print("clauses"))] : [],
     ];
   },
   drop_view_stmt: (print) =>
