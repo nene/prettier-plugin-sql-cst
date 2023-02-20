@@ -61,7 +61,7 @@ Install it as any other Prettier plugin:
 npm install --save-dev prettier prettier-plugin-sql-cst
 ```
 
-Then use it on SQL files though Prettier command line tool or Prettier extension
+Then use it on SQL files through Prettier command line tool or Prettier extension
 for your editor of choice.
 
 ## Choosing an SQL dialect
