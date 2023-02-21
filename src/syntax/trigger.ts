@@ -23,4 +23,6 @@ export const triggerMap: Partial<CstToDocMap<AllTriggerNodes>> = {
   ],
   trigger_condition: (print) =>
     group([print("whenKw"), indent([line, print("expr")])]),
+  drop_trigger_stmt: (print) =>
+    print.spaced(["dropTriggerKw", "ifExistsKw", "trigger"]),
 };

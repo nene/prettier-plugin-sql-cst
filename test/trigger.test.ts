@@ -77,4 +77,14 @@ describe("trigger", () => {
       `);
     });
   });
+
+  describe("drop trigger", () => {
+    it(`formats DROP TRIGGER`, () => {
+      test(`DROP TRIGGER my_trigger`);
+    });
+
+    it(`formats IF EXISTS`, () => {
+      test(`DROP TRIGGER IF EXISTS my_trigger`);
+    });
+  });
 });
