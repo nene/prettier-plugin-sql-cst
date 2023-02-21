@@ -13,9 +13,11 @@ import { exprMap } from "./expr";
 import { frameMap } from "./frame";
 import { indexMap } from "./index";
 import { insertMap } from "./insert";
+import { proceduralLanguageMap } from "./procedural_language";
 import { procClauseMap } from "./proc_clause";
 import { programMap } from "./program";
 import { selectMap } from "./select";
+import { triggerMap } from "./trigger";
 import { truncateMap } from "./truncate";
 import { updateMap } from "./update";
 import { viewMap } from "./view";
@@ -35,8 +37,10 @@ export const transformMap: Partial<CstToDocMap<Node>> = {
   ...indexMap,
   ...insertMap,
   ...procClauseMap,
+  ...proceduralLanguageMap,
   ...programMap,
   ...selectMap,
+  ...triggerMap,
   ...truncateMap,
   ...updateMap,
   ...viewMap,
