@@ -9,6 +9,7 @@ export const sqliteMap: Partial<CstToDocMap<AllSqliteNodes>> = {
     print.spaced(["detachKw", "databaseKw", "schema"]),
   vacuum_stmt: (print) =>
     print.spaced(["vacuumKw", "schema", "intoKw", "file"]),
+  reindex_stmt: (print) => print.spaced(["reindexKw", "table"]),
   create_virtual_table_stmt: (print) =>
     join(hardline, [
       print.spaced(["createVirtualTableKw", "ifNotExistsKw", "name"]),
