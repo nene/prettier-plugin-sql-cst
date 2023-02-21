@@ -112,6 +112,7 @@ Formatting of the following SQL statements is fully implemented:
 - CREATE / DROP VIEW
 - CREATE / DROP INDEX
 - CREATE / DROP TRIGGER
+- transactions
 
 [prettier]: https://prettier.io/
 [printWidth]: https://prettier.io/docs/en/options.html#print-width
