@@ -17,6 +17,7 @@ import { proceduralLanguageMap } from "./procedural_language";
 import { procClauseMap } from "./proc_clause";
 import { programMap } from "./program";
 import { selectMap } from "./select";
+import { sqliteMap } from "./sqlite";
 import { triggerMap } from "./trigger";
 import { truncateMap } from "./truncate";
 import { updateMap } from "./update";
@@ -40,6 +41,7 @@ export const transformMap: Partial<CstToDocMap<Node>> = {
   ...proceduralLanguageMap,
   ...programMap,
   ...selectMap,
+  ...sqliteMap,
   ...triggerMap,
   ...truncateMap,
   ...updateMap,
