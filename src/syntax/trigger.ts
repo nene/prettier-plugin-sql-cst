@@ -1,5 +1,5 @@
 import { AllTriggerNodes } from "sql-parser-cst";
-import { hardline, join } from "../print_utils";
+import { group, hardline, indent, join, line } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
 export const triggerMap: Partial<CstToDocMap<AllTriggerNodes>> = {
@@ -19,5 +19,6 @@ export const triggerMap: Partial<CstToDocMap<AllTriggerNodes>> = {
     ]),
   trigger_event: (print) =>
     print.spaced(["timeKw", "eventKw", "ofKw", "columns"]),
-  trigger_condition: (print) => print.spaced(["whenKw", "expr"]),
+  trigger_condition: (print) =>
+    group([print("whenKw"), indent([line, print("expr")])]),
 };

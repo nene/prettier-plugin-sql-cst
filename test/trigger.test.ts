@@ -44,7 +44,21 @@ describe("trigger", () => {
         FOR EACH ROW
         WHEN priority > 10
         BEGIN
-          DELETE FROM customerd;
+          DELETE FROM customer;
+        END
+      `);
+    });
+
+    it(`formats long WHEN condition`, () => {
+      test(dedent`
+        CREATE TRIGGER cust_addr_del
+        INSERT ON customer_address
+        WHEN
+          customer_address.priority > 10
+          AND customer_address.id IS NOT NULL
+          AND customer_address.priority < 100
+        BEGIN
+          DELETE FROM customer;
         END
       `);
     });
