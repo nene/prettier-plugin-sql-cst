@@ -2,7 +2,7 @@ import { AllSqliteNodes } from "sql-parser-cst";
 import { hardline, join } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const sqliteMap: Partial<CstToDocMap<AllSqliteNodes>> = {
+export const sqliteMap: CstToDocMap<AllSqliteNodes> = {
   attach_database_stmt: (print) =>
     print.spaced(["attachKw", "databaseKw", "file", "asKw", "schema"]),
   detach_database_stmt: (print) =>
