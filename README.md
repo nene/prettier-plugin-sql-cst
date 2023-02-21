@@ -100,8 +100,9 @@ There are also some SQL-specific options:
 
 ## Limitations and development status
 
-Currently this plugin supports the most common everyday **SQLite** and **BigQuery** syntax.
-Formatting of the following SQL statements is fully implemented:
+Currently this plugin supports full **SQLite** syntax.
+It also supports most of the **BigQuery** syntax.
+Specifically the formatting of the following BigQuery SQL statements is fully implemented:
 
 - SELECT
 - UPDATE
@@ -110,9 +111,7 @@ Formatting of the following SQL statements is fully implemented:
 - TRUNCATE
 - CREATE / DROP / ALTER TABLE
 - CREATE / DROP VIEW
-- CREATE / DROP INDEX
-- CREATE / DROP TRIGGER
-- transactions
+- transactions (BEGIN, COMMIT, ROLLBACK)
 
 [prettier]: https://prettier.io/
 [printWidth]: https://prettier.io/docs/en/options.html#print-width
