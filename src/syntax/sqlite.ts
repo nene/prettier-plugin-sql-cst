@@ -10,6 +10,9 @@ export const sqliteMap: Partial<CstToDocMap<AllSqliteNodes>> = {
   vacuum_stmt: (print) =>
     print.spaced(["vacuumKw", "schema", "intoKw", "file"]),
   reindex_stmt: (print) => print.spaced(["reindexKw", "table"]),
+  pragma_stmt: (print) => print.spaced(["pragmaKw", "pragma"]),
+  pragma_assignment: (print) => join(" = ", print(["name", "value"])),
+  pragma_func_call: (print) => print(["name", "args"]),
   create_virtual_table_stmt: (print) =>
     join(hardline, [
       print.spaced(["createVirtualTableKw", "ifNotExistsKw", "name"]),
