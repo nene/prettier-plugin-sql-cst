@@ -12,13 +12,15 @@ export const triggerMap: Partial<CstToDocMap<AllTriggerNodes>> = {
         "ifNotExistsKw",
         "name",
       ]),
-      print.spaced(["event", "onKw", "table"]),
+      group([print("event"), indent([line, print.spaced(["onKw", "table"])])]),
       ...(node.forEachRowKw ? [print.spaced(["forEachRowKw"])] : []),
       ...(node.condition ? [print(["condition"])] : []),
       print("body"),
     ]),
-  trigger_event: (print) =>
-    print.spaced(["timeKw", "eventKw", "ofKw", "columns"]),
+  trigger_event: (print, node) => [
+    print.spaced(["timeKw", "eventKw", "ofKw"]),
+    node.columns ? indent([line, print("columns")]) : [],
+  ],
   trigger_condition: (print) =>
     group([print("whenKw"), indent([line, print("expr")])]),
 };

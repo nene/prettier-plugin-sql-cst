@@ -15,6 +15,20 @@ describe("trigger", () => {
       `);
     });
 
+    it(`formats long UPDATE OF column list`, () => {
+      test(dedent`
+        CREATE TRIGGER cust_addr_chng
+        INSTEAD OF UPDATE OF
+          cust_address,
+          cust_zip_code,
+          cust_country
+          ON customer_address
+        BEGIN
+          DELETE FROM customer;
+        END
+      `);
+    });
+
     it(`formats TEMPORARY TRIGGER IF NOT EXISTS`, () => {
       test(dedent`
         CREATE TEMPORARY TRIGGER IF NOT EXISTS cust_addr_del
