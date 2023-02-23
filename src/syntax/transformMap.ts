@@ -13,6 +13,7 @@ import { dropTableMap } from "./drop_table";
 import { explainMap } from "./explain";
 import { exprMap } from "./expr";
 import { frameMap } from "./frame";
+import { functionMap } from "./function";
 import { indexMap } from "./index";
 import { insertMap } from "./insert";
 import { proceduralLanguageMap } from "./procedural_language";
@@ -40,6 +41,7 @@ export const transformMap: Partial<CstToDocMap<Node>> = {
   ...explainMap,
   ...exprMap,
   ...frameMap,
+  ...functionMap,
   ...indexMap,
   ...insertMap,
   ...procClauseMap,
