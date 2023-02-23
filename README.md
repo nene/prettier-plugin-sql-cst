@@ -49,7 +49,6 @@ LIMIT 100;
 
 Currently this plugin preserves most of the syntax elements
 and concentrates mainly on the layout of whitespace.
-For example it does not add/remove paratheses.
 
 See [STYLE_GUIDE][] for overview of the SQL formatting style used.
 
