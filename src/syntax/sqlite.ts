@@ -1,5 +1,5 @@
 import { AllSqliteNodes } from "sql-parser-cst";
-import { hardline, join } from "../print_utils";
+import { join } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
 export const sqliteMap: CstToDocMap<AllSqliteNodes> = {

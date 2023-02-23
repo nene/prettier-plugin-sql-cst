@@ -1,4 +1,4 @@
-import { AllCreateTableNodes, CreateTableStmt, Node } from "sql-parser-cst";
+import { AllCreateTableNodes, CreateTableStmt } from "sql-parser-cst";
 import { isAsClause } from "../node_utils";
 import { CstToDocMap, ToDocFn } from "../CstToDocMap";
 import { group, join, line } from "../print_utils";
