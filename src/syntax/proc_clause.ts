@@ -1,12 +1,18 @@
 import { AllProcClauseNodes } from "sql-parser-cst";
+import { isStringLiteral } from "../node_utils";
 import { CstToDocMap } from "../CstToDocMap";
-import { group, hardline, indent } from "../print_utils";
+import { hardline, indent } from "../print_utils";
 
 export const procClauseMap: Partial<CstToDocMap<AllProcClauseNodes>> = {
   returns_clause: (print) => print.spaced(["returnsKw", "dataType"]),
   determinism_clause: (print) => print.spaced("deterministicKw"),
   language_clause: (print) => print.spaced(["languageKw", "name"]),
-  as_clause: (print) => [print("asKw"), indent([hardline, print("expr")])],
+  as_clause: (print, node) => {
+    if (isStringLiteral(node.expr)) {
+      return print.spaced(["asKw", "expr"]);
+    }
+    return [print("asKw"), indent([hardline, print("expr")])];
+  },
   with_connection_clause: (print) =>
     print.spaced(["withConnectionKw", "connection"]),
 };

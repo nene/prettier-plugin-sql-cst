@@ -112,8 +112,9 @@ describe("function", () => {
           RETURNS FLOAT64
           NOT DETERMINISTIC
           LANGUAGE js
-          AS
-            'return Math.random();'
+          AS '''
+            return Math.random();
+          '''
         `,
         { dialect: "bigquery" }
       );
