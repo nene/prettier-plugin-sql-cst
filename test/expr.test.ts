@@ -85,9 +85,21 @@ describe("expr", () => {
     `);
   });
 
+  it(`preserves comments when eliminating (((nested))) parenthesis`, () => {
+    expect(pretty(`SELECT (/*c1*/(/*c2*/(/*c3*/ 1 + 2))) * 3`)).toBe(dedent`
+      SELECT /*c1*/ /*c2*/ (/*c3*/ 1 + 2) * 3
+    `);
+  });
+
   it(`eliminates unnecessary parenthesis around function arguments`, () => {
     expect(pretty(`SELECT my_func((id), (name))`)).toBe(dedent`
       SELECT my_func(id, name)
+    `);
+  });
+
+  it(`preserves comments when eliminating func(((arg))) parenthesis`, () => {
+    expect(pretty(`SELECT count(/*c1*/(/*c2*/ id))`)).toBe(dedent`
+      SELECT count(/*c1*/ /*c2*/ id)
     `);
   });
 
