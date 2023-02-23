@@ -291,4 +291,11 @@ describe("create table", () => {
       { dialect: "bigquery" }
     );
   });
+
+  it(`formats CREATE VIRTUAL TABLE`, () => {
+    test(dedent`
+      CREATE VIRTUAL TABLE my_table
+      USING my_func(1, 2)
+    `);
+  });
 });
