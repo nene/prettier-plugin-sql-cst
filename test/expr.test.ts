@@ -85,6 +85,12 @@ describe("expr", () => {
     `);
   });
 
+  it(`eliminates unnecessary parenthesis around function arguments`, () => {
+    expect(pretty(`SELECT my_func((id), (name))`)).toBe(dedent`
+      SELECT my_func(id, name)
+    `);
+  });
+
   describe("case", () => {
     it(`formats CASE expression always on multiple lines`, () => {
       test(dedent`

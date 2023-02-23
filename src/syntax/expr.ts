@@ -8,6 +8,8 @@ import {
   isEmpty,
   isArraySubscript,
   isParenExpr,
+  isFuncArgs,
+  isListExpr,
 } from "../node_utils";
 import { isString, last } from "../utils";
 
@@ -32,6 +34,13 @@ export const exprMap: Partial<CstToDocMap<AllExprNodes>> = {
   paren_expr: (print, node, path) => {
     // discard unnecessary nested ((parentheses))
     if (isParenExpr(node.expr)) {
+      return print("expr");
+    }
+    // Discard unnecessary parenthesis around function arguments
+    if (
+      isListExpr(path.getParentNode(0)) &&
+      isFuncArgs(path.getParentNode(1))
+    ) {
       return print("expr");
     }
     const parent = path.getParentNode() as Node;

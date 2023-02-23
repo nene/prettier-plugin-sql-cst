@@ -132,6 +132,7 @@ Undecided:
 ## Parenthesis
 
 - :white-check-mark: Discard unnecessary nested parenthesis. `((1 + 2)) * 3` --> `(1 + 2) * 3`
+- :white-check-mark: Discard parenthesis around function arguments. `count((id))` --> `count(id)`
 
 ## Rules to possibly adopt from SQLFluff
 

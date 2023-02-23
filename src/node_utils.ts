@@ -9,6 +9,7 @@ const is =
 
 export const isValuesClause = is("values_clause");
 export const isFuncCall = is("func_call");
+export const isFuncArgs = is("func_args");
 export const isCreateTableStmt = is("create_table_stmt");
 export const isKeyword = is("keyword");
 export const isEmpty = is("empty");
@@ -17,3 +18,4 @@ export const isStringLiteral = is("string_literal");
 export const isArraySubscript = is("array_subscript");
 export const isAsClause = is("as_clause");
 export const isParenExpr = is("paren_expr");
+export const isListExpr = is("list_expr");
