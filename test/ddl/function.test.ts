@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { test } from "../test_utils";
+import { pretty, test } from "../test_utils";
 
 describe("function", () => {
   describe("create function", () => {
@@ -118,6 +118,29 @@ describe("function", () => {
         `,
         { dialect: "bigquery" }
       );
+    });
+
+    it(`reformats JavaScript in JS function`, () => {
+      expect(
+        pretty(
+          dedent`
+            CREATE FUNCTION gen_random()
+            RETURNS FLOAT64
+            LANGUAGE js
+            AS ' if(true) {return Math.random () *2}'
+          `,
+          { dialect: "bigquery" }
+        )
+      ).toBe(dedent`
+        CREATE FUNCTION gen_random()
+        RETURNS FLOAT64
+        LANGUAGE js
+        AS '''
+          if (true) {
+            return Math.random() * 2;
+          }
+        '''
+      `);
     });
   });
 

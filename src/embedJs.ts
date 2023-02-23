@@ -1,22 +1,33 @@
 import { Printer } from "prettier";
-import { Node, StringLiteral } from "sql-parser-cst";
-import { isJsonLiteral, isStringLiteral } from "./node_utils";
+import { CreateFunctionStmt, Node, StringLiteral } from "sql-parser-cst";
 import {
+  isAsClause,
+  isCreateFunctionStmt,
+  isLanguageClause,
+  isStringLiteral,
+} from "./node_utils";
+import {
+  hardline,
   ifBreak,
   indent,
-  softline,
   stripTrailingHardline,
 } from "./print_utils";
 
-export const embedJson: NonNullable<Printer<Node>["embed"]> = (
+export const embedJs: NonNullable<Printer<Node>["embed"]> = (
   path,
   print,
   textToDoc,
   options
 ) => {
   const node = path.getValue();
-  const parent = path.getParentNode();
-  if (isStringLiteral(node) && isJsonLiteral(parent)) {
+  const parent = path.getParentNode(0);
+  const grandParent = path.getParentNode(1);
+  if (
+    isStringLiteral(node) &&
+    isAsClause(parent) &&
+    isCreateFunctionStmt(grandParent) &&
+    grandParent.clauses.some(isJavaScriptLanguageClause)
+  ) {
     if (
       containsTripleQuote(node.value) ||
       containsBackslash(node.value) ||
@@ -26,20 +37,24 @@ export const embedJson: NonNullable<Printer<Node>["embed"]> = (
       // Tackle these corner-case in the future.
       return null;
     }
-    const json = textToDoc(node.value, {
+    const js = textToDoc(node.value, {
       ...options,
-      parser: "json",
+      parser: "babel",
     });
     const inlineQuote = containsSingleQuote(node.value) ? "'''" : "'";
     return [
       ifBreak("'''", inlineQuote),
-      indent([softline, stripTrailingHardline(json)]),
-      softline,
+      indent([hardline, stripTrailingHardline(js)]),
+      hardline,
       ifBreak("'''", inlineQuote),
     ];
   }
   return null;
 };
+
+const isJavaScriptLanguageClause = (
+  clause: CreateFunctionStmt["clauses"][0]
+): boolean => isLanguageClause(clause) && clause.name.name === "js";
 
 const containsSingleQuote = (json: string) => /'/.test(json);
 
