@@ -79,6 +79,12 @@ describe("expr", () => {
     `);
   });
 
+  it(`eliminates unnecessary (((nested))) parenthesis`, () => {
+    expect(pretty(`SELECT (((1 + 2))) * 3`)).toBe(dedent`
+      SELECT (1 + 2) * 3
+    `);
+  });
+
   describe("case", () => {
     it(`formats CASE expression always on multiple lines`, () => {
       test(dedent`

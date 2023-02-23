@@ -7,6 +7,7 @@ import {
   isValuesClause,
   isEmpty,
   isArraySubscript,
+  isParenExpr,
 } from "../node_utils";
 import { isString, last } from "../utils";
 
@@ -29,6 +30,10 @@ export const exprMap: Partial<CstToDocMap<AllExprNodes>> = {
     }
   },
   paren_expr: (print, node, path) => {
+    // discard unnecessary nested ((parentheses))
+    if (isParenExpr(node.expr)) {
+      return print("expr");
+    }
     const parent = path.getParentNode() as Node;
     const lineStyle = isCreateTableStmt(parent) ? hardline : softline;
     return group(["(", indent([lineStyle, print("expr")]), lineStyle, ")"]);

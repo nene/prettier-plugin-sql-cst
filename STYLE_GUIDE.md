@@ -129,6 +129,10 @@ Undecided:
 
 - :question: BigQuery options list: `OPTIONS(foo = bar)` v/s `OPTIONS (foo = bar)`
 
+## Parenthesis
+
+- :white-check-mark: Discard unnecessary nested parenthesis. `((1 + 2)) * 3` --> `(1 + 2) * 3`
+
 ## Rules to possibly adopt from SQLFluff
 
 - [Rule_L022][]: Blank line after CTE.

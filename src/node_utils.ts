@@ -16,3 +16,4 @@ export const isJsonLiteral = is("json_literal");
 export const isStringLiteral = is("string_literal");
 export const isArraySubscript = is("array_subscript");
 export const isAsClause = is("as_clause");
+export const isParenExpr = is("paren_expr");
