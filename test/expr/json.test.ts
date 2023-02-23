@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { pretty, test } from "./test_utils";
+import { pretty, test } from "../test_utils";
 
 describe("json", () => {
   it(`formats JSON literals`, () => {

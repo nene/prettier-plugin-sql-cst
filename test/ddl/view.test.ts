@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { test } from "./test_utils";
+import { test } from "../test_utils";
 
 describe("view", () => {
   describe("create view", () => {

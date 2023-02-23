@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { test } from "./test_utils";
+import { test } from "../test_utils";
 
 describe("literal", () => {
   it(`formats BigQuery NUMERIC and BIGNUMERIC literals`, () => {

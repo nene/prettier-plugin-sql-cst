@@ -1,4 +1,4 @@
-import { test } from "./test_utils";
+import { test } from "../test_utils";
 
 describe("drop table", () => {
   it(`formats DROP TABLE statement`, () => {

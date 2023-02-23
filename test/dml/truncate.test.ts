@@ -1,4 +1,4 @@
-import { test } from "./test_utils";
+import { test } from "../test_utils";
 
 describe("truncate", () => {
   it(`formats TRUNCATE TABLE statement`, () => {

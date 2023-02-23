@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { test } from "./test_utils";
+import { test } from "../test_utils";
 
 describe("select with", () => {
   it(`formats tiny WITH on same line as the rest of SELECT`, () => {
