@@ -144,6 +144,15 @@ describe("expr", () => {
       test(`SELECT CAST(127 AS INT)`);
     });
 
+    it(`formats CAST() with FORMAT`, () => {
+      test(`SELECT CAST('11-08' AS DATE FORMAT 'DD-MM')`, {
+        dialect: "bigquery",
+      });
+      test(`SELECT CAST('12:35' AS TIME FORMAT 'HH:MI' AT TIME ZONE 'UTC')`, {
+        dialect: "bigquery",
+      });
+    });
+
     it(`formats RAISE expression`, () => {
       test(`SELECT RAISE(IGNORE), RAISE(ABORT, 'Oh no!')`);
     });
