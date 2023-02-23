@@ -190,5 +190,9 @@ describe("expr", () => {
         { dialect: "bigquery" }
       );
     });
+
+    it(`formats BigQuery @@system_variables`, () => {
+      test(`SELECT @@error.message`, { dialect: "bigquery" });
+    });
   });
 });

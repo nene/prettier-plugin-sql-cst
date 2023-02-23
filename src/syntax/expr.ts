@@ -96,6 +96,7 @@ export const exprMap: Partial<CstToDocMap<AllExprNodes>> = {
   timestamp_literal: (print) => print.spaced(["timestampKw", "string"]),
   json_literal: (print) => print.spaced(["jsonKw", "string"]),
   identifier: (print) => print("text"),
+  variable: (print) => print("text"),
 };
 
 const isBooleanOp = ({ name }: Keyword) => name === "AND" || name === "OR";
