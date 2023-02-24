@@ -112,6 +112,7 @@ Specifically the formatting of the following BigQuery SQL statements is fully im
 - MERGE
 - CREATE / DROP / ALTER TABLE
 - CREATE / DROP / ALTER VIEW
+- CREATE / DROP / ALTER SCHEMA
 - CREATE / DROP FUNCTION
 - CREATE / DROP PROCEDURE
 - transactions (BEGIN, COMMIT, ROLLBACK)
