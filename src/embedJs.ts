@@ -1,17 +1,12 @@
 import { Printer } from "prettier";
-import { CreateFunctionStmt, Node, StringLiteral } from "sql-parser-cst";
+import { CreateFunctionStmt, Node } from "sql-parser-cst";
 import {
   isAsClause,
   isCreateFunctionStmt,
   isLanguageClause,
   isStringLiteral,
 } from "./node_utils";
-import {
-  hardline,
-  ifBreak,
-  indent,
-  stripTrailingHardline,
-} from "./print_utils";
+import { hardline, indent, stripTrailingHardline } from "./print_utils";
 
 export const embedJs: NonNullable<Printer<Node>["embed"]> = (
   path,
@@ -28,11 +23,7 @@ export const embedJs: NonNullable<Printer<Node>["embed"]> = (
     isCreateFunctionStmt(grandParent) &&
     grandParent.clauses.some(isJavaScriptLanguageClause)
   ) {
-    if (
-      containsTripleQuote(node.value) ||
-      containsBackslash(node.value) ||
-      isRawString(node)
-    ) {
+    if (containsTripleQuote(node.value)) {
       // Give up for now. Don't format JSON inside the string.
       // Tackle these corner-case in the future.
       return null;
@@ -41,12 +32,11 @@ export const embedJs: NonNullable<Printer<Node>["embed"]> = (
       ...options,
       parser: "babel",
     });
-    const inlineQuote = containsSingleQuote(node.value) ? "'''" : "'";
     return [
-      ifBreak("'''", inlineQuote),
+      "r'''",
       indent([hardline, stripTrailingHardline(js)]),
       hardline,
-      ifBreak("'''", inlineQuote),
+      "'''",
     ];
   }
   return null;
@@ -56,8 +46,4 @@ const isJavaScriptLanguageClause = (
   clause: CreateFunctionStmt["clauses"][0]
 ): boolean => isLanguageClause(clause) && clause.name.name === "js";
 
-const containsSingleQuote = (json: string) => /'/.test(json);
-
 const containsTripleQuote = (json: string) => /'''/.test(json);
-const containsBackslash = (json: string) => /\\/.test(json);
-const isRawString = (node: StringLiteral) => /^R/i.test(node.text);

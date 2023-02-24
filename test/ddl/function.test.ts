@@ -112,7 +112,7 @@ describe("function", () => {
           RETURNS FLOAT64
           NOT DETERMINISTIC
           LANGUAGE js
-          AS '''
+          AS r'''
             return Math.random();
           '''
         `,
@@ -135,7 +135,7 @@ describe("function", () => {
         CREATE FUNCTION gen_random()
         RETURNS FLOAT64
         LANGUAGE js
-        AS '''
+        AS r'''
           if (true) {
             return Math.random() * 2;
           }
