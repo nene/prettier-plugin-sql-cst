@@ -4,6 +4,7 @@ import { printSql } from "./printSql";
 import { embed } from "./embed";
 import { isNode } from "./utils";
 import { transformCst } from "./transform/transformCst";
+import { AllPrettierOptions } from "./options";
 
 export { options } from "./options";
 
@@ -28,6 +29,7 @@ const createParser = (dialect: DialectName): Parser<Node> => ({
         includeRange: true,
         includeComments: true,
         filename: options.filepath,
+        paramTypes: (options as AllPrettierOptions<Node>).sqlParamTypes,
       }),
       text
     ),

@@ -96,6 +96,7 @@ There are also some SQL-specific options:
 | API Option       | Default | Description                                                               |
 | ---------------- | :-----: | ------------------------------------------------------------------------- |
 | `sqlKeywordCase` | `upper` | Converts SQL keywords to `upper` or `lower` case, or `preserve` existing. |
+| `sqlParamTypes`  |  `[]`   | Array of bound parameter types: `?`, `?nr`, `:name`, `@name`, `$name`.    |
 
 ## Limitations and development status
 
