@@ -109,6 +109,7 @@ Specifically the formatting of the following BigQuery SQL statements is fully im
 - INSERT
 - DELETE
 - TRUNCATE
+- MERGE
 - CREATE / DROP / ALTER TABLE
 - CREATE / DROP VIEW
 - CREATE / FROP FUNCTION
