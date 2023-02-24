@@ -23,20 +23,23 @@ export const embedJs: NonNullable<Printer<Node>["embed"]> = (
     isCreateFunctionStmt(grandParent) &&
     grandParent.clauses.some(isJavaScriptLanguageClause)
   ) {
-    if (containsTripleQuote(node.value)) {
-      // Give up for now. Don't format JSON inside the string.
-      // Tackle these corner-case in the future.
+    const quotes = detectQuotes(node.value);
+    if (!quotes) {
+      // Give up for now. Don't format JavaScript inside the string.
+      // Perhaps tackle this corner-case in the future.
       return null;
     }
+
     const js = textToDoc(node.value, {
       ...options,
       parser: "babel",
     });
+
     return [
-      "r'''",
+      quotes[0],
       indent([hardline, stripTrailingHardline(js)]),
       hardline,
-      "'''",
+      quotes[1],
     ];
   }
   return null;
@@ -46,4 +49,14 @@ const isJavaScriptLanguageClause = (
   clause: CreateFunctionStmt["clauses"][0]
 ): boolean => isLanguageClause(clause) && clause.name.name === "js";
 
-const containsTripleQuote = (json: string) => /'''/.test(json);
+// Whether to quote the code with single- or double-quotes.
+// Returns undefined when neither can be used without escaping.
+const detectQuotes = (js: string): [string, string] | undefined => {
+  if (!/'''/.test(js)) {
+    return ["r'''", "'''"];
+  }
+  if (!/"""/.test(js)) {
+    return ['r"""', '"""'];
+  }
+  return undefined;
+};
