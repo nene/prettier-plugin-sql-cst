@@ -23,4 +23,9 @@ export const viewMap: Partial<CstToDocMap<AllViewStatements>> = {
   },
   drop_view_stmt: (print) =>
     print.spaced(["dropKw", "materializedKw", "viewKw", "ifExistsKw", "views"]),
+  alter_view_stmt: (print) => [
+    print.spaced(["alterKw", "viewKw", "ifExistsKw", "name"]),
+    hardline,
+    join(hardline, print("actions")),
+  ],
 };

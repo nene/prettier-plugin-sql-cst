@@ -95,4 +95,16 @@ describe("view", () => {
       test(`DROP MATERIALIZED VIEW foo`, { dialect: "bigquery" });
     });
   });
+
+  describe("alter view", () => {
+    it(`formats ALTER VIEW .. SET OPTIONS`, () => {
+      test(
+        dedent`
+          ALTER VIEW IF EXISTS my_view
+          SET OPTIONS(description = 'blah')
+        `,
+        { dialect: "bigquery" }
+      );
+    });
+  });
 });
