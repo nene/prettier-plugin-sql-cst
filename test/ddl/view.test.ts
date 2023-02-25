@@ -101,5 +101,14 @@ describe("view", () => {
         `
       );
     });
+
+    it(`formats ALTER MATERIALIZED VIEW .. SET OPTIONS`, () => {
+      testBigquery(
+        dedent`
+          ALTER MATERIALIZED VIEW my_view
+          SET OPTIONS(description = 'blah')
+        `
+      );
+    });
   });
 });
