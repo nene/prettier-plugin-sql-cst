@@ -69,4 +69,12 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
     hardline,
     print.spaced("endCaseKw"),
   ],
+
+  // LOOP
+  loop_stmt: (print) => [
+    print("loopKw"),
+    indent([hardline, stripTrailingHardline(print("body"))]),
+    hardline,
+    print.spaced("endLoopKw"),
+  ],
 };
