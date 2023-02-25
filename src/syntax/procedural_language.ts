@@ -77,4 +77,25 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
     hardline,
     print.spaced("endLoopKw"),
   ],
+  // REPEAT
+  repeat_stmt: (print) => [
+    print("repeatKw"),
+    indent([hardline, stripTrailingHardline(print("body"))]),
+    hardline,
+    print.spaced(["untilKw", "condition", "endRepeatKw"]),
+  ],
+  // WHILE
+  while_stmt: (print) => [
+    print.spaced(["whileKw", "condition", "doKw"]),
+    indent([hardline, stripTrailingHardline(print("body"))]),
+    hardline,
+    print.spaced("endWhileKw"),
+  ],
+  // FOR .. IN
+  for_stmt: (print) => [
+    print.spaced(["forKw", "left", "inKw", "right", "doKw"]),
+    indent([hardline, stripTrailingHardline(print("body"))]),
+    hardline,
+    print.spaced("endForKw"),
+  ],
 };
