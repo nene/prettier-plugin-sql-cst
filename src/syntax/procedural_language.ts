@@ -98,4 +98,7 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
     hardline,
     print.spaced("endForKw"),
   ],
+  // BREAK/CONTINUE
+  break_stmt: (print) => print("breakKw"),
+  continue_stmt: (print) => print("continueKw"),
 };

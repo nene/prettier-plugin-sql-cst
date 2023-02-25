@@ -33,4 +33,16 @@ describe("loops", () => {
       END FOR
     `);
   });
+
+  it(`formats BREAK/CONTINUE`, () => {
+    testBigquery(dedent`
+      LOOP
+        IF TRUE THEN
+          BREAK;
+        ELSE
+          CONTINUE;
+        END IF;
+      END LOOP
+    `);
+  });
 });
