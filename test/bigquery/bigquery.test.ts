@@ -18,4 +18,11 @@ describe("bigquery", () => {
       testBigquery(`DROP ${entityType} IF EXISTS commitment_id`);
     });
   });
+
+  it(`formats ALTER ORGANIZATION`, () => {
+    testBigquery(dedent`
+      ALTER ORGANIZATION
+      SET OPTIONS(default_time_zone = 'America/Los_Angeles')
+    `);
+  });
 });

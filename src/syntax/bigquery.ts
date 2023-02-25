@@ -60,4 +60,8 @@ export const bigqueryMap: Partial<CstToDocMap<AllBigqueryNodes>> = {
   ],
   drop_assignment_stmt: (print) =>
     print.spaced(["dropKw", "assignmentKw", "ifExistsKw", "name"]),
+
+  // ALTER ORGANIZATION
+  alter_organization_stmt: (print) =>
+    join(hardline, [print.spaced("alterOrganizationKw"), print("actions")]),
 };
