@@ -100,23 +100,10 @@ There are also some SQL-specific options:
 
 ## Limitations and development status
 
-Currently this plugin supports full **SQLite** syntax.
-It also supports most of the **BigQuery** syntax.
-Specifically the formatting of the following BigQuery SQL statements is fully implemented:
+Currently this plugin supports two SQL dialects:
 
-- SELECT
-- UPDATE
-- INSERT
-- DELETE
-- TRUNCATE
-- MERGE
-- CREATE / DROP / ALTER TABLE
-- CREATE / DROP / ALTER VIEW
-- CREATE / DROP / ALTER SCHEMA
-- CREATE / DROP SEARCH INDEX
-- CREATE / DROP FUNCTION
-- CREATE / DROP PROCEDURE
-- transactions (BEGIN, COMMIT, ROLLBACK)
+- **SQLite** - full support.
+- **BigQuery** - most of the common SQL syntax is supported (see [#2][] for implementation progress).
 
 [prettier]: https://prettier.io/
 [printWidth]: https://prettier.io/docs/en/options.html#print-width
@@ -125,3 +112,4 @@ Specifically the formatting of the following BigQuery SQL statements is fully im
 [sql-parser-cst]: https://github.com/nene/sql-parser-cst
 [wadler-prettier]: http://homepages.inf.ed.ac.uk/wadler/papers/prettier/prettier.pdf
 [STYLE_GUIDE]: ./STYLE_GUIDE.md
+[#2]: https://github.com/nene/prettier-plugin-sql-cst/issues/2
