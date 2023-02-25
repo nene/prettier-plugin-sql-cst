@@ -24,6 +24,15 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
   ],
   error_category: (print) => print("errorKw"),
 
+  // DECLARE
+  declare_stmt: (print) =>
+    join(" ", [
+      print("declareKw"),
+      group(print("names")),
+      ...print.spaced(["dataType", "default"]),
+    ]),
+  declare_default: (print) => print.spaced(["defaultKw", "expr"]),
+
   // IF
   if_stmt: (print) =>
     join(hardline, [...print("clauses"), print.spaced("endIfKw")]),
