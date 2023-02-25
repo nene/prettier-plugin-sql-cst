@@ -109,4 +109,6 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
   ],
   // CALL
   call_stmt: (print) => print.spaced(["callKw", "func"]),
+  // RETURN
+  return_stmt: (print) => print("returnKw"),
 };
