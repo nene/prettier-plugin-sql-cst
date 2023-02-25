@@ -28,5 +28,6 @@ export const mergeMap: Partial<CstToDocMap<AllMergeNodes>> = {
     line,
     group(print("values")),
   ],
+  merge_action_insert_row_clause: (print) => print("rowKw"),
   merge_action_update: (print) => print.spaced(["updateKw", "set"]),
 };
