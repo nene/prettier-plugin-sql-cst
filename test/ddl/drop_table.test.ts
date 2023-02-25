@@ -1,4 +1,4 @@
-import { test } from "../test_utils";
+import { test, testBigquery } from "../test_utils";
 
 describe("drop table", () => {
   it(`formats DROP TABLE statement`, () => {
@@ -10,10 +10,10 @@ describe("drop table", () => {
   });
 
   it(`formats DROP SNAPSHOT table`, () => {
-    test(`DROP SNAPSHOT TABLE foo`, { dialect: "bigquery" });
+    testBigquery(`DROP SNAPSHOT TABLE foo`);
   });
 
   it(`formats DROP EXTERNAL table`, () => {
-    test(`DROP EXTERNAL TABLE foo`, { dialect: "bigquery" });
+    testBigquery(`DROP EXTERNAL TABLE foo`);
   });
 });

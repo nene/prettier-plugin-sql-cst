@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { pretty, test } from "../test_utils";
+import { pretty, test, testBigquery } from "../test_utils";
 
 describe("expr", () => {
   it(`formats binary expressions`, () => {
@@ -169,12 +169,10 @@ describe("expr", () => {
     });
 
     it(`formats CAST() with FORMAT`, () => {
-      test(`SELECT CAST('11-08' AS DATE FORMAT 'DD-MM')`, {
-        dialect: "bigquery",
-      });
-      test(`SELECT CAST('12:35' AS TIME FORMAT 'HH:MI' AT TIME ZONE 'UTC')`, {
-        dialect: "bigquery",
-      });
+      testBigquery(`SELECT CAST('11-08' AS DATE FORMAT 'DD-MM')`);
+      testBigquery(
+        `SELECT CAST('12:35' AS TIME FORMAT 'HH:MI' AT TIME ZONE 'UTC')`
+      );
     });
 
     it(`formats RAISE expression`, () => {
@@ -184,48 +182,37 @@ describe("expr", () => {
 
   describe("BigQuery", () => {
     it(`formats BigQuery quoted table names`, () => {
-      test("SELECT * FROM `my-project.mydataset.mytable`", {
-        dialect: "bigquery",
-      });
+      testBigquery("SELECT * FROM `my-project.mydataset.mytable`");
     });
 
     it(`formats BigQuery array field access`, () => {
-      test(
-        dedent`
-          SELECT
-            item_array,
-            item_array[OFFSET(1)] AS item_offset,
-            item_array[ORDINAL(1)] AS item_ordinal,
-            item_array[SAFE_OFFSET(6)] AS item_safe_offset
-          FROM (SELECT ["coffee", "tea", "milk"] AS item_array)
-        `,
-        { dialect: "bigquery" }
-      );
+      testBigquery(dedent`
+        SELECT
+          item_array,
+          item_array[OFFSET(1)] AS item_offset,
+          item_array[ORDINAL(1)] AS item_ordinal,
+          item_array[SAFE_OFFSET(6)] AS item_safe_offset
+        FROM (SELECT ["coffee", "tea", "milk"] AS item_array)
+      `);
     });
 
     it(`formats BigQuery array field access to multiple lines`, () => {
-      test(
-        dedent`
-          SELECT
-            ["Coffee Cup", "Tea Kettle", "Milk Glass"][
-              SAFE_OFFSET(some_really_long_index_number)
-            ]
-        `,
-        { dialect: "bigquery" }
-      );
+      testBigquery(dedent`
+        SELECT
+          ["Coffee Cup", "Tea Kettle", "Milk Glass"][
+            SAFE_OFFSET(some_really_long_index_number)
+          ]
+      `);
     });
 
     it(`formats BigQuery JSON field access`, () => {
-      test(
-        dedent`
-          SELECT json_value.class.students[0]['name']
-        `,
-        { dialect: "bigquery" }
-      );
+      testBigquery(dedent`
+        SELECT json_value.class.students[0]['name']
+      `);
     });
 
     it(`formats BigQuery @@system_variables`, () => {
-      test(`SELECT @@error.message`, { dialect: "bigquery" });
+      testBigquery(`SELECT @@error.message`);
     });
   });
 });

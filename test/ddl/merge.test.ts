@@ -1,22 +1,21 @@
 import dedent from "dedent-js";
-import { test } from "../test_utils";
+import { testBigquery } from "../test_utils";
 
 describe("merge", () => {
   it(`formats MERGE .. DELETE`, () => {
-    test(
+    testBigquery(
       dedent`
         MERGE INTO dataset.DetailedInventory AS target
         USING dataset.Inventory AS source
         ON target.product = source.product
         WHEN MATCHED THEN
           DELETE
-      `,
-      { dialect: "bigquery" }
+      `
     );
   });
 
   it(`formats MERGE .. INSERT (cols) VALUES`, () => {
-    test(
+    testBigquery(
       dedent`
         MERGE INTO target
         USING source
@@ -26,13 +25,12 @@ describe("merge", () => {
             (product, quantity, supply_constrained, comments)
           VALUES
             (product, quantity, TRUE, 'My comment')
-      `,
-      { dialect: "bigquery" }
+      `
     );
   });
 
   it(`formats MERGE .. INSERT VALUES`, () => {
-    test(
+    testBigquery(
       dedent`
         MERGE INTO target
         USING source
@@ -41,26 +39,24 @@ describe("merge", () => {
           INSERT
           VALUES
             (col1, DEFAULT, col2)
-      `,
-      { dialect: "bigquery" }
+      `
     );
   });
 
   it(`formats MERGE .. INSERT ROW`, () => {
-    test(
+    testBigquery(
       dedent`
         MERGE INTO target
         USING source
         ON target.id = source.id
         WHEN MATCHED THEN
           INSERT ROW
-      `,
-      { dialect: "bigquery" }
+      `
     );
   });
 
   it(`formats MERGE .. INSERT (columns) ROW`, () => {
-    test(
+    testBigquery(
       dedent`
         MERGE INTO target
         USING source
@@ -69,13 +65,12 @@ describe("merge", () => {
           INSERT
             (col1, col2, col3)
           ROW
-      `,
-      { dialect: "bigquery" }
+      `
     );
   });
 
   it(`formats MERGE .. UPDATE`, () => {
-    test(
+    testBigquery(
       dedent`
         MERGE INTO target
         USING source
@@ -85,26 +80,24 @@ describe("merge", () => {
             quantity = 1,
             supply_constrained = FALSE,
             comments = ''
-      `,
-      { dialect: "bigquery" }
+      `
     );
   });
 
   it(`formats MERGE .. UPDATE with single-element update`, () => {
-    test(
+    testBigquery(
       dedent`
         MERGE INTO target
         USING source
         ON target.id = source.id
         WHEN NOT MATCHED BY SOURCE THEN
           UPDATE SET quantity = 1
-      `,
-      { dialect: "bigquery" }
+      `
     );
   });
 
   it(`formats long ON-condition`, () => {
-    test(
+    testBigquery(
       dedent`
         MERGE INTO target
         USING source
@@ -114,13 +107,12 @@ describe("merge", () => {
           AND quantity > 1000
         WHEN MATCHED THEN
           DELETE
-      `,
-      { dialect: "bigquery" }
+      `
     );
   });
 
   it(`formats long WHEN-condition`, () => {
-    test(
+    testBigquery(
       dedent`
         MERGE INTO target
         USING source
@@ -131,8 +123,7 @@ describe("merge", () => {
           OR target.id = 18967
         THEN
           UPDATE SET quantity = 1
-      `,
-      { dialect: "bigquery" }
+      `
     );
   });
 });

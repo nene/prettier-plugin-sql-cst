@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { test } from "../test_utils";
+import { test, testBigquery } from "../test_utils";
 
 describe("select FROM", () => {
   it(`formats join always to multiple lines`, () => {
@@ -101,112 +101,85 @@ describe("select FROM", () => {
 
   describe("BigQuery", () => {
     it(`formats UNNEST()`, () => {
-      test(
-        dedent`
-          SELECT *
-          FROM UNNEST([10, 20, 30]) AS numbers WITH OFFSET
-        `,
-        { dialect: "bigquery" }
-      );
+      testBigquery(dedent`
+        SELECT *
+        FROM UNNEST([10, 20, 30]) AS numbers WITH OFFSET
+      `);
     });
 
     it(`formats PIVOT()`, () => {
-      test(
-        dedent`
-          SELECT *
-          FROM
-            Produce
-            PIVOT(SUM(sales) FOR quarter IN ('Q1', 'Q2', 'Q3', 'Q4'))
-        `,
-        { dialect: "bigquery" }
-      );
+      testBigquery(dedent`
+        SELECT *
+        FROM
+          Produce
+          PIVOT(SUM(sales) FOR quarter IN ('Q1', 'Q2', 'Q3', 'Q4'))
+      `);
     });
 
     it(`formats long PIVOT() to multiple lines`, () => {
-      test(
-        dedent`
-          SELECT *
-          FROM
-            Produce
-            PIVOT(
-              SUM(sales) AS total_sales, COUNT(*) AS num_records
-              FOR quarter
-              IN ('Q1', 'Q2')
-            )
-        `,
-        { dialect: "bigquery" }
-      );
+      testBigquery(dedent`
+        SELECT *
+        FROM
+          Produce
+          PIVOT(
+            SUM(sales) AS total_sales, COUNT(*) AS num_records
+            FOR quarter
+            IN ('Q1', 'Q2')
+          )
+      `);
     });
 
     it(`formats UNPIVOT()`, () => {
-      test(
-        dedent`
-          SELECT *
-          FROM
-            Produce
-            UNPIVOT(sales FOR quarter IN (Q1, Q2, Q3, Q4))
-        `,
-        { dialect: "bigquery" }
-      );
+      testBigquery(dedent`
+        SELECT *
+        FROM
+          Produce
+          UNPIVOT(sales FOR quarter IN (Q1, Q2, Q3, Q4))
+      `);
     });
 
     it(`formats long UNPIVOT() with null-handling options to multiple lines`, () => {
-      test(
-        dedent`
-          SELECT *
-          FROM
-            Produce
-            UNPIVOT INCLUDE NULLS (
-              (first_half_sales, second_half_sales)
-              FOR semesters
-              IN ((Q1, Q2) AS 'semester_1', (Q3, Q4) AS 'semester_2')
-            )
-        `,
-        { dialect: "bigquery" }
-      );
+      testBigquery(dedent`
+        SELECT *
+        FROM
+          Produce
+          UNPIVOT INCLUDE NULLS (
+            (first_half_sales, second_half_sales)
+            FOR semesters
+            IN ((Q1, Q2) AS 'semester_1', (Q3, Q4) AS 'semester_2')
+          )
+      `);
     });
 
     it(`formats TABLESPAMPLE operator`, () => {
-      test(
-        dedent`
-          SELECT * FROM dataset.my_table TABLESAMPLE SYSTEM (10 PERCENT)
-        `,
-        { dialect: "bigquery" }
-      );
+      testBigquery(dedent`
+        SELECT * FROM dataset.my_table TABLESAMPLE SYSTEM (10 PERCENT)
+      `);
     });
 
     it(`formats TABLESPAMPLE operator to multiple lines`, () => {
-      test(
-        dedent`
-          SELECT *
-          FROM
-            myLongProjectName.myCustomDatasetName.my_table_name
-            TABLESAMPLE SYSTEM (10 PERCENT)
-        `,
-        { dialect: "bigquery" }
-      );
+      testBigquery(dedent`
+        SELECT *
+        FROM
+          myLongProjectName.myCustomDatasetName.my_table_name
+          TABLESAMPLE SYSTEM (10 PERCENT)
+      `);
     });
 
     it(`formats FOR SYSTEM_TIME AS OF`, () => {
-      test(
-        dedent`
-          SELECT *
-          FROM tbl FOR SYSTEM_TIME AS OF '2017-01-01 10:00:00-07:00'
-        `,
-        { dialect: "bigquery" }
-      );
+      testBigquery(dedent`
+        SELECT *
+        FROM tbl FOR SYSTEM_TIME AS OF '2017-01-01 10:00:00-07:00'
+      `);
     });
 
     it(`formats long FOR SYSTEM_TIME AS OF to multiple lines`, () => {
-      test(
-        dedent`
-          SELECT *
-          FROM
-            my_favorite_table AS fancy_table_name
-            FOR SYSTEM_TIME AS OF '2017-01-01 10:00:00-07:00'
-        `,
-        { dialect: "bigquery" }
-      );
+      testBigquery(dedent`
+        SELECT *
+        FROM
+          my_favorite_table AS fancy_table_name
+          FOR SYSTEM_TIME AS OF '2017-01-01 10:00:00-07:00'
+      `);
     });
   });
 });

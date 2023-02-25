@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { test } from "../test_utils";
+import { test, testBigquery } from "../test_utils";
 
 describe("view", () => {
   describe("create view", () => {
@@ -18,12 +18,11 @@ describe("view", () => {
     });
 
     it(`formats CREATE OR REPLACE VIEW`, () => {
-      test(
+      testBigquery(
         dedent`
           CREATE OR REPLACE VIEW active_client_id AS
             SELECT 1
-        `,
-        { dialect: "bigquery" }
+        `
       );
     });
 
@@ -47,37 +46,34 @@ describe("view", () => {
     });
 
     it(`formats CREATE VIEW with BigQuery options`, () => {
-      test(
+      testBigquery(
         dedent`
           CREATE VIEW foo
           OPTIONS(friendly_name = "newview")
           AS
             SELECT 1
-        `,
-        { dialect: "bigquery" }
+        `
       );
     });
 
     it(`formats simple CREATE MATERIALIZED VIEW`, () => {
-      test(
+      testBigquery(
         dedent`
           CREATE MATERIALIZED VIEW foo AS
             SELECT 1
-        `,
-        { dialect: "bigquery" }
+        `
       );
     });
 
     it(`formats CREATE MATERIALIZED VIEW with extra clauses`, () => {
-      test(
+      testBigquery(
         dedent`
           CREATE MATERIALIZED VIEW foo
           PARTITION BY DATE(col_datetime)
           CLUSTER BY col_int
           AS
             SELECT 1
-        `,
-        { dialect: "bigquery" }
+        `
       );
     });
   });
@@ -92,18 +88,17 @@ describe("view", () => {
     });
 
     it(`formats DROP MATERIALIZED VIEW`, () => {
-      test(`DROP MATERIALIZED VIEW foo`, { dialect: "bigquery" });
+      testBigquery(`DROP MATERIALIZED VIEW foo`);
     });
   });
 
   describe("alter view", () => {
     it(`formats ALTER VIEW .. SET OPTIONS`, () => {
-      test(
+      testBigquery(
         dedent`
           ALTER VIEW IF EXISTS my_view
           SET OPTIONS(description = 'blah')
-        `,
-        { dialect: "bigquery" }
+        `
       );
     });
   });

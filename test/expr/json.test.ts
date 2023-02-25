@@ -1,13 +1,12 @@
 import dedent from "dedent-js";
-import { pretty, test } from "../test_utils";
+import { pretty, testBigquery } from "../test_utils";
 
 describe("json", () => {
   it(`formats JSON literals`, () => {
-    test(
+    testBigquery(
       dedent`
         SELECT JSON '{ "foo": true }'
-      `,
-      { dialect: "bigquery" }
+      `
     );
   });
 
@@ -114,11 +113,11 @@ describe("json", () => {
 
   // Also skip dealing with escapes for now
   it(`doesn't format JSON when it contains escape sequences`, () => {
-    test(String.raw`SELECT JSON '{ "name": "\\n" }'`, { dialect: "bigquery" });
+    testBigquery(String.raw`SELECT JSON '{ "name": "\\n" }'`);
   });
 
   // Also skip dealing with raw strings
   it(`doesn't format JSON inside raw strings`, () => {
-    test(`SELECT JSON r'{"name":"John"}'`, { dialect: "bigquery" });
+    testBigquery(`SELECT JSON r'{"name":"John"}'`);
   });
 });

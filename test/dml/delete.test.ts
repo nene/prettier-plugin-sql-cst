@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { test } from "../test_utils";
+import { test, testBigquery } from "../test_utils";
 
 describe("delete", () => {
   it(`formats DELETE statement`, () => {
@@ -10,13 +10,10 @@ describe("delete", () => {
   });
 
   it(`formats DELETE without FROM`, () => {
-    test(
-      dedent`
-        DELETE employee
-        WHERE id = 10
-      `,
-      { dialect: "bigquery" }
-    );
+    testBigquery(dedent`
+      DELETE employee
+      WHERE id = 10
+    `);
   });
 
   it(`formats DELETE statement with RETURNING clause`, () => {

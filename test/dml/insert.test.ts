@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { test } from "../test_utils";
+import { test, testBigquery } from "../test_utils";
 
 describe("insert", () => {
   it(`formats INSERT statement without column names`, () => {
@@ -11,14 +11,11 @@ describe("insert", () => {
   });
 
   it(`formats INSERT statement without INTO`, () => {
-    test(
-      dedent`
-        INSERT client
-        VALUES
-          (1, 2, 3)
-      `,
-      { dialect: "bigquery" }
-    );
+    testBigquery(dedent`
+      INSERT client
+      VALUES
+        (1, 2, 3)
+    `);
   });
 
   it(`formats INSERT statement with column names`, () => {
@@ -90,14 +87,11 @@ describe("insert", () => {
   });
 
   it("formats DEFAULT values among normal values", () => {
-    test(
-      dedent`
-        INSERT INTO employee
-        VALUES
-          (1, 2, DEFAULT, 3)
-      `,
-      { dialect: "bigquery" }
-    );
+    testBigquery(dedent`
+      INSERT INTO employee
+      VALUES
+        (1, 2, DEFAULT, 3)
+    `);
   });
 
   it("formats insertion of query", () => {
