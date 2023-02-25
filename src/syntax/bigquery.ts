@@ -35,4 +35,13 @@ export const bigqueryMap: Partial<CstToDocMap<AllBigqueryNodes>> = {
       "onKw",
       "table",
     ]),
+
+  // CAPACITY
+  create_capacity_stmt: (print) => [
+    print.spaced(["createKw", "capacityKw", "name"]),
+    hardline,
+    print("options"),
+  ],
+  drop_capacity_stmt: (print) =>
+    print.spaced(["dropKw", "capacityKw", "ifExistsKw", "name"]),
 };
