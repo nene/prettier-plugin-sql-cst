@@ -45,4 +45,28 @@ describe("if", () => {
       END IF
     `);
   });
+
+  it(`formats IF with long condition`, () => {
+    testBigquery(dedent`
+      IF
+        EXISTS (SELECT 1 FROM schema.products WHERE product_id = target_product_id)
+        AND target_product_id IS NOT NULL
+      THEN
+        SELECT 1;
+      END IF
+    `);
+  });
+
+  it(`formats ELSEIF with long condition`, () => {
+    testBigquery(dedent`
+      IF TRUE THEN
+        SELECT 1;
+      ELSEIF
+        EXISTS (SELECT 1 FROM schema.products WHERE product_id = target_product_id)
+        AND target_product_id IS NOT NULL
+      THEN
+        SELECT 2;
+      END IF
+    `);
+  });
 });

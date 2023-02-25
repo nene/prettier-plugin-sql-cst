@@ -1,5 +1,12 @@
 import { AllProceduralNodes } from "sql-parser-cst";
-import { hardline, indent, join, stripTrailingHardline } from "../print_utils";
+import {
+  group,
+  hardline,
+  indent,
+  join,
+  line,
+  stripTrailingHardline,
+} from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
 export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
@@ -12,11 +19,21 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
   if_stmt: (print) =>
     join(hardline, [...print("clauses"), print.spaced("endIfKw")]),
   if_clause: (print) => [
-    print.spaced(["ifKw", "condition", "thenKw"]),
+    group([
+      print("ifKw"),
+      indent([line, print("condition")]),
+      line,
+      print("thenKw"),
+    ]),
     indent([hardline, stripTrailingHardline(print("consequent"))]),
   ],
   elseif_clause: (print) => [
-    print.spaced(["elseifKw", "condition", "thenKw"]),
+    group([
+      print("elseifKw"),
+      indent([line, print("condition")]),
+      line,
+      print("thenKw"),
+    ]),
     indent([hardline, stripTrailingHardline(print("consequent"))]),
   ],
   else_clause: (print) => [
