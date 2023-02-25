@@ -99,6 +99,12 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
     print.spaced("endForKw"),
   ],
   // BREAK/CONTINUE
-  break_stmt: (print) => print("breakKw"),
-  continue_stmt: (print) => print("continueKw"),
+  break_stmt: (print) => print.spaced(["breakKw", "label"]),
+  continue_stmt: (print) => print.spaced(["continueKw", "label"]),
+  labeled_stmt: (print, node) => [
+    print("beginLabel"),
+    ": ",
+    print("statement"),
+    node.endLabel ? [" ", print(["endLabel"])] : [],
+  ],
 };
