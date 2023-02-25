@@ -10,12 +10,15 @@ import {
 import { CstToDocMap } from "../CstToDocMap";
 
 export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
+  // BEGIN .. END
   block_stmt: (print) => [
     print("beginKw"),
     indent([hardline, stripTrailingHardline(print("program"))]),
     hardline,
     print("endKw"),
   ],
+
+  // IF
   if_stmt: (print) =>
     join(hardline, [...print("clauses"), print.spaced("endIfKw")]),
   if_clause: (print) => [
