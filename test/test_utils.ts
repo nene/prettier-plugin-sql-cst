@@ -36,3 +36,7 @@ export const rawTest = (sql: string, opts: TestOptions = {}): void => {
 export const test = (sql: string, opts: TestOptions = {}): void => {
   expect(pretty(sql, opts)).toBe(sql);
 };
+
+export const testBigquery = (sql: string, opts: TestOptions = {}): void => {
+  test(sql, { dialect: "bigquery", ...opts });
+};

@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { test } from "../test_utils";
+import { test, testBigquery } from "../test_utils";
 
 describe("index", () => {
   describe("create index", () => {
@@ -49,12 +49,9 @@ describe("index", () => {
     });
 
     it(`formats BigQuery CREATE SEARCH INDEX with ALL COLUMNS`, () => {
-      test(
-        dedent`
-          CREATE SEARCH INDEX my_index ON my_table (ALL COLUMNS)
-        `,
-        { dialect: "bigquery" }
-      );
+      testBigquery(dedent`
+        CREATE SEARCH INDEX my_index ON my_table (ALL COLUMNS)
+      `);
     });
   });
 
@@ -72,12 +69,9 @@ describe("index", () => {
     });
 
     it(`formats DROP SEARCH INDEX`, () => {
-      test(
-        dedent`
-          DROP SEARCH INDEX my_index ON my_table
-        `,
-        { dialect: "bigquery" }
-      );
+      testBigquery(dedent`
+        DROP SEARCH INDEX my_index ON my_table
+      `);
     });
   });
 });

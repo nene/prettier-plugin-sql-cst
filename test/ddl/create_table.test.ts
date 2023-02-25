@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { test } from "../test_utils";
+import { test, testBigquery } from "../test_utils";
 
 describe("create table", () => {
   it(`formats CREATE TABLE always on multiple lines`, () => {
@@ -29,14 +29,11 @@ describe("create table", () => {
   });
 
   it(`formats OR REPLACE`, () => {
-    test(
-      dedent`
-        CREATE OR REPLACE TABLE foo (
-          id INT
-        )
-      `,
-      { dialect: "bigquery" }
-    );
+    testBigquery(dedent`
+      CREATE OR REPLACE TABLE foo (
+        id INT
+      )
+    `);
   });
 
   it(`formats CREATE TABLE with various data types`, () => {
@@ -142,16 +139,13 @@ describe("create table", () => {
   });
 
   it(`formats BigQuery data types with internal constraints`, () => {
-    test(
-      dedent`
-        CREATE TABLE client (
-          arr_field ARRAY<INT64 NOT NULL>,
-          struct_field STRUCT<name STRING NOT NULL, age INT64 DEFAULT 0>,
-          meta OPTIONS(description = 'Metadata in here')
-        )
-      `,
-      { dialect: "bigquery" }
-    );
+    testBigquery(dedent`
+      CREATE TABLE client (
+        arr_field ARRAY<INT64 NOT NULL>,
+        struct_field STRUCT<name STRING NOT NULL, age INT64 DEFAULT 0>,
+        meta OPTIONS(description = 'Metadata in here')
+      )
+    `);
   });
 
   it(`formats SQLite table options`, () => {
@@ -164,47 +158,38 @@ describe("create table", () => {
   });
 
   it(`formats single short BigQuery extra CREATE TABLE clause`, () => {
-    test(
-      dedent`
-        CREATE TABLE client (
-          id INT64
-        )
-        DEFAULT COLLATE 'und:ci'
-      `,
-      { dialect: "bigquery" }
-    );
+    testBigquery(dedent`
+      CREATE TABLE client (
+        id INT64
+      )
+      DEFAULT COLLATE 'und:ci'
+    `);
   });
 
   it(`formats additional BigQuery CREATE TABLE clauses`, () => {
-    test(
-      dedent`
-        CREATE TABLE client (
-          id INT64
-        )
-        DEFAULT COLLATE 'und:ci'
-        PARTITION BY _PARTITIONDATE
-        CLUSTER BY customer_id
-        OPTIONS(friendly_name = 'Clientele')
-      `,
-      { dialect: "bigquery" }
-    );
+    testBigquery(dedent`
+      CREATE TABLE client (
+        id INT64
+      )
+      DEFAULT COLLATE 'und:ci'
+      PARTITION BY _PARTITIONDATE
+      CLUSTER BY customer_id
+      OPTIONS(friendly_name = 'Clientele')
+    `);
   });
 
   it(`formats long BigQuery OPTIONS()`, () => {
-    test(
-      dedent`
-        CREATE TABLE client (
-          id INT64
-        )
-        OPTIONS(
-          expiration_timestamp = TIMESTAMP "2025-01-01 00:00:00 UTC",
-          partition_expiration_days = 1,
-          description = "a table that expires in 2025, with each partition living for 24 hours",
-          labels = [("org_unit", "development")]
-        )
-      `,
-      { dialect: "bigquery" }
-    );
+    testBigquery(dedent`
+      CREATE TABLE client (
+        id INT64
+      )
+      OPTIONS(
+        expiration_timestamp = TIMESTAMP "2025-01-01 00:00:00 UTC",
+        partition_expiration_days = 1,
+        description = "a table that expires in 2025, with each partition living for 24 hours",
+        labels = [("org_unit", "development")]
+      )
+    `);
   });
 
   it(`formats CREATE TABLE AS`, () => {
@@ -224,72 +209,54 @@ describe("create table", () => {
   });
 
   it(`formats CREATE TABLE LIKE`, () => {
-    test(
-      dedent`
-        CREATE TABLE foo
-        LIKE my_old_table
-      `,
-      { dialect: "bigquery" }
-    );
+    testBigquery(dedent`
+      CREATE TABLE foo
+      LIKE my_old_table
+    `);
   });
 
   it(`formats CREATE TABLE COPY`, () => {
-    test(
-      dedent`
-        CREATE TABLE foo
-        COPY my_old_table
-      `,
-      { dialect: "bigquery" }
-    );
+    testBigquery(dedent`
+      CREATE TABLE foo
+      COPY my_old_table
+    `);
   });
 
   it(`formats CREATE SNAPSHOT TABLE CLONE`, () => {
-    test(
-      dedent`
-        CREATE SNAPSHOT TABLE foo
-        CLONE my_old_table
-      `,
-      { dialect: "bigquery" }
-    );
+    testBigquery(dedent`
+      CREATE SNAPSHOT TABLE foo
+      CLONE my_old_table
+    `);
   });
 
   it(`formats FOR SYSTEM_TIME AS OF`, () => {
-    test(
-      dedent`
-        CREATE SNAPSHOT TABLE foo
-        CLONE my_old_table FOR SYSTEM_TIME AS OF '2017-01-01 10:00:00-07:00'
-      `,
-      { dialect: "bigquery" }
-    );
+    testBigquery(dedent`
+      CREATE SNAPSHOT TABLE foo
+      CLONE my_old_table FOR SYSTEM_TIME AS OF '2017-01-01 10:00:00-07:00'
+    `);
   });
 
   it(`formats CREATE EXTERNAL TABLE`, () => {
-    test(
-      dedent`
-        CREATE EXTERNAL TABLE dataset.CustomTable (
-          id INT64
-        )
-        WITH CONNECTION myproj.dataset.connectionId
-        WITH PARTITION COLUMNS (field_1 STRING, field_2 INT64)
-        OPTIONS(format = 'PARQUET')
-      `,
-      { dialect: "bigquery" }
-    );
+    testBigquery(dedent`
+      CREATE EXTERNAL TABLE dataset.CustomTable (
+        id INT64
+      )
+      WITH CONNECTION myproj.dataset.connectionId
+      WITH PARTITION COLUMNS (field_1 STRING, field_2 INT64)
+      OPTIONS(format = 'PARQUET')
+    `);
   });
 
   it(`formats CREATE EXTERNAL TABLE with long PARTITION COLUMNS list`, () => {
-    test(
-      dedent`
-        CREATE EXTERNAL TABLE dataset.CustomTable
-        WITH PARTITION COLUMNS (
-          first_name STRING,
-          last_name STRING,
-          average_income INT64,
-          waist_height INT64
-        )
-      `,
-      { dialect: "bigquery" }
-    );
+    testBigquery(dedent`
+      CREATE EXTERNAL TABLE dataset.CustomTable
+      WITH PARTITION COLUMNS (
+        first_name STRING,
+        last_name STRING,
+        average_income INT64,
+        waist_height INT64
+      )
+    `);
   });
 
   it(`formats CREATE VIRTUAL TABLE`, () => {
