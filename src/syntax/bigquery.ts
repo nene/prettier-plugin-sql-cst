@@ -70,4 +70,9 @@ export const bigqueryMap: Partial<CstToDocMap<AllBigqueryNodes>> = {
       print.spaced(["alterProjectKw", "name"]),
       print("actions"),
     ]),
+  alter_bi_capacity_stmt: (print) =>
+    join(hardline, [
+      print.spaced(["alterBiCapacityKw", "name"]),
+      print("actions"),
+    ]),
 };

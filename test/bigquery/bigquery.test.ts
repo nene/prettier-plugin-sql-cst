@@ -26,10 +26,12 @@ describe("bigquery", () => {
     `);
   });
 
-  it(`formats ALTER PROJECT`, () => {
-    testBigquery(dedent`
-      ALTER PROJECT my_project
-      SET OPTIONS(default_time_zone = 'America/Los_Angeles')
-    `);
+  ["PROJECT", "BI_CAPACITY"].forEach((entityType) => {
+    it(`formats ALTER ${entityType}`, () => {
+      testBigquery(dedent`
+        ALTER ${entityType} some_name
+        SET OPTIONS(default_time_zone = 'America/Los_Angeles')
+      `);
+    });
   });
 });
