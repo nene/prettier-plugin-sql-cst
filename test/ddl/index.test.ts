@@ -37,6 +37,25 @@ describe("index", () => {
         WHERE col > 10
       `);
     });
+
+    it(`formats BigQuery CREATE SEARCH INDEX with OPTIONS()`, () => {
+      test(
+        dedent`
+          CREATE SEARCH INDEX my_index ON my_table (col)
+          OPTIONS(analyzer = 'LOG_ANALYZER')
+        `,
+        { dialect: "bigquery" }
+      );
+    });
+
+    it(`formats BigQuery CREATE SEARCH INDEX with ALL COLUMNS`, () => {
+      test(
+        dedent`
+          CREATE SEARCH INDEX my_index ON my_table (ALL COLUMNS)
+        `,
+        { dialect: "bigquery" }
+      );
+    });
   });
 
   describe("drop index", () => {
@@ -50,6 +69,15 @@ describe("index", () => {
       test(dedent`
         DROP INDEX IF EXISTS my_index
       `);
+    });
+
+    it(`formats DROP SEARCH INDEX`, () => {
+      test(
+        dedent`
+          DROP SEARCH INDEX my_index ON my_table
+        `,
+        { dialect: "bigquery" }
+      );
     });
   });
 });

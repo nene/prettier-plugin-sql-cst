@@ -18,5 +18,14 @@ export const indexMap: Partial<CstToDocMap<AllIndexNodes>> = {
       ...(node.clauses.length > 0 ? [join(hardline, print("clauses"))] : []),
     ]),
   drop_index_stmt: (print) =>
-    print.spaced(["dropKw", "indexKw", "ifExistsKw", "indexes"]),
+    print.spaced([
+      "dropKw",
+      "indexTypeKw",
+      "indexKw",
+      "ifExistsKw",
+      "indexes",
+      "onKw",
+      "table",
+    ]),
+  verbose_all_columns: (print) => print.spaced("allColumnsKw"),
 };
