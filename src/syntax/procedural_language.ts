@@ -107,4 +107,6 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
     print("statement"),
     node.endLabel ? [" ", print(["endLabel"])] : [],
   ],
+  // CALL
+  call_stmt: (print) => print.spaced(["callKw", "func"]),
 };
