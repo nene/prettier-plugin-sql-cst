@@ -33,6 +33,9 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
     ]),
   declare_default: (print) => print.spaced(["defaultKw", "expr"]),
 
+  // SET
+  set_stmt: (print) => print.spaced(["setKw", "assignments"]),
+
   // IF
   if_stmt: (print) =>
     join(hardline, [...print("clauses"), print.spaced("endIfKw")]),
