@@ -2,7 +2,7 @@ import dedent from "dedent-js";
 import { testBigquery } from "../test_utils";
 
 describe("bigquery", () => {
-  ["CAPACITY"].forEach((entityType) => {
+  ["CAPACITY", "RESERVATION", "ASSIGNMENT"].forEach((entityType) => {
     it(`formats CREATE ${entityType}`, () => {
       testBigquery(dedent`
         CREATE ${entityType} commitment_id

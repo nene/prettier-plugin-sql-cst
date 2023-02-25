@@ -44,4 +44,20 @@ export const bigqueryMap: Partial<CstToDocMap<AllBigqueryNodes>> = {
   ],
   drop_capacity_stmt: (print) =>
     print.spaced(["dropKw", "capacityKw", "ifExistsKw", "name"]),
+  // RESERVATION
+  create_reservation_stmt: (print) => [
+    print.spaced(["createKw", "reservationKw", "name"]),
+    hardline,
+    print("options"),
+  ],
+  drop_reservation_stmt: (print) =>
+    print.spaced(["dropKw", "reservationKw", "ifExistsKw", "name"]),
+  // ASSIGNMENT
+  create_assignment_stmt: (print) => [
+    print.spaced(["createKw", "assignmentKw", "name"]),
+    hardline,
+    print("options"),
+  ],
+  drop_assignment_stmt: (print) =>
+    print.spaced(["dropKw", "assignmentKw", "ifExistsKw", "name"]),
 };
