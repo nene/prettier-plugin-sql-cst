@@ -6,6 +6,8 @@ export const bigqueryMap: Partial<CstToDocMap<AllBigqueryNodes>> = {
   bigquery_options: (print) => print(["optionsKw", "options"]),
   bigquery_option_default_collate: (print) =>
     print.spaced(["defaultCollateKw", "collation"]),
+
+  // ROW ACCESS POLICY
   create_row_access_policy_stmt: (print) =>
     join(hardline, [
       print.spaced([
