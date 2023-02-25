@@ -64,4 +64,10 @@ export const bigqueryMap: Partial<CstToDocMap<AllBigqueryNodes>> = {
   // ALTER ORGANIZATION
   alter_organization_stmt: (print) =>
     join(hardline, [print.spaced("alterOrganizationKw"), print("actions")]),
+  // ALTER PROJECT
+  alter_project_stmt: (print) =>
+    join(hardline, [
+      print.spaced(["alterProjectKw", "name"]),
+      print("actions"),
+    ]),
 };

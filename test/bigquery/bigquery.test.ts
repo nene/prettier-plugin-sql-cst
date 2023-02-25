@@ -25,4 +25,11 @@ describe("bigquery", () => {
       SET OPTIONS(default_time_zone = 'America/Los_Angeles')
     `);
   });
+
+  it(`formats ALTER PROJECT`, () => {
+    testBigquery(dedent`
+      ALTER PROJECT my_project
+      SET OPTIONS(default_time_zone = 'America/Los_Angeles')
+    `);
+  });
 });
