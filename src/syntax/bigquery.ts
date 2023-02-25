@@ -21,4 +21,14 @@ export const bigqueryMap: Partial<CstToDocMap<AllBigqueryNodes>> = {
       print.spaced(["filterUsingKw", "filterExpr"]),
     ]),
   row_access_policy_grant: (print) => print.spaced(["grantToKw", "grantees"]),
+  drop_row_access_policy_stmt: (print) =>
+    print.spaced([
+      "dropKw",
+      "allKw",
+      "rowAccessPolicyKw",
+      "ifExistsKw",
+      "name",
+      "onKw",
+      "table",
+    ]),
 };
