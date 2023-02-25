@@ -11,12 +11,18 @@ import { CstToDocMap } from "../CstToDocMap";
 
 export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
   // BEGIN .. END
-  block_stmt: (print) => [
+  block_stmt: (print, node) => [
     print("beginKw"),
     indent([hardline, stripTrailingHardline(print("program"))]),
+    node.exception ? [hardline, print("exception")] : [],
     hardline,
     print("endKw"),
   ],
+  exception_clause: (print) => [
+    print.spaced(["exceptionKw", "whenKw", "condition", "thenKw"]),
+    indent([hardline, stripTrailingHardline(print("program"))]),
+  ],
+  error_category: (print) => print("errorKw"),
 
   // IF
   if_stmt: (print) =>
