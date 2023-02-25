@@ -61,4 +61,12 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
     print("elseKw"),
     indent([hardline, stripTrailingHardline(print("consequent"))]),
   ],
+
+  // CASE
+  case_stmt: (print) => [
+    print.spaced(["caseKw", "expr"]),
+    indent([hardline, join(hardline, print("clauses"))]),
+    hardline,
+    print.spaced("endCaseKw"),
+  ],
 };

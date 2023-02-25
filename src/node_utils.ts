@@ -7,6 +7,7 @@ const is =
   (node: any): node is NodeByType<TType, Node> =>
     isObject(node) && node.type === type;
 
+export const isProgram = is("program");
 export const isValuesClause = is("values_clause");
 export const isFuncCall = is("func_call");
 export const isFuncArgs = is("func_args");

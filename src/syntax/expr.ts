@@ -1,6 +1,14 @@
 import { AllExprNodes, Keyword, Node } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
-import { join, line, softline, hardline, indent, group } from "../print_utils";
+import {
+  join,
+  line,
+  softline,
+  hardline,
+  indent,
+  group,
+  stripTrailingHardline,
+} from "../print_utils";
 import {
   isCreateTableStmt,
   isKeyword,
@@ -10,6 +18,7 @@ import {
   isParenExpr,
   isFuncArgs,
   isListExpr,
+  isProgram,
 } from "../node_utils";
 import { isString, last } from "../utils";
 
@@ -64,9 +73,24 @@ export const exprMap: Partial<CstToDocMap<AllExprNodes>> = {
     hardline,
     print("endKw"),
   ],
-  case_when: (print) =>
-    print.spaced(["whenKw", "condition", "thenKw", "result"]),
-  case_else: (print) => print.spaced(["elseKw", "result"]),
+  case_when: (print, node) => {
+    if (isProgram(node.result)) {
+      return [
+        print.spaced(["whenKw", "condition", "thenKw"]),
+        indent([hardline, stripTrailingHardline(print("result"))]),
+      ];
+    }
+    return print.spaced(["whenKw", "condition", "thenKw", "result"]);
+  },
+  case_else: (print, node) => {
+    if (isProgram(node.result)) {
+      return [
+        print("elseKw"),
+        indent([hardline, stripTrailingHardline(print("result"))]),
+      ];
+    }
+    return print.spaced(["elseKw", "result"]);
+  },
   member_expr: (print, node) =>
     isArraySubscript(node.property)
       ? print(["object", "property"])
