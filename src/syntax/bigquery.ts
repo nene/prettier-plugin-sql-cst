@@ -1,5 +1,5 @@
 import { AllBigqueryNodes } from "sql-parser-cst";
-import { hardline, join } from "../print_utils";
+import { group, hardline, join } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
 export const bigqueryMap: Partial<CstToDocMap<AllBigqueryNodes>> = {
@@ -78,4 +78,13 @@ export const bigqueryMap: Partial<CstToDocMap<AllBigqueryNodes>> = {
 
   // ASSERT
   assert_stmt: (print) => print.spaced(["assertKw", "expr", "as"]),
+
+  // EXPORT
+  export_data_stmt: (print) =>
+    join(hardline, [
+      print.spaced("exportDataKw"),
+      ...print.spaced(["withConnection"]),
+      print.spaced("options"),
+      print.spaced("as"),
+    ]),
 };
