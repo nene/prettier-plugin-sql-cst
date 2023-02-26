@@ -8,6 +8,7 @@ import { bigqueryMap } from "./bigquery";
 import { constraintMap } from "./constraint";
 import { createTableMap } from "./create_table";
 import { dataTypeMap } from "./data_type";
+import { dclMap } from "./dcl";
 import { deleteMap } from "./delete";
 import { dropTableMap } from "./drop_table";
 import { explainMap } from "./explain";
@@ -39,6 +40,7 @@ export const transformMap: Partial<CstToDocMap<Node>> = {
   ...constraintMap,
   ...createTableMap,
   ...dataTypeMap,
+  ...dclMap,
   ...deleteMap,
   ...dropTableMap,
   ...explainMap,
