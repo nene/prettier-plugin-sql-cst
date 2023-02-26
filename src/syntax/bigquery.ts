@@ -87,4 +87,11 @@ export const bigqueryMap: Partial<CstToDocMap<AllBigqueryNodes>> = {
       print.spaced("options"),
       print.spaced("as"),
     ]),
+  // LOAD
+  load_data_stmt: (print) =>
+    join(hardline, [
+      print.spaced(["loadDataKw", "intoKw", "table", "columns"]),
+      ...print("clauses"),
+    ]),
+  from_files_options: (print) => print.spaced(["fromFilesKw", "options"]),
 };
