@@ -70,4 +70,26 @@ describe("comments", () => {
 
     `);
   });
+
+  it(`enforces space between -- and comment text`, () => {
+    expect(
+      rawPretty(`
+        --My comment
+        SELECT 1;
+      `)
+    ).toBe(dedent`
+      -- My comment
+      SELECT 1;
+
+    `);
+  });
+
+  it(`allows for empty comments`, () => {
+    rawTest(dedent`
+      --
+      --
+      SELECT 1;
+
+    `);
+  });
 });

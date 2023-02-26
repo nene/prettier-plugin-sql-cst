@@ -135,6 +135,10 @@ Undecided:
 - :white-check-mark: Discard unnecessary nested parenthesis. `((1 + 2)) * 3` --> `(1 + 2) * 3`
 - :white-check-mark: Discard parenthesis around function arguments. `count((id))` --> `count(id)`
 
+## Comments
+
+- :white-check-mark: Ensure space at the start of a line-comment: `--comment` --> `-- comment`
+
 ## Rules to possibly adopt from SQLFluff
 
 - [Rule_L022][]: Blank line after CTE.
