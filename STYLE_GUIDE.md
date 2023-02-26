@@ -132,12 +132,12 @@ Undecided:
 
 ## Parenthesis
 
-- :white-check-mark: Discard unnecessary nested parenthesis. `((1 + 2)) * 3` --> `(1 + 2) * 3`
-- :white-check-mark: Discard parenthesis around function arguments. `count((id))` --> `count(id)`
+- :white_check_mark: Discard unnecessary nested parenthesis. `((1 + 2)) * 3` --> `(1 + 2) * 3`
+- :white_check_mark: Discard parenthesis around function arguments. `count((id))` --> `count(id)`
 
 ## Comments
 
-- :white-check-mark: Ensure space at the start of a line-comment: `--comment` --> `-- comment`
+- :white_check_mark: Ensure space at the start of a line-comment: `--comment` --> `-- comment`
 
 ## Rules to possibly adopt from SQLFluff
 
