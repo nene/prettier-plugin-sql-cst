@@ -9,4 +9,10 @@ export const dclMap: Partial<CstToDocMap<AllDclStatements>> = {
       group(print.spaced(["onKw", "resourceType", "resourceName"])),
       group([print("toKw"), indent([line, print("users")])]),
     ]),
+  revoke_stmt: (print) =>
+    join(hardline, [
+      group([print("revokeKw"), indent([line, print("roles")])]),
+      group(print.spaced(["onKw", "resourceType", "resourceName"])),
+      group([print("fromKw"), indent([line, print("users")])]),
+    ]),
 };
