@@ -18,6 +18,7 @@ import { functionMap } from "./function";
 import { indexMap } from "./index";
 import { insertMap } from "./insert";
 import { mergeMap } from "./merge";
+import { preparedStatementsMap } from "./prepared_statements";
 import { proceduralLanguageMap } from "./procedural_language";
 import { procedureMap } from "./procedure";
 import { procClauseMap } from "./proc_clause";
@@ -50,6 +51,7 @@ export const transformMap: Partial<CstToDocMap<Node>> = {
   ...indexMap,
   ...insertMap,
   ...mergeMap,
+  ...preparedStatementsMap,
   ...procClauseMap,
   ...proceduralLanguageMap,
   ...procedureMap,
