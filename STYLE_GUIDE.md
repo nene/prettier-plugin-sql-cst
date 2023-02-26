@@ -123,17 +123,16 @@ WITH my_cte (c1, c2) AS SELECT 1, 2
 SELECT * FROM my_cte;
 ```
 
-- :heavy_check_mark: Top-level statements should not be wrapped in brackets. [Rule_L053][]
-- :heavy_check_mark: No parenthesis after `DISTINCT`. [Rule_L015][]
-
 Undecided:
 
 - :question: BigQuery options list: `OPTIONS(foo = bar)` v/s `OPTIONS (foo = bar)`
 
-## Parenthesis
+## Parenthesis removal
 
 - :white_check_mark: Discard unnecessary nested parenthesis. `((1 + 2)) * 3` --> `(1 + 2) * 3`
 - :white_check_mark: Discard parenthesis around function arguments. `count((id))` --> `count(id)`
+- :heavy_check_mark: Top-level statements should not be wrapped in brackets. [Rule_L053][]
+- :heavy_check_mark: No parenthesis after `DISTINCT`. [Rule_L015][]
 
 ## Comments
 
