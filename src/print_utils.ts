@@ -35,3 +35,17 @@ export const containsNewline = (
     node.range[1]
   );
 };
+
+export const hasEmptyLineBetweenNodes = (
+  node1: Node,
+  node2: Node,
+  opts: { originalText: string }
+): boolean => {
+  if (!node1.range || !node2.range) {
+    throw new Error("emptyLineBetweenNodes() expects Nodes with range info");
+  }
+
+  return /\n[ \t]*\r?\n/.test(
+    opts.originalText.slice(node1.range[1], node2.range[0])
+  );
+};

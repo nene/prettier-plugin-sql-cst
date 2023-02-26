@@ -13,6 +13,7 @@ This is based on the defaults used by Prettier:
 - :white_check_mark: 2 spaces for indentation
 - :white_check_mark: UNIX `\n` for newlines
 - :white_check_mark: Final newline at the end of a file
+- :white_check_mark: Preserve single empty line between statements.
 
 ## Upper & lower case
 

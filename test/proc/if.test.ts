@@ -38,9 +38,7 @@ describe("if", () => {
     testBigquery(dedent`
       IF x > 10 THEN
         SELECT 1;
-
         SELECT 2;
-
         SELECT 3;
       END IF
     `);

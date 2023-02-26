@@ -65,6 +65,8 @@ describe("comments", () => {
 
       -- comment for 2
       SELECT 2;
+      -- comment for 3
+      SELECT 3;
 
     `);
   });
