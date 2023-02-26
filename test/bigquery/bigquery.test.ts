@@ -34,4 +34,18 @@ describe("bigquery", () => {
       `);
     });
   });
+
+  describe("assert", () => {
+    it(`formats ASSERT`, () => {
+      testBigquery(dedent`
+        ASSERT x > 10
+      `);
+    });
+
+    it(`formats ASSERT with message`, () => {
+      testBigquery(dedent`
+        ASSERT x > 10 AS 'x must be greater than 10'
+      `);
+    });
+  });
 });
