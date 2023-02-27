@@ -103,7 +103,7 @@ There are also some SQL-specific options:
 Currently this plugin supports two SQL dialects:
 
 - **SQLite** - full support.
-- **BigQuery** - 99% supported (see [#2][] for implementation progress).
+- **BigQuery** - full support.
 
 [prettier]: https://prettier.io/
 [printWidth]: https://prettier.io/docs/en/options.html#print-width
