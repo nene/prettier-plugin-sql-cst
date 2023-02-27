@@ -75,6 +75,16 @@ export const bigqueryMap: Partial<CstToDocMap<AllBigqueryNodes>> = {
       print.spaced(["alterBiCapacityKw", "name"]),
       print("actions"),
     ]),
+  alter_capacity_stmt: (print) =>
+    join(hardline, [
+      print.spaced(["alterCapacityKw", "name"]),
+      print("actions"),
+    ]),
+  alter_reservation_stmt: (print) =>
+    join(hardline, [
+      print.spaced(["alterReservationKw", "name"]),
+      print("actions"),
+    ]),
 
   // ASSERT
   assert_stmt: (print) => print.spaced(["assertKw", "expr", "as"]),
