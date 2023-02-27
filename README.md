@@ -105,6 +105,9 @@ Currently this plugin supports two SQL dialects:
 - **SQLite** - full support.
 - **BigQuery** - full support.
 
+The specifics of the [SQL formatting style][STYLE_GUIDE] are still very much subject to change.
+Though the general principles should be mostly in place by now.
+
 [prettier]: https://prettier.io/
 [printWidth]: https://prettier.io/docs/en/options.html#print-width
 [tabWidth]: https://prettier.io/docs/en/options.html#tab-width
