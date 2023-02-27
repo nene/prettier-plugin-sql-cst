@@ -115,4 +115,3 @@ Though the general principles should be mostly in place by now.
 [sql-parser-cst]: https://github.com/nene/sql-parser-cst
 [wadler-prettier]: http://homepages.inf.ed.ac.uk/wadler/papers/prettier/prettier.pdf
 [STYLE_GUIDE]: ./STYLE_GUIDE.md
-[#2]: https://github.com/nene/prettier-plugin-sql-cst/issues/2
