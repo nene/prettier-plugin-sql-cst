@@ -25,16 +25,8 @@ This is based on the defaults used by Prettier:
 Keywords include literal values like `NULL`, `TRUE`, `FALSE`,
 but don't include function names that SQL dialects might themselves label as keywords (like `sum()`, `count()`),
 notably the parameter-less builtin functions like `current_date` aren't considered to be keywords.
-
-Undecided:
-
-- :question: Should `CAST(x AS type)` expression be lowercase (treating it as a builtin function)
-  or uppercase (treating it as a builtin expression)?
-  SQLFluff treats `CAST()` as a function and applies upper/lower case depending on how it's
-  configured for functions.
-  Though that will lead to somewhat odd syntax when keywords are uppercase and function names lowercase,
-  resulting in `cast(x AS TYPE)`.  
-  (currently: UPPERCASE)
+At the same time `CAST(x AS type)` is considered to be language construct
+and is therefore formatted in uppercase.
 
 ## Aliases
 
