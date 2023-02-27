@@ -6,7 +6,7 @@ describe("bigquery", () => {
     it(`formats CREATE ${entityType}`, () => {
       testBigquery(dedent`
         CREATE ${entityType} commitment_id
-        OPTIONS(slot_count = 100, plan = 'FLEX')
+        OPTIONS (slot_count = 100, plan = 'FLEX')
       `);
     });
 
@@ -22,7 +22,7 @@ describe("bigquery", () => {
   it(`formats ALTER ORGANIZATION`, () => {
     testBigquery(dedent`
       ALTER ORGANIZATION
-      SET OPTIONS(default_time_zone = 'America/Los_Angeles')
+      SET OPTIONS (default_time_zone = 'America/Los_Angeles')
     `);
   });
 
@@ -31,7 +31,7 @@ describe("bigquery", () => {
       it(`formats ALTER ${entityType}`, () => {
         testBigquery(dedent`
         ALTER ${entityType} some_name
-        SET OPTIONS(default_time_zone = 'America/Los_Angeles')
+        SET OPTIONS (default_time_zone = 'America/Los_Angeles')
       `);
       });
     }

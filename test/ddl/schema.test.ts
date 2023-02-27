@@ -19,11 +19,11 @@ describe("schema", () => {
       );
     });
 
-    it(`formats OPTIONS(..)`, () => {
+    it(`formats OPTIONS (..)`, () => {
       testBigquery(
         dedent`
           CREATE SCHEMA schema_name
-          OPTIONS(friendly_name = 'Happy schema')
+          OPTIONS (friendly_name = 'Happy schema')
         `
       );
     });
@@ -69,7 +69,7 @@ describe("schema", () => {
       testBigquery(
         dedent`
           ALTER SCHEMA IF EXISTS my_schema
-          SET OPTIONS(description = 'blah')
+          SET OPTIONS (description = 'blah')
         `
       );
     });

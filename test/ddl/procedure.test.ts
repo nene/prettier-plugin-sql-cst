@@ -40,11 +40,11 @@ describe("procedure", () => {
       );
     });
 
-    it(`formats OPTIONS(..)`, () => {
+    it(`formats OPTIONS (..)`, () => {
       testBigquery(
         dedent`
           CREATE PROCEDURE foo()
-          OPTIONS(strict_mode = TRUE)
+          OPTIONS (strict_mode = TRUE)
           BEGIN
             DROP TABLE my_table;
           END
@@ -57,7 +57,7 @@ describe("procedure", () => {
         dedent`
           CREATE PROCEDURE my_bq_project.my_dataset.spark_proc()
           WITH CONNECTION \`my-project-id.us.my-connection\`
-          OPTIONS(engine = "SPARK", main_file_uri = "gs://my-bucket/my-pyspark-main.py")
+          OPTIONS (engine = "SPARK", main_file_uri = "gs://my-bucket/my-pyspark-main.py")
           LANGUAGE PYTHON
         `
       );
@@ -68,7 +68,7 @@ describe("procedure", () => {
         dedent`
           CREATE PROCEDURE spark_proc()
           WITH CONNECTION my_connection
-          OPTIONS(engine = "SPARK")
+          OPTIONS (engine = "SPARK")
           LANGUAGE PYTHON
           AS r'''
             from pyspark.sql import SparkSession

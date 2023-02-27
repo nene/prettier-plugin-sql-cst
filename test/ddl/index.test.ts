@@ -38,11 +38,11 @@ describe("index", () => {
       `);
     });
 
-    it(`formats BigQuery CREATE SEARCH INDEX with OPTIONS()`, () => {
+    it(`formats BigQuery CREATE SEARCH INDEX with OPTIONS ()`, () => {
       test(
         dedent`
           CREATE SEARCH INDEX my_index ON my_table (col)
-          OPTIONS(analyzer = 'LOG_ANALYZER')
+          OPTIONS (analyzer = 'LOG_ANALYZER')
         `,
         { dialect: "bigquery" }
       );

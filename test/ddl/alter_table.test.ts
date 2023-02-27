@@ -73,7 +73,7 @@ describe("alter table", () => {
   it(`formats ALTER TABLE..SET OPTIONS`, () => {
     testBigquery(dedent`
       ALTER TABLE client
-      SET OPTIONS(description = 'Table that expires seven days from now')
+      SET OPTIONS (description = 'Table that expires seven days from now')
     `);
   });
 
@@ -89,7 +89,7 @@ describe("alter table", () => {
       testBigquery(dedent`
         ALTER TABLE client
         ALTER COLUMN price
-        SET OPTIONS(description = 'Price per unit')
+        SET OPTIONS (description = 'Price per unit')
       `);
     });
 

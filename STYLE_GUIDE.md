@@ -101,6 +101,7 @@ SELECT
 - :white_check_mark: No space between single-word type name and arguments. `VARCHAR(100)`
 - :white_check_mark: Space between multi-word type name and arguments. `UNSIGNED NUMERIC (10, 5)`
 - :white_check_mark: Space after `USING` in `JOIN`: `JOIN foo USING (col1)`
+- :white_check_mark: Space after `OPTIONS` in BigQuery: `OPTIONS (foo = bar)`
 - :white_check_mark: Space between table/view/CTE name and columns list:
 
 ```sql
@@ -114,10 +115,6 @@ CREATE VIEW my_view (col1, col2) AS
 WITH my_cte (c1, c2) AS SELECT 1, 2
 SELECT * FROM my_cte;
 ```
-
-Undecided:
-
-- :question: BigQuery options list: `OPTIONS(foo = bar)` v/s `OPTIONS (foo = bar)`
 
 ## Parenthesis removal
 

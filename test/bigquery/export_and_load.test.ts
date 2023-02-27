@@ -5,7 +5,7 @@ describe("export & load", () => {
   it(`formats EXPORT DATA`, () => {
     testBigquery(dedent`
       EXPORT DATA
-      OPTIONS(uri = 'gs://bucket/folder/*.csv', format = 'CSV')
+      OPTIONS (uri = 'gs://bucket/folder/*.csv', format = 'CSV')
       AS
         SELECT field1, field2 FROM mydataset.table1
     `);
@@ -15,7 +15,7 @@ describe("export & load", () => {
     testBigquery(dedent`
       EXPORT DATA
       WITH CONNECTION myproject.us.myconnection
-      OPTIONS(uri = 'gs://bucket/folder/*.csv', format = 'CSV')
+      OPTIONS (uri = 'gs://bucket/folder/*.csv', format = 'CSV')
       AS
         SELECT field1, field2 FROM mydataset.table1
     `);
@@ -31,7 +31,7 @@ describe("export & load", () => {
   it(`formats LOAD DATA with columns`, () => {
     testBigquery(dedent`
       LOAD DATA INTO mydataset.table1 (x INT64, y STRING)
-      OPTIONS(description = "my table")
+      OPTIONS (description = "my table")
       FROM FILES (format = 'AVRO', uris = ['gs://bucket/path/file.avro'])
     `);
   });

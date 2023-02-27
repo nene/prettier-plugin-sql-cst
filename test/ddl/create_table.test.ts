@@ -143,7 +143,7 @@ describe("create table", () => {
       CREATE TABLE client (
         arr_field ARRAY<INT64 NOT NULL>,
         struct_field STRUCT<name STRING NOT NULL, age INT64 DEFAULT 0>,
-        meta OPTIONS(description = 'Metadata in here')
+        meta OPTIONS (description = 'Metadata in here')
       )
     `);
   });
@@ -174,16 +174,16 @@ describe("create table", () => {
       DEFAULT COLLATE 'und:ci'
       PARTITION BY _PARTITIONDATE
       CLUSTER BY customer_id
-      OPTIONS(friendly_name = 'Clientele')
+      OPTIONS (friendly_name = 'Clientele')
     `);
   });
 
-  it(`formats long BigQuery OPTIONS()`, () => {
+  it(`formats long BigQuery OPTIONS ()`, () => {
     testBigquery(dedent`
       CREATE TABLE client (
         id INT64
       )
-      OPTIONS(
+      OPTIONS (
         expiration_timestamp = TIMESTAMP "2025-01-01 00:00:00 UTC",
         partition_expiration_days = 1,
         description = "a table that expires in 2025, with each partition living for 24 hours",
@@ -243,7 +243,7 @@ describe("create table", () => {
       )
       WITH CONNECTION myproj.dataset.connectionId
       WITH PARTITION COLUMNS (field_1 STRING, field_2 INT64)
-      OPTIONS(format = 'PARQUET')
+      OPTIONS (format = 'PARQUET')
     `);
   });
 

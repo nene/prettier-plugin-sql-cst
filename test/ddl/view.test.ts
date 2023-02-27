@@ -49,7 +49,7 @@ describe("view", () => {
       testBigquery(
         dedent`
           CREATE VIEW foo
-          OPTIONS(friendly_name = "newview")
+          OPTIONS (friendly_name = "newview")
           AS
             SELECT 1
         `
@@ -97,7 +97,7 @@ describe("view", () => {
       testBigquery(
         dedent`
           ALTER VIEW IF EXISTS my_view
-          SET OPTIONS(description = 'blah')
+          SET OPTIONS (description = 'blah')
         `
       );
     });
@@ -106,7 +106,7 @@ describe("view", () => {
       testBigquery(
         dedent`
           ALTER MATERIALIZED VIEW my_view
-          SET OPTIONS(description = 'blah')
+          SET OPTIONS (description = 'blah')
         `
       );
     });

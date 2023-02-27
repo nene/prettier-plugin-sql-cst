@@ -51,12 +51,12 @@ describe("function", () => {
       `);
     });
 
-    it(`formats OPTIONS(...)`, () => {
+    it(`formats OPTIONS (...)`, () => {
       testBigquery(dedent`
         CREATE FUNCTION IF NOT EXISTS my_func()
         AS
           (SELECT 1)
-        OPTIONS(description = 'constant-value function')
+        OPTIONS (description = 'constant-value function')
       `);
     });
 
@@ -74,7 +74,7 @@ describe("function", () => {
         CREATE FUNCTION my_func()
         RETURNS INT64
         REMOTE WITH CONNECTION us.myconnection
-        OPTIONS(endpoint = 'https://us-central1-myproject.cloudfunctions.net/multiply')
+        OPTIONS (endpoint = 'https://us-central1-myproject.cloudfunctions.net/multi')
       `);
     });
 
