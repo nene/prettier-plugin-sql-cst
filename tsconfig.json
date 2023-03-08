@@ -5,7 +5,8 @@
     "strict": true,
     "outDir": "dist",
     "esModuleInterop": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "declaration": true
   },
   "include": ["src", "tsconfig.json"]
 }

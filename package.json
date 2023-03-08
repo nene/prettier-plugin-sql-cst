@@ -5,6 +5,7 @@
   "author": "Rene Saarsoo <nene@triin.net>",
   "license": "GPL-3.0-or-later",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/nene/prettier-plugin-sql-cst"
