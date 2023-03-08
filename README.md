@@ -28,15 +28,15 @@ SELECT
   client.id,
   client.name AS client_name,
   organization.name AS org_name,
-  count(order.id) AS nr_of_orders
+  count(orders.id) AS nr_of_orders
 FROM
   client
   LEFT JOIN organization ON client.organization_id = organization.id
-  LEFT JOIN order ON order.client_id = client.id
+  LEFT JOIN orders ON orders.client_id = client.id
 WHERE
   client.status = 'active'
   AND client.id IN (28, 214, 457)
-  AND order.status IN ('active', 'pending', 'processing')
+  AND orders.status IN ('active', 'pending', 'processing')
 GROUP BY client.id
 ORDER BY client.name
 LIMIT 100;
