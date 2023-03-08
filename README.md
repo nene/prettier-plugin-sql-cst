@@ -3,6 +3,8 @@
 A [Prettier][] plugin for SQL that uses [sql-parser-cst][] and the
 actual [Prettier formatting algorithm][wadler-prettier].
 
+**[Try it live!][live]**
+
 Like Prettier for JavaScript,
 this plugin formats SQL expressions differently depending on their length.
 A short SQL query will be formatted on a single line:
@@ -109,6 +111,7 @@ The specifics of the [SQL formatting style][STYLE_GUIDE] are still very much sub
 Though the general principles should be mostly in place by now.
 
 [prettier]: https://prettier.io/
+[live]: https://nene.github.io/prettier-sql-playground/
 [printWidth]: https://prettier.io/docs/en/options.html#print-width
 [tabWidth]: https://prettier.io/docs/en/options.html#tab-width
 [useTabs]: https://prettier.io/docs/en/options.html#tabs
