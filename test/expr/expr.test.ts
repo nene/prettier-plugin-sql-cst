@@ -178,6 +178,11 @@ describe("expr", () => {
     it(`formats RAISE expression`, () => {
       test(`SELECT RAISE(IGNORE), RAISE(ABORT, 'Oh no!')`);
     });
+
+    it(`formats EXTRACT() expression`, () => {
+      testBigquery(`SELECT EXTRACT(MONTH FROM DATE '2002-08-16')`);
+      testBigquery(`SELECT EXTRACT(WEEK(SUNDAY) FROM date)`);
+    });
   });
 
   describe("BigQuery", () => {

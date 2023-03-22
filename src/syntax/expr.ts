@@ -117,6 +117,9 @@ export const exprMap: Partial<CstToDocMap<AllExprNodes>> = {
   cast_format_timezone: (print) => print.spaced(["atTimeZoneKw", "timezone"]),
   raise_expr: (print) => print(["raiseKw", "args"]),
   raise_expr_type: (print) => print("typeKw"),
+  extract_expr: (print) => print(["extractKw", "args"]),
+  extract_from: (print) => print.spaced(["unit", "fromKw", "expr"]),
+  week_expr: (print) => print(["weekKw", "args"]),
   interval_expr: (print) => print.spaced(["intervalKw", "expr", "unit"]),
   interval_unit_range: (print) =>
     print.spaced(["fromUnitKw", "toKw", "toUnitKw"]),
