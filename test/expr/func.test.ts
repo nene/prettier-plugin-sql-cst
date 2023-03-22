@@ -54,4 +54,12 @@ describe("functions", () => {
       testBigquery(`SELECT EXTRACT(WEEK(SUNDAY) FROM date)`);
     });
   });
+
+  describe("any_value", () => {
+    it(`formats ANY_VALUE() with HAVING`, () => {
+      testBigquery(`SELECT any_value(fruit)`);
+      testBigquery(`SELECT any_value(fruit HAVING MAX sold)`);
+      testBigquery(`SELECT any_value(fruit HAVING MIN sold)`);
+    });
+  });
 });
