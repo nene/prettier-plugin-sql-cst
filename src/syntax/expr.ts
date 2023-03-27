@@ -122,8 +122,8 @@ export const exprMap: Partial<CstToDocMap<AllExprNodes>> = {
   extract_from: (print) => print.spaced(["unit", "fromKw", "expr"]),
   week_expr: (print) => print(["weekKw", "args"]),
   interval_expr: (print) => print.spaced(["intervalKw", "expr", "unit"]),
-  interval_unit_range: (print) =>
-    print.spaced(["fromUnitKw", "toKw", "toUnitKw"]),
+  interval_unit_range: (print) => print.spaced(["fromUnit", "toKw", "toUnit"]),
+  interval_unit: (print) => print("unitKw"),
   array_expr: (print) =>
     group(["[", indent([softline, print("expr")]), softline, "]"]),
   struct_expr: (print) =>

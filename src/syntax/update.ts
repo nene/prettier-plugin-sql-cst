@@ -5,7 +5,7 @@ import { join, hardline, indent } from "../print_utils";
 export const updateMap: Partial<CstToDocMap<AllUpdateNodes>> = {
   update_stmt: (print) => join(hardline, print("clauses")),
   update_clause: (print) =>
-    print.spaced(["updateKw", "options", "orAction", "tables"]),
+    print.spaced(["updateKw", "hints", "orAction", "tables"]),
   set_clause: (print, node) => {
     if (node.assignments.items.length > 1) {
       return [print("setKw"), indent([hardline, print("assignments")])];

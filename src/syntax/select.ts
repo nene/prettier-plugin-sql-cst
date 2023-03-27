@@ -25,7 +25,7 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
       print.spaced(["withKw", "recursiveKw"]),
       indent([line, print("tables")]),
     ]),
-  common_table_expression: (print) => [
+  common_table_expr: (print) => [
     print(["table", "columns"]),
     " ",
     print.spaced(["asKw", "materializedKw", "expr"]),

@@ -4,5 +4,5 @@ import { hardline, join } from "../print_utils";
 
 export const deleteMap: CstToDocMap<AllDeleteNodes> = {
   delete_stmt: (print) => join(hardline, print("clauses")),
-  delete_clause: (print) => print.spaced(["deleteKw", "fromKw", "table"]),
+  delete_clause: (print) => print.spaced(["deleteKw", "fromKw", "tables"]),
 };
