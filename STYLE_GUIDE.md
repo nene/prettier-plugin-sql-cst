@@ -112,7 +112,7 @@ CREATE TABLE foo (
 CREATE VIEW my_view (col1, col2) AS
   SELECT 1, 2;
 
-WITH my_cte (c1, c2) AS SELECT 1, 2
+WITH my_cte (c1, c2) AS (SELECT 1, 2)
 SELECT * FROM my_cte;
 ```
 
