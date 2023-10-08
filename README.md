@@ -3,6 +3,8 @@
 A [Prettier][] plugin for SQL that uses [sql-parser-cst][] and the
 actual [Prettier formatting algorithm][wadler-prettier].
 
+**Note:** This plugin only works with Prettier 2.x. It doesn't yet support the latest Prettier 3.x.
+
 **[Try it live!][live]**
 
 Like Prettier for JavaScript,
