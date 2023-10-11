@@ -23,7 +23,7 @@ export const languages: SupportLanguage[] = [
 ];
 
 const createParser = (dialect: DialectName): Parser<Node> => ({
-  parse: (text, parsers, options) =>
+  parse: (text, options) =>
     transformCst(
       parse(text, {
         dialect,
