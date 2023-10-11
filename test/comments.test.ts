@@ -122,4 +122,17 @@ describe("comments", () => {
 
     `);
   });
+
+  // Issue #9
+  it.skip(`keeps separate-line line-comments on a separate line (not moving them to line end)`, () => {
+    rawTest(dedent`
+      CREATE TABLE foo
+      -- com1
+      -- com2
+      (
+        col INT
+      );
+
+    `);
+  });
 });
