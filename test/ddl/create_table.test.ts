@@ -148,6 +148,21 @@ describe("create table", () => {
     `);
   });
 
+  // Issue #10
+  it(`formats long BigQuery struct definition to multiple lines`, () => {
+    testBigquery(dedent`
+      CREATE TABLE client (
+        struct_field STRUCT<
+          first_name STRING,
+          last_name STRING,
+          email STRING,
+          address STRING,
+          phone_number STRING
+        >
+      )
+    `);
+  });
+
   it(`formats SQLite table options`, () => {
     test(dedent`
       CREATE TABLE foo (
