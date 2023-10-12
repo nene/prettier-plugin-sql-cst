@@ -8,7 +8,10 @@ import {
   stripTrailingHardline,
 } from "./print_utils";
 
-export const embedJson: NonNullable<Printer<Node>["embed"]> = (path, options) => {
+export const embedJson: NonNullable<Printer<Node>["embed"]> = (
+  path,
+  options,
+) => {
   const node = path.getValue(); // TODO: Don't use deprecated method
   const parent = path.getParentNode();
   if (isStringLiteral(node) && isJsonLiteral(parent)) {
@@ -33,7 +36,7 @@ export const embedJson: NonNullable<Printer<Node>["embed"]> = (path, options) =>
         softline,
         ifBreak("'''", inlineQuote),
       ];
-    }
+    };
   }
   return null;
 };

@@ -9,7 +9,7 @@ export type ToDocFn<TNode> = (
   print: PrintFn<TNode>,
   node: TNode,
   path: AstPath<TNode>,
-  options: AllPrettierOptions<TNode>
+  options: AllPrettierOptions<TNode>,
 ) => Doc;
 
 export type CstToDocMap<TNode extends Node> = {

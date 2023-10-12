@@ -21,7 +21,7 @@ export const functionMap: Partial<CstToDocMap<AllFunctionNodes>> = {
           hardline,
           join(
             hardline,
-            print("clauses").map((cls) => group(cls))
+            print("clauses").map((cls) => group(cls)),
           ),
         ],
   ],

@@ -21,7 +21,8 @@
     "prepublishOnly": "yarn test && yarn build",
     "clean": "rm -rf dist",
     "build": "yarn clean && tsc",
-    "test": "yarn node --experimental-vm-modules $(yarn bin jest)"
+    "test": "yarn node --experimental-vm-modules $(yarn bin jest)",
+    "pretty": "prettier -w src/"
   },
   "keywords": [
     "prettier",

@@ -4,7 +4,7 @@ import { last } from "../utils";
 
 export const addFinalSemicolon = (
   program: Program,
-  originalText: string
+  originalText: string,
 ): Program => {
   if (!isEmpty(last(program.statements))) {
     const end = originalText.length;

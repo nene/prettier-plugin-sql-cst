@@ -51,7 +51,7 @@ export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
 
 const printUnnamedConstraint = <T>(
   print: PrintFn<Constraint<T>>,
-  node: Constraint<T>
+  node: Constraint<T>,
 ): Doc => {
   if (node.deferrable) {
     return group([

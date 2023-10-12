@@ -21,8 +21,16 @@ export const options: SupportOptions = {
         description: "preserves the existing case",
         since: "0.1.0",
       },
-      { value: "upper", description: "forces all keywords to uppercase", since: "0.1.0", },
-      { value: "lower", description: "forces all keywords to lowercase", since: "0.1.0", },
+      {
+        value: "upper",
+        description: "forces all keywords to uppercase",
+        since: "0.1.0",
+      },
+      {
+        value: "lower",
+        description: "forces all keywords to lowercase",
+        since: "0.1.0",
+      },
     ],
   },
   sqlParamTypes: {

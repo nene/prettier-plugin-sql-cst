@@ -10,7 +10,7 @@ import { join } from "./print_utils";
 export function printSql(
   path: AstPath<Node>,
   options: AllPrettierOptions,
-  oldPrint: OldPrintFn
+  oldPrint: OldPrintFn,
 ): Doc {
   return printNode(path, options, createPrintFn(path, oldPrint));
 }
@@ -20,7 +20,7 @@ let cachedPath: AstPath<Node>;
 
 function createPrintFn(
   path: AstPath<Node>,
-  oldPrint: OldPrintFn
+  oldPrint: OldPrintFn,
 ): PrintFn<Node> {
   // The path parameter will reference the same AstPath instance
   // during the whole printing cycle.
@@ -41,7 +41,7 @@ function createPrintFn(
   }) as PrintFn<Node>;
 
   cachedPrintFn.spaced = (
-    selector: PrintableKey<Node> | PrintableKey<Node>[]
+    selector: PrintableKey<Node> | PrintableKey<Node>[],
   ): Doc[] => {
     const node = path.getValue();
     const docs = arrayWrap(selector)
@@ -60,7 +60,7 @@ function createPrintFn(
 function printNode(
   path: AstPath<Node>,
   options: AllPrettierOptions,
-  print: PrintFn<Node>
+  print: PrintFn<Node>,
 ): Doc {
   const node = path.getValue();
 

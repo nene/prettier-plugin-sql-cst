@@ -37,13 +37,13 @@ export const embedJs: NonNullable<Printer<Node>["embed"]> = (path, options) => {
         hardline,
         quotes[1],
       ];
-    }
+    };
   }
   return null;
 };
 
 const isJavaScriptLanguageClause = (
-  clause: CreateFunctionStmt["clauses"][0]
+  clause: CreateFunctionStmt["clauses"][0],
 ): boolean => isLanguageClause(clause) && clause.name.name === "js";
 
 // Whether to quote the code with single- or double-quotes.

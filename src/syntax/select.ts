@@ -56,7 +56,7 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
                 ? indent([line, print(["specification"])])
                 : [],
             ],
-          ])
+          ]),
         ),
       ];
     }
@@ -74,7 +74,7 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
         group(print("aggregations")),
         print.spaced(["forKw", "inputColumn"]),
         print.spaced(["inKw", "pivotColumns"]),
-      ])
+      ]),
     ),
   unpivot_expr: (print, node) => [
     print("left"),
@@ -91,7 +91,7 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
         print("valuesColumn"),
         print.spaced(["forKw", "nameColumn"]),
         print.spaced(["inKw", "unpivotColumns"]),
-      ])
+      ]),
     ),
   tablesample_expr: (print) =>
     group([print("left"), line, print.spaced(["tablesampleKw", "args"])]),
@@ -141,15 +141,15 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
     return group(
       join(
         lineType,
-        print(["baseWindowName", "partitionBy", "orderBy", "frame"])
-      )
+        print(["baseWindowName", "partitionBy", "orderBy", "frame"]),
+      ),
     );
   },
 };
 
 const printLimitValues = (
   print: PrintFn<LimitClause>,
-  node: LimitClause
+  node: LimitClause,
 ): Doc => {
   if (node.offsetKw) {
     return print.spaced(["count", "offsetKw", "offset"]);
