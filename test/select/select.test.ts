@@ -3,11 +3,11 @@ import { pretty, test, testBigquery } from "../test_utils";
 
 describe("select", () => {
   it(`formats short SELECT..FROM..WHERE on single line`, async () => {
-    test(`SELECT a, b, c FROM tbl WHERE x > y`);
+    await test(`SELECT a, b, c FROM tbl WHERE x > y`);
   });
 
   it(`forces multi-line format when the original select is already multi-line`, async () => {
-    expect(pretty(`SELECT a, b, c \n FROM tbl WHERE x > y`)).toBe(dedent`
+    expect(await pretty(`SELECT a, b, c \n FROM tbl WHERE x > y`)).toBe(dedent`
       SELECT a, b, c
       FROM tbl
       WHERE x > y
@@ -15,7 +15,7 @@ describe("select", () => {
   });
 
   it(`formats each SELECT clause to separate line`, async () => {
-    test(dedent`
+    await test(dedent`
       SELECT *
       FROM tbl
       WHERE x > y
@@ -28,7 +28,7 @@ describe("select", () => {
 
   it(`formats each SELECT clause with indented body when it doesn't fit on a single line`, async () => {
     expect(
-      pretty(
+      await pretty(
         `SELECT very_long_col_name, another_long_col_name
         FROM my_super_long_table_name
         WHERE my_table_name.x > my_table_name.y
@@ -61,7 +61,7 @@ describe("select", () => {
   });
 
   it(`preserves multiline SELECT columns (even if they would fit on a single line)`, async () => {
-    test(dedent`
+    await test(dedent`
       SELECT
         col1,
         col2,
@@ -70,11 +70,11 @@ describe("select", () => {
   });
 
   it(`formats SELECT *`, async () => {
-    test(`SELECT *`);
+    await test(`SELECT *`);
   });
 
   it(`formats SELECT DISTINCT`, async () => {
-    test(
+    await test(
       dedent`
         SELECT DISTINCT
           col1,
@@ -87,11 +87,11 @@ describe("select", () => {
   });
 
   it(`formats LIMIT with just count`, async () => {
-    test(`SELECT * FROM tbl LIMIT 10`);
+    await test(`SELECT * FROM tbl LIMIT 10`);
   });
 
   it(`formats set operations of select statements`, async () => {
-    test(dedent`
+    await test(dedent`
       SELECT * FROM client WHERE status = 'inactive'
       UNION ALL
       SELECT * FROM disabled_client
@@ -102,14 +102,14 @@ describe("select", () => {
 
   describe("BigQuery", () => {
     it(`removes trailing commas from SELECT`, async () => {
-      expect(pretty(`SELECT 1, 2, 3,`, { dialect: "bigquery" })).toBe(
+      expect(await pretty(`SELECT 1, 2, 3,`, { dialect: "bigquery" })).toBe(
         `SELECT 1, 2, 3`
       );
     });
 
     it(`removes trailing commas from multiline SELECT`, async () => {
       expect(
-        pretty(
+        await pretty(
           dedent`
             SELECT
               'something long',
@@ -133,27 +133,27 @@ describe("select", () => {
     });
 
     it(`formats SELECT * EXCEPT`, async () => {
-      testBigquery(`SELECT * EXCEPT (order_id) FROM orders`);
+      await testBigquery(`SELECT * EXCEPT (order_id) FROM orders`);
     });
 
     it(`formats SELECT * REPLACE`, async () => {
-      testBigquery(`SELECT * REPLACE (order_id AS id) FROM orders`);
+      await testBigquery(`SELECT * REPLACE (order_id AS id) FROM orders`);
     });
 
     it(`formats SELECT AS STRUCT`, async () => {
-      testBigquery(`SELECT AS STRUCT 1 AS a, 2 AS b`);
+      await testBigquery(`SELECT AS STRUCT 1 AS a, 2 AS b`);
     });
 
     it(`formats SELECT AS VALUE`, async () => {
-      testBigquery(`SELECT AS VALUE foo()`);
+      await testBigquery(`SELECT AS VALUE foo()`);
     });
 
     it(`formats GROUP BY ROLLUP()`, async () => {
-      testBigquery(`SELECT * FROM tbl GROUP BY ROLLUP(a, b, c)`);
+      await testBigquery(`SELECT * FROM tbl GROUP BY ROLLUP(a, b, c)`);
     });
 
     it(`formats GROUP BY ROLLUP() to multiple lines`, async () => {
-      testBigquery(dedent`
+      await testBigquery(dedent`
         SELECT *
         FROM my_table_name
         GROUP BY
@@ -167,11 +167,11 @@ describe("select", () => {
     });
 
     it(`formats QUALIFY clause`, async () => {
-      testBigquery(`SELECT * FROM tbl QUALIFY x > 10`);
+      await testBigquery(`SELECT * FROM tbl QUALIFY x > 10`);
     });
 
     it(`formats long QUALIFY clause to multiple lines`, async () => {
-      testBigquery(dedent`
+      await testBigquery(dedent`
         SELECT *
         FROM my_table_name
         QUALIFY

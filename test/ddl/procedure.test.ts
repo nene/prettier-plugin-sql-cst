@@ -4,7 +4,7 @@ import { testBigquery } from "../test_utils";
 describe("procedure", () => {
   describe("create procedure", () => {
     it(`formats CREATE PROCEDURE`, async () => {
-      testBigquery(
+      await testBigquery(
         dedent`
           CREATE PROCEDURE drop_my_table(arg1 INT64, OUT arg2 STRING)
           BEGIN
@@ -15,7 +15,7 @@ describe("procedure", () => {
     });
 
     it(`formats OR REPLACE / IF NOT EXISTS`, async () => {
-      testBigquery(
+      await testBigquery(
         dedent`
           CREATE OR REPLACE PROCEDURE IF NOT EXISTS drop_my_table()
           BEGIN
@@ -26,7 +26,7 @@ describe("procedure", () => {
     });
 
     it(`formats long parameter list`, async () => {
-      testBigquery(
+      await testBigquery(
         dedent`
           CREATE PROCEDURE my_schema.my_long_procedure_name(
             IN first_parameter INT64,
@@ -41,7 +41,7 @@ describe("procedure", () => {
     });
 
     it(`formats OPTIONS (..)`, async () => {
-      testBigquery(
+      await testBigquery(
         dedent`
           CREATE PROCEDURE foo()
           OPTIONS (strict_mode = TRUE)
@@ -53,7 +53,7 @@ describe("procedure", () => {
     });
 
     it(`formats remote python procedure`, async () => {
-      testBigquery(
+      await testBigquery(
         dedent`
           CREATE PROCEDURE my_bq_project.my_dataset.spark_proc()
           WITH CONNECTION \`my-project-id.us.my-connection\`
@@ -64,7 +64,7 @@ describe("procedure", () => {
     });
 
     it(`formats inline python procedure`, async () => {
-      testBigquery(
+      await testBigquery(
         dedent`
           CREATE PROCEDURE spark_proc()
           WITH CONNECTION my_connection
@@ -83,11 +83,11 @@ describe("procedure", () => {
 
   describe("drop procedure", () => {
     it(`formats DROP PROCEDURE`, async () => {
-      testBigquery(`DROP PROCEDURE mydataset.myProcedure`);
+      await testBigquery(`DROP PROCEDURE mydataset.myProcedure`);
     });
 
     it(`formats IF EXISTS`, async () => {
-      testBigquery(`DROP PROCEDURE IF EXISTS foo`);
+      await testBigquery(`DROP PROCEDURE IF EXISTS foo`);
     });
   });
 });

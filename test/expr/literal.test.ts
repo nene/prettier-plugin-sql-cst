@@ -3,11 +3,11 @@ import { test, testBigquery } from "../test_utils";
 
 describe("literal", () => {
   it(`formats BigQuery NUMERIC and BIGNUMERIC literals`, async () => {
-    testBigquery(`SELECT NUMERIC '12345', BIGNUMERIC '1.23456e05'`);
+    await testBigquery(`SELECT NUMERIC '12345', BIGNUMERIC '1.23456e05'`);
   });
 
   it(`formats DATE/TIME literals`, async () => {
-    testBigquery(
+    await testBigquery(
       dedent`
         SELECT
           DATE '2014-09-27',
@@ -19,7 +19,7 @@ describe("literal", () => {
   });
 
   it(`formats INTERVAL literals`, async () => {
-    testBigquery(
+    await testBigquery(
       dedent`
         SELECT
           INTERVAL 5 DAY,
@@ -32,7 +32,7 @@ describe("literal", () => {
 
   describe("array literals", () => {
     it(`formats array literals`, async () => {
-      testBigquery(
+      await testBigquery(
         dedent`
           SELECT
             [1, 2, 3],
@@ -44,7 +44,7 @@ describe("literal", () => {
     });
 
     it(`formats long array literal to multiple lines`, async () => {
-      testBigquery(
+      await testBigquery(
         dedent`
           SELECT
             [
@@ -60,7 +60,7 @@ describe("literal", () => {
 
   describe("struct literals", () => {
     it(`formats struct literals`, async () => {
-      testBigquery(
+      await testBigquery(
         dedent`
           SELECT
             (1, 2, 3),
@@ -73,7 +73,7 @@ describe("literal", () => {
     });
 
     it(`formats long struct literal to multiple lines`, async () => {
-      testBigquery(
+      await testBigquery(
         dedent`
           SELECT
             STRUCT(

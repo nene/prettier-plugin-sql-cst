@@ -3,7 +3,7 @@ import { testBigquery } from "../test_utils";
 
 describe("export & load", () => {
   it(`formats EXPORT DATA`, async () => {
-    testBigquery(dedent`
+    await testBigquery(dedent`
       EXPORT DATA
       OPTIONS (uri = 'gs://bucket/folder/*.csv', format = 'CSV')
       AS
@@ -12,7 +12,7 @@ describe("export & load", () => {
   });
 
   it(`formats EXPORT DATA with CONNECTION`, async () => {
-    testBigquery(dedent`
+    await testBigquery(dedent`
       EXPORT DATA
       WITH CONNECTION myproject.us.myconnection
       OPTIONS (uri = 'gs://bucket/folder/*.csv', format = 'CSV')
@@ -22,14 +22,14 @@ describe("export & load", () => {
   });
 
   it(`formats LOAD DATA`, async () => {
-    testBigquery(dedent`
+    await testBigquery(dedent`
       LOAD DATA INTO mydataset.table1
       FROM FILES (format = 'AVRO', uris = ['gs://bucket/path/file.avro'])
     `);
   });
 
   it(`formats LOAD DATA with columns`, async () => {
-    testBigquery(dedent`
+    await testBigquery(dedent`
       LOAD DATA INTO mydataset.table1 (x INT64, y STRING)
       OPTIONS (description = "my table")
       FROM FILES (format = 'AVRO', uris = ['gs://bucket/path/file.avro'])
@@ -37,7 +37,7 @@ describe("export & load", () => {
   });
 
   it(`formats LOAD DATA with long column list`, async () => {
-    testBigquery(dedent`
+    await testBigquery(dedent`
       LOAD DATA INTO mydataset.table1 (
         first_field INT64,
         second_field STRING,
@@ -49,7 +49,7 @@ describe("export & load", () => {
   });
 
   it(`formats LOAD DATA with PARTITION/CLUSTER BY & WITH PARTITION COLUMNS & CONNECTION`, async () => {
-    testBigquery(dedent`
+    await testBigquery(dedent`
       LOAD DATA INTO mydataset.table1
       PARTITION BY transaction_date
       CLUSTER BY customer_id

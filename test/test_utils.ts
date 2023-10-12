@@ -38,5 +38,5 @@ export const test = async (sql: string, opts: TestOptions = {}): Promise<void> =
 };
 
 export const testBigquery = async (sql: string, opts: TestOptions = {}): Promise<void> => {
-  await test(sql, { dialect: "bigquery", ...opts });
+  await await test(sql, { dialect: "bigquery", ...opts });
 };

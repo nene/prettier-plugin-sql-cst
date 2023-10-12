@@ -3,7 +3,7 @@ import { testBigquery } from "../test_utils";
 
 describe("revoke", () => {
   it(`formats REVOKE (single role, single user)`, async () => {
-    testBigquery(dedent`
+    await testBigquery(dedent`
       REVOKE \`roles/bigquery.dataViewer\`
       ON VIEW myCompany.revenue
       FROM 'user:tom@example.com'
@@ -11,7 +11,7 @@ describe("revoke", () => {
   });
 
   it(`formats REVOKE (multiple roles, multiple users)`, async () => {
-    testBigquery(dedent`
+    await testBigquery(dedent`
       REVOKE \`roles/bigquery.dataViewer\`, \`roles/bigquery.admin\`
       ON SCHEMA myCompany
       FROM 'user:tom@example.com', 'user:sara@example.com'
@@ -19,7 +19,7 @@ describe("revoke", () => {
   });
 
   it(`formats REVOKE (multiline list of roles and users)`, async () => {
-    testBigquery(dedent`
+    await testBigquery(dedent`
       REVOKE
         \`roles/bigquery.dataViewer\`,
         \`roles/bigquery.admin\`,

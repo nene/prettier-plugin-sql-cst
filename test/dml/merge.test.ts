@@ -3,7 +3,7 @@ import { testBigquery } from "../test_utils";
 
 describe("merge", () => {
   it(`formats MERGE .. DELETE`, async () => {
-    testBigquery(
+    await testBigquery(
       dedent`
         MERGE INTO dataset.DetailedInventory AS target
         USING dataset.Inventory AS source
@@ -15,7 +15,7 @@ describe("merge", () => {
   });
 
   it(`formats MERGE .. INSERT (cols) VALUES`, async () => {
-    testBigquery(
+    await testBigquery(
       dedent`
         MERGE INTO target
         USING source
@@ -30,7 +30,7 @@ describe("merge", () => {
   });
 
   it(`formats MERGE .. INSERT VALUES`, async () => {
-    testBigquery(
+    await testBigquery(
       dedent`
         MERGE INTO target
         USING source
@@ -44,7 +44,7 @@ describe("merge", () => {
   });
 
   it(`formats MERGE .. INSERT ROW`, async () => {
-    testBigquery(
+    await testBigquery(
       dedent`
         MERGE INTO target
         USING source
@@ -56,7 +56,7 @@ describe("merge", () => {
   });
 
   it(`formats MERGE .. INSERT (columns) ROW`, async () => {
-    testBigquery(
+    await testBigquery(
       dedent`
         MERGE INTO target
         USING source
@@ -70,7 +70,7 @@ describe("merge", () => {
   });
 
   it(`formats MERGE .. UPDATE`, async () => {
-    testBigquery(
+    await testBigquery(
       dedent`
         MERGE INTO target
         USING source
@@ -85,7 +85,7 @@ describe("merge", () => {
   });
 
   it(`formats MERGE .. UPDATE with single-element update`, async () => {
-    testBigquery(
+    await testBigquery(
       dedent`
         MERGE INTO target
         USING source
@@ -97,7 +97,7 @@ describe("merge", () => {
   });
 
   it(`formats long ON-condition`, async () => {
-    testBigquery(
+    await testBigquery(
       dedent`
         MERGE INTO target
         USING source
@@ -112,7 +112,7 @@ describe("merge", () => {
   });
 
   it(`formats long WHEN-condition`, async () => {
-    testBigquery(
+    await testBigquery(
       dedent`
         MERGE INTO target
         USING source

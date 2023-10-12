@@ -3,13 +3,13 @@ import { testBigquery } from "../test_utils";
 
 describe("raise", () => {
   it(`formats RAISE statement`, async () => {
-    testBigquery(dedent`
+    await testBigquery(dedent`
       RAISE
     `);
   });
 
   it(`formats RAISE with message`, async () => {
-    testBigquery(dedent`
+    await testBigquery(dedent`
       RAISE USING MESSAGE = 'Serious error!'
     `);
   });

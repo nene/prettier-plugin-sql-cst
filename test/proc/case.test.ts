@@ -3,7 +3,7 @@ import { testBigquery } from "../test_utils";
 
 describe("case", () => {
   it(`formats procedural CASE`, async () => {
-    testBigquery(dedent`
+    await testBigquery(dedent`
       CASE foo
         WHEN 1 THEN
           SELECT CONCAT('Product one');

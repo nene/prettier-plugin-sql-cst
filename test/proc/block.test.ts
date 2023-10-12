@@ -3,7 +3,7 @@ import { testBigquery } from "../test_utils";
 
 describe("block statement", () => {
   it(`formats BEGIN .. END`, async () => {
-    testBigquery(dedent`
+    await testBigquery(dedent`
       BEGIN
         SELECT 1;
         SELECT 2;
@@ -13,7 +13,7 @@ describe("block statement", () => {
   });
 
   it(`formats BEGIN .. EXCEPTION .. END`, async () => {
-    testBigquery(dedent`
+    await testBigquery(dedent`
       BEGIN
         SELECT 1;
       EXCEPTION WHEN ERROR THEN

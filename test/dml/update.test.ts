@@ -3,7 +3,7 @@ import { test } from "../test_utils";
 
 describe("update", () => {
   it(`formats UPDATE statement`, async () => {
-    test(dedent`
+    await test(dedent`
       UPDATE employee
       SET salary = 1000
       WHERE id = 10
@@ -11,7 +11,7 @@ describe("update", () => {
   });
 
   it(`formats UPDATE statement with multiple assignments`, async () => {
-    test(dedent`
+    await test(dedent`
       UPDATE employee
       SET
         name = 'John Doe',
@@ -22,7 +22,7 @@ describe("update", () => {
   });
 
   it(`formats UPDATE with parenthesized column groups`, async () => {
-    test(dedent`
+    await test(dedent`
       UPDATE employee
       SET
         (name, salary) = ('John Doe', 1000),
@@ -31,14 +31,14 @@ describe("update", () => {
   });
 
   it(`formats OR ABORT modifier`, async () => {
-    test(dedent`
+    await test(dedent`
       UPDATE OR ABORT employee
       SET salary = 1000
     `);
   });
 
   it(`formats UPDATE with RETURNING clause`, async () => {
-    test(dedent`
+    await test(dedent`
       UPDATE client
       SET status = 2
       RETURNING *

@@ -3,7 +3,7 @@ import { test } from "../test_utils";
 
 describe("select", () => {
   it(`formats short window clause on single lines`, async () => {
-    test(dedent`
+    await test(dedent`
       SELECT *
       FROM tbl
       WINDOW my_win AS (PARTITION BY col1)
@@ -11,7 +11,7 @@ describe("select", () => {
   });
 
   it(`formats multiple window definitions on separate lines`, async () => {
-    test(dedent`
+    await test(dedent`
       SELECT *
       FROM tbl
       WINDOW
@@ -21,7 +21,7 @@ describe("select", () => {
   });
 
   it(`formats long window definitions on multiple lines`, async () => {
-    test(dedent`
+    await test(dedent`
       SELECT *
       FROM tbl
       WINDOW
@@ -43,7 +43,7 @@ describe("select", () => {
   });
 
   it("formats basic window function calls, referencing named window", async () => {
-    test(dedent`
+    await test(dedent`
       SELECT row_number() OVER win1
       FROM tbl
       WINDOW win1 AS (ORDER BY x)
@@ -51,14 +51,14 @@ describe("select", () => {
   });
 
   it("formats short window function calls on single line", async () => {
-    test(dedent`
+    await test(dedent`
       SELECT row_number() OVER (ORDER BY x)
       FROM tbl
     `);
   });
 
   it("formats longer window function calls on multiple lines", async () => {
-    test(dedent`
+    await test(dedent`
       SELECT
         row_number() OVER (
           PARTITION BY y
@@ -69,14 +69,14 @@ describe("select", () => {
   });
 
   it("formats window function call with short FILTER clause on single line", async () => {
-    test(dedent`
+    await test(dedent`
       SELECT row_number() FILTER (WHERE x > 10) OVER (ORDER BY x)
       FROM tbl
     `);
   });
 
   it("formats window function call with longer FILTER and OVER clauses on multiple lines", async () => {
-    test(dedent`
+    await test(dedent`
       SELECT
         group_concat(entity_name, '.')
           FILTER (WHERE entity_type IS NOT NULL)

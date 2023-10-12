@@ -3,7 +3,7 @@ import { test, testBigquery } from "../test_utils";
 
 describe("insert", () => {
   it(`formats INSERT statement without column names`, async () => {
-    test(dedent`
+    await test(dedent`
       INSERT INTO client
       VALUES
         (1, 'John', 'Doe', 27)
@@ -11,7 +11,7 @@ describe("insert", () => {
   });
 
   it(`formats INSERT statement without INTO`, async () => {
-    testBigquery(dedent`
+    await testBigquery(dedent`
       INSERT client
       VALUES
         (1, 2, 3)
@@ -19,7 +19,7 @@ describe("insert", () => {
   });
 
   it(`formats INSERT statement with column names`, async () => {
-    test(dedent`
+    await test(dedent`
       INSERT INTO client
         (id, fname, lname, org_id)
       VALUES
@@ -28,7 +28,7 @@ describe("insert", () => {
   });
 
   it(`formats INSERT statement with multiple rows always to multiple lines`, async () => {
-    test(dedent`
+    await test(dedent`
       INSERT INTO client
       VALUES
         (1, 'John', 'Doe', 27),
@@ -37,7 +37,7 @@ describe("insert", () => {
   });
 
   it(`formats INSERT statement with long column names list`, async () => {
-    test(dedent`
+    await test(dedent`
       INSERT INTO client
         (id, first_name, last_name, organization_id, project_access_enabled)
       VALUES
@@ -48,7 +48,7 @@ describe("insert", () => {
   });
 
   it(`formats INSERT statement with very long column names and values lists`, async () => {
-    test(dedent`
+    await test(dedent`
       INSERT INTO client
         (
           id,
@@ -72,7 +72,7 @@ describe("insert", () => {
   });
 
   it(`formats OR ABORT modifier`, async () => {
-    test(dedent`
+    await test(dedent`
       INSERT OR ABORT INTO employee
       VALUES
         (1, 2, 3)
@@ -80,14 +80,14 @@ describe("insert", () => {
   });
 
   it("formats insertion of DEFAULT VALUES", async () => {
-    test(dedent`
+    await test(dedent`
       INSERT INTO employee
       DEFAULT VALUES
     `);
   });
 
   it("formats DEFAULT values among normal values", async () => {
-    testBigquery(dedent`
+    await testBigquery(dedent`
       INSERT INTO employee
       VALUES
         (1, 2, DEFAULT, 3)
@@ -95,14 +95,14 @@ describe("insert", () => {
   });
 
   it("formats insertion of query", async () => {
-    test(dedent`
+    await test(dedent`
       INSERT INTO employee
       SELECT * FROM tbl
     `);
   });
 
   it("formats upsert clauses", async () => {
-    test(dedent`
+    await test(dedent`
       INSERT INTO client
       VALUES
         (1, 2, 3)
@@ -115,7 +115,7 @@ describe("insert", () => {
   });
 
   it(`formats INSERT with RETURNING clause`, async () => {
-    test(dedent`
+    await test(dedent`
       INSERT INTO client
       VALUES
         (1, 2, 3)

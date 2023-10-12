@@ -4,7 +4,7 @@ import { testBigquery } from "../test_utils";
 describe("schema", () => {
   describe("create schema", () => {
     it(`formats CREATE SCHEMA`, async () => {
-      testBigquery(
+      await testBigquery(
         dedent`
           CREATE SCHEMA schema_name
         `
@@ -12,7 +12,7 @@ describe("schema", () => {
     });
 
     it(`formats IF NOT EXISTS`, async () => {
-      testBigquery(
+      await testBigquery(
         dedent`
           CREATE SCHEMA IF NOT EXISTS schema_name
         `
@@ -20,7 +20,7 @@ describe("schema", () => {
     });
 
     it(`formats OPTIONS (..)`, async () => {
-      testBigquery(
+      await testBigquery(
         dedent`
           CREATE SCHEMA schema_name
           OPTIONS (friendly_name = 'Happy schema')
@@ -29,7 +29,7 @@ describe("schema", () => {
     });
 
     it(`formats DEFAULT COLLATE`, async () => {
-      testBigquery(
+      await testBigquery(
         dedent`
           CREATE SCHEMA schema_name
           DEFAULT COLLATE 'und:ci'
@@ -40,7 +40,7 @@ describe("schema", () => {
 
   describe("drop schema", () => {
     it(`formats DROP SCHEMA`, async () => {
-      testBigquery(
+      await testBigquery(
         dedent`
           DROP SCHEMA schema_name
         `
@@ -48,7 +48,7 @@ describe("schema", () => {
     });
 
     it(`formats IF EXISTS`, async () => {
-      testBigquery(
+      await testBigquery(
         dedent`
           DROP SCHEMA IF EXISTS schema_name
         `
@@ -56,7 +56,7 @@ describe("schema", () => {
     });
 
     it(`formats CASCADE/RESTRICT`, async () => {
-      testBigquery(
+      await testBigquery(
         dedent`
           DROP SCHEMA schema_name CASCADE
         `
@@ -66,7 +66,7 @@ describe("schema", () => {
 
   describe("alter schema", () => {
     it(`formats ALTER SCHEMA .. SET OPTIONS`, async () => {
-      testBigquery(
+      await testBigquery(
         dedent`
           ALTER SCHEMA IF EXISTS my_schema
           SET OPTIONS (description = 'blah')
@@ -75,7 +75,7 @@ describe("schema", () => {
     });
 
     it(`formats ALTER SCHEMA .. SET DEFAULT COLLATE`, async () => {
-      testBigquery(
+      await testBigquery(
         dedent`
           ALTER SCHEMA my_schema
           SET DEFAULT COLLATE 'und:ci'

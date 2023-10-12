@@ -43,7 +43,7 @@ describe("comments", () => {
 
   it(`moves line comments before comma to line ends`, async () => {
     expect(
-      rawPretty(`
+      await rawPretty(`
         SELECT
           1 -- com1
           ,2 -- com2
@@ -73,7 +73,7 @@ describe("comments", () => {
 
   it(`enforces space between -- and comment text`, async () => {
     expect(
-      rawPretty(`
+      await rawPretty(`
         --My comment
         SELECT 1;
       `)
@@ -86,7 +86,7 @@ describe("comments", () => {
 
   it(`enforces space between # and comment text`, async () => {
     expect(
-      rawPretty(`
+      await rawPretty(`
         #My comment
         SELECT 1;
       `)

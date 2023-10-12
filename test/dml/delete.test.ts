@@ -3,21 +3,21 @@ import { test, testBigquery } from "../test_utils";
 
 describe("delete", () => {
   it(`formats DELETE statement`, async () => {
-    test(dedent`
+    await test(dedent`
       DELETE FROM employee
       WHERE id = 10
     `);
   });
 
   it(`formats DELETE without FROM`, async () => {
-    testBigquery(dedent`
+    await testBigquery(dedent`
       DELETE employee
       WHERE id = 10
     `);
   });
 
   it(`formats DELETE statement with RETURNING clause`, async () => {
-    test(dedent`
+    await test(dedent`
       DELETE FROM employee
       WHERE id = 10
       RETURNING
@@ -28,7 +28,7 @@ describe("delete", () => {
   });
 
   it(`formats DELETE statement with ORDER BY and LIMIT`, async () => {
-    test(dedent`
+    await test(dedent`
       DELETE FROM employee
       WHERE id = 10
       ORDER BY name

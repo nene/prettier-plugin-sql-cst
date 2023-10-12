@@ -3,7 +3,7 @@ import { testBigquery } from "../test_utils";
 
 describe("loops", () => {
   it(`formats LOOP`, async () => {
-    testBigquery(dedent`
+    await testBigquery(dedent`
       LOOP
         SELECT 1;
       END LOOP
@@ -11,7 +11,7 @@ describe("loops", () => {
   });
 
   it(`formats REPEAT`, async () => {
-    testBigquery(dedent`
+    await testBigquery(dedent`
       REPEAT
         SET x = x + 1;
       UNTIL x > 10 END REPEAT
@@ -19,7 +19,7 @@ describe("loops", () => {
   });
 
   it(`formats WHILE`, async () => {
-    testBigquery(dedent`
+    await testBigquery(dedent`
       WHILE x < 10 DO
         SET x = x + 1;
       END WHILE
@@ -27,7 +27,7 @@ describe("loops", () => {
   });
 
   it(`formats FOR .. IN`, async () => {
-    testBigquery(dedent`
+    await testBigquery(dedent`
       FOR record IN (SELECT * FROM tbl) DO
         SELECT record.foo, record.bar;
       END FOR
@@ -35,7 +35,7 @@ describe("loops", () => {
   });
 
   it(`formats BREAK/CONTINUE`, async () => {
-    testBigquery(dedent`
+    await testBigquery(dedent`
       LOOP
         IF TRUE THEN
           BREAK;
@@ -47,7 +47,7 @@ describe("loops", () => {
   });
 
   it(`formats labels`, async () => {
-    testBigquery(dedent`
+    await testBigquery(dedent`
       outer_loop: LOOP
         inner_loop: LOOP
           BREAK outer_loop;
@@ -57,7 +57,7 @@ describe("loops", () => {
   });
 
   it(`formats end labels`, async () => {
-    testBigquery(dedent`
+    await testBigquery(dedent`
       outer_loop: REPEAT
         inner_loop: LOOP
           CONTINUE outer_loop;

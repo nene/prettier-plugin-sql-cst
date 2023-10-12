@@ -5,21 +5,21 @@ import { rawPretty, rawTest } from "./test_utils";
 // to also test that formatted file always ends with final newline.
 describe("statement", () => {
   it(`adds semicolon to statement without a semicolon`, async () => {
-    expect(rawPretty(`SELECT 1`)).toBe(dedent`
+    expect(await rawPretty(`SELECT 1`)).toBe(dedent`
       SELECT 1;
 
     `);
   });
 
   it(`formats statement ending with semicolon`, async () => {
-    expect(rawPretty(`SELECT 1;`)).toBe(dedent`
+    expect(await rawPretty(`SELECT 1;`)).toBe(dedent`
       SELECT 1;
 
     `);
   });
 
   it(`formats multiple statements`, async () => {
-    expect(rawPretty(`SELECT 1; SELECT 2; SELECT 3;`)).toBe(dedent`
+    expect(await rawPretty(`SELECT 1; SELECT 2; SELECT 3;`)).toBe(dedent`
       SELECT 1;
       SELECT 2;
       SELECT 3;
@@ -28,7 +28,7 @@ describe("statement", () => {
   });
 
   it(`ensures semicolon after last statement`, async () => {
-    expect(rawPretty(`SELECT 1; SELECT 2; SELECT 3`)).toBe(dedent`
+    expect(await rawPretty(`SELECT 1; SELECT 2; SELECT 3`)).toBe(dedent`
       SELECT 1;
       SELECT 2;
       SELECT 3;
@@ -51,7 +51,7 @@ describe("statement", () => {
 
   it(`replaces multiple empty lines with just one`, async () => {
     expect(
-      rawPretty(dedent`
+      await rawPretty(dedent`
         SELECT 1;
 
 

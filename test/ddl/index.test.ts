@@ -4,25 +4,25 @@ import { test, testBigquery } from "../test_utils";
 describe("index", () => {
   describe("create index", () => {
     it(`formats CREATE INDEX`, async () => {
-      test(dedent`
+      await test(dedent`
         CREATE INDEX my_index ON my_table (col1, col2)
       `);
     });
 
     it(`formats CREATE UNIQUE INDEX`, async () => {
-      test(dedent`
+      await test(dedent`
         CREATE UNIQUE INDEX my_index ON my_table (col)
       `);
     });
 
     it(`formats IF NOT EXISTS`, async () => {
-      test(dedent`
+      await test(dedent`
         CREATE INDEX IF NOT EXISTS my_index ON my_table (col)
       `);
     });
 
     it(`formats long columns list on multiple lines`, async () => {
-      test(dedent`
+      await test(dedent`
         CREATE UNIQUE INDEX IF NOT EXISTS my_index ON my_table (
           column_name_one,
           column_name_two,
@@ -32,14 +32,14 @@ describe("index", () => {
     });
 
     it(`formats WHERE clause on separate line`, async () => {
-      test(dedent`
+      await test(dedent`
         CREATE INDEX my_index ON my_table (col)
         WHERE col > 10
       `);
     });
 
     it(`formats BigQuery CREATE SEARCH INDEX with OPTIONS ()`, async () => {
-      test(
+      await test(
         dedent`
           CREATE SEARCH INDEX my_index ON my_table (col)
           OPTIONS (analyzer = 'LOG_ANALYZER')
@@ -49,7 +49,7 @@ describe("index", () => {
     });
 
     it(`formats BigQuery CREATE SEARCH INDEX with ALL COLUMNS`, async () => {
-      testBigquery(dedent`
+      await testBigquery(dedent`
         CREATE SEARCH INDEX my_index ON my_table (ALL COLUMNS)
       `);
     });
@@ -57,19 +57,19 @@ describe("index", () => {
 
   describe("drop index", () => {
     it(`formats DROP INDEX`, async () => {
-      test(dedent`
+      await test(dedent`
         DROP INDEX my_index
       `);
     });
 
     it(`formats IF EXISTS`, async () => {
-      test(dedent`
+      await test(dedent`
         DROP INDEX IF EXISTS my_index
       `);
     });
 
     it(`formats DROP SEARCH INDEX`, async () => {
-      testBigquery(dedent`
+      await testBigquery(dedent`
         DROP SEARCH INDEX my_index ON my_table
       `);
     });
