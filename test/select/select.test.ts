@@ -2,11 +2,11 @@ import dedent from "dedent-js";
 import { pretty, test, testBigquery } from "../test_utils";
 
 describe("select", () => {
-  it(`formats short SELECT..FROM..WHERE on single line`, () => {
+  it(`formats short SELECT..FROM..WHERE on single line`, async () => {
     test(`SELECT a, b, c FROM tbl WHERE x > y`);
   });
 
-  it(`forces multi-line format when the original select is already multi-line`, () => {
+  it(`forces multi-line format when the original select is already multi-line`, async () => {
     expect(pretty(`SELECT a, b, c \n FROM tbl WHERE x > y`)).toBe(dedent`
       SELECT a, b, c
       FROM tbl
@@ -14,7 +14,7 @@ describe("select", () => {
     `);
   });
 
-  it(`formats each SELECT clause to separate line`, () => {
+  it(`formats each SELECT clause to separate line`, async () => {
     test(dedent`
       SELECT *
       FROM tbl
@@ -26,7 +26,7 @@ describe("select", () => {
     `);
   });
 
-  it(`formats each SELECT clause with indented body when it doesn't fit on a single line`, () => {
+  it(`formats each SELECT clause with indented body when it doesn't fit on a single line`, async () => {
     expect(
       pretty(
         `SELECT very_long_col_name, another_long_col_name
@@ -60,7 +60,7 @@ describe("select", () => {
     `);
   });
 
-  it(`preserves multiline SELECT columns (even if they would fit on a single line)`, () => {
+  it(`preserves multiline SELECT columns (even if they would fit on a single line)`, async () => {
     test(dedent`
       SELECT
         col1,
@@ -69,11 +69,11 @@ describe("select", () => {
     `);
   });
 
-  it(`formats SELECT *`, () => {
+  it(`formats SELECT *`, async () => {
     test(`SELECT *`);
   });
 
-  it(`formats SELECT DISTINCT`, () => {
+  it(`formats SELECT DISTINCT`, async () => {
     test(
       dedent`
         SELECT DISTINCT
@@ -86,11 +86,11 @@ describe("select", () => {
     );
   });
 
-  it(`formats LIMIT with just count`, () => {
+  it(`formats LIMIT with just count`, async () => {
     test(`SELECT * FROM tbl LIMIT 10`);
   });
 
-  it(`formats set operations of select statements`, () => {
+  it(`formats set operations of select statements`, async () => {
     test(dedent`
       SELECT * FROM client WHERE status = 'inactive'
       UNION ALL
@@ -101,13 +101,13 @@ describe("select", () => {
   });
 
   describe("BigQuery", () => {
-    it(`removes trailing commas from SELECT`, () => {
+    it(`removes trailing commas from SELECT`, async () => {
       expect(pretty(`SELECT 1, 2, 3,`, { dialect: "bigquery" })).toBe(
         `SELECT 1, 2, 3`
       );
     });
 
-    it(`removes trailing commas from multiline SELECT`, () => {
+    it(`removes trailing commas from multiline SELECT`, async () => {
       expect(
         pretty(
           dedent`
@@ -132,27 +132,27 @@ describe("select", () => {
       );
     });
 
-    it(`formats SELECT * EXCEPT`, () => {
+    it(`formats SELECT * EXCEPT`, async () => {
       testBigquery(`SELECT * EXCEPT (order_id) FROM orders`);
     });
 
-    it(`formats SELECT * REPLACE`, () => {
+    it(`formats SELECT * REPLACE`, async () => {
       testBigquery(`SELECT * REPLACE (order_id AS id) FROM orders`);
     });
 
-    it(`formats SELECT AS STRUCT`, () => {
+    it(`formats SELECT AS STRUCT`, async () => {
       testBigquery(`SELECT AS STRUCT 1 AS a, 2 AS b`);
     });
 
-    it(`formats SELECT AS VALUE`, () => {
+    it(`formats SELECT AS VALUE`, async () => {
       testBigquery(`SELECT AS VALUE foo()`);
     });
 
-    it(`formats GROUP BY ROLLUP()`, () => {
+    it(`formats GROUP BY ROLLUP()`, async () => {
       testBigquery(`SELECT * FROM tbl GROUP BY ROLLUP(a, b, c)`);
     });
 
-    it(`formats GROUP BY ROLLUP() to multiple lines`, () => {
+    it(`formats GROUP BY ROLLUP() to multiple lines`, async () => {
       testBigquery(dedent`
         SELECT *
         FROM my_table_name
@@ -166,11 +166,11 @@ describe("select", () => {
       `);
     });
 
-    it(`formats QUALIFY clause`, () => {
+    it(`formats QUALIFY clause`, async () => {
       testBigquery(`SELECT * FROM tbl QUALIFY x > 10`);
     });
 
-    it(`formats long QUALIFY clause to multiple lines`, () => {
+    it(`formats long QUALIFY clause to multiple lines`, async () => {
       testBigquery(dedent`
         SELECT *
         FROM my_table_name

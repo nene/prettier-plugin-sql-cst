@@ -2,7 +2,7 @@ import dedent from "dedent-js";
 import { testBigquery } from "../test_utils";
 
 describe("revoke", () => {
-  it(`formats REVOKE (single role, single user)`, () => {
+  it(`formats REVOKE (single role, single user)`, async () => {
     testBigquery(dedent`
       REVOKE \`roles/bigquery.dataViewer\`
       ON VIEW myCompany.revenue
@@ -10,7 +10,7 @@ describe("revoke", () => {
     `);
   });
 
-  it(`formats REVOKE (multiple roles, multiple users)`, () => {
+  it(`formats REVOKE (multiple roles, multiple users)`, async () => {
     testBigquery(dedent`
       REVOKE \`roles/bigquery.dataViewer\`, \`roles/bigquery.admin\`
       ON SCHEMA myCompany
@@ -18,7 +18,7 @@ describe("revoke", () => {
     `);
   });
 
-  it(`formats REVOKE (multiline list of roles and users)`, () => {
+  it(`formats REVOKE (multiline list of roles and users)`, async () => {
     testBigquery(dedent`
       REVOKE
         \`roles/bigquery.dataViewer\`,

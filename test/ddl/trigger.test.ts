@@ -3,7 +3,7 @@ import { test } from "../test_utils";
 
 describe("trigger", () => {
   describe("create trigger", () => {
-    it(`formats CREATE TRIGGER .. INSTEAD OF UPDATE OF`, () => {
+    it(`formats CREATE TRIGGER .. INSTEAD OF UPDATE OF`, async () => {
       test(dedent`
         CREATE TRIGGER cust_addr_chng
         INSTEAD OF UPDATE OF cust_addr ON customer_address
@@ -15,7 +15,7 @@ describe("trigger", () => {
       `);
     });
 
-    it(`formats long UPDATE OF column list`, () => {
+    it(`formats long UPDATE OF column list`, async () => {
       test(dedent`
         CREATE TRIGGER cust_addr_chng
         INSTEAD OF UPDATE OF
@@ -29,7 +29,7 @@ describe("trigger", () => {
       `);
     });
 
-    it(`formats TEMPORARY TRIGGER IF NOT EXISTS`, () => {
+    it(`formats TEMPORARY TRIGGER IF NOT EXISTS`, async () => {
       test(dedent`
         CREATE TEMPORARY TRIGGER IF NOT EXISTS cust_addr_del
         DELETE ON customer_address
@@ -39,7 +39,7 @@ describe("trigger", () => {
       `);
     });
 
-    it(`formats FOR EACH ROW`, () => {
+    it(`formats FOR EACH ROW`, async () => {
       test(dedent`
         CREATE TRIGGER cust_addr_del
         INSERT ON customer_address
@@ -51,7 +51,7 @@ describe("trigger", () => {
       `);
     });
 
-    it(`formats WHEN condition`, () => {
+    it(`formats WHEN condition`, async () => {
       test(dedent`
         CREATE TRIGGER cust_addr_del
         INSERT ON customer_address
@@ -63,7 +63,7 @@ describe("trigger", () => {
       `);
     });
 
-    it(`formats long WHEN condition`, () => {
+    it(`formats long WHEN condition`, async () => {
       test(dedent`
         CREATE TRIGGER cust_addr_del
         INSERT ON customer_address
@@ -79,11 +79,11 @@ describe("trigger", () => {
   });
 
   describe("drop trigger", () => {
-    it(`formats DROP TRIGGER`, () => {
+    it(`formats DROP TRIGGER`, async () => {
       test(`DROP TRIGGER my_trigger`);
     });
 
-    it(`formats IF EXISTS`, () => {
+    it(`formats IF EXISTS`, async () => {
       test(`DROP TRIGGER IF EXISTS my_trigger`);
     });
   });

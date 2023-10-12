@@ -3,7 +3,7 @@ import { testBigquery } from "../test_utils";
 
 describe("schema", () => {
   describe("create schema", () => {
-    it(`formats CREATE SCHEMA`, () => {
+    it(`formats CREATE SCHEMA`, async () => {
       testBigquery(
         dedent`
           CREATE SCHEMA schema_name
@@ -11,7 +11,7 @@ describe("schema", () => {
       );
     });
 
-    it(`formats IF NOT EXISTS`, () => {
+    it(`formats IF NOT EXISTS`, async () => {
       testBigquery(
         dedent`
           CREATE SCHEMA IF NOT EXISTS schema_name
@@ -19,7 +19,7 @@ describe("schema", () => {
       );
     });
 
-    it(`formats OPTIONS (..)`, () => {
+    it(`formats OPTIONS (..)`, async () => {
       testBigquery(
         dedent`
           CREATE SCHEMA schema_name
@@ -28,7 +28,7 @@ describe("schema", () => {
       );
     });
 
-    it(`formats DEFAULT COLLATE`, () => {
+    it(`formats DEFAULT COLLATE`, async () => {
       testBigquery(
         dedent`
           CREATE SCHEMA schema_name
@@ -39,7 +39,7 @@ describe("schema", () => {
   });
 
   describe("drop schema", () => {
-    it(`formats DROP SCHEMA`, () => {
+    it(`formats DROP SCHEMA`, async () => {
       testBigquery(
         dedent`
           DROP SCHEMA schema_name
@@ -47,7 +47,7 @@ describe("schema", () => {
       );
     });
 
-    it(`formats IF EXISTS`, () => {
+    it(`formats IF EXISTS`, async () => {
       testBigquery(
         dedent`
           DROP SCHEMA IF EXISTS schema_name
@@ -55,7 +55,7 @@ describe("schema", () => {
       );
     });
 
-    it(`formats CASCADE/RESTRICT`, () => {
+    it(`formats CASCADE/RESTRICT`, async () => {
       testBigquery(
         dedent`
           DROP SCHEMA schema_name CASCADE
@@ -65,7 +65,7 @@ describe("schema", () => {
   });
 
   describe("alter schema", () => {
-    it(`formats ALTER SCHEMA .. SET OPTIONS`, () => {
+    it(`formats ALTER SCHEMA .. SET OPTIONS`, async () => {
       testBigquery(
         dedent`
           ALTER SCHEMA IF EXISTS my_schema
@@ -74,7 +74,7 @@ describe("schema", () => {
       );
     });
 
-    it(`formats ALTER SCHEMA .. SET DEFAULT COLLATE`, () => {
+    it(`formats ALTER SCHEMA .. SET DEFAULT COLLATE`, async () => {
       testBigquery(
         dedent`
           ALTER SCHEMA my_schema

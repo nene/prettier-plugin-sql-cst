@@ -2,7 +2,7 @@ import dedent from "dedent-js";
 import { testBigquery } from "../test_utils";
 
 describe("export & load", () => {
-  it(`formats EXPORT DATA`, () => {
+  it(`formats EXPORT DATA`, async () => {
     testBigquery(dedent`
       EXPORT DATA
       OPTIONS (uri = 'gs://bucket/folder/*.csv', format = 'CSV')
@@ -11,7 +11,7 @@ describe("export & load", () => {
     `);
   });
 
-  it(`formats EXPORT DATA with CONNECTION`, () => {
+  it(`formats EXPORT DATA with CONNECTION`, async () => {
     testBigquery(dedent`
       EXPORT DATA
       WITH CONNECTION myproject.us.myconnection
@@ -21,14 +21,14 @@ describe("export & load", () => {
     `);
   });
 
-  it(`formats LOAD DATA`, () => {
+  it(`formats LOAD DATA`, async () => {
     testBigquery(dedent`
       LOAD DATA INTO mydataset.table1
       FROM FILES (format = 'AVRO', uris = ['gs://bucket/path/file.avro'])
     `);
   });
 
-  it(`formats LOAD DATA with columns`, () => {
+  it(`formats LOAD DATA with columns`, async () => {
     testBigquery(dedent`
       LOAD DATA INTO mydataset.table1 (x INT64, y STRING)
       OPTIONS (description = "my table")
@@ -36,7 +36,7 @@ describe("export & load", () => {
     `);
   });
 
-  it(`formats LOAD DATA with long column list`, () => {
+  it(`formats LOAD DATA with long column list`, async () => {
     testBigquery(dedent`
       LOAD DATA INTO mydataset.table1 (
         first_field INT64,
@@ -48,7 +48,7 @@ describe("export & load", () => {
     `);
   });
 
-  it(`formats LOAD DATA with PARTITION/CLUSTER BY & WITH PARTITION COLUMNS & CONNECTION`, () => {
+  it(`formats LOAD DATA with PARTITION/CLUSTER BY & WITH PARTITION COLUMNS & CONNECTION`, async () => {
     testBigquery(dedent`
       LOAD DATA INTO mydataset.table1
       PARTITION BY transaction_date

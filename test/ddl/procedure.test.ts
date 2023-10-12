@@ -3,7 +3,7 @@ import { testBigquery } from "../test_utils";
 
 describe("procedure", () => {
   describe("create procedure", () => {
-    it(`formats CREATE PROCEDURE`, () => {
+    it(`formats CREATE PROCEDURE`, async () => {
       testBigquery(
         dedent`
           CREATE PROCEDURE drop_my_table(arg1 INT64, OUT arg2 STRING)
@@ -14,7 +14,7 @@ describe("procedure", () => {
       );
     });
 
-    it(`formats OR REPLACE / IF NOT EXISTS`, () => {
+    it(`formats OR REPLACE / IF NOT EXISTS`, async () => {
       testBigquery(
         dedent`
           CREATE OR REPLACE PROCEDURE IF NOT EXISTS drop_my_table()
@@ -25,7 +25,7 @@ describe("procedure", () => {
       );
     });
 
-    it(`formats long parameter list`, () => {
+    it(`formats long parameter list`, async () => {
       testBigquery(
         dedent`
           CREATE PROCEDURE my_schema.my_long_procedure_name(
@@ -40,7 +40,7 @@ describe("procedure", () => {
       );
     });
 
-    it(`formats OPTIONS (..)`, () => {
+    it(`formats OPTIONS (..)`, async () => {
       testBigquery(
         dedent`
           CREATE PROCEDURE foo()
@@ -52,7 +52,7 @@ describe("procedure", () => {
       );
     });
 
-    it(`formats remote python procedure`, () => {
+    it(`formats remote python procedure`, async () => {
       testBigquery(
         dedent`
           CREATE PROCEDURE my_bq_project.my_dataset.spark_proc()
@@ -63,7 +63,7 @@ describe("procedure", () => {
       );
     });
 
-    it(`formats inline python procedure`, () => {
+    it(`formats inline python procedure`, async () => {
       testBigquery(
         dedent`
           CREATE PROCEDURE spark_proc()
@@ -82,11 +82,11 @@ describe("procedure", () => {
   });
 
   describe("drop procedure", () => {
-    it(`formats DROP PROCEDURE`, () => {
+    it(`formats DROP PROCEDURE`, async () => {
       testBigquery(`DROP PROCEDURE mydataset.myProcedure`);
     });
 
-    it(`formats IF EXISTS`, () => {
+    it(`formats IF EXISTS`, async () => {
       testBigquery(`DROP PROCEDURE IF EXISTS foo`);
     });
   });

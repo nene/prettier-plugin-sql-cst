@@ -2,7 +2,7 @@ import dedent from "dedent-js";
 import { testBigquery } from "../test_utils";
 
 describe("loops", () => {
-  it(`formats LOOP`, () => {
+  it(`formats LOOP`, async () => {
     testBigquery(dedent`
       LOOP
         SELECT 1;
@@ -10,7 +10,7 @@ describe("loops", () => {
     `);
   });
 
-  it(`formats REPEAT`, () => {
+  it(`formats REPEAT`, async () => {
     testBigquery(dedent`
       REPEAT
         SET x = x + 1;
@@ -18,7 +18,7 @@ describe("loops", () => {
     `);
   });
 
-  it(`formats WHILE`, () => {
+  it(`formats WHILE`, async () => {
     testBigquery(dedent`
       WHILE x < 10 DO
         SET x = x + 1;
@@ -26,7 +26,7 @@ describe("loops", () => {
     `);
   });
 
-  it(`formats FOR .. IN`, () => {
+  it(`formats FOR .. IN`, async () => {
     testBigquery(dedent`
       FOR record IN (SELECT * FROM tbl) DO
         SELECT record.foo, record.bar;
@@ -34,7 +34,7 @@ describe("loops", () => {
     `);
   });
 
-  it(`formats BREAK/CONTINUE`, () => {
+  it(`formats BREAK/CONTINUE`, async () => {
     testBigquery(dedent`
       LOOP
         IF TRUE THEN
@@ -46,7 +46,7 @@ describe("loops", () => {
     `);
   });
 
-  it(`formats labels`, () => {
+  it(`formats labels`, async () => {
     testBigquery(dedent`
       outer_loop: LOOP
         inner_loop: LOOP
@@ -56,7 +56,7 @@ describe("loops", () => {
     `);
   });
 
-  it(`formats end labels`, () => {
+  it(`formats end labels`, async () => {
     testBigquery(dedent`
       outer_loop: REPEAT
         inner_loop: LOOP

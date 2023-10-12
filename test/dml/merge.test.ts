@@ -2,7 +2,7 @@ import dedent from "dedent-js";
 import { testBigquery } from "../test_utils";
 
 describe("merge", () => {
-  it(`formats MERGE .. DELETE`, () => {
+  it(`formats MERGE .. DELETE`, async () => {
     testBigquery(
       dedent`
         MERGE INTO dataset.DetailedInventory AS target
@@ -14,7 +14,7 @@ describe("merge", () => {
     );
   });
 
-  it(`formats MERGE .. INSERT (cols) VALUES`, () => {
+  it(`formats MERGE .. INSERT (cols) VALUES`, async () => {
     testBigquery(
       dedent`
         MERGE INTO target
@@ -29,7 +29,7 @@ describe("merge", () => {
     );
   });
 
-  it(`formats MERGE .. INSERT VALUES`, () => {
+  it(`formats MERGE .. INSERT VALUES`, async () => {
     testBigquery(
       dedent`
         MERGE INTO target
@@ -43,7 +43,7 @@ describe("merge", () => {
     );
   });
 
-  it(`formats MERGE .. INSERT ROW`, () => {
+  it(`formats MERGE .. INSERT ROW`, async () => {
     testBigquery(
       dedent`
         MERGE INTO target
@@ -55,7 +55,7 @@ describe("merge", () => {
     );
   });
 
-  it(`formats MERGE .. INSERT (columns) ROW`, () => {
+  it(`formats MERGE .. INSERT (columns) ROW`, async () => {
     testBigquery(
       dedent`
         MERGE INTO target
@@ -69,7 +69,7 @@ describe("merge", () => {
     );
   });
 
-  it(`formats MERGE .. UPDATE`, () => {
+  it(`formats MERGE .. UPDATE`, async () => {
     testBigquery(
       dedent`
         MERGE INTO target
@@ -84,7 +84,7 @@ describe("merge", () => {
     );
   });
 
-  it(`formats MERGE .. UPDATE with single-element update`, () => {
+  it(`formats MERGE .. UPDATE with single-element update`, async () => {
     testBigquery(
       dedent`
         MERGE INTO target
@@ -96,7 +96,7 @@ describe("merge", () => {
     );
   });
 
-  it(`formats long ON-condition`, () => {
+  it(`formats long ON-condition`, async () => {
     testBigquery(
       dedent`
         MERGE INTO target
@@ -111,7 +111,7 @@ describe("merge", () => {
     );
   });
 
-  it(`formats long WHEN-condition`, () => {
+  it(`formats long WHEN-condition`, async () => {
     testBigquery(
       dedent`
         MERGE INTO target

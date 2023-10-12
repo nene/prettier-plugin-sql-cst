@@ -2,13 +2,13 @@ import dedent from "dedent-js";
 import { test } from "../test_utils";
 
 describe("select with", () => {
-  it(`formats tiny WITH on same line as the rest of SELECT`, () => {
+  it(`formats tiny WITH on same line as the rest of SELECT`, async () => {
     test(dedent`
       WITH cte1 AS (SELECT * FROM client) SELECT * FROM cte1
     `);
   });
 
-  it(`formats short WITH clause on single line inside multiline SELECT`, () => {
+  it(`formats short WITH clause on single line inside multiline SELECT`, async () => {
     test(dedent`
       WITH cte1 AS (SELECT * FROM client)
       SELECT *
@@ -16,7 +16,7 @@ describe("select with", () => {
     `);
   });
 
-  it(`formats long WITH clause on multiple lines`, () => {
+  it(`formats long WITH clause on multiple lines`, async () => {
     test(dedent`
       WITH
         cte1 AS (SELECT * FROM client WHERE age > 100),
@@ -26,7 +26,7 @@ describe("select with", () => {
     `);
   });
 
-  it(`formats WITH clause with various options`, () => {
+  it(`formats WITH clause with various options`, async () => {
     test(dedent`
       WITH RECURSIVE
         cte1 AS MATERIALIZED (SELECT * FROM client WHERE age > 100),
@@ -36,7 +36,7 @@ describe("select with", () => {
     `);
   });
 
-  it(`formats SELECT inside CTE on multiple lines`, () => {
+  it(`formats SELECT inside CTE on multiple lines`, async () => {
     test(dedent`
       WITH RECURSIVE
         cte1 AS (
@@ -49,7 +49,7 @@ describe("select with", () => {
     `);
   });
 
-  it(`formats CTE with column names list`, () => {
+  it(`formats CTE with column names list`, async () => {
     test(dedent`
       WITH oldies(id, name) AS (SELECT * FROM client WHERE age > 100)
       SELECT *

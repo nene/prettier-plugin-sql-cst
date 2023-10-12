@@ -2,7 +2,7 @@ import dedent from "dedent-js";
 import { testBigquery } from "../test_utils";
 
 describe("block statement", () => {
-  it(`formats BEGIN .. END`, () => {
+  it(`formats BEGIN .. END`, async () => {
     testBigquery(dedent`
       BEGIN
         SELECT 1;
@@ -12,7 +12,7 @@ describe("block statement", () => {
     `);
   });
 
-  it(`formats BEGIN .. EXCEPTION .. END`, () => {
+  it(`formats BEGIN .. EXCEPTION .. END`, async () => {
     testBigquery(dedent`
       BEGIN
         SELECT 1;

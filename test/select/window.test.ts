@@ -2,7 +2,7 @@ import dedent from "dedent-js";
 import { test } from "../test_utils";
 
 describe("select", () => {
-  it(`formats short window clause on single lines`, () => {
+  it(`formats short window clause on single lines`, async () => {
     test(dedent`
       SELECT *
       FROM tbl
@@ -10,7 +10,7 @@ describe("select", () => {
     `);
   });
 
-  it(`formats multiple window definitions on separate lines`, () => {
+  it(`formats multiple window definitions on separate lines`, async () => {
     test(dedent`
       SELECT *
       FROM tbl
@@ -20,7 +20,7 @@ describe("select", () => {
     `);
   });
 
-  it(`formats long window definitions on multiple lines`, () => {
+  it(`formats long window definitions on multiple lines`, async () => {
     test(dedent`
       SELECT *
       FROM tbl
@@ -42,7 +42,7 @@ describe("select", () => {
     `);
   });
 
-  it("formats basic window function calls, referencing named window", () => {
+  it("formats basic window function calls, referencing named window", async () => {
     test(dedent`
       SELECT row_number() OVER win1
       FROM tbl
@@ -50,14 +50,14 @@ describe("select", () => {
     `);
   });
 
-  it("formats short window function calls on single line", () => {
+  it("formats short window function calls on single line", async () => {
     test(dedent`
       SELECT row_number() OVER (ORDER BY x)
       FROM tbl
     `);
   });
 
-  it("formats longer window function calls on multiple lines", () => {
+  it("formats longer window function calls on multiple lines", async () => {
     test(dedent`
       SELECT
         row_number() OVER (
@@ -68,14 +68,14 @@ describe("select", () => {
     `);
   });
 
-  it("formats window function call with short FILTER clause on single line", () => {
+  it("formats window function call with short FILTER clause on single line", async () => {
     test(dedent`
       SELECT row_number() FILTER (WHERE x > 10) OVER (ORDER BY x)
       FROM tbl
     `);
   });
 
-  it("formats window function call with longer FILTER and OVER clauses on multiple lines", () => {
+  it("formats window function call with longer FILTER and OVER clauses on multiple lines", async () => {
     test(dedent`
       SELECT
         group_concat(entity_name, '.')

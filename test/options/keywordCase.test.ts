@@ -2,13 +2,13 @@ import dedent from "dedent-js";
 import { pretty } from "../test_utils";
 
 describe("sqlKeywordCase option", () => {
-  it(`defaults to uppercasing of all keywords`, () => {
+  it(`defaults to uppercasing of all keywords`, async () => {
     expect(pretty(`select * From tbl WHERE x > 0`)).toBe(dedent`
       SELECT * FROM tbl WHERE x > 0
     `);
   });
 
-  it(`sqlKeywordCase: "preserve" keeps keywords case as-is`, () => {
+  it(`sqlKeywordCase: "preserve" keeps keywords case as-is`, async () => {
     expect(
       pretty(`select * From tbl WHERE x > 0`, {
         sqlKeywordCase: "preserve",
@@ -18,7 +18,7 @@ describe("sqlKeywordCase option", () => {
     `);
   });
 
-  it(`sqlKeywordCase: "upper" converts keywords to uppercase`, () => {
+  it(`sqlKeywordCase: "upper" converts keywords to uppercase`, async () => {
     expect(
       pretty(`select * From tbl WHERE x > 0`, {
         sqlKeywordCase: "upper",
@@ -28,7 +28,7 @@ describe("sqlKeywordCase option", () => {
     `);
   });
 
-  it(`sqlKeywordCase: "lower" converts keywords to lowercase`, () => {
+  it(`sqlKeywordCase: "lower" converts keywords to lowercase`, async () => {
     expect(
       pretty(`select * From tbl WHERE x > 0`, {
         sqlKeywordCase: "lower",

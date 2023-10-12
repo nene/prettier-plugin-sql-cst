@@ -2,21 +2,21 @@ import dedent from "dedent-js";
 import { test, testBigquery } from "../test_utils";
 
 describe("delete", () => {
-  it(`formats DELETE statement`, () => {
+  it(`formats DELETE statement`, async () => {
     test(dedent`
       DELETE FROM employee
       WHERE id = 10
     `);
   });
 
-  it(`formats DELETE without FROM`, () => {
+  it(`formats DELETE without FROM`, async () => {
     testBigquery(dedent`
       DELETE employee
       WHERE id = 10
     `);
   });
 
-  it(`formats DELETE statement with RETURNING clause`, () => {
+  it(`formats DELETE statement with RETURNING clause`, async () => {
     test(dedent`
       DELETE FROM employee
       WHERE id = 10
@@ -27,7 +27,7 @@ describe("delete", () => {
     `);
   });
 
-  it(`formats DELETE statement with ORDER BY and LIMIT`, () => {
+  it(`formats DELETE statement with ORDER BY and LIMIT`, async () => {
     test(dedent`
       DELETE FROM employee
       WHERE id = 10

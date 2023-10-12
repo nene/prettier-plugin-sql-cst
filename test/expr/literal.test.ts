@@ -2,11 +2,11 @@ import dedent from "dedent-js";
 import { test, testBigquery } from "../test_utils";
 
 describe("literal", () => {
-  it(`formats BigQuery NUMERIC and BIGNUMERIC literals`, () => {
+  it(`formats BigQuery NUMERIC and BIGNUMERIC literals`, async () => {
     testBigquery(`SELECT NUMERIC '12345', BIGNUMERIC '1.23456e05'`);
   });
 
-  it(`formats DATE/TIME literals`, () => {
+  it(`formats DATE/TIME literals`, async () => {
     testBigquery(
       dedent`
         SELECT
@@ -18,7 +18,7 @@ describe("literal", () => {
     );
   });
 
-  it(`formats INTERVAL literals`, () => {
+  it(`formats INTERVAL literals`, async () => {
     testBigquery(
       dedent`
         SELECT
@@ -31,7 +31,7 @@ describe("literal", () => {
   });
 
   describe("array literals", () => {
-    it(`formats array literals`, () => {
+    it(`formats array literals`, async () => {
       testBigquery(
         dedent`
           SELECT
@@ -43,7 +43,7 @@ describe("literal", () => {
       );
     });
 
-    it(`formats long array literal to multiple lines`, () => {
+    it(`formats long array literal to multiple lines`, async () => {
       testBigquery(
         dedent`
           SELECT
@@ -59,7 +59,7 @@ describe("literal", () => {
   });
 
   describe("struct literals", () => {
-    it(`formats struct literals`, () => {
+    it(`formats struct literals`, async () => {
       testBigquery(
         dedent`
           SELECT
@@ -72,7 +72,7 @@ describe("literal", () => {
       );
     });
 
-    it(`formats long struct literal to multiple lines`, () => {
+    it(`formats long struct literal to multiple lines`, async () => {
       testBigquery(
         dedent`
           SELECT

@@ -2,7 +2,7 @@ import dedent from "dedent-js";
 import { testBigquery } from "../test_utils";
 
 describe("if", () => {
-  it(`formats IF .. THEN .. END IF`, () => {
+  it(`formats IF .. THEN .. END IF`, async () => {
     testBigquery(dedent`
       IF x > 10 THEN
         SELECT 1;
@@ -10,7 +10,7 @@ describe("if", () => {
     `);
   });
 
-  it(`formats ELSE`, () => {
+  it(`formats ELSE`, async () => {
     testBigquery(dedent`
       IF x > 10 THEN
         SELECT 1;
@@ -20,7 +20,7 @@ describe("if", () => {
     `);
   });
 
-  it(`formats ELSEIF`, () => {
+  it(`formats ELSEIF`, async () => {
     testBigquery(dedent`
       IF x > 10 THEN
         SELECT 1;
@@ -34,7 +34,7 @@ describe("if", () => {
     `);
   });
 
-  it(`formats IF with multiple statements inside`, () => {
+  it(`formats IF with multiple statements inside`, async () => {
     testBigquery(dedent`
       IF x > 10 THEN
         SELECT 1;
@@ -44,7 +44,7 @@ describe("if", () => {
     `);
   });
 
-  it(`formats IF with long condition`, () => {
+  it(`formats IF with long condition`, async () => {
     testBigquery(dedent`
       IF
         EXISTS (SELECT 1 FROM schema.products WHERE product_id = target_product_id)
@@ -55,7 +55,7 @@ describe("if", () => {
     `);
   });
 
-  it(`formats ELSEIF with long condition`, () => {
+  it(`formats ELSEIF with long condition`, async () => {
     testBigquery(dedent`
       IF TRUE THEN
         SELECT 1;

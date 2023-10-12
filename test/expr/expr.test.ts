@@ -2,7 +2,7 @@ import dedent from "dedent-js";
 import { pretty, test, testBigquery } from "../test_utils";
 
 describe("expr", () => {
-  it(`formats binary expressions`, () => {
+  it(`formats binary expressions`, async () => {
     expect(
       pretty(`SELECT 1 + 2 / 3 * (5 - 1), TRUE OR FALSE AND TRUE`, {
         printWidth: 25,
@@ -14,15 +14,15 @@ describe("expr", () => {
     `);
   });
 
-  it(`formats IN expressions`, () => {
+  it(`formats IN expressions`, async () => {
     test(`SELECT col1 IN (1, 2, 3), col2 NOT IN (4, 5, 6)`);
   });
 
-  it(`formats LIKE expressions`, () => {
+  it(`formats LIKE expressions`, async () => {
     test(`SELECT fname LIKE 'Mar%', lname NOT LIKE '%ony'`);
   });
 
-  it(`formats IS expressions`, () => {
+  it(`formats IS expressions`, async () => {
     test(dedent`
       SELECT
         x IS NOT NULL,
@@ -32,7 +32,7 @@ describe("expr", () => {
     `);
   });
 
-  it(`formats BETWEEN expressions`, () => {
+  it(`formats BETWEEN expressions`, async () => {
     test(
       dedent`
         SELECT
@@ -43,7 +43,7 @@ describe("expr", () => {
     );
   });
 
-  it(`formats EXISTS expressions`, () => {
+  it(`formats EXISTS expressions`, async () => {
     test(
       dedent`
         SELECT
@@ -54,19 +54,19 @@ describe("expr", () => {
     );
   });
 
-  it(`formats ISNULL / NOTNULL / NOT NULL expressions`, () => {
+  it(`formats ISNULL / NOTNULL / NOT NULL expressions`, async () => {
     test(`SELECT fname ISNULL, xname NOTNULL, lname NOT NULL`);
   });
 
-  it(`formats NOT expressions`, () => {
+  it(`formats NOT expressions`, async () => {
     test(`SELECT NOT x > 10`);
   });
 
-  it(`formats negation`, () => {
+  it(`formats negation`, async () => {
     test(`SELECT -x`);
   });
 
-  it(`formats a chain of AND/OR operators to multiple lines`, () => {
+  it(`formats a chain of AND/OR operators to multiple lines`, async () => {
     test(dedent`
       SELECT *
       FROM client
@@ -79,32 +79,32 @@ describe("expr", () => {
     `);
   });
 
-  it(`eliminates unnecessary (((nested))) parenthesis`, () => {
+  it(`eliminates unnecessary (((nested))) parenthesis`, async () => {
     expect(pretty(`SELECT (((1 + 2))) * 3`)).toBe(dedent`
       SELECT (1 + 2) * 3
     `);
   });
 
-  it(`preserves comments when eliminating (((nested))) parenthesis`, () => {
+  it(`preserves comments when eliminating (((nested))) parenthesis`, async () => {
     expect(pretty(`SELECT (/*c1*/(/*c2*/(/*c3*/ 1 + 2))) * 3`)).toBe(dedent`
       SELECT /*c1*/ /*c2*/ (/*c3*/ 1 + 2) * 3
     `);
   });
 
-  it(`eliminates unnecessary parenthesis around function arguments`, () => {
+  it(`eliminates unnecessary parenthesis around function arguments`, async () => {
     expect(pretty(`SELECT my_func((id), (name))`)).toBe(dedent`
       SELECT my_func(id, name)
     `);
   });
 
-  it(`preserves comments when eliminating func(((arg))) parenthesis`, () => {
+  it(`preserves comments when eliminating func(((arg))) parenthesis`, async () => {
     expect(pretty(`SELECT count(/*c1*/(/*c2*/ id))`)).toBe(dedent`
       SELECT count(/*c1*/ /*c2*/ id)
     `);
   });
 
   describe("case", () => {
-    it(`formats CASE expression always on multiple lines`, () => {
+    it(`formats CASE expression always on multiple lines`, async () => {
       test(dedent`
         SELECT
           CASE x
@@ -114,7 +114,7 @@ describe("expr", () => {
       `);
     });
 
-    it(`formats CASE expression with base expression`, () => {
+    it(`formats CASE expression with base expression`, async () => {
       test(dedent`
         SELECT
           CASE status
@@ -125,7 +125,7 @@ describe("expr", () => {
       `);
     });
 
-    it(`formats CASE expression without base expression`, () => {
+    it(`formats CASE expression without base expression`, async () => {
       test(dedent`
         SELECT
           CASE
@@ -138,11 +138,11 @@ describe("expr", () => {
   });
 
   describe("BigQuery", () => {
-    it(`formats BigQuery quoted table names`, () => {
+    it(`formats BigQuery quoted table names`, async () => {
       testBigquery("SELECT * FROM `my-project.mydataset.mytable`");
     });
 
-    it(`formats BigQuery array field access`, () => {
+    it(`formats BigQuery array field access`, async () => {
       testBigquery(dedent`
         SELECT
           item_array,
@@ -153,7 +153,7 @@ describe("expr", () => {
       `);
     });
 
-    it(`formats BigQuery array field access to multiple lines`, () => {
+    it(`formats BigQuery array field access to multiple lines`, async () => {
       testBigquery(dedent`
         SELECT
           ["Coffee Cup", "Tea Kettle", "Milk Glass"][
@@ -162,13 +162,13 @@ describe("expr", () => {
       `);
     });
 
-    it(`formats BigQuery JSON field access`, () => {
+    it(`formats BigQuery JSON field access`, async () => {
       testBigquery(dedent`
         SELECT json_value.class.students[0]['name']
       `);
     });
 
-    it(`formats BigQuery @@system_variables`, () => {
+    it(`formats BigQuery @@system_variables`, async () => {
       testBigquery(`SELECT @@error.message`);
     });
   });

@@ -2,7 +2,7 @@ import dedent from "dedent-js";
 import { testBigquery } from "../test_utils";
 
 describe("grant", () => {
-  it(`formats GRANT (single role, single user)`, () => {
+  it(`formats GRANT (single role, single user)`, async () => {
     testBigquery(dedent`
       GRANT \`roles/bigquery.dataViewer\`
       ON TABLE myCompany.revenue
@@ -10,7 +10,7 @@ describe("grant", () => {
     `);
   });
 
-  it(`formats GRANT (multiple roles, multiple users)`, () => {
+  it(`formats GRANT (multiple roles, multiple users)`, async () => {
     testBigquery(dedent`
       GRANT \`roles/bigquery.dataViewer\`, \`roles/bigquery.admin\`
       ON SCHEMA myCompany
@@ -18,7 +18,7 @@ describe("grant", () => {
     `);
   });
 
-  it(`formats GRANT (multiline list of roles and users)`, () => {
+  it(`formats GRANT (multiline list of roles and users)`, async () => {
     testBigquery(dedent`
       GRANT
         \`roles/bigquery.dataViewer\`,

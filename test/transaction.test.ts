@@ -2,7 +2,7 @@ import dedent from "dedent-js";
 import { rawTest } from "./test_utils";
 
 describe("transaction", () => {
-  it(`formats basic BEGIN..COMMIT`, () => {
+  it(`formats basic BEGIN..COMMIT`, async () => {
     rawTest(dedent`
       BEGIN;
 
@@ -13,7 +13,7 @@ describe("transaction", () => {
     `);
   });
 
-  it(`formats basic BEGIN..END`, () => {
+  it(`formats basic BEGIN..END`, async () => {
     rawTest(dedent`
       BEGIN;
 
@@ -24,7 +24,7 @@ describe("transaction", () => {
     `);
   });
 
-  it(`formats BEGIN TRANSACTION .. COMMIT TRANSACTION`, () => {
+  it(`formats BEGIN TRANSACTION .. COMMIT TRANSACTION`, async () => {
     rawTest(dedent`
       BEGIN TRANSACTION;
 
@@ -35,14 +35,14 @@ describe("transaction", () => {
     `);
   });
 
-  it(`formats BEGIN DEFERRED TRANSACTION`, () => {
+  it(`formats BEGIN DEFERRED TRANSACTION`, async () => {
     rawTest(dedent`
       BEGIN DEFERRED TRANSACTION;
 
     `);
   });
 
-  it(`formats ROLLBACK`, () => {
+  it(`formats ROLLBACK`, async () => {
     rawTest(dedent`
       ROLLBACK;
 
@@ -55,14 +55,14 @@ describe("transaction", () => {
     `);
   });
 
-  it(`formats SAVEPOINT`, () => {
+  it(`formats SAVEPOINT`, async () => {
     rawTest(dedent`
       SAVEPOINT my_savepoint;
 
     `);
   });
 
-  it(`formats RELEASE SAVEPOINT`, () => {
+  it(`formats RELEASE SAVEPOINT`, async () => {
     rawTest(dedent`
       RELEASE my_savepoint;
 

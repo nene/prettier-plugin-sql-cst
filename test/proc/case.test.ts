@@ -2,7 +2,7 @@ import dedent from "dedent-js";
 import { testBigquery } from "../test_utils";
 
 describe("case", () => {
-  it(`formats procedural CASE`, () => {
+  it(`formats procedural CASE`, async () => {
     testBigquery(dedent`
       CASE foo
         WHEN 1 THEN
