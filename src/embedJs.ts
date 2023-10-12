@@ -8,7 +8,7 @@ import {
 } from "./node_utils";
 import { hardline, indent, stripTrailingHardline } from "./print_utils";
 
-export const embedJs: NonNullable<Printer<Node>["embed"]> = () => async (textToDoc, print, path, options) => {
+export const embedJs: NonNullable<Printer<Node>["embed"]> = (path, options) => {
   const node = path.getValue(); // TODO: Don't use deprecated method
   const parent = path.getParentNode(0);
   const grandParent = path.getParentNode(1);
@@ -18,26 +18,28 @@ export const embedJs: NonNullable<Printer<Node>["embed"]> = () => async (textToD
     isCreateFunctionStmt(grandParent) &&
     grandParent.clauses.some(isJavaScriptLanguageClause)
   ) {
-    const quotes = detectQuotes(node.value);
-    if (!quotes) {
-      // Give up for now. Don't format JavaScript inside the string.
-      // Perhaps tackle this corner-case in the future.
-      return undefined;
+    return async (textToDoc) => {
+      const quotes = detectQuotes(node.value);
+      if (!quotes) {
+        // Give up for now. Don't format JavaScript inside the string.
+        // Perhaps tackle this corner-case in the future.
+        return undefined;
+      }
+
+      const js = await textToDoc(node.value, {
+        ...options,
+        parser: "babel",
+      });
+
+      return [
+        quotes[0],
+        indent([hardline, stripTrailingHardline(js)]),
+        hardline,
+        quotes[1],
+      ];
     }
-
-    const js = await textToDoc(node.value, {
-      ...options,
-      parser: "babel",
-    });
-
-    return [
-      quotes[0],
-      indent([hardline, stripTrailingHardline(js)]),
-      hardline,
-      quotes[1],
-    ];
   }
-  return undefined;
+  return null;
 };
 
 const isJavaScriptLanguageClause = (

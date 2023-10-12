@@ -8,32 +8,34 @@ import {
   stripTrailingHardline,
 } from "./print_utils";
 
-export const embedJson: NonNullable<Printer<Node>["embed"]> = () => async (textToDoc, print, path, options) => {
+export const embedJson: NonNullable<Printer<Node>["embed"]> = (path, options) => {
   const node = path.getValue(); // TODO: Don't use deprecated method
   const parent = path.getParentNode();
   if (isStringLiteral(node) && isJsonLiteral(parent)) {
-    if (
-      containsTripleQuote(node.value) ||
-      containsBackslash(node.value) ||
-      isRawString(node)
-    ) {
-      // Give up for now. Don't format JSON inside the string.
-      // Tackle these corner-case in the future.
-      return undefined;
+    return async (textToDoc) => {
+      if (
+        containsTripleQuote(node.value) ||
+        containsBackslash(node.value) ||
+        isRawString(node)
+      ) {
+        // Give up for now. Don't format JSON inside the string.
+        // Tackle these corner-case in the future.
+        return undefined;
+      }
+      const json = await textToDoc(node.value, {
+        ...options,
+        parser: "json",
+      });
+      const inlineQuote = containsSingleQuote(node.value) ? "'''" : "'";
+      return [
+        ifBreak("'''", inlineQuote),
+        indent([softline, stripTrailingHardline(json)]),
+        softline,
+        ifBreak("'''", inlineQuote),
+      ];
     }
-    const json = await textToDoc(node.value, {
-      ...options,
-      parser: "json",
-    });
-    const inlineQuote = containsSingleQuote(node.value) ? "'''" : "'";
-    return [
-      ifBreak("'''", inlineQuote),
-      indent([softline, stripTrailingHardline(json)]),
-      softline,
-      ifBreak("'''", inlineQuote),
-    ];
   }
-  return undefined;
+  return null;
 };
 
 const containsSingleQuote = (json: string) => /'/.test(json);
