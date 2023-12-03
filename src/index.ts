@@ -42,6 +42,9 @@ const createParser = (dialect: DialectName): Parser<Node> => ({
 export const parsers: Record<string, Parser<Node>> = {
   sqlite: createParser("sqlite"),
   bigquery: createParser("bigquery"),
+  mysql: createParser("mysql"),
+  mariadb: createParser("mariadb"),
+  postgresql: createParser("postgresql"),
 };
 
 export const printers: Record<string, Printer> = {
