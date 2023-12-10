@@ -2,8 +2,8 @@ import dedent from "dedent-js";
 import { test, testBigquery } from "../test_utils";
 
 describe("select FROM", () => {
-  it(`formats join always to multiple lines`, () => {
-    test(dedent`
+  it(`formats join always to multiple lines`, async () => {
+    await test(dedent`
       SELECT *
       FROM
         client
@@ -11,8 +11,8 @@ describe("select FROM", () => {
     `);
   });
 
-  it(`formats FROM with a long join to multiple lines`, () => {
-    test(dedent`
+  it(`formats FROM with a long join to multiple lines`, async () => {
+    await test(dedent`
       SELECT *
       FROM
         client_relation
@@ -20,8 +20,8 @@ describe("select FROM", () => {
     `);
   });
 
-  it(`formats FROM with multiple joins to multiple lines`, () => {
-    test(dedent`
+  it(`formats FROM with multiple joins to multiple lines`, async () => {
+    await test(dedent`
       SELECT *
       FROM
         client
@@ -30,8 +30,8 @@ describe("select FROM", () => {
     `);
   });
 
-  it(`formats FROM joins with USING-specification`, () => {
-    test(dedent`
+  it(`formats FROM joins with USING-specification`, async () => {
+    await test(dedent`
       SELECT *
       FROM
         client
@@ -40,8 +40,8 @@ describe("select FROM", () => {
     `);
   });
 
-  it(`formats long join specifications to separate lines`, () => {
-    test(dedent`
+  it(`formats long join specifications to separate lines`, async () => {
+    await test(dedent`
       SELECT *
       FROM
         client
@@ -52,8 +52,8 @@ describe("select FROM", () => {
     `);
   });
 
-  it(`formats table aliases`, () => {
-    test(dedent`
+  it(`formats table aliases`, async () => {
+    await test(dedent`
       SELECT *
       FROM
         client AS c
@@ -61,8 +61,8 @@ describe("select FROM", () => {
     `);
   });
 
-  it(`formats joins with subqueries`, () => {
-    test(dedent`
+  it(`formats joins with subqueries`, async () => {
+    await test(dedent`
       SELECT *
       FROM
         client
@@ -71,8 +71,8 @@ describe("select FROM", () => {
     `);
   });
 
-  it(`formats joins with table functions`, () => {
-    test(dedent`
+  it(`formats joins with table functions`, async () => {
+    await test(dedent`
       SELECT *
       FROM
         client
@@ -81,8 +81,8 @@ describe("select FROM", () => {
     `);
   });
 
-  it(`formats comma-operator cross-joins`, () => {
-    test(dedent`
+  it(`formats comma-operator cross-joins`, async () => {
+    await test(dedent`
       SELECT *
       FROM
         client,
@@ -90,8 +90,8 @@ describe("select FROM", () => {
     `);
   });
 
-  it(`formats indexing modifiers`, () => {
-    test(dedent`
+  it(`formats indexing modifiers`, async () => {
+    await test(dedent`
       SELECT *
       FROM
         client INDEXED BY my_idx
@@ -100,15 +100,15 @@ describe("select FROM", () => {
   });
 
   describe("BigQuery", () => {
-    it(`formats UNNEST()`, () => {
-      testBigquery(dedent`
+    it(`formats UNNEST()`, async () => {
+      await testBigquery(dedent`
         SELECT *
         FROM UNNEST([10, 20, 30]) AS numbers WITH OFFSET
       `);
     });
 
-    it(`formats PIVOT()`, () => {
-      testBigquery(dedent`
+    it(`formats PIVOT()`, async () => {
+      await testBigquery(dedent`
         SELECT *
         FROM
           Produce
@@ -116,8 +116,8 @@ describe("select FROM", () => {
       `);
     });
 
-    it(`formats long PIVOT() to multiple lines`, () => {
-      testBigquery(dedent`
+    it(`formats long PIVOT() to multiple lines`, async () => {
+      await testBigquery(dedent`
         SELECT *
         FROM
           Produce
@@ -129,8 +129,8 @@ describe("select FROM", () => {
       `);
     });
 
-    it(`formats UNPIVOT()`, () => {
-      testBigquery(dedent`
+    it(`formats UNPIVOT()`, async () => {
+      await testBigquery(dedent`
         SELECT *
         FROM
           Produce
@@ -138,8 +138,8 @@ describe("select FROM", () => {
       `);
     });
 
-    it(`formats long UNPIVOT() with null-handling options to multiple lines`, () => {
-      testBigquery(dedent`
+    it(`formats long UNPIVOT() with null-handling options to multiple lines`, async () => {
+      await testBigquery(dedent`
         SELECT *
         FROM
           Produce
@@ -151,14 +151,14 @@ describe("select FROM", () => {
       `);
     });
 
-    it(`formats TABLESPAMPLE operator`, () => {
-      testBigquery(dedent`
+    it(`formats TABLESPAMPLE operator`, async () => {
+      await testBigquery(dedent`
         SELECT * FROM dataset.my_table TABLESAMPLE SYSTEM (10 PERCENT)
       `);
     });
 
-    it(`formats TABLESPAMPLE operator to multiple lines`, () => {
-      testBigquery(dedent`
+    it(`formats TABLESPAMPLE operator to multiple lines`, async () => {
+      await testBigquery(dedent`
         SELECT *
         FROM
           myLongProjectName.myCustomDatasetName.my_table_name
@@ -166,15 +166,15 @@ describe("select FROM", () => {
       `);
     });
 
-    it(`formats FOR SYSTEM_TIME AS OF`, () => {
-      testBigquery(dedent`
+    it(`formats FOR SYSTEM_TIME AS OF`, async () => {
+      await testBigquery(dedent`
         SELECT *
         FROM tbl FOR SYSTEM_TIME AS OF '2017-01-01 10:00:00-07:00'
       `);
     });
 
-    it(`formats long FOR SYSTEM_TIME AS OF to multiple lines`, () => {
-      testBigquery(dedent`
+    it(`formats long FOR SYSTEM_TIME AS OF to multiple lines`, async () => {
+      await testBigquery(dedent`
         SELECT *
         FROM
           my_favorite_table AS fancy_table_name

@@ -8,13 +8,8 @@ import {
 } from "./node_utils";
 import { hardline, indent, stripTrailingHardline } from "./print_utils";
 
-export const embedJs: NonNullable<Printer<Node>["embed"]> = (
-  path,
-  print,
-  textToDoc,
-  options
-) => {
-  const node = path.getValue();
+export const embedJs: NonNullable<Printer<Node>["embed"]> = (path, options) => {
+  const node = path.getValue(); // TODO: Don't use deprecated method
   const parent = path.getParentNode(0);
   const grandParent = path.getParentNode(1);
   if (
@@ -23,30 +18,32 @@ export const embedJs: NonNullable<Printer<Node>["embed"]> = (
     isCreateFunctionStmt(grandParent) &&
     grandParent.clauses.some(isJavaScriptLanguageClause)
   ) {
-    const quotes = detectQuotes(node.value);
-    if (!quotes) {
-      // Give up for now. Don't format JavaScript inside the string.
-      // Perhaps tackle this corner-case in the future.
-      return null;
-    }
+    return async (textToDoc) => {
+      const quotes = detectQuotes(node.value);
+      if (!quotes) {
+        // Give up for now. Don't format JavaScript inside the string.
+        // Perhaps tackle this corner-case in the future.
+        return undefined;
+      }
 
-    const js = textToDoc(node.value, {
-      ...options,
-      parser: "babel",
-    });
+      const js = await textToDoc(node.value, {
+        ...options,
+        parser: "babel",
+      });
 
-    return [
-      quotes[0],
-      indent([hardline, stripTrailingHardline(js)]),
-      hardline,
-      quotes[1],
-    ];
+      return [
+        quotes[0],
+        indent([hardline, stripTrailingHardline(js)]),
+        hardline,
+        quotes[1],
+      ];
+    };
   }
   return null;
 };
 
 const isJavaScriptLanguageClause = (
-  clause: CreateFunctionStmt["clauses"][0]
+  clause: CreateFunctionStmt["clauses"][0],
 ): boolean => isLanguageClause(clause) && clause.name.name === "js";
 
 // Whether to quote the code with single- or double-quotes.

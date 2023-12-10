@@ -2,24 +2,24 @@ import dedent from "dedent-js";
 import { test, testBigquery } from "../test_utils";
 
 describe("insert", () => {
-  it(`formats INSERT statement without column names`, () => {
-    test(dedent`
+  it(`formats INSERT statement without column names`, async () => {
+    await test(dedent`
       INSERT INTO client
       VALUES
         (1, 'John', 'Doe', 27)
     `);
   });
 
-  it(`formats INSERT statement without INTO`, () => {
-    testBigquery(dedent`
+  it(`formats INSERT statement without INTO`, async () => {
+    await testBigquery(dedent`
       INSERT client
       VALUES
         (1, 2, 3)
     `);
   });
 
-  it(`formats INSERT statement with column names`, () => {
-    test(dedent`
+  it(`formats INSERT statement with column names`, async () => {
+    await test(dedent`
       INSERT INTO client
         (id, fname, lname, org_id)
       VALUES
@@ -27,8 +27,8 @@ describe("insert", () => {
     `);
   });
 
-  it(`formats INSERT statement with multiple rows always to multiple lines`, () => {
-    test(dedent`
+  it(`formats INSERT statement with multiple rows always to multiple lines`, async () => {
+    await test(dedent`
       INSERT INTO client
       VALUES
         (1, 'John', 'Doe', 27),
@@ -36,8 +36,8 @@ describe("insert", () => {
     `);
   });
 
-  it(`formats INSERT statement with long column names list`, () => {
-    test(dedent`
+  it(`formats INSERT statement with long column names list`, async () => {
+    await test(dedent`
       INSERT INTO client
         (id, first_name, last_name, organization_id, project_access_enabled)
       VALUES
@@ -47,8 +47,8 @@ describe("insert", () => {
     `);
   });
 
-  it(`formats INSERT statement with very long column names and values lists`, () => {
-    test(dedent`
+  it(`formats INSERT statement with very long column names and values lists`, async () => {
+    await test(dedent`
       INSERT INTO client
         (
           id,
@@ -71,38 +71,38 @@ describe("insert", () => {
     `);
   });
 
-  it(`formats OR ABORT modifier`, () => {
-    test(dedent`
+  it(`formats OR ABORT modifier`, async () => {
+    await test(dedent`
       INSERT OR ABORT INTO employee
       VALUES
         (1, 2, 3)
     `);
   });
 
-  it("formats insertion of DEFAULT VALUES", () => {
-    test(dedent`
+  it("formats insertion of DEFAULT VALUES", async () => {
+    await test(dedent`
       INSERT INTO employee
       DEFAULT VALUES
     `);
   });
 
-  it("formats DEFAULT values among normal values", () => {
-    testBigquery(dedent`
+  it("formats DEFAULT values among normal values", async () => {
+    await testBigquery(dedent`
       INSERT INTO employee
       VALUES
         (1, 2, DEFAULT, 3)
     `);
   });
 
-  it("formats insertion of query", () => {
-    test(dedent`
+  it("formats insertion of query", async () => {
+    await test(dedent`
       INSERT INTO employee
       SELECT * FROM tbl
     `);
   });
 
-  it("formats upsert clauses", () => {
-    test(dedent`
+  it("formats upsert clauses", async () => {
+    await test(dedent`
       INSERT INTO client
       VALUES
         (1, 2, 3)
@@ -114,8 +114,8 @@ describe("insert", () => {
     `);
   });
 
-  it(`formats INSERT with RETURNING clause`, () => {
-    test(dedent`
+  it(`formats INSERT with RETURNING clause`, async () => {
+    await test(dedent`
       INSERT INTO client
       VALUES
         (1, 2, 3)

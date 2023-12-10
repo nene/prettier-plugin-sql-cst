@@ -2,8 +2,8 @@ import dedent from "dedent-js";
 import { test, testBigquery } from "../test_utils";
 
 describe("create table", () => {
-  it(`formats CREATE TABLE always on multiple lines`, () => {
-    test(dedent`
+  it(`formats CREATE TABLE always on multiple lines`, async () => {
+    await test(dedent`
       CREATE TABLE client (
         id INT,
         name VARCHAR(100),
@@ -12,32 +12,32 @@ describe("create table", () => {
     `);
   });
 
-  it(`formats CREATE TEMPORARY TABLE`, () => {
-    test(dedent`
+  it(`formats CREATE TEMPORARY TABLE`, async () => {
+    await test(dedent`
       CREATE TEMPORARY TABLE foo (
         id INT
       )
     `);
   });
 
-  it(`formats IF NOT EXISTS`, () => {
-    test(dedent`
+  it(`formats IF NOT EXISTS`, async () => {
+    await test(dedent`
       CREATE TABLE IF NOT EXISTS foo (
         id INT
       )
     `);
   });
 
-  it(`formats OR REPLACE`, () => {
-    testBigquery(dedent`
+  it(`formats OR REPLACE`, async () => {
+    await testBigquery(dedent`
       CREATE OR REPLACE TABLE foo (
         id INT
       )
     `);
   });
 
-  it(`formats CREATE TABLE with various data types`, () => {
-    test(dedent`
+  it(`formats CREATE TABLE with various data types`, async () => {
+    await test(dedent`
       CREATE TABLE client (
         id INTEGER,
         name VARCHAR(100),
@@ -48,8 +48,8 @@ describe("create table", () => {
     `);
   });
 
-  it(`formats CREATE TABLE with column constraints`, () => {
-    test(dedent`
+  it(`formats CREATE TABLE with column constraints`, async () => {
+    await test(dedent`
       CREATE TABLE client (
         id INT NOT NULL PRIMARY KEY,
         name VARCHAR(100) UNIQUE COLLATE RTRIM,
@@ -61,16 +61,16 @@ describe("create table", () => {
     `);
   });
 
-  it(`formats SQLite PRIMARY KEY modifiers`, () => {
-    test(dedent`
+  it(`formats SQLite PRIMARY KEY modifiers`, async () => {
+    await test(dedent`
       CREATE TABLE client (
         id INTEGER PRIMARY KEY ASC AUTOINCREMENT
       )
     `);
   });
 
-  it(`formats CREATE TABLE with table constraints`, () => {
-    test(dedent`
+  it(`formats CREATE TABLE with table constraints`, async () => {
+    await test(dedent`
       CREATE TABLE client (
         id INT,
         name VARCHAR,
@@ -82,8 +82,8 @@ describe("create table", () => {
     `);
   });
 
-  it(`formats FOREIGN KEY constraint with options`, () => {
-    test(dedent`
+  it(`formats FOREIGN KEY constraint with options`, async () => {
+    await test(dedent`
       CREATE TABLE client (
         id INT,
         FOREIGN KEY (org_id1) REFERENCES organization (id1)
@@ -95,8 +95,8 @@ describe("create table", () => {
     `);
   });
 
-  it(`formats deferrable FOREIGN KEY constraint`, () => {
-    test(dedent`
+  it(`formats deferrable FOREIGN KEY constraint`, async () => {
+    await test(dedent`
       CREATE TABLE client (
         id INT,
         CONSTRAINT fkey
@@ -108,16 +108,16 @@ describe("create table", () => {
     `);
   });
 
-  it(`formats CREATE TABLE with named column constraints`, () => {
-    test(dedent`
+  it(`formats CREATE TABLE with named column constraints`, async () => {
+    await test(dedent`
       CREATE TABLE client (
         id INT CONSTRAINT NOT NULL CONSTRAINT prim_key PRIMARY KEY
       )
     `);
   });
 
-  it(`formats CREATE TABLE with named table constraints`, () => {
-    test(dedent`
+  it(`formats CREATE TABLE with named table constraints`, async () => {
+    await test(dedent`
       CREATE TABLE client (
         id INT,
         CONSTRAINT prim_key PRIMARY KEY (id, name),
@@ -127,8 +127,8 @@ describe("create table", () => {
     `);
   });
 
-  it(`formats constraints with ON CONFLICT clause`, () => {
-    test(dedent`
+  it(`formats constraints with ON CONFLICT clause`, async () => {
+    await test(dedent`
       CREATE TABLE client (
         id INT,
         name VARCHAR(100) NOT NULL ON CONFLICT FAIL,
@@ -138,8 +138,8 @@ describe("create table", () => {
     `);
   });
 
-  it(`formats BigQuery data types with internal constraints`, () => {
-    testBigquery(dedent`
+  it(`formats BigQuery data types with internal constraints`, async () => {
+    await testBigquery(dedent`
       CREATE TABLE client (
         arr_field ARRAY<INT64 NOT NULL>,
         struct_field STRUCT<name STRING NOT NULL, age INT64 DEFAULT 0>,
@@ -149,8 +149,8 @@ describe("create table", () => {
   });
 
   // Issue #10
-  it(`formats long BigQuery struct definition to multiple lines`, () => {
-    testBigquery(dedent`
+  it(`formats long BigQuery struct definition to multiple lines`, async () => {
+    await testBigquery(dedent`
       CREATE TABLE client (
         struct_field STRUCT<
           first_name STRING,
@@ -163,8 +163,8 @@ describe("create table", () => {
     `);
   });
 
-  it(`formats SQLite table options`, () => {
-    test(dedent`
+  it(`formats SQLite table options`, async () => {
+    await test(dedent`
       CREATE TABLE foo (
         id INT
       )
@@ -172,8 +172,8 @@ describe("create table", () => {
     `);
   });
 
-  it(`formats single short BigQuery extra CREATE TABLE clause`, () => {
-    testBigquery(dedent`
+  it(`formats single short BigQuery extra CREATE TABLE clause`, async () => {
+    await testBigquery(dedent`
       CREATE TABLE client (
         id INT64
       )
@@ -181,8 +181,8 @@ describe("create table", () => {
     `);
   });
 
-  it(`formats additional BigQuery CREATE TABLE clauses`, () => {
-    testBigquery(dedent`
+  it(`formats additional BigQuery CREATE TABLE clauses`, async () => {
+    await testBigquery(dedent`
       CREATE TABLE client (
         id INT64
       )
@@ -193,8 +193,8 @@ describe("create table", () => {
     `);
   });
 
-  it(`formats long BigQuery OPTIONS ()`, () => {
-    testBigquery(dedent`
+  it(`formats long BigQuery OPTIONS ()`, async () => {
+    await testBigquery(dedent`
       CREATE TABLE client (
         id INT64
       )
@@ -207,15 +207,15 @@ describe("create table", () => {
     `);
   });
 
-  it(`formats CREATE TABLE AS`, () => {
-    test(dedent`
+  it(`formats CREATE TABLE AS`, async () => {
+    await test(dedent`
       CREATE TABLE foo AS
         SELECT * FROM tbl WHERE x > 0
     `);
   });
 
-  it(`formats CREATE TABLE AS with long query`, () => {
-    test(dedent`
+  it(`formats CREATE TABLE AS with long query`, async () => {
+    await test(dedent`
       CREATE TABLE foo AS
         SELECT column1, column2, column3
         FROM external_client
@@ -223,36 +223,36 @@ describe("create table", () => {
     `);
   });
 
-  it(`formats CREATE TABLE LIKE`, () => {
-    testBigquery(dedent`
+  it(`formats CREATE TABLE LIKE`, async () => {
+    await testBigquery(dedent`
       CREATE TABLE foo
       LIKE my_old_table
     `);
   });
 
-  it(`formats CREATE TABLE COPY`, () => {
-    testBigquery(dedent`
+  it(`formats CREATE TABLE COPY`, async () => {
+    await testBigquery(dedent`
       CREATE TABLE foo
       COPY my_old_table
     `);
   });
 
-  it(`formats CREATE SNAPSHOT TABLE CLONE`, () => {
-    testBigquery(dedent`
+  it(`formats CREATE SNAPSHOT TABLE CLONE`, async () => {
+    await testBigquery(dedent`
       CREATE SNAPSHOT TABLE foo
       CLONE my_old_table
     `);
   });
 
-  it(`formats FOR SYSTEM_TIME AS OF`, () => {
-    testBigquery(dedent`
+  it(`formats FOR SYSTEM_TIME AS OF`, async () => {
+    await testBigquery(dedent`
       CREATE SNAPSHOT TABLE foo
       CLONE my_old_table FOR SYSTEM_TIME AS OF '2017-01-01 10:00:00-07:00'
     `);
   });
 
-  it(`formats CREATE EXTERNAL TABLE`, () => {
-    testBigquery(dedent`
+  it(`formats CREATE EXTERNAL TABLE`, async () => {
+    await testBigquery(dedent`
       CREATE EXTERNAL TABLE dataset.CustomTable (
         id INT64
       )
@@ -262,8 +262,8 @@ describe("create table", () => {
     `);
   });
 
-  it(`formats CREATE EXTERNAL TABLE with long PARTITION COLUMNS list`, () => {
-    testBigquery(dedent`
+  it(`formats CREATE EXTERNAL TABLE with long PARTITION COLUMNS list`, async () => {
+    await testBigquery(dedent`
       CREATE EXTERNAL TABLE dataset.CustomTable
       WITH PARTITION COLUMNS (
         first_name STRING,
@@ -274,8 +274,8 @@ describe("create table", () => {
     `);
   });
 
-  it(`formats CREATE VIRTUAL TABLE`, () => {
-    test(dedent`
+  it(`formats CREATE VIRTUAL TABLE`, async () => {
+    await test(dedent`
       CREATE VIRTUAL TABLE my_table
       USING my_func(1, 2)
     `);

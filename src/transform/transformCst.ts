@@ -9,5 +9,5 @@ import { addFinalSemicolon } from "./addFinalSemicolon";
 export const transformCst = (cst: Program, originalText: string): Program =>
   addFinalSemicolon(
     stripTrailingCommas(processAliasAs(moveCommentsToRoot(cst))),
-    originalText
+    originalText,
   );

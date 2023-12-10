@@ -2,8 +2,8 @@ import dedent from "dedent-js";
 import { testBigquery } from "../test_utils";
 
 describe("case", () => {
-  it(`formats procedural CASE`, () => {
-    testBigquery(dedent`
+  it(`formats procedural CASE`, async () => {
+    await testBigquery(dedent`
       CASE foo
         WHEN 1 THEN
           SELECT CONCAT('Product one');

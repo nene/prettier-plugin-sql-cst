@@ -3,8 +3,8 @@ import { testBigquery } from "../test_utils";
 
 describe("procedure", () => {
   describe("create procedure", () => {
-    it(`formats CREATE PROCEDURE`, () => {
-      testBigquery(
+    it(`formats CREATE PROCEDURE`, async () => {
+      await testBigquery(
         dedent`
           CREATE PROCEDURE drop_my_table(arg1 INT64, OUT arg2 STRING)
           BEGIN
@@ -14,8 +14,8 @@ describe("procedure", () => {
       );
     });
 
-    it(`formats OR REPLACE / IF NOT EXISTS`, () => {
-      testBigquery(
+    it(`formats OR REPLACE / IF NOT EXISTS`, async () => {
+      await testBigquery(
         dedent`
           CREATE OR REPLACE PROCEDURE IF NOT EXISTS drop_my_table()
           BEGIN
@@ -25,8 +25,8 @@ describe("procedure", () => {
       );
     });
 
-    it(`formats long parameter list`, () => {
-      testBigquery(
+    it(`formats long parameter list`, async () => {
+      await testBigquery(
         dedent`
           CREATE PROCEDURE my_schema.my_long_procedure_name(
             IN first_parameter INT64,
@@ -40,8 +40,8 @@ describe("procedure", () => {
       );
     });
 
-    it(`formats OPTIONS (..)`, () => {
-      testBigquery(
+    it(`formats OPTIONS (..)`, async () => {
+      await testBigquery(
         dedent`
           CREATE PROCEDURE foo()
           OPTIONS (strict_mode = TRUE)
@@ -52,8 +52,8 @@ describe("procedure", () => {
       );
     });
 
-    it(`formats remote python procedure`, () => {
-      testBigquery(
+    it(`formats remote python procedure`, async () => {
+      await testBigquery(
         dedent`
           CREATE PROCEDURE my_bq_project.my_dataset.spark_proc()
           WITH CONNECTION \`my-project-id.us.my-connection\`
@@ -63,8 +63,8 @@ describe("procedure", () => {
       );
     });
 
-    it(`formats inline python procedure`, () => {
-      testBigquery(
+    it(`formats inline python procedure`, async () => {
+      await testBigquery(
         dedent`
           CREATE PROCEDURE spark_proc()
           WITH CONNECTION my_connection
@@ -82,12 +82,12 @@ describe("procedure", () => {
   });
 
   describe("drop procedure", () => {
-    it(`formats DROP PROCEDURE`, () => {
-      testBigquery(`DROP PROCEDURE mydataset.myProcedure`);
+    it(`formats DROP PROCEDURE`, async () => {
+      await testBigquery(`DROP PROCEDURE mydataset.myProcedure`);
     });
 
-    it(`formats IF EXISTS`, () => {
-      testBigquery(`DROP PROCEDURE IF EXISTS foo`);
+    it(`formats IF EXISTS`, async () => {
+      await testBigquery(`DROP PROCEDURE IF EXISTS foo`);
     });
   });
 });

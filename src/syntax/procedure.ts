@@ -15,7 +15,7 @@ export const procedureMap: Partial<CstToDocMap<AllProcedureNodes>> = {
     hardline,
     join(
       hardline,
-      print("clauses").map((clause) => group(clause))
+      print("clauses").map((clause) => group(clause)),
     ),
   ],
   procedure_param: (print) => print.spaced(["mode", "name", "dataType"]),

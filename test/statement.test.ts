@@ -4,31 +4,22 @@ import { rawPretty, rawTest } from "./test_utils";
 // In these tests we use rawPretty()
 // to also test that formatted file always ends with final newline.
 describe("statement", () => {
-  it(`adds semicolon to statement without a semicolon`, () => {
-    expect(rawPretty(`SELECT 1`)).toBe(dedent`
+  it(`adds semicolon to statement without a semicolon`, async () => {
+    expect(await rawPretty(`SELECT 1`)).toBe(dedent`
       SELECT 1;
 
     `);
   });
 
-  it(`formats statement ending with semicolon`, () => {
-    expect(rawPretty(`SELECT 1;`)).toBe(dedent`
+  it(`formats statement ending with semicolon`, async () => {
+    expect(await rawPretty(`SELECT 1;`)).toBe(dedent`
       SELECT 1;
 
     `);
   });
 
-  it(`formats multiple statements`, () => {
-    expect(rawPretty(`SELECT 1; SELECT 2; SELECT 3;`)).toBe(dedent`
-      SELECT 1;
-      SELECT 2;
-      SELECT 3;
-
-    `);
-  });
-
-  it(`ensures semicolon after last statement`, () => {
-    expect(rawPretty(`SELECT 1; SELECT 2; SELECT 3`)).toBe(dedent`
+  it(`formats multiple statements`, async () => {
+    expect(await rawPretty(`SELECT 1; SELECT 2; SELECT 3;`)).toBe(dedent`
       SELECT 1;
       SELECT 2;
       SELECT 3;
@@ -36,7 +27,16 @@ describe("statement", () => {
     `);
   });
 
-  it(`preserves empty line between statements`, () => {
+  it(`ensures semicolon after last statement`, async () => {
+    expect(await rawPretty(`SELECT 1; SELECT 2; SELECT 3`)).toBe(dedent`
+      SELECT 1;
+      SELECT 2;
+      SELECT 3;
+
+    `);
+  });
+
+  it(`preserves empty line between statements`, async () => {
     rawTest(dedent`
       SELECT 1;
 
@@ -49,9 +49,9 @@ describe("statement", () => {
     `);
   });
 
-  it(`replaces multiple empty lines with just one`, () => {
+  it(`replaces multiple empty lines with just one`, async () => {
     expect(
-      rawPretty(dedent`
+      await rawPretty(dedent`
         SELECT 1;
 
 

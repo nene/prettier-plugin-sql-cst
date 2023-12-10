@@ -3,8 +3,8 @@ import { test } from "../test_utils";
 
 describe("trigger", () => {
   describe("create trigger", () => {
-    it(`formats CREATE TRIGGER .. INSTEAD OF UPDATE OF`, () => {
-      test(dedent`
+    it(`formats CREATE TRIGGER .. INSTEAD OF UPDATE OF`, async () => {
+      await test(dedent`
         CREATE TRIGGER cust_addr_chng
         INSTEAD OF UPDATE OF cust_addr ON customer_address
         BEGIN
@@ -15,8 +15,8 @@ describe("trigger", () => {
       `);
     });
 
-    it(`formats long UPDATE OF column list`, () => {
-      test(dedent`
+    it(`formats long UPDATE OF column list`, async () => {
+      await test(dedent`
         CREATE TRIGGER cust_addr_chng
         INSTEAD OF UPDATE OF
           cust_address,
@@ -29,8 +29,8 @@ describe("trigger", () => {
       `);
     });
 
-    it(`formats TEMPORARY TRIGGER IF NOT EXISTS`, () => {
-      test(dedent`
+    it(`formats TEMPORARY TRIGGER IF NOT EXISTS`, async () => {
+      await test(dedent`
         CREATE TEMPORARY TRIGGER IF NOT EXISTS cust_addr_del
         DELETE ON customer_address
         BEGIN
@@ -39,8 +39,8 @@ describe("trigger", () => {
       `);
     });
 
-    it(`formats FOR EACH ROW`, () => {
-      test(dedent`
+    it(`formats FOR EACH ROW`, async () => {
+      await test(dedent`
         CREATE TRIGGER cust_addr_del
         INSERT ON customer_address
         FOR EACH ROW
@@ -51,8 +51,8 @@ describe("trigger", () => {
       `);
     });
 
-    it(`formats WHEN condition`, () => {
-      test(dedent`
+    it(`formats WHEN condition`, async () => {
+      await test(dedent`
         CREATE TRIGGER cust_addr_del
         INSERT ON customer_address
         FOR EACH ROW
@@ -63,8 +63,8 @@ describe("trigger", () => {
       `);
     });
 
-    it(`formats long WHEN condition`, () => {
-      test(dedent`
+    it(`formats long WHEN condition`, async () => {
+      await test(dedent`
         CREATE TRIGGER cust_addr_del
         INSERT ON customer_address
         WHEN
@@ -79,12 +79,12 @@ describe("trigger", () => {
   });
 
   describe("drop trigger", () => {
-    it(`formats DROP TRIGGER`, () => {
-      test(`DROP TRIGGER my_trigger`);
+    it(`formats DROP TRIGGER`, async () => {
+      await test(`DROP TRIGGER my_trigger`);
     });
 
-    it(`formats IF EXISTS`, () => {
-      test(`DROP TRIGGER IF EXISTS my_trigger`);
+    it(`formats IF EXISTS`, async () => {
+      await test(`DROP TRIGGER IF EXISTS my_trigger`);
     });
   });
 });

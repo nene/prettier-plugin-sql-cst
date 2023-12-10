@@ -7,7 +7,7 @@ import { AllPrettierOptions } from "src/options";
 export const programMap: CstToDocMap<Program> = {
   program: (print, node, path, options) =>
     print("statements").map((doc, i) =>
-      printStatement(doc, i, node.statements, options)
+      printStatement(doc, i, node.statements, options),
     ),
 };
 
@@ -15,7 +15,7 @@ const printStatement = (
   doc: Doc,
   i: number,
   statements: Node[],
-  options: AllPrettierOptions<Program>
+  options: AllPrettierOptions<Program>,
 ): Doc => {
   const prevNode = statements[i - 1];
   const node = statements[i];

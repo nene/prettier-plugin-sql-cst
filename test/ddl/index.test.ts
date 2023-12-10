@@ -3,26 +3,26 @@ import { test, testBigquery } from "../test_utils";
 
 describe("index", () => {
   describe("create index", () => {
-    it(`formats CREATE INDEX`, () => {
-      test(dedent`
+    it(`formats CREATE INDEX`, async () => {
+      await test(dedent`
         CREATE INDEX my_index ON my_table (col1, col2)
       `);
     });
 
-    it(`formats CREATE UNIQUE INDEX`, () => {
-      test(dedent`
+    it(`formats CREATE UNIQUE INDEX`, async () => {
+      await test(dedent`
         CREATE UNIQUE INDEX my_index ON my_table (col)
       `);
     });
 
-    it(`formats IF NOT EXISTS`, () => {
-      test(dedent`
+    it(`formats IF NOT EXISTS`, async () => {
+      await test(dedent`
         CREATE INDEX IF NOT EXISTS my_index ON my_table (col)
       `);
     });
 
-    it(`formats long columns list on multiple lines`, () => {
-      test(dedent`
+    it(`formats long columns list on multiple lines`, async () => {
+      await test(dedent`
         CREATE UNIQUE INDEX IF NOT EXISTS my_index ON my_table (
           column_name_one,
           column_name_two,
@@ -31,15 +31,15 @@ describe("index", () => {
       `);
     });
 
-    it(`formats WHERE clause on separate line`, () => {
-      test(dedent`
+    it(`formats WHERE clause on separate line`, async () => {
+      await test(dedent`
         CREATE INDEX my_index ON my_table (col)
         WHERE col > 10
       `);
     });
 
-    it(`formats BigQuery CREATE SEARCH INDEX with OPTIONS ()`, () => {
-      test(
+    it(`formats BigQuery CREATE SEARCH INDEX with OPTIONS ()`, async () => {
+      await test(
         dedent`
           CREATE SEARCH INDEX my_index ON my_table (col)
           OPTIONS (analyzer = 'LOG_ANALYZER')
@@ -48,28 +48,28 @@ describe("index", () => {
       );
     });
 
-    it(`formats BigQuery CREATE SEARCH INDEX with ALL COLUMNS`, () => {
-      testBigquery(dedent`
+    it(`formats BigQuery CREATE SEARCH INDEX with ALL COLUMNS`, async () => {
+      await testBigquery(dedent`
         CREATE SEARCH INDEX my_index ON my_table (ALL COLUMNS)
       `);
     });
   });
 
   describe("drop index", () => {
-    it(`formats DROP INDEX`, () => {
-      test(dedent`
+    it(`formats DROP INDEX`, async () => {
+      await test(dedent`
         DROP INDEX my_index
       `);
     });
 
-    it(`formats IF EXISTS`, () => {
-      test(dedent`
+    it(`formats IF EXISTS`, async () => {
+      await test(dedent`
         DROP INDEX IF EXISTS my_index
       `);
     });
 
-    it(`formats DROP SEARCH INDEX`, () => {
-      testBigquery(dedent`
+    it(`formats DROP SEARCH INDEX`, async () => {
+      await testBigquery(dedent`
         DROP SEARCH INDEX my_index ON my_table
       `);
     });

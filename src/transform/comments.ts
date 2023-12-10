@@ -8,7 +8,7 @@ import { visitAllNodes } from "../visitAllNodes";
  * Deletes the .leading and .trailing fields of all nodes.
  */
 export const moveCommentsToRoot = (
-  cst: Program
+  cst: Program,
 ): Program & { comments: Whitespace[] } => {
   return {
     ...cst,

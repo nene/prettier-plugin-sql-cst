@@ -2,12 +2,12 @@ import dedent from "dedent-js";
 import { test, testBigquery } from "../test_utils";
 
 describe("literal", () => {
-  it(`formats BigQuery NUMERIC and BIGNUMERIC literals`, () => {
-    testBigquery(`SELECT NUMERIC '12345', BIGNUMERIC '1.23456e05'`);
+  it(`formats BigQuery NUMERIC and BIGNUMERIC literals`, async () => {
+    await testBigquery(`SELECT NUMERIC '12345', BIGNUMERIC '1.23456e05'`);
   });
 
-  it(`formats DATE/TIME literals`, () => {
-    testBigquery(
+  it(`formats DATE/TIME literals`, async () => {
+    await testBigquery(
       dedent`
         SELECT
           DATE '2014-09-27',
@@ -18,8 +18,8 @@ describe("literal", () => {
     );
   });
 
-  it(`formats INTERVAL literals`, () => {
-    testBigquery(
+  it(`formats INTERVAL literals`, async () => {
+    await testBigquery(
       dedent`
         SELECT
           INTERVAL 5 DAY,
@@ -31,8 +31,8 @@ describe("literal", () => {
   });
 
   describe("array literals", () => {
-    it(`formats array literals`, () => {
-      testBigquery(
+    it(`formats array literals`, async () => {
+      await testBigquery(
         dedent`
           SELECT
             [1, 2, 3],
@@ -43,8 +43,8 @@ describe("literal", () => {
       );
     });
 
-    it(`formats long array literal to multiple lines`, () => {
-      testBigquery(
+    it(`formats long array literal to multiple lines`, async () => {
+      await testBigquery(
         dedent`
           SELECT
             [
@@ -59,8 +59,8 @@ describe("literal", () => {
   });
 
   describe("struct literals", () => {
-    it(`formats struct literals`, () => {
-      testBigquery(
+    it(`formats struct literals`, async () => {
+      await testBigquery(
         dedent`
           SELECT
             (1, 2, 3),
@@ -72,8 +72,8 @@ describe("literal", () => {
       );
     });
 
-    it(`formats long struct literal to multiple lines`, () => {
-      testBigquery(
+    it(`formats long struct literal to multiple lines`, async () => {
+      await testBigquery(
         dedent`
           SELECT
             STRUCT(

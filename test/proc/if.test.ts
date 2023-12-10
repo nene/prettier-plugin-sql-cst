@@ -2,16 +2,16 @@ import dedent from "dedent-js";
 import { testBigquery } from "../test_utils";
 
 describe("if", () => {
-  it(`formats IF .. THEN .. END IF`, () => {
-    testBigquery(dedent`
+  it(`formats IF .. THEN .. END IF`, async () => {
+    await testBigquery(dedent`
       IF x > 10 THEN
         SELECT 1;
       END IF
     `);
   });
 
-  it(`formats ELSE`, () => {
-    testBigquery(dedent`
+  it(`formats ELSE`, async () => {
+    await testBigquery(dedent`
       IF x > 10 THEN
         SELECT 1;
       ELSE
@@ -20,8 +20,8 @@ describe("if", () => {
     `);
   });
 
-  it(`formats ELSEIF`, () => {
-    testBigquery(dedent`
+  it(`formats ELSEIF`, async () => {
+    await testBigquery(dedent`
       IF x > 10 THEN
         SELECT 1;
       ELSEIF x > 1 THEN
@@ -34,8 +34,8 @@ describe("if", () => {
     `);
   });
 
-  it(`formats IF with multiple statements inside`, () => {
-    testBigquery(dedent`
+  it(`formats IF with multiple statements inside`, async () => {
+    await testBigquery(dedent`
       IF x > 10 THEN
         SELECT 1;
         SELECT 2;
@@ -44,8 +44,8 @@ describe("if", () => {
     `);
   });
 
-  it(`formats IF with long condition`, () => {
-    testBigquery(dedent`
+  it(`formats IF with long condition`, async () => {
+    await testBigquery(dedent`
       IF
         EXISTS (SELECT 1 FROM schema.products WHERE product_id = target_product_id)
         AND target_product_id IS NOT NULL
@@ -55,8 +55,8 @@ describe("if", () => {
     `);
   });
 
-  it(`formats ELSEIF with long condition`, () => {
-    testBigquery(dedent`
+  it(`formats ELSEIF with long condition`, async () => {
+    await testBigquery(dedent`
       IF TRUE THEN
         SELECT 1;
       ELSEIF

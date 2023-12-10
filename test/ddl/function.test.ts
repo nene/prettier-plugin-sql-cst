@@ -3,15 +3,15 @@ import { pretty, testBigquery } from "../test_utils";
 
 describe("function", () => {
   describe("create function", () => {
-    it(`formats CREATE FUNCTION`, () => {
-      testBigquery(dedent`
+    it(`formats CREATE FUNCTION`, async () => {
+      await testBigquery(dedent`
           CREATE FUNCTION my_func(arg1 INT64, arg2 STRING, arg3 ANY TYPE) AS
             (SELECT * FROM client)
         `);
     });
 
-    it(`formats long parameter list to multiple lines`, () => {
-      testBigquery(dedent`
+    it(`formats long parameter list to multiple lines`, async () => {
+      await testBigquery(dedent`
         CREATE FUNCTION my_func(
           first_name STRING,
           last_name STRING,
@@ -21,29 +21,29 @@ describe("function", () => {
       `);
     });
 
-    it(`formats CREATE TEMP FUNCTION`, () => {
-      testBigquery(dedent`
+    it(`formats CREATE TEMP FUNCTION`, async () => {
+      await testBigquery(dedent`
         CREATE TEMPORARY FUNCTION my_func() AS
           (SELECT 1)
       `);
     });
 
-    it(`formats OR REPLACE`, () => {
-      testBigquery(dedent`
+    it(`formats OR REPLACE`, async () => {
+      await testBigquery(dedent`
         CREATE OR REPLACE FUNCTION my_func() AS
           (SELECT 1)
       `);
     });
 
-    it(`formats IF NOT EXISTS`, () => {
-      testBigquery(dedent`
+    it(`formats IF NOT EXISTS`, async () => {
+      await testBigquery(dedent`
         CREATE FUNCTION IF NOT EXISTS my_func() AS
           (SELECT 1)
       `);
     });
 
-    it(`formats RETURNS clause`, () => {
-      testBigquery(dedent`
+    it(`formats RETURNS clause`, async () => {
+      await testBigquery(dedent`
         CREATE FUNCTION IF NOT EXISTS my_func()
         RETURNS INT64
         AS
@@ -51,8 +51,8 @@ describe("function", () => {
       `);
     });
 
-    it(`formats OPTIONS (...)`, () => {
-      testBigquery(dedent`
+    it(`formats OPTIONS (...)`, async () => {
+      await testBigquery(dedent`
         CREATE FUNCTION IF NOT EXISTS my_func()
         AS
           (SELECT 1)
@@ -60,8 +60,8 @@ describe("function", () => {
       `);
     });
 
-    it(`formats CREATE TABLE FUNCTION`, () => {
-      testBigquery(dedent`
+    it(`formats CREATE TABLE FUNCTION`, async () => {
+      await testBigquery(dedent`
         CREATE TABLE FUNCTION my_func()
         RETURNS TABLE<id INT, name STRING>
         AS
@@ -69,8 +69,8 @@ describe("function", () => {
       `);
     });
 
-    it(`formats creation of remote function`, () => {
-      testBigquery(dedent`
+    it(`formats creation of remote function`, async () => {
+      await testBigquery(dedent`
         CREATE FUNCTION my_func()
         RETURNS INT64
         REMOTE WITH CONNECTION us.myconnection
@@ -78,8 +78,8 @@ describe("function", () => {
       `);
     });
 
-    it(`formats JavaScript FUNCTION`, () => {
-      testBigquery(dedent`
+    it(`formats JavaScript FUNCTION`, async () => {
+      await testBigquery(dedent`
         CREATE FUNCTION gen_random()
         RETURNS FLOAT64
         NOT DETERMINISTIC
@@ -90,9 +90,9 @@ describe("function", () => {
       `);
     });
 
-    it(`reformats JavaScript in JS function`, () => {
+    it(`reformats JavaScript in JS function`, async () => {
       expect(
-        pretty(
+        await pretty(
           dedent`
             CREATE FUNCTION gen_random()
             RETURNS FLOAT64
@@ -113,9 +113,9 @@ describe("function", () => {
       `);
     });
 
-    it(`quotes JavaScript in double-quotes when single-quotes can't be used`, () => {
+    it(`quotes JavaScript in double-quotes when single-quotes can't be used`, async () => {
       expect(
-        pretty(
+        await pretty(
           dedent`
             CREATE FUNCTION contains_quotes(x STRING)
             RETURNS FLOAT64
@@ -134,9 +134,9 @@ describe("function", () => {
       `);
     });
 
-    it(`does not reformat JavaScript when neither ''' or """ can be easily used for quoting`, () => {
+    it(`does not reformat JavaScript when neither ''' or """ can be easily used for quoting`, async () => {
       expect(
-        pretty(
+        await pretty(
           dedent`
             CREATE FUNCTION contains_quotes(x STRING)
             RETURNS FLOAT64
@@ -155,14 +155,14 @@ describe("function", () => {
   });
 
   describe("drop function", () => {
-    it(`formats DROP FUNCTION`, () => {
-      testBigquery(`DROP FUNCTION my_schema.my_func`);
+    it(`formats DROP FUNCTION`, async () => {
+      await testBigquery(`DROP FUNCTION my_schema.my_func`);
     });
-    it(`formats DROP TABLE FUNCTION`, () => {
-      testBigquery(`DROP TABLE FUNCTION my_func`);
+    it(`formats DROP TABLE FUNCTION`, async () => {
+      await testBigquery(`DROP TABLE FUNCTION my_func`);
     });
-    it(`formats IF EXISTS`, () => {
-      testBigquery(`DROP FUNCTION IF EXISTS my_func`);
+    it(`formats IF EXISTS`, async () => {
+      await testBigquery(`DROP FUNCTION IF EXISTS my_func`);
     });
   });
 });

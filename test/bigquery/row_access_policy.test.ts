@@ -3,22 +3,22 @@ import { testBigquery } from "../test_utils";
 
 describe("row access policy", () => {
   describe("create row access policy", () => {
-    it(`formats CREATE ROW ACCESS POLICY`, () => {
-      testBigquery(dedent`
+    it(`formats CREATE ROW ACCESS POLICY`, async () => {
+      await testBigquery(dedent`
         CREATE ROW ACCESS POLICY policy_name ON my_table
         FILTER USING (x > 10)
       `);
     });
 
-    it(`formats OR REPLACE / IF NOT EXISTS`, () => {
-      testBigquery(dedent`
+    it(`formats OR REPLACE / IF NOT EXISTS`, async () => {
+      await testBigquery(dedent`
         CREATE OR REPLACE ROW ACCESS POLICY IF NOT EXISTS policy_name ON my_table
         FILTER USING (x > 10)
       `);
     });
 
-    it(`formats GRANT TO`, () => {
-      testBigquery(dedent`
+    it(`formats GRANT TO`, async () => {
+      await testBigquery(dedent`
         CREATE ROW ACCESS POLICY policy_name ON my_table
         GRANT TO ('user:alice@example.com', 'domain:example.com')
         FILTER USING (x > 10)
@@ -27,20 +27,20 @@ describe("row access policy", () => {
   });
 
   describe("drop row access policy", () => {
-    it(`formats DROP ROW ACCESS POLICY`, () => {
-      testBigquery(dedent`
+    it(`formats DROP ROW ACCESS POLICY`, async () => {
+      await testBigquery(dedent`
         DROP ROW ACCESS POLICY policy_name ON my_table
       `);
     });
 
-    it(`formats IF EXISTS`, () => {
-      testBigquery(dedent`
+    it(`formats IF EXISTS`, async () => {
+      await testBigquery(dedent`
         DROP ROW ACCESS POLICY IF EXISTS policy_name ON my_table
       `);
     });
 
-    it(`formats DROP ALL ROW ACCESS POLICIES`, () => {
-      testBigquery(dedent`
+    it(`formats DROP ALL ROW ACCESS POLICIES`, async () => {
+      await testBigquery(dedent`
         DROP ALL ROW ACCESS POLICIES ON my_table
       `);
     });
