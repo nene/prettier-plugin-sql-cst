@@ -8,6 +8,7 @@ import { transformCst } from "./transform/transformCst";
 import { AllPrettierOptions } from "./options";
 
 export { options } from "./options";
+export type { SqlPluginOptions } from "./options";
 
 export const languages: SupportLanguage[] = [
   {
