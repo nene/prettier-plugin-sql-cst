@@ -1,14 +1,29 @@
 import { AllInsertNodes } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
-import { join, group, hardline, indent } from "../print_utils";
+import { join, group, hardline, indent, softline } from "../print_utils";
 
 export const insertMap: Partial<CstToDocMap<AllInsertNodes>> = {
-  insert_stmt: (print) => join(hardline, print("clauses")),
-  insert_clause: (print, node) =>
-    group([
-      print.spaced(["insertKw", "orAction", "intoKw", "table"]),
-      node.columns ? indent([hardline, print("columns")]) : [],
-    ]),
+  insert_stmt: (print, node) => {
+    const columnsClauseIndex = node.clauses.findIndex(
+      (clause) => clause.type === "insert_columns_clause",
+    );
+    if (columnsClauseIndex !== -1) {
+      const printedClauses = print("clauses");
+      const before = printedClauses.slice(0, columnsClauseIndex);
+      const columnsClause = printedClauses[columnsClauseIndex];
+      const after = printedClauses.slice(columnsClauseIndex + 1);
+      return [
+        join(hardline, before),
+        indent([hardline, columnsClause]),
+        after.length > 0 ? [hardline, join(hardline, after)] : [],
+      ];
+    } else {
+      return join(hardline, print("clauses"));
+    }
+  },
+  insert_clause: (print) =>
+    group([print.spaced(["insertKw", "orAction", "intoKw", "table"])]),
+  insert_columns_clause: (print) => print("columns"),
   values_clause: (print) =>
     group([print("valuesKw"), indent([hardline, print("values")])]),
   or_alternate_action: (print) => print.spaced(["orKw", "actionKw"]),
