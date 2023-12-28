@@ -4,6 +4,9 @@ import { join, group, hardline, indent, softline } from "../print_utils";
 
 export const insertMap: Partial<CstToDocMap<AllInsertNodes>> = {
   insert_stmt: (print, node) => {
+    // When there's a columns clause, we want to indent it,
+    // but that only works when there's a newline inside it.
+    // So we have to avoid adding a newline before columns clause.
     const columnsClauseIndex = node.clauses.findIndex(
       (clause) => clause.type === "insert_columns_clause",
     );
@@ -14,7 +17,7 @@ export const insertMap: Partial<CstToDocMap<AllInsertNodes>> = {
       const after = printedClauses.slice(columnsClauseIndex + 1);
       return [
         join(hardline, before),
-        indent([hardline, columnsClause]),
+        columnsClause,
         after.length > 0 ? [hardline, join(hardline, after)] : [],
       ];
     } else {
@@ -23,7 +26,7 @@ export const insertMap: Partial<CstToDocMap<AllInsertNodes>> = {
   },
   insert_clause: (print) =>
     group([print.spaced(["insertKw", "orAction", "intoKw", "table"])]),
-  insert_columns_clause: (print) => print("columns"),
+  insert_columns_clause: (print) => indent([hardline, print("columns")]),
   values_clause: (print) =>
     group([print("valuesKw"), indent([hardline, print("values")])]),
   or_alternate_action: (print) => print.spaced(["orKw", "actionKw"]),
