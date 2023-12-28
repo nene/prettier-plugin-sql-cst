@@ -1,6 +1,6 @@
 import { AllInsertNodes } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
-import { join, group, hardline, indent, softline } from "../print_utils";
+import { join, group, hardline, indent } from "../print_utils";
 
 export const insertMap: Partial<CstToDocMap<AllInsertNodes>> = {
   insert_stmt: (print, node) => {
