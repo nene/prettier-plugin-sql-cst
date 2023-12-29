@@ -21,6 +21,21 @@ export const languages: SupportLanguage[] = [
     name: "BigQuery SQL",
     parsers: ["bigquery"],
   },
+  {
+    extensions: [],
+    name: "Experimental MySQL SQL",
+    parsers: ["mysql"],
+  },
+  {
+    extensions: [],
+    name: "Experimental MariaDB SQL",
+    parsers: ["mariadb"],
+  },
+  {
+    extensions: [],
+    name: "Experimental PostgreSQL SQL",
+    parsers: ["postgresql"],
+  },
 ];
 
 const createParser = (dialect: DialectName): Parser<Node> => ({
@@ -43,6 +58,9 @@ const createParser = (dialect: DialectName): Parser<Node> => ({
 export const parsers: Record<string, Parser<Node>> = {
   sqlite: createParser("sqlite"),
   bigquery: createParser("bigquery"),
+  mysql: createParser("mysql"),
+  mariadb: createParser("mariadb"),
+  postgresql: createParser("postgresql"),
 };
 
 export const printers: Record<string, Printer> = {

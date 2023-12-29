@@ -55,3 +55,24 @@ export const testBigquery = async (
 ): Promise<void> => {
   await test(sql, { dialect: "bigquery", ...opts });
 };
+
+export const testMysql = async (
+  sql: string,
+  opts: TestOptions = {},
+): Promise<void> => {
+  await test(sql, { dialect: "mysql", ...opts });
+};
+
+export const testMariadb = async (
+  sql: string,
+  opts: TestOptions = {},
+): Promise<void> => {
+  await test(sql, { dialect: "mariadb", ...opts });
+};
+
+export const testPostgresql = async (
+  sql: string,
+  opts: TestOptions = {},
+): Promise<void> => {
+  await test(sql, { dialect: "postgresql", ...opts });
+};
