@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { pretty, testBigquery } from "../test_utils";
+import { pretty, testBigquery, testPostgresql } from "../test_utils";
 
 describe("json", () => {
   it(`formats JSON literals`, async () => {
@@ -10,17 +10,36 @@ describe("json", () => {
     );
   });
 
+  it(`formats JSONB literals`, async () => {
+    await testPostgresql(
+      dedent`
+        SELECT JSONB '{ "foo": true }'
+      `,
+    );
+  });
+
   it(`formats JSON literal using Prettier JSON formatter`, async () => {
     expect(
       await pretty(
         `SELECT JSON '{"fname":"John","lname":"Doe","valid":true}'`,
-        {
-          dialect: "bigquery",
-        },
+        { dialect: "bigquery" },
       ),
     ).toBe(
       dedent`
         SELECT JSON '{ "fname": "John", "lname": "Doe", "valid": true }'
+      `,
+    );
+  });
+
+  it(`formats JSONB literal using Prettier JSONB formatter`, async () => {
+    expect(
+      await pretty(
+        `SELECT JSONB '{"fname":"John","lname":"Doe","valid":true}'`,
+        { dialect: "postgresql" },
+      ),
+    ).toBe(
+      dedent`
+        SELECT JSONB '{ "fname": "John", "lname": "Doe", "valid": true }'
       `,
     );
   });

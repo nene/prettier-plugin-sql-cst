@@ -140,6 +140,7 @@ export const exprMap: Partial<CstToDocMap<AllExprNodes>> = {
   datetime_literal: (print) => print.spaced(["datetimeKw", "string"]),
   timestamp_literal: (print) => print.spaced(["timestampKw", "string"]),
   json_literal: (print) => print.spaced(["jsonKw", "string"]),
+  jsonb_literal: (print) => print.spaced(["jsonbKw", "string"]),
   identifier: (print) => print("text"),
   variable: (print) => print("text"),
   parameter: (print) => print("text"),

@@ -15,6 +15,7 @@ export const isCreateTableStmt = is("create_table_stmt");
 export const isKeyword = is("keyword");
 export const isEmpty = is("empty");
 export const isJsonLiteral = is("json_literal");
+export const isJsonbLiteral = is("jsonb_literal");
 export const isStringLiteral = is("string_literal");
 export const isArraySubscript = is("array_subscript");
 export const isAsClause = is("as_clause");

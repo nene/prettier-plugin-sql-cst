@@ -1,6 +1,6 @@
 import { Printer } from "prettier";
 import { Node, StringLiteral } from "sql-parser-cst";
-import { isJsonLiteral, isStringLiteral } from "./node_utils";
+import { isJsonLiteral, isJsonbLiteral, isStringLiteral } from "./node_utils";
 import {
   ifBreak,
   indent,
@@ -14,7 +14,10 @@ export const embedJson: NonNullable<Printer<Node>["embed"]> = (
 ) => {
   const node = path.getValue(); // TODO: Don't use deprecated method
   const parent = path.getParentNode();
-  if (isStringLiteral(node) && isJsonLiteral(parent)) {
+  if (
+    isStringLiteral(node) &&
+    (isJsonLiteral(parent) || isJsonbLiteral(parent))
+  ) {
     return async (textToDoc) => {
       if (
         containsTripleQuote(node.value) ||
