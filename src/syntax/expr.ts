@@ -145,6 +145,9 @@ export const exprMap: Partial<CstToDocMap<AllExprNodes>> = {
   typed_expr: (print) => print(["dataType", "expr"]),
   row_constructor: (print) => print(["rowKw", "row"]),
   quantifier_expr: (print) => print.spaced(["quantifier", "expr"]),
+  full_text_match_expr: (print) =>
+    print.spaced(["matchKw", "columns", "againstKw", "args"]),
+  full_text_match_args: (print) => print.spaced(["expr", "modifier"]),
   number_literal: (print) => print("text"),
   boolean_literal: (print) => print("valueKw"),
   string_literal: (print) => print("text"),
