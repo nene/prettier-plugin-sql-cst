@@ -11,7 +11,10 @@ interface TestOptions extends PrettyOptions {
   dialect?: DialectName;
 }
 
-export const rawPretty = async (sql: string, opts: TestOptions = {}): Promise<string> => {
+export const rawPretty = async (
+  sql: string,
+  opts: TestOptions = {},
+): Promise<string> => {
   return format(sql, {
     parser: opts.dialect ?? "sqlite",
     plugins: [plugin],
@@ -19,24 +22,36 @@ export const rawPretty = async (sql: string, opts: TestOptions = {}): Promise<st
   });
 };
 
-export const pretty = async (sql: string, opts: TestOptions = {}): Promise<string> => {
+export const pretty = async (
+  sql: string,
+  opts: TestOptions = {},
+): Promise<string> => {
   const formatted = await rawPretty(sql, opts);
   if (!/;\n$/.test(formatted)) {
     throw new Error(
-      `Expected semicolon and newline at the end of:\n${formatted}`
+      `Expected semicolon and newline at the end of:\n${formatted}`,
     );
   }
   return formatted.replace(/;\n$/, "");
 };
 
-export const rawTest = async (sql: string, opts: TestOptions = {}): Promise<void> => {
+export const rawTest = async (
+  sql: string,
+  opts: TestOptions = {},
+): Promise<void> => {
   expect(await rawPretty(sql, opts)).toBe(sql);
 };
 
-export const test = async (sql: string, opts: TestOptions = {}): Promise<void> => {
+export const test = async (
+  sql: string,
+  opts: TestOptions = {},
+): Promise<void> => {
   expect(await pretty(sql, opts)).toBe(sql);
 };
 
-export const testBigquery = async (sql: string, opts: TestOptions = {}): Promise<void> => {
+export const testBigquery = async (
+  sql: string,
+  opts: TestOptions = {},
+): Promise<void> => {
   await test(sql, { dialect: "bigquery", ...opts });
 };

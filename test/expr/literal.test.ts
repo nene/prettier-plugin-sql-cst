@@ -14,7 +14,7 @@ describe("literal", () => {
           TIME '12:30:00.45',
           DATETIME '2014-09-27 12:30:00.45',
           TIMESTAMP '2014-09-27 12:30:00.45-08'
-      `
+      `,
     );
   });
 
@@ -26,7 +26,7 @@ describe("literal", () => {
           INTERVAL -90 MINUTE,
           INTERVAL '10:20:30.52' HOUR TO SECOND,
           INTERVAL '1 5:30' DAY TO MINUTE
-      `
+      `,
     );
   });
 
@@ -39,7 +39,7 @@ describe("literal", () => {
             ['x', 'y', 'xyz'],
             ARRAY[1, 2, 3],
             ARRAY<STRING>['x', 'y', 'xyz']
-        `
+        `,
       );
     });
 
@@ -53,7 +53,7 @@ describe("literal", () => {
               'which themselves',
               'are somewhat long.'
             ]
-        `
+        `,
       );
     });
   });
@@ -68,7 +68,7 @@ describe("literal", () => {
             STRUCT(1 AS foo, 'abc' AS bar),
             STRUCT<INT64, FLOAT64>(128, 1.5),
             STRUCT<x INT, y INT>(1, 2)
-        `
+        `,
       );
     });
 
@@ -82,7 +82,7 @@ describe("literal", () => {
               'Baker Street' AS address,
               'Private detective' AS occupation
             )
-        `
+        `,
       );
     });
   });

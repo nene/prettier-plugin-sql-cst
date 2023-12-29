@@ -37,8 +37,8 @@ describe("select", () => {
         ORDER BY foo ASC, bar DESC NULLS FIRST
         LIMIT 250 OFFSET 100000000
         `,
-        { printWidth: 25 }
-      )
+        { printWidth: 25 },
+      ),
     ).toBe(dedent`
       SELECT
         very_long_col_name,
@@ -82,7 +82,7 @@ describe("select", () => {
           col3
         FROM tbl
       `,
-      { printWidth: 20 }
+      { printWidth: 20 },
     );
   });
 
@@ -103,7 +103,7 @@ describe("select", () => {
   describe("BigQuery", () => {
     it(`removes trailing commas from SELECT`, async () => {
       expect(await pretty(`SELECT 1, 2, 3,`, { dialect: "bigquery" })).toBe(
-        `SELECT 1, 2, 3`
+        `SELECT 1, 2, 3`,
       );
     });
 
@@ -118,8 +118,8 @@ describe("select", () => {
               'and then something even more grandiose', -- comment
             FROM my_table
           `,
-          { dialect: "bigquery" }
-        )
+          { dialect: "bigquery" },
+        ),
       ).toBe(
         dedent`
           SELECT
@@ -128,7 +128,7 @@ describe("select", () => {
             'another thing that is extra long',
             'and then something even more grandiose' -- comment
           FROM my_table
-        `
+        `,
       );
     });
 

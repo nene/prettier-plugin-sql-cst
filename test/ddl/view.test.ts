@@ -22,7 +22,7 @@ describe("view", () => {
         dedent`
           CREATE OR REPLACE VIEW active_client_id AS
             SELECT 1
-        `
+        `,
       );
     });
 
@@ -52,7 +52,7 @@ describe("view", () => {
           OPTIONS (friendly_name = "newview")
           AS
             SELECT 1
-        `
+        `,
       );
     });
 
@@ -61,7 +61,7 @@ describe("view", () => {
         dedent`
           CREATE MATERIALIZED VIEW foo AS
             SELECT 1
-        `
+        `,
       );
     });
 
@@ -73,7 +73,7 @@ describe("view", () => {
           CLUSTER BY col_int
           AS
             SELECT 1
-        `
+        `,
       );
     });
   });
@@ -98,7 +98,7 @@ describe("view", () => {
         dedent`
           ALTER VIEW IF EXISTS my_view
           SET OPTIONS (description = 'blah')
-        `
+        `,
       );
     });
 
@@ -107,7 +107,7 @@ describe("view", () => {
         dedent`
           ALTER MATERIALIZED VIEW my_view
           SET OPTIONS (description = 'blah')
-        `
+        `,
       );
     });
   });

@@ -10,7 +10,7 @@ describe("merge", () => {
         ON target.product = source.product
         WHEN MATCHED THEN
           DELETE
-      `
+      `,
     );
   });
 
@@ -25,7 +25,7 @@ describe("merge", () => {
             (product, quantity, supply_constrained, comments)
           VALUES
             (product, quantity, TRUE, 'My comment')
-      `
+      `,
     );
   });
 
@@ -39,7 +39,7 @@ describe("merge", () => {
           INSERT
           VALUES
             (col1, DEFAULT, col2)
-      `
+      `,
     );
   });
 
@@ -51,7 +51,7 @@ describe("merge", () => {
         ON target.id = source.id
         WHEN MATCHED THEN
           INSERT ROW
-      `
+      `,
     );
   });
 
@@ -65,7 +65,7 @@ describe("merge", () => {
           INSERT
             (col1, col2, col3)
           ROW
-      `
+      `,
     );
   });
 
@@ -80,7 +80,7 @@ describe("merge", () => {
             quantity = 1,
             supply_constrained = FALSE,
             comments = ''
-      `
+      `,
     );
   });
 
@@ -92,7 +92,7 @@ describe("merge", () => {
         ON target.id = source.id
         WHEN NOT MATCHED BY SOURCE THEN
           UPDATE SET quantity = 1
-      `
+      `,
     );
   });
 
@@ -107,7 +107,7 @@ describe("merge", () => {
           AND quantity > 1000
         WHEN MATCHED THEN
           DELETE
-      `
+      `,
     );
   });
 
@@ -123,7 +123,7 @@ describe("merge", () => {
           OR target.id = 18967
         THEN
           UPDATE SET quantity = 1
-      `
+      `,
     );
   });
 });

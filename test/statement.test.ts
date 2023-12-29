@@ -57,7 +57,7 @@ describe("statement", () => {
 
 
         SELECT 2;
-      `)
+      `),
     ).toBe(dedent`
       SELECT 1;
 

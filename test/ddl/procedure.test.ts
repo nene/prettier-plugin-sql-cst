@@ -10,7 +10,7 @@ describe("procedure", () => {
           BEGIN
             DROP TABLE my_table;
           END
-        `
+        `,
       );
     });
 
@@ -21,7 +21,7 @@ describe("procedure", () => {
           BEGIN
             DROP TABLE my_table;
           END
-        `
+        `,
       );
     });
 
@@ -36,7 +36,7 @@ describe("procedure", () => {
           BEGIN
             DROP TABLE my_table;
           END
-        `
+        `,
       );
     });
 
@@ -48,7 +48,7 @@ describe("procedure", () => {
           BEGIN
             DROP TABLE my_table;
           END
-        `
+        `,
       );
     });
 
@@ -59,7 +59,7 @@ describe("procedure", () => {
           WITH CONNECTION \`my-project-id.us.my-connection\`
           OPTIONS (engine = "SPARK", main_file_uri = "gs://my-bucket/my-pyspark-main.py")
           LANGUAGE PYTHON
-        `
+        `,
       );
     });
 
@@ -76,7 +76,7 @@ describe("procedure", () => {
             # Load data from BigQuery.
             words = spark.read.format("bigquery")
           '''
-        `
+        `,
       );
     });
   });

@@ -7,7 +7,7 @@ describe("schema", () => {
       await testBigquery(
         dedent`
           CREATE SCHEMA schema_name
-        `
+        `,
       );
     });
 
@@ -15,7 +15,7 @@ describe("schema", () => {
       await testBigquery(
         dedent`
           CREATE SCHEMA IF NOT EXISTS schema_name
-        `
+        `,
       );
     });
 
@@ -24,7 +24,7 @@ describe("schema", () => {
         dedent`
           CREATE SCHEMA schema_name
           OPTIONS (friendly_name = 'Happy schema')
-        `
+        `,
       );
     });
 
@@ -33,7 +33,7 @@ describe("schema", () => {
         dedent`
           CREATE SCHEMA schema_name
           DEFAULT COLLATE 'und:ci'
-        `
+        `,
       );
     });
   });
@@ -43,7 +43,7 @@ describe("schema", () => {
       await testBigquery(
         dedent`
           DROP SCHEMA schema_name
-        `
+        `,
       );
     });
 
@@ -51,7 +51,7 @@ describe("schema", () => {
       await testBigquery(
         dedent`
           DROP SCHEMA IF EXISTS schema_name
-        `
+        `,
       );
     });
 
@@ -59,7 +59,7 @@ describe("schema", () => {
       await testBigquery(
         dedent`
           DROP SCHEMA schema_name CASCADE
-        `
+        `,
       );
     });
   });
@@ -70,7 +70,7 @@ describe("schema", () => {
         dedent`
           ALTER SCHEMA IF EXISTS my_schema
           SET OPTIONS (description = 'blah')
-        `
+        `,
       );
     });
 
@@ -79,7 +79,7 @@ describe("schema", () => {
         dedent`
           ALTER SCHEMA my_schema
           SET DEFAULT COLLATE 'und:ci'
-        `
+        `,
       );
     });
   });

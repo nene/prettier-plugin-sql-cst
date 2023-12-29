@@ -34,7 +34,7 @@ describe("bigquery", () => {
         SET OPTIONS (default_time_zone = 'America/Los_Angeles')
       `);
       });
-    }
+    },
   );
 
   describe("assert", () => {

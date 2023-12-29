@@ -10,7 +10,7 @@ describe("aliases", () => {
           2 AS b,
           3 AS c
       `,
-      { printWidth: 20 }
+      { printWidth: 20 },
     );
   });
 

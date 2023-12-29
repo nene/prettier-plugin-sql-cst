@@ -44,7 +44,7 @@ describe("index", () => {
           CREATE SEARCH INDEX my_index ON my_table (col)
           OPTIONS (analyzer = 'LOG_ANALYZER')
         `,
-        { dialect: "bigquery" }
+        { dialect: "bigquery" },
       );
     });
 

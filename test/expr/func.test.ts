@@ -4,14 +4,16 @@ import { pretty, test, testBigquery } from "../test_utils";
 // Functions and function-like language constructs
 describe("functions", () => {
   it(`formats function call to single line`, async () => {
-    expect(await pretty(`SELECT sqrt(1, 2, 3)`, { printWidth: 16 })).toBe(dedent`
+    expect(await pretty(`SELECT sqrt(1, 2, 3)`, { printWidth: 16 }))
+      .toBe(dedent`
       SELECT
         sqrt(1, 2, 3)
     `);
   });
 
   it(`formats function call to multiple lines`, async () => {
-    expect(await pretty(`SELECT sqrt(1, 2, 3)`, { printWidth: 10 })).toBe(dedent`
+    expect(await pretty(`SELECT sqrt(1, 2, 3)`, { printWidth: 10 }))
+      .toBe(dedent`
       SELECT
         sqrt(
           1,
@@ -37,7 +39,7 @@ describe("functions", () => {
     it(`formats CAST() with FORMAT`, async () => {
       await testBigquery(`SELECT CAST('11-08' AS DATE FORMAT 'DD-MM')`);
       await testBigquery(
-        `SELECT CAST('12:35' AS TIME FORMAT 'HH:MI' AT TIME ZONE 'UTC')`
+        `SELECT CAST('12:35' AS TIME FORMAT 'HH:MI' AT TIME ZONE 'UTC')`,
       );
     });
   });

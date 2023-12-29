@@ -99,8 +99,8 @@ describe("function", () => {
             LANGUAGE js
             AS ' if(true) {return Math.random () *2}'
           `,
-          { dialect: "bigquery" }
-        )
+          { dialect: "bigquery" },
+        ),
       ).toBe(dedent`
         CREATE FUNCTION gen_random()
         RETURNS FLOAT64
@@ -122,8 +122,8 @@ describe("function", () => {
             LANGUAGE js
             AS " return /'''/.test(x) "
           `,
-          { dialect: "bigquery" }
-        )
+          { dialect: "bigquery" },
+        ),
       ).toBe(dedent`
         CREATE FUNCTION contains_quotes(x STRING)
         RETURNS FLOAT64
@@ -143,8 +143,8 @@ describe("function", () => {
             LANGUAGE js
             AS " return /'''|\\"\\"\\"/.test(x) "
           `,
-          { dialect: "bigquery" }
-        )
+          { dialect: "bigquery" },
+        ),
       ).toBe(dedent`
         CREATE FUNCTION contains_quotes(x STRING)
         RETURNS FLOAT64

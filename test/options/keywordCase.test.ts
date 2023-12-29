@@ -12,7 +12,7 @@ describe("sqlKeywordCase option", () => {
     expect(
       await pretty(`select * From tbl WHERE x > 0`, {
         sqlKeywordCase: "preserve",
-      })
+      }),
     ).toBe(dedent`
       select * From tbl WHERE x > 0
     `);
@@ -22,7 +22,7 @@ describe("sqlKeywordCase option", () => {
     expect(
       await pretty(`select * From tbl WHERE x > 0`, {
         sqlKeywordCase: "upper",
-      })
+      }),
     ).toBe(dedent`
       SELECT * FROM tbl WHERE x > 0
     `);
@@ -32,7 +32,7 @@ describe("sqlKeywordCase option", () => {
     expect(
       await pretty(`select * From tbl WHERE x > 0`, {
         sqlKeywordCase: "lower",
-      })
+      }),
     ).toBe(dedent`
       select * from tbl where x > 0
     `);

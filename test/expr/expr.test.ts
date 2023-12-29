@@ -6,7 +6,7 @@ describe("expr", () => {
     expect(
       await pretty(`SELECT 1 + 2 / 3 * (5 - 1), TRUE OR FALSE AND TRUE`, {
         printWidth: 25,
-      })
+      }),
     ).toBe(dedent`
       SELECT
         1 + 2 / 3 * (5 - 1),
@@ -39,7 +39,7 @@ describe("expr", () => {
           x BETWEEN 1 AND 10,
           y NOT BETWEEN 2 AND 8
       `,
-      { printWidth: 40 }
+      { printWidth: 40 },
     );
   });
 
@@ -50,7 +50,7 @@ describe("expr", () => {
           EXISTS (SELECT * FROM tbl),
           NOT EXISTS (SELECT col FROM tbl2)
       `,
-      { printWidth: 60 }
+      { printWidth: 60 },
     );
   });
 
@@ -86,7 +86,8 @@ describe("expr", () => {
   });
 
   it(`preserves comments when eliminating (((nested))) parenthesis`, async () => {
-    expect(await pretty(`SELECT (/*c1*/(/*c2*/(/*c3*/ 1 + 2))) * 3`)).toBe(dedent`
+    expect(await pretty(`SELECT (/*c1*/(/*c2*/(/*c3*/ 1 + 2))) * 3`))
+      .toBe(dedent`
       SELECT /*c1*/ /*c2*/ (/*c3*/ 1 + 2) * 3
     `);
   });

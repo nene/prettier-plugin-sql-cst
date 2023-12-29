@@ -48,7 +48,7 @@ describe("comments", () => {
           1 -- com1
           ,2 -- com2
           ,3 -- com3
-      `)
+      `),
     ).toBe(dedent`
       SELECT
         1, -- com1
@@ -76,7 +76,7 @@ describe("comments", () => {
       await rawPretty(`
         --My comment
         SELECT 1;
-      `)
+      `),
     ).toBe(dedent`
       -- My comment
       SELECT 1;
@@ -89,7 +89,7 @@ describe("comments", () => {
       await rawPretty(`
         #My comment
         SELECT 1;
-      `)
+      `),
     ).toBe(dedent`
       # My comment
       SELECT 1;

@@ -6,19 +6,22 @@ describe("json", () => {
     await testBigquery(
       dedent`
         SELECT JSON '{ "foo": true }'
-      `
+      `,
     );
   });
 
   it(`formats JSON literal using Prettier JSON formatter`, async () => {
     expect(
-      await pretty(`SELECT JSON '{"fname":"John","lname":"Doe","valid":true}'`, {
-        dialect: "bigquery",
-      })
+      await pretty(
+        `SELECT JSON '{"fname":"John","lname":"Doe","valid":true}'`,
+        {
+          dialect: "bigquery",
+        },
+      ),
     ).toBe(
       dedent`
         SELECT JSON '{ "fname": "John", "lname": "Doe", "valid": true }'
-      `
+      `,
     );
   });
 
@@ -26,8 +29,8 @@ describe("json", () => {
     expect(
       await pretty(
         `SELECT JSON '{"firstName":"John","lastName":"Doe","inventory":["Pickaxe", "Compass", "Dirt"]}'`,
-        { dialect: "bigquery" }
-      )
+        { dialect: "bigquery" },
+      ),
     ).toBe(
       dedent`
         SELECT
@@ -38,7 +41,7 @@ describe("json", () => {
               "inventory": ["Pickaxe", "Compass", "Dirt"]
             }
           '''
-      `
+      `,
     );
   });
 
@@ -46,11 +49,11 @@ describe("json", () => {
     expect(
       await pretty(String.raw`SELECT JSON "{\"name\":\"John Doe\"}"`, {
         dialect: "bigquery",
-      })
+      }),
     ).toBe(
       dedent`
         SELECT JSON '{ "name": "John Doe" }'
-      `
+      `,
     );
   });
 
@@ -58,11 +61,11 @@ describe("json", () => {
     expect(
       await pretty(`SELECT JSON '''{"name":"John Doe"}'''`, {
         dialect: "bigquery",
-      })
+      }),
     ).toBe(
       dedent`
         SELECT JSON '{ "name": "John Doe" }'
-      `
+      `,
     );
   });
 
@@ -70,8 +73,8 @@ describe("json", () => {
     expect(
       await pretty(
         `SELECT JSON """{"firstName":"John","lastName":"Doe","inventory":["Pickaxe", "Compass", "Dirt"]}"""`,
-        { dialect: "bigquery" }
-      )
+        { dialect: "bigquery" },
+      ),
     ).toBe(
       dedent`
         SELECT
@@ -82,7 +85,7 @@ describe("json", () => {
               "inventory": ["Pickaxe", "Compass", "Dirt"]
             }
           '''
-      `
+      `,
     );
   });
 
@@ -90,11 +93,11 @@ describe("json", () => {
     expect(
       await pretty(String.raw`SELECT JSON '{"name":"It\'s Mr John"}'`, {
         dialect: "bigquery",
-      })
+      }),
     ).toBe(
       dedent`
         SELECT JSON '''{ "name": "It's Mr John" }'''
-      `
+      `,
     );
   });
 
@@ -103,11 +106,11 @@ describe("json", () => {
     expect(
       await pretty(String.raw`SELECT JSON '{"name":"It\'\'\'s Mr John"}'`, {
         dialect: "bigquery",
-      })
+      }),
     ).toBe(
       dedent`
         SELECT JSON '{"name":"It\\'\\'\\'s Mr John"}'
-      `
+      `,
     );
   });
 
