@@ -1,7 +1,11 @@
 import dedent from "dedent-js";
-import { testBigquery } from "../test_utils";
+import { test, testBigquery } from "../test_utils";
 
 describe("literal", () => {
+  it(`formats blob literals`, async () => {
+    await test(`SELECT X'3132332D414243', x'FF00CC'`);
+  });
+
   it(`formats BigQuery NUMERIC and BIGNUMERIC literals`, async () => {
     await testBigquery(`SELECT NUMERIC '12345', BIGNUMERIC '1.23456e05'`);
   });

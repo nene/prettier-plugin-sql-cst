@@ -132,6 +132,7 @@ export const exprMap: Partial<CstToDocMap<AllExprNodes>> = {
   number_literal: (print) => print("text"),
   boolean_literal: (print) => print("valueKw"),
   string_literal: (print) => print("text"),
+  blob_literal: (print) => print("text"),
   null_literal: (print) => print("nullKw"),
   numeric_literal: (print) => print.spaced(["numericKw", "string"]),
   bignumeric_literal: (print) => print.spaced(["bignumericKw", "string"]),
