@@ -194,5 +194,9 @@ describe("expr", () => {
     it(`formats string literals with charset`, async () => {
       await testMysql(`SELECT _utf8'Hello'`);
     });
+
+    it(`formats string concatenation with whitespace`, async () => {
+      await testMysql(`SELECT 'Hello' 'world'`);
+    });
   });
 });

@@ -60,6 +60,10 @@ export const exprMap: Partial<CstToDocMap<AllExprNodes>> = {
     if (isKeyword(node.operator) && isBooleanOp(node.operator)) {
       return join(line, [print("left"), print.spaced(["operator", "right"])]);
     }
+    if (node.operator === "") {
+      // String concatenation with whitespace (MySQL / MariaDB)
+      return print.spaced(["left", "right"]);
+    }
     return print.spaced(["left", "operator", "right"]);
   },
   prefix_op_expr: (print, node) =>
