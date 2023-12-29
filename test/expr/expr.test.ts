@@ -144,6 +144,10 @@ describe("expr", () => {
     });
   });
 
+  it(`formats quantifier expressions`, async () => {
+    await testPostgresql(`SELECT x > ALL (SELECT y FROM tbl)`);
+  });
+
   describe("BigQuery", () => {
     it(`formats BigQuery quoted table names`, async () => {
       await testBigquery("SELECT * FROM `my-project.mydataset.mytable`");
