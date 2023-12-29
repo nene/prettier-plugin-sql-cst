@@ -192,6 +192,10 @@ describe("expr", () => {
     it(`formats row constructors`, async () => {
       await testPostgresql(`SELECT ROW(1, 2, 3)`);
     });
+
+    it(`formats array subscript`, async () => {
+      await testPostgresql(`SELECT my_arr[1][2]`);
+    });
   });
 
   describe("MySQL", () => {
