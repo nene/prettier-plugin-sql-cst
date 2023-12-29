@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { test, testBigquery } from "../test_utils";
+import { test, testBigquery, testPostgresql } from "../test_utils";
 
 describe("create table", () => {
   it(`formats CREATE TABLE always on multiple lines`, async () => {
@@ -159,6 +159,16 @@ describe("create table", () => {
           address STRING,
           phone_number STRING
         >
+      )
+    `);
+  });
+
+  it(`formats PostgreSQL array data types`, async () => {
+    await testPostgresql(dedent`
+      CREATE TABLE client (
+        arr_field INT[],
+        arr_field2 INT[10][10],
+        arr_field3 INT[][]
       )
     `);
   });

@@ -7,6 +7,8 @@ export const dataTypeMap: Partial<CstToDocMap<AllDataTypeNodes>> = {
   // print single-word types as `TYPE(10)` and multi-word types as `MY TYPE (10)`
   named_data_type: (print, node) =>
     (isArray(node.nameKw) ? print.spaced : print)(["nameKw", "params"]),
+  array_data_type: (print) => print(["dataType", "bounds"]),
+  array_bounds: (print) => ["[", print("bounds"), "]"],
   generic_type_params: (print) =>
     group(["<", indent([softline, print("params")]), softline, ">"]),
   array_type_param: (print) => print.spaced(["dataType", "constraints"]),
