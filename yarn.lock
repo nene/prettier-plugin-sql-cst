@@ -2114,10 +2114,10 @@ sprintf-js@~1.0.2:
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
   integrity sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==
 
-sql-parser-cst@^0.18.0:
-  version "0.18.0"
-  resolved "https://registry.yarnpkg.com/sql-parser-cst/-/sql-parser-cst-0.18.0.tgz#789cb0150492480f2e708143cc42c95a835fa92a"
-  integrity sha512-3+biRO7Etr0JoCL8JSYJQbcayONBad27HYTftfBt1zPY0FmUFtdQ2Zsgx5aE9LI5rGsXMpRGshdvgrFJQ1hbBg==
+sql-parser-cst@^0.19.0:
+  version "0.19.0"
+  resolved "https://registry.yarnpkg.com/sql-parser-cst/-/sql-parser-cst-0.19.0.tgz#37d9f20109ba382c32d8bd608d369ac35d7f591f"
+  integrity sha512-rwsYjSI+gemU2/2UpySr4vckIluKtRdUABr4Gcksmnh8bQ2jNk1XS0ZnFTSOFqCkg2MfkQ3QR3Rzv1Ec20jmEA==
 
 stack-utils@^2.0.3:
   version "2.0.6"
