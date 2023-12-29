@@ -42,37 +42,14 @@ export const rawTest = async (
   expect(await rawPretty(sql, opts)).toBe(sql);
 };
 
-export const test = async (
-  sql: string,
-  opts: TestOptions = {},
-): Promise<void> => {
-  expect(await pretty(sql, opts)).toBe(sql);
-};
+const createTestFn =
+  (dialect: DialectName) =>
+  async (sql: string, opts: TestOptions = {}): Promise<void> => {
+    expect(await pretty(sql, { dialect, ...opts })).toBe(sql);
+  };
 
-export const testBigquery = async (
-  sql: string,
-  opts: TestOptions = {},
-): Promise<void> => {
-  await test(sql, { dialect: "bigquery", ...opts });
-};
-
-export const testMysql = async (
-  sql: string,
-  opts: TestOptions = {},
-): Promise<void> => {
-  await test(sql, { dialect: "mysql", ...opts });
-};
-
-export const testMariadb = async (
-  sql: string,
-  opts: TestOptions = {},
-): Promise<void> => {
-  await test(sql, { dialect: "mariadb", ...opts });
-};
-
-export const testPostgresql = async (
-  sql: string,
-  opts: TestOptions = {},
-): Promise<void> => {
-  await test(sql, { dialect: "postgresql", ...opts });
-};
+export const test = createTestFn("sqlite");
+export const testBigquery = createTestFn("bigquery");
+export const testMysql = createTestFn("mysql");
+export const testMariadb = createTestFn("mariadb");
+export const testPostgresql = createTestFn("postgresql");
