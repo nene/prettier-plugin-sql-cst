@@ -1,5 +1,11 @@
 import dedent from "dedent-js";
-import { pretty, test, testBigquery, testPostgresql } from "../test_utils";
+import {
+  pretty,
+  test,
+  testBigquery,
+  testMysql,
+  testPostgresql,
+} from "../test_utils";
 
 describe("expr", () => {
   it(`formats binary expressions`, async () => {
@@ -181,6 +187,12 @@ describe("expr", () => {
 
     it(`formats row constructors`, async () => {
       await testPostgresql(`SELECT ROW(1, 2, 3)`);
+    });
+  });
+
+  describe("MySQL", () => {
+    it(`formats string literals with charset`, async () => {
+      await testMysql(`SELECT _utf8'Hello'`);
     });
   });
 });
