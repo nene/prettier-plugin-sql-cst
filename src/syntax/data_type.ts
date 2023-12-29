@@ -9,6 +9,8 @@ export const dataTypeMap: Partial<CstToDocMap<AllDataTypeNodes>> = {
     (isArray(node.nameKw) ? print.spaced : print)(["nameKw", "params"]),
   array_data_type: (print) => print(["dataType", "bounds"]),
   array_bounds: (print) => ["[", print("bounds"), "]"],
+  with_time_zone_data_type: (print) =>
+    print.spaced(["dataType", "withTimeZoneKw"]),
   generic_type_params: (print) =>
     group(["<", indent([softline, print("params")]), softline, ">"]),
   array_type_param: (print) => print.spaced(["dataType", "constraints"]),

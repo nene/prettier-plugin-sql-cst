@@ -173,6 +173,15 @@ describe("create table", () => {
     `);
   });
 
+  it(`formats TIME ZONE modifier on TIME data types`, async () => {
+    await testPostgresql(dedent`
+      CREATE TABLE client (
+        from_date TIME WITH TIME ZONE,
+        to_date TIMESTAMP(5) WITHOUT TIME ZONE
+      )
+    `);
+  });
+
   it(`formats SQLite table options`, async () => {
     await test(dedent`
       CREATE TABLE foo (
