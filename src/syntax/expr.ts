@@ -123,6 +123,7 @@ export const exprMap: Partial<CstToDocMap<AllExprNodes>> = {
   cast_arg: (print) => print.spaced(["expr", "asKw", "dataType", "format"]),
   cast_format: (print) => print.spaced(["formatKw", "string", "timezone"]),
   cast_format_timezone: (print) => print.spaced(["atTimeZoneKw", "timezone"]),
+  cast_operator_expr: (print) => [print("expr"), "::", print("dataType")],
   raise_expr: (print) => print(["raiseKw", "args"]),
   raise_expr_type: (print) => print("typeKw"),
   extract_expr: (print) => print(["extractKw", "args"]),

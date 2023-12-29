@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { pretty, test, testBigquery } from "../test_utils";
+import { pretty, test, testBigquery, testPostgresql } from "../test_utils";
 
 describe("expr", () => {
   it(`formats binary expressions`, async () => {
@@ -171,6 +171,12 @@ describe("expr", () => {
 
     it(`formats BigQuery @@system_variables`, async () => {
       await testBigquery(`SELECT @@error.message`);
+    });
+  });
+
+  describe("PostgreSQL", () => {
+    it(`formats :: cast operator without spaces`, async () => {
+      await testPostgresql(`SELECT 256::INTEGER`);
     });
   });
 });
