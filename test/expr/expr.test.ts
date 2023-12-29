@@ -178,5 +178,9 @@ describe("expr", () => {
     it(`formats :: cast operator without spaces`, async () => {
       await testPostgresql(`SELECT 256::INTEGER`);
     });
+
+    it(`formats row constructors`, async () => {
+      await testPostgresql(`SELECT ROW(1, 2, 3)`);
+    });
   });
 });

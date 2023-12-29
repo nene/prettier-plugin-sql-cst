@@ -138,6 +138,7 @@ export const exprMap: Partial<CstToDocMap<AllExprNodes>> = {
   struct_expr: (print) =>
     group(["(", indent([softline, print("expr")]), softline, ")"]),
   typed_expr: (print) => print(["dataType", "expr"]),
+  row_constructor: (print) => print(["rowKw", "row"]),
   number_literal: (print) => print("text"),
   boolean_literal: (print) => print("valueKw"),
   string_literal: (print) => print("text"),
