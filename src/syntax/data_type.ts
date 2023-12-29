@@ -5,7 +5,7 @@ import { group, indent, softline } from "../print_utils";
 
 export const dataTypeMap: Partial<CstToDocMap<AllDataTypeNodes>> = {
   // print single-word types as `TYPE(10)` and multi-word types as `MY TYPE (10)`
-  data_type: (print, node) =>
+  named_data_type: (print, node) =>
     (isArray(node.nameKw) ? print.spaced : print)(["nameKw", "params"]),
   generic_type_params: (print) =>
     group(["<", indent([softline, print("params")]), softline, ">"]),
