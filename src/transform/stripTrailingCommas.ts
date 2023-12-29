@@ -7,7 +7,7 @@ export const stripTrailingCommas = (cst: Program): Program => {
   // Trailing comma is represented as an empty element at the end of column list
   const removeLastEmptyColumn = cstVisitor({
     select_clause: (node) => {
-      if (isEmpty(last(node.columns.items))) {
+      if (node.columns && isEmpty(last(node.columns.items))) {
         node.columns.items = node.columns.items.slice(0, -1);
       }
     },
