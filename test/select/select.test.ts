@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { pretty, test, testBigquery } from "../test_utils";
+import { pretty, test, testBigquery, testMysql } from "../test_utils";
 
 describe("select", () => {
   it(`formats short SELECT..FROM..WHERE on single line`, async () => {
@@ -176,6 +176,15 @@ describe("select", () => {
         FROM my_table_name
         QUALIFY
           my_table_name.some_long_column_name > my_table_name.some_long_column_name2
+      `);
+    });
+  });
+
+  describe("MySQL", () => {
+    it(`formats MySQL hints`, async () => {
+      await testMysql(dedent`
+        SELECT HIGH_PRIORITY SQL_NO_CACHE col1, col2
+        FROM tbl
       `);
     });
   });
