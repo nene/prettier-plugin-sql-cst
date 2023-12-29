@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { test, testBigquery } from "../test_utils";
+import { test, testBigquery, testPostgresql } from "../test_utils";
 
 describe("literal", () => {
   it(`formats blob literals`, async () => {
@@ -8,6 +8,10 @@ describe("literal", () => {
 
   it(`formats BigQuery NUMERIC and BIGNUMERIC literals`, async () => {
     await testBigquery(`SELECT NUMERIC '12345', BIGNUMERIC '1.23456e05'`);
+  });
+
+  it(`formats PostgreSQL INTERVAL literals`, async () => {
+    await testPostgresql(`SELECT INTERVAL '1 day'`);
   });
 
   it(`formats DATE/TIME literals`, async () => {
