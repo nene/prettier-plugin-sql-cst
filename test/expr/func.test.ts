@@ -23,6 +23,23 @@ describe("functions", () => {
     `);
   });
 
+  it(`formats named function arguments`, async () => {
+    await testBigquery(
+      `SELECT concat_lower_or_upper(a => 'Hello', b => 'World', uppercase => TRUE)`,
+    );
+  });
+  it(`formats long named function arguments`, async () => {
+    await testBigquery(dedent`
+      SELECT
+        concat_lower_or_upper(
+          first_parameter =>
+            another_function_call(another_function_param => 'Hohoho Hello'),
+          second_parameter => 'World',
+          uppercase => TRUE
+        )
+    `);
+  });
+
   it(`formats count(*) func call`, async () => {
     await test(`SELECT count(*)`);
   });
