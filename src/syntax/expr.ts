@@ -108,7 +108,12 @@ export const exprMap: Partial<CstToDocMap<AllExprNodes>> = {
       return group(join(" ", [fnCall, ...extras]));
     }
   },
-  func_args: (print) => print.spaced(["distinctKw", "args", "having"]),
+  func_args: (print, node) =>
+    join(line, [
+      ...print(["distinctKw", "args"]),
+      ...(node.nullHandlingKw ? print.spaced("nullHandlingKw") : []),
+      ...print(["orderBy", "limit", "having"]),
+    ]),
   filter_arg: (print) => print.spaced(["filterKw", "where"]),
   over_arg: (print) => print.spaced(["overKw", "window"]),
   having_arg: (print) => print.spaced(["havingKw", "minMaxKw", "expr"]),

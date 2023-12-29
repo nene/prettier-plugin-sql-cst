@@ -31,6 +31,41 @@ describe("functions", () => {
     await test(`SELECT count(DISTINCT id)`);
   });
 
+  describe("BigQuery function arguments", () => {
+    it(`formats IGNORE NULLS and RESPECT NULLS`, async () => {
+      await testBigquery(`SELECT my_func(foo IGNORE NULLS)`);
+      await testBigquery(`SELECT my_func(foo RESPECT NULLS)`);
+    });
+
+    it(`formats ORDER BY`, async () => {
+      await testBigquery(`SELECT my_func(foo ORDER BY id DESC)`);
+    });
+
+    it(`formats LIMIT`, async () => {
+      await testBigquery(`SELECT my_func(foo LIMIT 10)`);
+    });
+
+    it(`formats combination of IGNORE NULLS, ORDER BY, LIMIT`, async () => {
+      await testBigquery(
+        `SELECT my_func(foo IGNORE NULLS ORDER BY id LIMIT 10)`,
+      );
+    });
+
+    it(`formats long combo of DISTINCT, IGNORE NULLS, ORDER BY, LIMIT to multiple lines`, async () => {
+      await testBigquery(dedent`
+        SELECT
+          my_function_name(
+            DISTINCT
+            first_argument,
+            second_argument
+            IGNORE NULLS
+            ORDER BY some_field_name, other_field_name
+            LIMIT 10000, 200
+          )
+      `);
+    });
+  });
+
   describe("cast", () => {
     it(`formats CAST expression`, async () => {
       await test(`SELECT CAST(127 AS INT)`);
