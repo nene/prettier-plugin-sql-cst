@@ -139,8 +139,16 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
   returning_clause: (print) =>
     group([print("returningKw"), indent([line, print("columns")])]),
   limit_clause: (print, node) =>
-    group([print("limitKw"), indent([line, printLimitValues(print, node)])]),
+    group([
+      print("limitKw"),
+      indent([
+        line,
+        printLimitValues(print, node),
+        node.rowsExamined ? [line, print("rowsExamined")] : [],
+      ]),
+    ]),
   limit_all: (print) => print("allKw"),
+  limit_rows_examined: (print) => print.spaced(["rowsExaminedKw", "count"]),
   sort_specification: (print) =>
     print.spaced(["expr", "orderKw", "nullHandlingKw"]),
   window_clause: (print, node) => {
