@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { test, testBigquery } from "../test_utils";
+import { test, testBigquery, testMysql } from "../test_utils";
 
 describe("delete", () => {
   it(`formats DELETE statement`, async () => {
@@ -12,6 +12,13 @@ describe("delete", () => {
   it(`formats DELETE without FROM`, async () => {
     await testBigquery(dedent`
       DELETE employee
+      WHERE id = 10
+    `);
+  });
+
+  it(`formats DELETE with MySQL hints`, async () => {
+    await testMysql(dedent`
+      DELETE QUICK IGNORE FROM employee
       WHERE id = 10
     `);
   });
