@@ -103,6 +103,15 @@ describe("select FROM", () => {
     testMysql(`SELECT * FROM DUAL`);
   });
 
+  it(`formats LATERAL subquery`, () => {
+    testMysql(dedent`
+      SELECT *
+      FROM
+        tbl
+        JOIN LATERAL (SELECT * FROM foo) AS t
+    `);
+  });
+
   describe("BigQuery", () => {
     it(`formats UNNEST()`, async () => {
       await testBigquery(dedent`
