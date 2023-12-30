@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { test } from "../test_utils";
+import { test, testMysql } from "../test_utils";
 
 describe("update", () => {
   it(`formats UPDATE statement`, async () => {
@@ -33,6 +33,13 @@ describe("update", () => {
   it(`formats OR ABORT modifier`, async () => {
     await test(dedent`
       UPDATE OR ABORT employee
+      SET salary = 1000
+    `);
+  });
+
+  it(`formats MySQL hints`, async () => {
+    await testMysql(dedent`
+      UPDATE LOW_PRIORITY employee
       SET salary = 1000
     `);
   });
