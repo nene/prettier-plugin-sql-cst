@@ -39,4 +39,12 @@ export const insertMap: Partial<CstToDocMap<AllInsertNodes>> = {
     print("updateKw"),
     indent([hardline, join(hardline, print(["set", "where"]))]),
   ],
+  row_alias_clause: (print, node) => [
+    print.spaced(["asKw", "rowAlias"]),
+    node.columnAliases ? indent([hardline, print("columnAliases")]) : [],
+  ],
+  on_duplicate_key_update_clause: (print) => [
+    print.spaced("onDuplicateKeyUpdateKw"),
+    indent([hardline, print("assignments")]),
+  ],
 };

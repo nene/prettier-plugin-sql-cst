@@ -131,4 +131,38 @@ describe("insert", () => {
         (1, 2, 3)
     `);
   });
+
+  it(`formats INSERT with ON DUPLICATE KEY UPDATE clause`, async () => {
+    await testMysql(dedent`
+      INSERT INTO client
+      VALUES
+        (1, 2, 3)
+      ON DUPLICATE KEY UPDATE
+        col1 = 2,
+        col2 = DEFAULT
+    `);
+  });
+
+  it(`formats INSERT with ON DUPLICATE KEY UPDATE and row alias`, async () => {
+    await testMysql(dedent`
+      INSERT INTO client
+      VALUES
+        (1, 'John')
+      AS new_row
+      ON DUPLICATE KEY UPDATE
+        id = new_row.id + 1
+    `);
+  });
+
+  it(`formats INSERT with ON DUPLICATE KEY UPDATE and row alias (column aliases)`, async () => {
+    await testMysql(dedent`
+      INSERT INTO client
+      VALUES
+        (1, 'John')
+      AS new_row
+        (id, fname)
+      ON DUPLICATE KEY UPDATE
+        id = new_row.id + 1
+    `);
+  });
 });
