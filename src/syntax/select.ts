@@ -193,6 +193,15 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
   outfile_option_enclosed_by: (print) =>
     print.spaced(["optionallyKw", "enclosedByKw", "value"]),
   outfile_option_escaped_by: (print) => print.spaced(["escapedByKw", "value"]),
+  for_clause: (print, node) =>
+    group([
+      print.spaced(["forKw", "lockStrengthKw", "tables"]),
+      node.waitingKw ? indent([line, print.spaced("waitingKw")]) : [],
+    ]),
+  for_clause_tables: (print) => [
+    print("ofKw"),
+    indent([line, print("tables")]),
+  ],
 };
 
 const printLimitValues = (
