@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { test, testBigquery, testPostgresql } from "../test_utils";
+import { test, testBigquery, testMysql, testPostgresql } from "../test_utils";
 
 describe("create table", () => {
   it(`formats CREATE TABLE always on multiple lines`, async () => {
@@ -239,6 +239,16 @@ describe("create table", () => {
         SELECT column1, column2, column3
         FROM external_client
         WHERE external_client.payment > external_client.income
+    `);
+  });
+
+  it(`formats CREATE TABLE AS with column definitions`, async () => {
+    await testMysql(dedent`
+      CREATE TABLE foo (
+        id INT,
+        name VARCHAR(100)
+      ) AS
+        SELECT * FROM tbl WHERE x > 0
     `);
   });
 
