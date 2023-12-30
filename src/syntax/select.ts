@@ -20,6 +20,8 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
     const lineType = containsNewline(node, opts) ? hardline : line;
     return group(join(lineType, print("clauses")));
   },
+
+  // WITH clause
   with_clause: (print) =>
     group([
       print.spaced(["withKw", "recursiveKw"]),
@@ -30,6 +32,8 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
     " ",
     print.spaced(["asKw", "materializedKw", "expr"]),
   ],
+
+  // SELECT clause
   select_clause: (print, node, path, opts) =>
     group([
       print.spaced(["selectKw", "distinctKw", "hints", "asStructOrValueKw"]),
@@ -38,6 +42,8 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
     ]),
   except_columns: (print) => print.spaced(["expr", "exceptKw", "columns"]),
   replace_columns: (print) => print.spaced(["expr", "replaceKw", "columns"]),
+
+  // FROM clause
   from_clause: (print) =>
     group([print("fromKw"), indent([line, print("expr")])]),
   join_expr: (print, node) => {
@@ -101,8 +107,12 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
   partitioned_table: (print) =>
     print.spaced(["table", "partitionKw", "partitions"]),
   dual_table: (print) => print("dualKw"),
+
+  // WHERE clause
   where_clause: (print) =>
     group([print("whereKw"), indent([line, print("expr")])]),
+
+  // ORDER BY clause
   order_by_clause: (print, node) =>
     group([
       print.spaced("orderByKw"),
@@ -114,6 +124,10 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
         ]),
       ]),
     ]),
+  sort_specification: (print) =>
+    print.spaced(["expr", "orderKw", "nullHandlingKw"]),
+
+  // GROUP BY clause
   group_by_clause: (print, node) =>
     group([
       print.spaced(["groupByKw", "distinctKw"]),
@@ -126,19 +140,31 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
       ]),
     ]),
   group_by_rollup: (print) => print(["rollupKw", "columns"]),
+
+  // PARTITION BY clause
   partition_by_clause: (print) =>
     group([
       print.spaced("partitionByKw"),
       indent([line, print("specifications")]),
     ]),
+
+  // CLUSTER BY clause
   cluster_by_clause: (print) =>
     group([print.spaced("clusterByKw"), indent([line, print("columns")])]),
+
+  // HAVING clause
   having_clause: (print) =>
     group([print("havingKw"), indent([line, print("expr")])]),
+
+  // QUALIFY clause
   qualify_clause: (print) =>
     group([print("qualifyKw"), indent([line, print("expr")])]),
+
+  // RETURNING clause
   returning_clause: (print) =>
     group([print("returningKw"), indent([line, print("columns")])]),
+
+  // LIMIT clause
   limit_clause: (print, node) =>
     group([
       print("limitKw"),
@@ -150,15 +176,19 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
     ]),
   limit_all: (print) => print("allKw"),
   limit_rows_examined: (print) => print.spaced(["rowsExaminedKw", "count"]),
+
+  // OFFSET clause
   offset_clause: (print) =>
     group([
       print("offsetKw"),
       indent([line, print.spaced(["offset", "rowsKw"])]),
     ]),
+
+  // FETCH clause
   fetch_clause: (print) =>
     print.spaced(["fetchKw", "count", "rowsKw", "withTiesKw"]),
-  sort_specification: (print) =>
-    print.spaced(["expr", "orderKw", "nullHandlingKw"]),
+
+  // WINDOW clause
   window_clause: (print, node) => {
     const lineType = node.namedWindows.items.length > 1 ? hardline : line;
     return group([
@@ -182,6 +212,8 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
       ),
     );
   },
+
+  // INTO clause
   into_table_clause: (print) =>
     print.spaced(["intoKw", "temporaryKw", "unloggedKw", "tableKw", "name"]),
   into_variables_clause: (print) =>
@@ -210,6 +242,8 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
   outfile_option_enclosed_by: (print) =>
     print.spaced(["optionallyKw", "enclosedByKw", "value"]),
   outfile_option_escaped_by: (print) => print.spaced(["escapedByKw", "value"]),
+
+  // FOR clause (locking)
   for_clause: (print, node) =>
     group([
       print.spaced(["forKw", "lockStrengthKw", "tables"]),
@@ -220,6 +254,8 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
     indent([line, print("tables")]),
   ],
   lock_in_share_mode_clause: (print) => print.spaced("lockInShareModeKw"),
+
+  // TABLE clause
   table_clause: (print) => print.spaced(["tableKw", "table"]),
 };
 
