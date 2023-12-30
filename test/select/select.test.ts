@@ -198,6 +198,22 @@ describe("select", () => {
         FROM tbl
       `);
     });
+
+    it(`formats GROUP BY .. WITH ROLLUP`, async () => {
+      await testMysql(`SELECT * GROUP BY a, b WITH ROLLUP`);
+
+      await testMysql(
+        dedent`
+          SELECT
+            my_col
+          GROUP BY
+            first_column,
+            second_column
+            WITH ROLLUP
+        `,
+        { printWidth: 25 },
+      );
+    });
   });
 
   describe("PostgreSQL", () => {

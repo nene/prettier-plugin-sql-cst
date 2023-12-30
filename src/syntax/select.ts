@@ -102,10 +102,16 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
     group([print("whereKw"), indent([line, print("expr")])]),
   order_by_clause: (print) =>
     group([print.spaced("orderByKw"), indent([line, print("specifications")])]),
-  group_by_clause: (print) =>
+  group_by_clause: (print, node) =>
     group([
       print.spaced(["groupByKw", "distinctKw"]),
-      indent([line, print("columns")]),
+      indent([
+        line,
+        join(line, [
+          print("columns"),
+          ...(node.withRollupKw ? print.spaced("withRollupKw") : []),
+        ]),
+      ]),
     ]),
   group_by_rollup: (print) => print(["rollupKw", "columns"]),
   partition_by_clause: (print) =>
