@@ -1,7 +1,18 @@
 import dedent from "dedent-js";
-import { pretty, test, testBigquery, testMysql } from "../test_utils";
+import {
+  pretty,
+  test,
+  testBigquery,
+  testMysql,
+  testPostgresql,
+} from "../test_utils";
 
 describe("select", () => {
+  it(`formats empty SELECT`, async () => {
+    await testPostgresql(`SELECT`);
+    await testPostgresql(`SELECT FROM tbl`);
+  });
+
   it(`formats short SELECT..FROM..WHERE on single line`, async () => {
     await test(`SELECT a, b, c FROM tbl WHERE x > y`);
   });
