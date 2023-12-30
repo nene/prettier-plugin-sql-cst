@@ -234,6 +234,10 @@ describe("select", () => {
         { printWidth: 25 },
       );
     });
+
+    it(`formats LOCK IN SHARE MODE`, async () => {
+      await testMysql(`SELECT * FROM tbl LOCK IN SHARE MODE`);
+    });
   });
 
   describe("PostgreSQL", () => {
