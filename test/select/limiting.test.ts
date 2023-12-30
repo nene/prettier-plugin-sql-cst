@@ -22,4 +22,44 @@ describe("select .. limiting", () => {
       { printWidth: 20 },
     );
   });
+
+  it(`formats OFFSET clause`, async () => {
+    await testPostgresql(`SELECT * FROM tbl OFFSET 1000`);
+  });
+
+  it(`formats OFFSET and FETCH clauses`, async () => {
+    await testPostgresql(
+      dedent`
+        SELECT *
+        FROM tbl
+        OFFSET 1000 ROWS
+        FETCH FIRST 100 ROWS ONLY
+      `,
+    );
+  });
+
+  it(`formats single-line OFFSET and FETCH clauses`, async () => {
+    await testPostgresql(
+      dedent`
+        SELECT *
+        FROM tbl
+        OFFSET 1 ROW
+        FETCH NEXT ROW WITH TIES
+      `,
+    );
+  });
+
+  // While OFFSET clause supports expressions,
+  // FETCH only supports number literals
+  it(`formats OFFSET with long expressions`, async () => {
+    await testPostgresql(
+      dedent`
+        SELECT *
+        FROM tbl
+        OFFSET
+          (20500 + 5200 / 82) ROWS
+      `,
+      { printWidth: 30 },
+    );
+  });
 });
