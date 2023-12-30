@@ -203,6 +203,7 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
     indent([line, print("tables")]),
   ],
   lock_in_share_mode_clause: (print) => print.spaced("lockInShareModeKw"),
+  table_clause: (print) => print.spaced(["tableKw", "table"]),
 };
 
 const printLimitValues = (
