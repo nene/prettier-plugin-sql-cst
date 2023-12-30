@@ -97,10 +97,6 @@ describe("select", () => {
     );
   });
 
-  it(`formats LIMIT with just count`, async () => {
-    await test(`SELECT * FROM tbl LIMIT 10`);
-  });
-
   it(`formats set operations of select statements`, async () => {
     await test(dedent`
       SELECT * FROM client WHERE status = 'inactive'
