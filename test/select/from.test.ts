@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { test, testBigquery } from "../test_utils";
+import { test, testBigquery, testMysql } from "../test_utils";
 
 describe("select FROM", () => {
   it(`formats join always to multiple lines`, async () => {
@@ -97,6 +97,10 @@ describe("select FROM", () => {
         client INDEXED BY my_idx
         NATURAL LEFT JOIN inventory NOT INDEXED
     `);
+  });
+
+  it(`formats FROM DUAL`, () => {
+    testMysql(`SELECT * FROM DUAL`);
   });
 
   describe("BigQuery", () => {

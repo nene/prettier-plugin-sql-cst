@@ -100,6 +100,7 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
     group([print("left"), line, print.spaced(["forSystemTimeAsOfKw", "expr"])]),
   partitioned_table: (print) =>
     print.spaced(["table", "partitionKw", "partitions"]),
+  dual_table: (print) => print("dualKw"),
   where_clause: (print) =>
     group([print("whereKw"), indent([line, print("expr")])]),
   order_by_clause: (print, node) =>
