@@ -165,6 +165,8 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
       ),
     );
   },
+  into_table_clause: (print) =>
+    print.spaced(["intoKw", "temporaryKw", "unloggedKw", "tableKw", "name"]),
 };
 
 const printLimitValues = (
