@@ -167,6 +167,8 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
   },
   into_table_clause: (print) =>
     print.spaced(["intoKw", "temporaryKw", "unloggedKw", "tableKw", "name"]),
+  into_variables_clause: (print) =>
+    group([print("intoKw"), indent([line, print("variables")])]),
 };
 
 const printLimitValues = (
