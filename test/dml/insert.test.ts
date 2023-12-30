@@ -79,6 +79,14 @@ describe("insert", () => {
     `);
   });
 
+  it(`formats INSERT with MySQL hints`, async () => {
+    await testMysql(dedent`
+      INSERT LOW_PRIORITY IGNORE INTO employee
+      VALUES
+        (1, 2, 3)
+    `);
+  });
+
   it("formats insertion of DEFAULT VALUES", async () => {
     await test(dedent`
       INSERT INTO employee

@@ -25,7 +25,7 @@ export const insertMap: Partial<CstToDocMap<AllInsertNodes>> = {
     }
   },
   insert_clause: (print) =>
-    group([print.spaced(["insertKw", "orAction", "intoKw", "table"])]),
+    group([print.spaced(["insertKw", "hints", "orAction", "intoKw", "table"])]),
   insert_columns_clause: (print) => indent([hardline, print("columns")]),
   values_clause: (print) =>
     group([print("valuesKw"), indent([hardline, print("values")])]),
