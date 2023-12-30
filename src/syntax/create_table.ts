@@ -22,7 +22,15 @@ export const createTableMap: CstToDocMap<AllCreateTableNodes> = {
   ],
   column_definition: (print) =>
     print.spaced(["name", "dataType", "constraints"]),
-  table_option: (print) => print.spaced(["name"]),
+  table_option: (print, node) => {
+    if (node.value && node.hasEq) {
+      return [print.spaced("name"), " = ", print.spaced("value")];
+    } else if (node.value) {
+      return [print.spaced("name"), " ", print.spaced("value")];
+    } else {
+      return print.spaced("name");
+    }
+  },
   create_table_like_clause: (print) => print.spaced(["likeKw", "name"]),
   create_table_copy_clause: (print) => print.spaced(["copyKw", "name"]),
   create_table_clone_clause: (print) => print.spaced(["cloneKw", "table"]),

@@ -191,6 +191,18 @@ describe("create table", () => {
     `);
   });
 
+  it(`formats MySQL table options`, async () => {
+    await testMysql(dedent`
+      CREATE TABLE foo (
+        id INT
+      )
+      AUTOEXTEND_SIZE = 10,
+      AVG_ROW_LENGTH = 100,
+      DEFAULT CHARACTER SET latin1,
+      COMMENT = 'hello'
+    `);
+  });
+
   it(`formats single short BigQuery extra CREATE TABLE clause`, async () => {
     await testBigquery(dedent`
       CREATE TABLE client (
