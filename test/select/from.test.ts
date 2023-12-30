@@ -195,4 +195,10 @@ describe("select FROM", () => {
       `);
     });
   });
+
+  describe("MySQL", () => {
+    it(`formats PARTITION selection`, async () => {
+      await testMysql(`SELECT * FROM tbl1 PARTITION (p1, p2)`);
+    });
+  });
 });

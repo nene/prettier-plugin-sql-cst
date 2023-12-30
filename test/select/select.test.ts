@@ -195,10 +195,6 @@ describe("select", () => {
       `);
     });
 
-    it(`formats PARTITION selection in FROM clause`, async () => {
-      await testMysql(`SELECT * FROM tbl1 PARTITION (p1, p2)`);
-    });
-
     it(`formats GROUP BY .. WITH ROLLUP`, async () => {
       await testMysql(`SELECT * GROUP BY a, b WITH ROLLUP`);
 
