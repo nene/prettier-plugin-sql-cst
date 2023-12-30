@@ -214,6 +214,22 @@ describe("select", () => {
         { printWidth: 25 },
       );
     });
+
+    it(`formats ORDER BY .. WITH ROLLUP`, async () => {
+      await testMysql(`SELECT * ORDER BY a, b WITH ROLLUP`);
+
+      await testMysql(
+        dedent`
+          SELECT
+            my_col
+          ORDER BY
+            first_column ASC,
+            second_column DESC
+            WITH ROLLUP
+        `,
+        { printWidth: 25 },
+      );
+    });
   });
 
   describe("PostgreSQL", () => {
