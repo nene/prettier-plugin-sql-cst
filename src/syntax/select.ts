@@ -169,6 +169,30 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
     print.spaced(["intoKw", "temporaryKw", "unloggedKw", "tableKw", "name"]),
   into_variables_clause: (print) =>
     group([print("intoKw"), indent([line, print("variables")])]),
+  into_dumpfile_clause: (print) => print.spaced(["intoDumpfileKw", "filename"]),
+  into_outfile_clause: (print, node) => {
+    const hasOptions = node.charset || node.fields || node.lines;
+    return group([
+      print.spaced(["intoOutfileKw", "filename"]),
+      hasOptions
+        ? indent([
+            hardline,
+            join(hardline, print(["charset", "fields", "lines"])),
+          ])
+        : [],
+    ]);
+  },
+  outfile_fields: (print) => print.spaced(["fieldsKw", "options"]),
+  outfile_lines: (print) => print.spaced(["linesKw", "options"]),
+  outfile_option_character_set: (print) =>
+    print.spaced(["characterSetKw", "value"]),
+  outfile_option_starting_by: (print) =>
+    print.spaced(["startingByKw", "value"]),
+  outfile_option_terminated_by: (print) =>
+    print.spaced(["terminatedByKw", "value"]),
+  outfile_option_enclosed_by: (print) =>
+    print.spaced(["optionallyKw", "enclosedByKw", "value"]),
+  outfile_option_escaped_by: (print) => print.spaced(["escapedByKw", "value"]),
 };
 
 const printLimitValues = (

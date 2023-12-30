@@ -31,5 +31,23 @@ describe("select into", () => {
         { printWidth: 10 },
       );
     });
+
+    it(`formats INTO DUMPFILE`, async () => {
+      await testMysql(`SELECT 1 INTO DUMPFILE 'file_name'`);
+    });
+
+    it(`formats INTO OUTFILE`, async () => {
+      await testMysql(`SELECT 1 INTO OUTFILE 'file_name'`);
+    });
+
+    it(`formats INTO OUTFILE with options`, async () => {
+      await testMysql(dedent`
+        SELECT 1
+        INTO OUTFILE 'file_name'
+          CHARACTER SET utf8
+          FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' ESCAPED BY '^'
+          LINES STARTING BY '!' TERMINATED BY '\\n'
+      `);
+    });
   });
 });
