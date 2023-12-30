@@ -2,7 +2,7 @@ import { AllMergeNodes } from "sql-parser-cst";
 import { group, hardline, indent, join, line } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const mergeMap: Partial<CstToDocMap<AllMergeNodes>> = {
+export const mergeMap: CstToDocMap<AllMergeNodes> = {
   merge_stmt: (print) =>
     join(line, [
       print.spaced(["mergeKw", "intoKw", "target"]),
