@@ -2,7 +2,7 @@ import { AllInsertNodes } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
 import { join, group, hardline, indent } from "../print_utils";
 
-export const insertMap: Partial<CstToDocMap<AllInsertNodes>> = {
+export const insertMap: CstToDocMap<AllInsertNodes> = {
   insert_stmt: (print, node) => {
     // When there's a columns clause, we want to indent it,
     // but that only works when there's a newline inside it.

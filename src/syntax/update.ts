@@ -2,7 +2,7 @@ import { AllUpdateNodes } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
 import { join, hardline, indent } from "../print_utils";
 
-export const updateMap: Partial<CstToDocMap<AllUpdateNodes>> = {
+export const updateMap: CstToDocMap<AllUpdateNodes> = {
   update_stmt: (print) => join(hardline, print("clauses")),
   update_clause: (print) =>
     print.spaced(["updateKw", "hints", "orAction", "tables"]),
