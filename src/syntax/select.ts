@@ -13,7 +13,7 @@ import {
   breakParent,
 } from "../print_utils";
 
-export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
+export const selectMap: CstToDocMap<AllSelectNodes> = {
   compound_select_stmt: (print) =>
     join(hardline, [print("left"), print.spaced("operator"), print("right")]),
   select_stmt: (print, node, path, opts) => {
@@ -148,6 +148,9 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
       print.spaced("partitionByKw"),
       indent([line, print("specifications")]),
     ]),
+
+  // PARTITION clause (used in INSERT and UPDATE)
+  partition_clause: (print) => print.spaced(["partitionKw", "partitions"]),
 
   // CLUSTER BY clause
   cluster_by_clause: (print) =>

@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { test, testBigquery } from "../test_utils";
+import { test, testBigquery, testMysql } from "../test_utils";
 
 describe("insert", () => {
   it(`formats INSERT statement without column names`, async () => {
@@ -120,6 +120,15 @@ describe("insert", () => {
       VALUES
         (1, 2, 3)
       RETURNING id, name, status
+    `);
+  });
+
+  it(`formats INSERT with PARTITION clause`, async () => {
+    await testMysql(dedent`
+      INSERT INTO client
+      PARTITION (p1, p2)
+      VALUES
+        (1, 2, 3)
     `);
   });
 });
