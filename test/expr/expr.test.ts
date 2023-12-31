@@ -213,8 +213,7 @@ describe("expr", () => {
       await testMysql(`SELECT 'Hello' 'world'`);
     });
 
-    // TODO: Fix bug in parser, then enable this test
-    it.skip(`formats MATCH .. AGAINST expressions`, async () => {
+    it(`formats MATCH .. AGAINST expressions`, async () => {
       await testMysql(`SELECT MATCH (title, body) AGAINST ('some text')`);
       await testMysql(
         `SELECT MATCH (title, body) AGAINST ('some text' IN NATURAL LANGUAGE MODE)`,

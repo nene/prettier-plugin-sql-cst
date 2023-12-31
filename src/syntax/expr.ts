@@ -145,7 +145,7 @@ export const exprMap: Partial<CstToDocMap<AllExprNodes>> = {
     group(["(", indent([softline, print("expr")]), softline, ")"]),
   typed_expr: (print) => print(["dataType", "expr"]),
   row_constructor: (print) => print(["rowKw", "row"]),
-  quantifier_expr: (print) => print.spaced(["quantifier", "expr"]),
+  quantifier_expr: (print) => print.spaced(["quantifierKw", "expr"]),
   full_text_match_expr: (print) =>
     print.spaced(["matchKw", "columns", "againstKw", "args"]),
   full_text_match_args: (print) => print.spaced(["expr", "modifier"]),
