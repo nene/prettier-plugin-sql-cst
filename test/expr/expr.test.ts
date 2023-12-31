@@ -196,6 +196,12 @@ describe("expr", () => {
     it(`formats array subscript`, async () => {
       await testPostgresql(`SELECT my_arr[1][2]`);
     });
+
+    it(`formats array slice`, async () => {
+      await testPostgresql(
+        `SELECT my_arr[5:10], my_arr[:8], my_arr[3:], my_arr[:]`,
+      );
+    });
   });
 
   describe("MySQL", () => {

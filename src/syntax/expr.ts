@@ -103,6 +103,7 @@ export const exprMap: Partial<CstToDocMap<AllExprNodes>> = {
   array_subscript: (print) =>
     group(["[", indent([softline, print("expr")]), softline, "]"]),
   array_subscript_specifier: (print) => print(["specifierKw", "args"]),
+  array_slice_specifier: (print) => [print("from"), ":", print("to")],
   func_call: (print) => {
     const fnCall = print(["name", "args"]);
     const extras = print(["filter", "over"]);
