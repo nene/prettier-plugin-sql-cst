@@ -49,7 +49,8 @@ export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
   constraint_auto_increment: (print) => print("autoIncrementKw"),
   on_conflict_clause: (print) => print.spaced(["onConflictKw", "resolutionKw"]),
   constraint_comment: (print) => print.spaced(["commentKw", "value"]),
-  constraint_index: (print) => print.spaced(["indexKw"]),
+  constraint_index: (print) =>
+    print.spaced(["indexTypeKw", "indexKw", "columns"]),
   constraint_visible: (print) => print.spaced(["visibleKw"]),
   constraint_column_format: (print) =>
     print.spaced(["columnFormatKw", "formatKw"]),

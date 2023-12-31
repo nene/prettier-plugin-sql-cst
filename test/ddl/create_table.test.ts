@@ -97,6 +97,17 @@ describe("create table", () => {
     `);
   });
 
+  it(`formats MySQL table constraints`, async () => {
+    await testMysql(dedent`
+      CREATE TABLE client (
+        id INT,
+        name TEXT,
+        KEY (id, name),
+        FULLTEXT INDEX (name)
+      )
+    `);
+  });
+
   it(`formats FOREIGN KEY constraint with options`, async () => {
     await test(dedent`
       CREATE TABLE client (
