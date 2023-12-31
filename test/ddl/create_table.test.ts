@@ -70,10 +70,16 @@ describe("create table", () => {
     `);
   });
 
-  it(`formats MySQL AUTO_INCREMENT`, async () => {
+  it(`format MySQL column constraints`, async () => {
     await testMysql(dedent`
       CREATE TABLE client (
-        id INTEGER PRIMARY KEY AUTO_INCREMENT
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        fname VARCHAR(100) COMMENT 'First name',
+        lname VARCHAR(100) KEY,
+        age INT INVISIBLE,
+        org_id INT COLUMN_FORMAT FIXED STORAGE DISK,
+        content1 TEXT ENGINE_ATTRIBUTE '{ "indexing": "btree" }',
+        content2 TEXT SECONDARY_ENGINE_ATTRIBUTE = '{ "indexing": "hashmap" }'
       )
     `);
   });

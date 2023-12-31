@@ -48,6 +48,14 @@ export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
     print.spaced(["generatedKw", "asKw", "expr", "storageKw"]),
   constraint_auto_increment: (print) => print("autoIncrementKw"),
   on_conflict_clause: (print) => print.spaced(["onConflictKw", "resolutionKw"]),
+  constraint_comment: (print) => print.spaced(["commentKw", "value"]),
+  constraint_index: (print) => print.spaced(["indexKw"]),
+  constraint_visible: (print) => print.spaced(["visibleKw"]),
+  constraint_column_format: (print) =>
+    print.spaced(["columnFormatKw", "formatKw"]),
+  constraint_storage: (print) => print.spaced(["storageKw", "typeKw"]),
+  constraint_engine_attribute: (print, node) =>
+    join(node.hasEq ? " = " : " ", print(["engineAttributeKw", "value"])),
 };
 
 const printUnnamedConstraint = <T>(
