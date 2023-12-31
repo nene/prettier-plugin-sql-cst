@@ -2,7 +2,7 @@ import { AllBigqueryNodes } from "sql-parser-cst";
 import { group, hardline, join } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const bigqueryMap: Partial<CstToDocMap<AllBigqueryNodes>> = {
+export const bigqueryMap: CstToDocMap<AllBigqueryNodes> = {
   bigquery_options: (print) => print.spaced(["optionsKw", "options"]),
   bigquery_option_default_collate: (print) =>
     print.spaced(["defaultCollateKw", "collation"]),
