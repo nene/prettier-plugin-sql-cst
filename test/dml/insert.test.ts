@@ -131,10 +131,9 @@ describe("insert", () => {
     `);
   });
 
-  it(`formats INSERT with PARTITION clause`, async () => {
+  it(`formats INSERT with PARTITION selection`, async () => {
     await testMysql(dedent`
-      INSERT INTO client
-      PARTITION (p1, p2)
+      INSERT INTO client PARTITION (p1, p2)
       VALUES
         (1, 2, 3)
     `);
