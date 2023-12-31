@@ -70,6 +70,14 @@ describe("create table", () => {
     `);
   });
 
+  it(`formats MySQL AUTO_INCREMENT`, async () => {
+    await testMysql(dedent`
+      CREATE TABLE client (
+        id INTEGER PRIMARY KEY AUTO_INCREMENT
+      )
+    `);
+  });
+
   it(`formats CREATE TABLE with table constraints`, async () => {
     await test(dedent`
       CREATE TABLE client (
