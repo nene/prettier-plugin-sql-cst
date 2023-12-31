@@ -233,8 +233,7 @@ describe("select", () => {
   });
 
   describe("PostgreSQL", () => {
-    // TODO: fix parser, then enable this test
-    it.skip(`formats GROUP BY DISTINCT`, async () => {
+    it(`formats GROUP BY DISTINCT`, async () => {
       await testPostgresql(`SELECT * FROM tbl GROUP BY DISTINCT a, b`);
     });
   });
