@@ -149,9 +149,6 @@ export const selectMap: CstToDocMap<AllSelectNodes> = {
       indent([line, print("specifications")]),
     ]),
 
-  // PARTITION clause (used in INSERT and UPDATE)
-  partition_clause: (print) => print.spaced(["partitionKw", "partitions"]),
-
   // CLUSTER BY clause
   cluster_by_clause: (print) =>
     group([print.spaced("clusterByKw"), indent([line, print("columns")])]),
