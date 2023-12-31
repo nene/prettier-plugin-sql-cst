@@ -18,6 +18,7 @@ export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
   constraint_name: (print) => print.spaced(["constraintKw", "name"]),
   constraint_deferrable: (print) =>
     print.spaced(["deferrableKw", "initiallyKw"]),
+  constraint_null: (print) => print("nullKw"),
   constraint_not_null: (print) =>
     group(print.spaced(["notNullKw", "onConflict"])),
   constraint_default: (print) => group(print.spaced(["defaultKw", "expr"])),

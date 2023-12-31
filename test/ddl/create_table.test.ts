@@ -52,7 +52,8 @@ describe("create table", () => {
     await test(dedent`
       CREATE TABLE client (
         id INT NOT NULL PRIMARY KEY,
-        name VARCHAR(100) UNIQUE COLLATE RTRIM,
+        fname VARCHAR(100) NULL,
+        lname VARCHAR(100) UNIQUE COLLATE RTRIM,
         age VARCHAR(6) DEFAULT 0,
         organization_id INT REFERENCES organization (id),
         byear1 INT GENERATED ALWAYS AS (today - age) VIRTUAL,
