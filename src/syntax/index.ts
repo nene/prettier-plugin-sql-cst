@@ -2,7 +2,7 @@ import { AllIndexNodes } from "sql-parser-cst";
 import { hardline, join } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const indexMap: Partial<CstToDocMap<AllIndexNodes>> = {
+export const indexMap: CstToDocMap<AllIndexNodes> = {
   create_index_stmt: (print, node) =>
     join(hardline, [
       print.spaced([

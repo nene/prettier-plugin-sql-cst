@@ -2,7 +2,7 @@ import { AllProcedureNodes } from "sql-parser-cst";
 import { group, hardline, join } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const procedureMap: Partial<CstToDocMap<AllProcedureNodes>> = {
+export const procedureMap: CstToDocMap<AllProcedureNodes> = {
   create_procedure_stmt: (print, node) => [
     print.spaced([
       "createKw",
