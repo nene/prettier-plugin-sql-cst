@@ -248,6 +248,17 @@ describe("select FROM", () => {
       await testPostgresql(`SELECT * FROM ROWS FROM (fn1(), fn2())`);
     });
 
+    it(`formats ROWS FROM with column definitions`, async () => {
+      await testPostgresql(dedent`
+        SELECT *
+        FROM
+          ROWS FROM (
+            table_function1(foo, bar) AS (a INT, b TEXT),
+            table_function2(foo, bar, baz) AS (a INT, b TEXT, c TEXT)
+          )
+        `);
+    });
+
     it(`formats table functions WITH ORDINALITY`, async () => {
       await testPostgresql(dedent`
         SELECT *
