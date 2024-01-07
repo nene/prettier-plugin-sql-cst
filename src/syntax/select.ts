@@ -13,7 +13,7 @@ import {
   breakParent,
 } from "../print_utils";
 
-export const selectMap: CstToDocMap<AllSelectNodes> = {
+export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
   compound_select_stmt: (print) =>
     join(hardline, [print("left"), print.spaced("operator"), print("right")]),
   select_stmt: (print, node, path, opts) => {
@@ -36,10 +36,14 @@ export const selectMap: CstToDocMap<AllSelectNodes> = {
   // SELECT clause
   select_clause: (print, node, path, opts) =>
     group([
-      print.spaced(["selectKw", "distinctKw", "hints", "asStructOrValueKw"]),
+      print.spaced(["selectKw", "modifiers"]),
       node.columns ? indent([line, print("columns")]) : [],
       containsNewline(node, opts) ? breakParent : [],
     ]),
+  select_all: (print) => print.spaced(["allKw"]),
+  select_distinct: (print) => print.spaced(["distinctKw"]),
+  select_as_struct: (print) => print.spaced(["asStructKw"]),
+  select_as_value: (print) => print.spaced(["asValueKw"]),
   except_columns: (print) => print.spaced(["expr", "exceptKw", "columns"]),
   replace_columns: (print) => print.spaced(["expr", "replaceKw", "columns"]),
 
@@ -100,7 +104,12 @@ export const selectMap: CstToDocMap<AllSelectNodes> = {
       ]),
     ),
   tablesample_expr: (print) =>
-    group([print("left"), line, print.spaced(["tablesampleKw", "args"])]),
+    group([
+      print("left"),
+      line,
+      print.spaced(["tablesampleKw", "method", "args"]),
+    ]),
+  tablesample_method: (print) => print.spaced(["methodKw"]),
   tablesample_percent: (print) => print.spaced(["percent", "percentKw"]),
   for_system_time_as_of_expr: (print) =>
     group([print("left"), line, print.spaced(["forSystemTimeAsOfKw", "expr"])]),
@@ -126,7 +135,9 @@ export const selectMap: CstToDocMap<AllSelectNodes> = {
       ]),
     ]),
   sort_specification: (print) =>
-    print.spaced(["expr", "orderKw", "nullHandlingKw"]),
+    print.spaced(["expr", "direction", "nullHandlingKw"]),
+  sort_direction_asc: (print) => print("ascKw"),
+  sort_direction_desc: (print) => print("descKw"),
 
   // GROUP BY clause
   group_by_clause: (print, node) =>

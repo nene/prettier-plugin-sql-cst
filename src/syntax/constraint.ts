@@ -23,7 +23,7 @@ export const constraintMap: CstToDocMap<AllConstraintNodes> = {
     group(print.spaced(["notNullKw", "onConflict"])),
   constraint_default: (print) => group(print.spaced(["defaultKw", "expr"])),
   constraint_primary_key: (print) =>
-    group(print.spaced(["primaryKeyKw", "orderKw", "columns", "onConflict"])),
+    group(print.spaced(["primaryKeyKw", "direction", "columns", "onConflict"])),
   constraint_unique: (print) =>
     group(print.spaced(["uniqueKw", "columns", "onConflict"])),
   constraint_check: (print) => group(print.spaced(["checkKw", "expr"])),
