@@ -22,7 +22,8 @@
     "clean": "rm -rf dist",
     "build": "yarn clean && tsc",
     "test": "yarn node --experimental-vm-modules $(yarn bin jest)",
-    "pretty": "prettier -w src/ test/"
+    "pretty": "prettier -w src/ test/",
+    "ts:check": "tsc --noEmit"
   },
   "keywords": [
     "prettier",
