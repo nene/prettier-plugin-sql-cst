@@ -233,5 +233,9 @@ describe("select FROM", () => {
     it(`formats table *`, async () => {
       await testPostgresql(`SELECT * FROM my_table *`);
     });
+
+    it(`formats ROWS FROM`, async () => {
+      await testPostgresql(`SELECT * FROM ROWS FROM (fn1(), fn2())`);
+    });
   });
 });

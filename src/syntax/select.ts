@@ -122,6 +122,7 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
     print.spaced(["table", "partitionKw", "partitions"]),
   dual_table: (print) => print("dualKw"),
   lateral_derived_table: (print) => print.spaced(["lateralKw", "expr"]),
+  rows_from_expr: (print) => print.spaced(["rowsFromKw", "expr"]),
 
   // WHERE clause
   where_clause: (print) =>
