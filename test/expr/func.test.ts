@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { pretty, test, testBigquery } from "../test_utils";
+import { pretty, test, testBigquery, testPostgresql } from "../test_utils";
 
 // Functions and function-like language constructs
 describe("functions", () => {
@@ -38,6 +38,13 @@ describe("functions", () => {
           uppercase => TRUE
         )
     `);
+  });
+  it(`converts old PostgreSQL := syntax to standard => syntax for named arguments`, async () => {
+    expect(
+      await pretty(`SELECT my_func(foo := 'Hello', bar := 'World')`, {
+        dialect: "postgresql",
+      }),
+    ).toBe(`SELECT my_func(foo => 'Hello', bar => 'World')`);
   });
 
   it(`formats count(*) func call`, async () => {

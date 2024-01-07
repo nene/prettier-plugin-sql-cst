@@ -127,6 +127,12 @@ SELECT * FROM my_cte;
 
 - :white_check_mark: Ensure space at the start of a line-comment: `--comment` --> `-- comment`
 
+## Dialect-specific
+
+### PostgreSQL
+
+- :white_check_mark: Convert deprecated `:=` named argument syntax to standard `=>`.
+
 ## Rules to possibly adopt from SQLFluff
 
 - [Rule_L022][]: Blank line after CTE.
