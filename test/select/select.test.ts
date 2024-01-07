@@ -249,6 +249,16 @@ describe("select", () => {
       await testPostgresql(`SELECT * FROM tbl GROUP BY DISTINCT a, b`);
     });
 
+    it(`formats GROUP BY CUBE()`, async () => {
+      await testPostgresql(`SELECT * FROM tbl GROUP BY CUBE(a)`);
+    });
+
+    it(`formats GROUP BY GROUPING SETS ()`, async () => {
+      await testPostgresql(
+        `SELECT * FROM tbl GROUP BY GROUPING SETS (foo, CUBE(bar), ())`,
+      );
+    });
+
     it(`formats ORDER BY col USING operator`, async () => {
       await testPostgresql(`SELECT * FROM tbl ORDER BY col USING >`);
     });
