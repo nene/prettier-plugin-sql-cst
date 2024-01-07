@@ -202,6 +202,11 @@ describe("expr", () => {
         `SELECT my_arr[5:10], my_arr[:8], my_arr[3:], my_arr[:]`,
       );
     });
+
+    it(`formats OPERATOR()`, async () => {
+      await testPostgresql(`SELECT 5 OPERATOR(+) 6`);
+      await testPostgresql(`SELECT x OPERATOR(my_schema.>>) y FROM tbl`);
+    });
   });
 
   describe("MySQL", () => {
