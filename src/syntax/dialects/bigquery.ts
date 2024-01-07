@@ -1,6 +1,6 @@
 import { AllBigqueryNodes } from "sql-parser-cst";
-import { group, hardline, join } from "../print_utils";
-import { CstToDocMap } from "../CstToDocMap";
+import { group, hardline, join } from "../../print_utils";
+import { CstToDocMap } from "../../CstToDocMap";
 
 export const bigqueryMap: CstToDocMap<AllBigqueryNodes> = {
   bigquery_options: (print) => print.spaced(["optionsKw", "options"]),

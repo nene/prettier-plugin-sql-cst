@@ -1,6 +1,6 @@
 import { AllSqliteNodes } from "sql-parser-cst";
-import { join } from "../print_utils";
-import { CstToDocMap } from "../CstToDocMap";
+import { join } from "../../print_utils";
+import { CstToDocMap } from "../../CstToDocMap";
 
 export const sqliteMap: CstToDocMap<AllSqliteNodes> = {
   attach_database_stmt: (print) =>
