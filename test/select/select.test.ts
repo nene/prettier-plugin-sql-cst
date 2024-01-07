@@ -97,6 +97,18 @@ describe("select", () => {
     );
   });
 
+  it(`formats PostgreSQL SELECT DISTINCT ON ()`, async () => {
+    await testPostgresql(
+      dedent`
+        SELECT DISTINCT ON (col1, col2)
+          col1,
+          col2,
+          col3
+        FROM tbl
+      `,
+    );
+  });
+
   it(`formats set operations of select statements`, async () => {
     await test(dedent`
       SELECT * FROM client WHERE status = 'inactive'
