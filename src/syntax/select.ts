@@ -104,7 +104,12 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
       ]),
     ),
   tablesample_expr: (print) =>
-    group([print("left"), line, print.spaced(["tablesampleKw", "args"])]),
+    group([
+      print("left"),
+      line,
+      print.spaced(["tablesampleKw", "method", "args"]),
+    ]),
+  tablesample_method: (print) => print.spaced(["methodKw"]),
   tablesample_percent: (print) => print.spaced(["percent", "percentKw"]),
   for_system_time_as_of_expr: (print) =>
     group([print("left"), line, print.spaced(["forSystemTimeAsOfKw", "expr"])]),
