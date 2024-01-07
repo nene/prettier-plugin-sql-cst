@@ -147,6 +147,8 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
     print.spaced(["expr", "direction", "nullHandlingKw"]),
   sort_direction_asc: (print) => print("ascKw"),
   sort_direction_desc: (print) => print("descKw"),
+  sort_direction_using_operator: (print) =>
+    print.spaced(["usingKw", "operator"]),
 
   // GROUP BY clause
   group_by_clause: (print, node) =>

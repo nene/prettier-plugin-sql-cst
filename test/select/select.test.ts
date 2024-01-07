@@ -248,5 +248,9 @@ describe("select", () => {
     it(`formats GROUP BY DISTINCT`, async () => {
       await testPostgresql(`SELECT * FROM tbl GROUP BY DISTINCT a, b`);
     });
+
+    it(`formats ORDER BY col USING operator`, async () => {
+      await testPostgresql(`SELECT * FROM tbl ORDER BY col USING >`);
+    });
   });
 });
