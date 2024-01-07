@@ -40,6 +40,10 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
       node.columns ? indent([line, print("columns")]) : [],
       containsNewline(node, opts) ? breakParent : [],
     ]),
+  select_all: (print) => print.spaced(["allKw"]),
+  select_distinct: (print) => print.spaced(["distinctKw"]),
+  select_as_struct: (print) => print.spaced(["asStructKw"]),
+  select_as_value: (print) => print.spaced(["asValueKw"]),
   except_columns: (print) => print.spaced(["expr", "exceptKw", "columns"]),
   replace_columns: (print) => print.spaced(["expr", "replaceKw", "columns"]),
 
