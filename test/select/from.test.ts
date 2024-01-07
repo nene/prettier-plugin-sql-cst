@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { test, testBigquery, testMysql } from "../test_utils";
+import { test, testBigquery, testMysql, testPostgresql } from "../test_utils";
 
 describe("select FROM", () => {
   it(`formats join always to multiple lines`, async () => {
@@ -199,6 +199,16 @@ describe("select FROM", () => {
   describe("MySQL", () => {
     it(`formats PARTITION selection`, async () => {
       await testMysql(`SELECT * FROM tbl1 PARTITION (p1, p2)`);
+    });
+  });
+
+  describe("PostgreSQL", () => {
+    it(`formats ONLY table`, async () => {
+      await testPostgresql(`SELECT * FROM ONLY my_table`);
+    });
+
+    it(`formats table *`, async () => {
+      await testPostgresql(`SELECT * FROM my_table *`);
     });
   });
 });
