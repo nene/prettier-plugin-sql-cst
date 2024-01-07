@@ -13,7 +13,7 @@ import {
   breakParent,
 } from "../print_utils";
 
-export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
+export const selectMap: CstToDocMap<AllSelectNodes> = {
   compound_select_stmt: (print) =>
     join(hardline, [print("left"), print.spaced("operator"), print("right")]),
   select_stmt: (print, node, path, opts) => {
