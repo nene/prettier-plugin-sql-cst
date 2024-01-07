@@ -237,5 +237,14 @@ describe("select FROM", () => {
     it(`formats ROWS FROM`, async () => {
       await testPostgresql(`SELECT * FROM ROWS FROM (fn1(), fn2())`);
     });
+
+    it(`formats table functions WITH ORDINALITY`, async () => {
+      await testPostgresql(dedent`
+        SELECT *
+        FROM
+          table_func1() WITH ORDINALITY
+          JOIN ROWS FROM (table_func2(), table_func3()) WITH ORDINALITY
+      `);
+    });
   });
 });
