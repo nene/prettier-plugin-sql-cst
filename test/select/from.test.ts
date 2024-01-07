@@ -61,6 +61,16 @@ describe("select FROM", () => {
     `);
   });
 
+  it(`formats table alias with column aliases`, async () => {
+    await testPostgresql(dedent`
+      SELECT *
+      FROM
+        standard_client AS client (id, name)
+        JOIN standard_client_sale AS sale (client_id, sale_id)
+          ON sale.client_id = client.id
+    `);
+  });
+
   it(`formats joins with subqueries`, async () => {
     await test(dedent`
       SELECT *
