@@ -164,19 +164,33 @@ describe("select FROM", () => {
       `);
     });
 
-    it(`formats TABLESPAMPLE operator`, async () => {
-      await testBigquery(dedent`
-        SELECT * FROM dataset.my_table TABLESAMPLE SYSTEM (10 PERCENT)
-      `);
-    });
+    describe("TABLESAMPLE", () => {
+      it(`formats TABLESPAMPLE operator`, async () => {
+        await testBigquery(dedent`
+          SELECT * FROM dataset.my_table TABLESAMPLE SYSTEM (10 PERCENT)
+        `);
+      });
 
-    it(`formats TABLESPAMPLE operator to multiple lines`, async () => {
-      await testBigquery(dedent`
-        SELECT *
-        FROM
-          myLongProjectName.myCustomDatasetName.my_table_name
-          TABLESAMPLE SYSTEM (10 PERCENT)
-      `);
+      it(`formats TABLESPAMPLE operator to multiple lines`, async () => {
+        await testBigquery(dedent`
+          SELECT *
+          FROM
+            myLongProjectName.myCustomDatasetName.my_table_name
+            TABLESAMPLE SYSTEM (10 PERCENT)
+        `);
+      });
+
+      it(`formats TABLESPAMPLE with custom sampling function and multiple parameters`, async () => {
+        await testPostgresql(dedent`
+          SELECT * FROM my_table TABLESAMPLE my_sampler (10, 20)
+        `);
+      });
+
+      it(`formats TABLESPAMPLE with REPEATABLE clause`, async () => {
+        await testPostgresql(dedent`
+          SELECT * FROM my_table TABLESAMPLE BERNOULLI (5) REPEATABLE (123)
+        `);
+      });
     });
 
     it(`formats FOR SYSTEM_TIME AS OF`, async () => {
