@@ -27,11 +27,32 @@ export const selectMap: Partial<CstToDocMap<AllSelectNodes>> = {
       print.spaced(["withKw", "recursiveKw"]),
       indent([line, print("tables")]),
     ]),
-  common_table_expr: (print) => [
+  common_table_expr: (print, node) => [
     print(["table", "columns"]),
     " ",
     print.spaced(["asKw", "materializedKw", "expr"]),
+    group([
+      node.search || node.cycle
+        ? indent([line, join(line, print(["search", "cycle"]))])
+        : [],
+    ]),
   ],
+  cte_search_clause: (print) =>
+    group([print.spaced(["searchKw", "columns", "setKw", "resultColumn"])]),
+  cte_cycle_clause: (print) =>
+    group([
+      print.spaced([
+        "cycleKw",
+        "columns",
+        "setKw",
+        "resultColumn",
+        "values",
+        "usingKw",
+        "pathColumn",
+      ]),
+    ]),
+  cte_cycle_clause_values: (print) =>
+    print.spaced(["toKw", "markValue", "defaultKw", "defaultValue"]),
 
   // SELECT clause
   select_clause: (print, node, path, opts) =>

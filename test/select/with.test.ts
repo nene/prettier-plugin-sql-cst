@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { test } from "../test_utils";
+import { test, testPostgresql } from "../test_utils";
 
 describe("select with", () => {
   it(`formats tiny WITH on same line as the rest of SELECT`, async () => {
@@ -55,5 +55,24 @@ describe("select with", () => {
       SELECT *
       FROM oldies
     `);
+  });
+
+  describe("PostgreSQL", () => {
+    it(`formats CYCLE and SEARCH clauses in WITH`, async () => {
+      await testPostgresql(dedent`
+        WITH RECURSIVE
+          cte1 AS (SELECT * FROM my_table WHERE x > 0)
+            CYCLE a, b SET a TO 1 DEFAULT 0 USING pathcol,
+          cte2 AS (
+            SELECT *
+            FROM client
+            WHERE age > 100
+          ) SEARCH BREADTH FIRST BY a, b SET target_col
+        SELECT *
+        FROM
+          cte1,
+          cte2
+      `);
+    });
   });
 });
