@@ -103,13 +103,22 @@ describe("select FROM", () => {
     testMysql(`SELECT * FROM DUAL`);
   });
 
-  it(`formats LATERAL subquery`, () => {
-    testMysql(dedent`
-      SELECT *
-      FROM
-        tbl
-        JOIN LATERAL (SELECT * FROM foo) AS t
-    `);
+  describe("LATERAL", () => {
+    it(`formats LATERAL subquery`, () => {
+      testMysql(dedent`
+        SELECT *
+        FROM
+          tbl
+          JOIN LATERAL (SELECT * FROM foo) AS t
+      `);
+    });
+
+    it(`formats LATERAL table function`, () => {
+      testPostgresql(dedent`
+        SELECT *
+        FROM LATERAL schm.foo(1, 2, 3) AS t
+      `);
+    });
   });
 
   describe("BigQuery", () => {
