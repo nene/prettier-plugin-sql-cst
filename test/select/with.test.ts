@@ -74,5 +74,35 @@ describe("select with", () => {
           cte2
       `);
     });
+
+    it(`formats long CYCLE and SEARCH clauses in WITH`, async () => {
+      await testPostgresql(dedent`
+        WITH RECURSIVE
+          cte1 AS (SELECT * FROM tbl)
+            CYCLE
+              first_long_column_name,
+              second_really_long_column_name,
+              third_column_name_as_well
+            SET target_column_name
+            USING path_column_name,
+          cte2 AS (SELECT * FROM tbl)
+            CYCLE col1, col2
+            SET target_column_name
+            TO 'Found it here in the cycle'
+            DEFAULT 'No cycle found'
+            USING path_column_name,
+          cte3 AS (SELECT * FROM tbl)
+            SEARCH DEPTH FIRST BY
+              first_long_column_name,
+              second_really_long_column_name,
+              third_column_name_as_well
+            SET target_column_name
+        SELECT *
+        FROM
+          cte1,
+          cte2,
+          cte3
+      `);
+    });
   });
 });
