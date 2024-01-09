@@ -105,6 +105,14 @@ There are also some SQL-specific options:
 
 ## FAQ
 
+### The SQL dialect I'm using is not supported. Can you add support for it?
+
+Support for new SQL dialects depends on these dialects being supported by [sql-parser-cst][].
+If you really want to, you can open a new issue for that in the parser repo.
+But be aware that implementing parser support for new dialects takes a lot of work.
+As long as the ongoing implementation of PostgreSQL, MySQL and MariaDB is not finished,
+it's unlikely that work on any other dialect will start.
+
 ### How can I format SQL strings inside JavaScript files?
 
 Use [prettier-plugin-embed][] together with `prettier-plugin-sql-cst`.
