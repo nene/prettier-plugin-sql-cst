@@ -103,6 +103,12 @@ There are also some SQL-specific options:
 | `sqlKeywordCase` | `upper` | Converts SQL keywords to `upper` or `lower` case, or `preserve` existing. |
 | `sqlParamTypes`  |  `[]`   | Array of bound parameter types: `?`, `?nr`, `:name`, `@name`, `$name`.    |
 
+## FAQ
+
+### How can I format SQL strings inside JavaScript files?
+
+Use [prettier-plugin-embed][] together with `prettier-plugin-sql-cst`.
+
 ## Limitations and development status
 
 Currently this plugin supports two SQL dialects:
@@ -132,4 +138,5 @@ Though the general principles should be mostly in place by now.
 [useTabs]: https://prettier.io/docs/en/options.html#tabs
 [sql-parser-cst]: https://github.com/nene/sql-parser-cst
 [wadler-prettier]: http://homepages.inf.ed.ac.uk/wadler/papers/prettier/prettier.pdf
+[prettier-plugin-embed]: https://github.com/Sec-ant/prettier-plugin-embed
 [STYLE_GUIDE]: ./STYLE_GUIDE.md
