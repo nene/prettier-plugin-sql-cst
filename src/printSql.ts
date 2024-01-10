@@ -40,7 +40,8 @@ function createPrintFn(
     }
   }) as PrintFn<Node>;
 
-  cachedPrintFn.spaced = (
+  cachedPrintFn.separated = (
+    separator: Doc,
     selector: PrintableKey<Node> | PrintableKey<Node>[],
   ): Doc[] => {
     const node = path.getValue();
@@ -51,8 +52,12 @@ function createPrintFn(
       .filter(([sel, doc]) => !isEmptyArray(doc))
       // only join with spaces when input to print was Node[]
       .map(([sel, doc]) => (isArray(node[sel]) ? join(" ", doc) : doc));
-    return docs.length > 0 ? [join(" ", docs)] : [];
+    return docs.length > 0 ? [join(separator, docs)] : [];
   };
+
+  cachedPrintFn.spaced = (
+    selector: PrintableKey<Node> | PrintableKey<Node>[],
+  ): Doc[] => cachedPrintFn.separated(" ", selector);
 
   return cachedPrintFn;
 }
