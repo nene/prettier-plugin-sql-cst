@@ -203,10 +203,6 @@ export const selectMap: CstToDocMap<AllSelectNodes> = {
       indent([line, print("specifications")]),
     ]),
 
-  // CLUSTER BY clause
-  cluster_by_clause: (print) =>
-    group([print.spaced("clusterByKw"), indent([line, print("columns")])]),
-
   // HAVING clause
   having_clause: (print) =>
     group([print("havingKw"), indent([line, print("expr")])]),
@@ -214,10 +210,6 @@ export const selectMap: CstToDocMap<AllSelectNodes> = {
   // QUALIFY clause
   qualify_clause: (print) =>
     group([print("qualifyKw"), indent([line, print("expr")])]),
-
-  // RETURNING clause
-  returning_clause: (print) =>
-    group([print("returningKw"), indent([line, print("columns")])]),
 
   // LIMIT clause
   limit_clause: (print, node) =>
