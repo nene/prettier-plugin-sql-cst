@@ -33,7 +33,7 @@ export const selectMap: CstToDocMap<AllSelectNodes> = {
     print.spaced(["asKw", "materializedKw", "expr"]),
     group([
       node.search || node.cycle
-        ? indent([line, join(line, print(["search", "cycle"]))])
+        ? indent([line, print.separated(line, ["search", "cycle"])])
         : [],
     ]),
   ],
@@ -164,13 +164,7 @@ export const selectMap: CstToDocMap<AllSelectNodes> = {
   order_by_clause: (print, node) =>
     group([
       print.spaced("orderByKw"),
-      indent([
-        line,
-        join(line, [
-          print("specifications"),
-          ...(node.withRollupKw ? print.spaced("withRollupKw") : []),
-        ]),
-      ]),
+      indent([line, print.separated(line, ["specifications", "withRollupKw"])]),
     ]),
   sort_specification: (print) =>
     print.spaced(["expr", "direction", "nullHandlingKw"]),
@@ -183,13 +177,7 @@ export const selectMap: CstToDocMap<AllSelectNodes> = {
   group_by_clause: (print, node) =>
     group([
       print.spaced(["groupByKw", "distinctKw"]),
-      indent([
-        line,
-        join(line, [
-          print("columns"),
-          ...(node.withRollupKw ? print.spaced("withRollupKw") : []),
-        ]),
-      ]),
+      indent([line, print.separated(line, ["columns", "withRollupKw"])]),
     ]),
   group_by_rollup: (print) => print(["rollupKw", "columns"]),
   group_by_cube: (print) => print(["cubeKw", "columns"]),
