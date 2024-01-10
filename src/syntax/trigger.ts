@@ -13,8 +13,8 @@ export const triggerMap: CstToDocMap<AllTriggerNodes> = {
         "name",
       ]),
       print("event"),
-      ...(node.forEachRowKw ? [print.spaced(["forEachRowKw"])] : []),
-      ...(node.condition ? [print(["condition"])] : []),
+      ...print.spaced(["forEachRowKw"]),
+      ...print(["condition"]),
       print("body"),
     ]),
   trigger_event: (print) =>
