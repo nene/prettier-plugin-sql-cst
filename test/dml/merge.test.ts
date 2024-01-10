@@ -14,6 +14,18 @@ describe("merge", () => {
     );
   });
 
+  it(`formats MERGE .. DO NOTHING`, async () => {
+    await testPostgresql(
+      dedent`
+        MERGE INTO target
+        USING source
+        ON target.id = source.id
+        WHEN NOT MATCHED THEN
+          DO NOTHING
+      `,
+    );
+  });
+
   it(`formats MERGE .. INSERT (cols) VALUES`, async () => {
     await testBigquery(
       dedent`
