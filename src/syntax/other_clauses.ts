@@ -10,4 +10,8 @@ export const otherClausesMap: Partial<CstToDocMap<AllOtherClauses>> = {
   // RETURNING clause
   returning_clause: (print) =>
     group([print("returningKw"), indent([line, print("columns")])]),
+
+  // WHERE CURRENT OF clause
+  where_current_of_clause: (print) =>
+    print.spaced(["whereCurrentOfKw", "cursor"]),
 };

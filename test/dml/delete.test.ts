@@ -42,4 +42,11 @@ describe("delete", () => {
       LIMIT 100
     `);
   });
+
+  it(`formats DELETE statement with WHERE CURRENT OF clause`, async () => {
+    await test(dedent`
+      DELETE FROM employee
+      WHERE CURRENT OF cursor_name
+    `);
+  });
 });

@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { test, testMysql } from "../test_utils";
+import { test, testMysql, testPostgresql } from "../test_utils";
 
 describe("update", () => {
   it(`formats UPDATE statement`, async () => {
@@ -49,6 +49,14 @@ describe("update", () => {
       UPDATE client
       SET status = 2
       RETURNING *
+    `);
+  });
+
+  it(`formats UPDATE with WHERE CURRENT OF clause`, async () => {
+    await testPostgresql(dedent`
+      UPDATE client
+      SET status = 2
+      WHERE CURRENT OF cursor_name
     `);
   });
 });
