@@ -2,13 +2,13 @@ import { AllMergeNodes } from "sql-parser-cst";
 import { group, hardline, indent, join, line } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const mergeMap: CstToDocMap<AllMergeNodes> = {
-  merge_stmt: (print) =>
+export const mergeMap: Partial<CstToDocMap<AllMergeNodes>> = {
+  merge_stmt: (print) => join(line, print("clauses")),
+  merge_clause: (print) =>
     join(line, [
       print.spaced(["mergeKw", "intoKw", "target"]),
       print.spaced(["usingKw", "source"]),
       group([print("onKw"), indent([line, print("condition")])]),
-      ...print("clauses").map((clause) => group(clause)),
     ]),
   merge_when_clause: (print, node) => [
     group([
@@ -26,7 +26,7 @@ export const mergeMap: CstToDocMap<AllMergeNodes> = {
       node.columns ? indent([hardline, print("columns")]) : [],
     ]),
     line,
-    group(print("values")),
+    group(print("clauses")),
   ],
   merge_action_insert_row_clause: (print) => print("rowKw"),
   merge_action_update: (print) => print.spaced(["updateKw", "set"]),
