@@ -122,6 +122,15 @@ describe("insert", () => {
     `);
   });
 
+  it("formats upsert clause with ON CONSTRAINT", async () => {
+    await testPostgresql(dedent`
+      INSERT INTO client
+      VALUES
+        (1, 2, 3)
+      ON CONFLICT ON CONSTRAINT client_pkey DO NOTHING
+    `);
+  });
+
   it(`formats INSERT with RETURNING clause`, async () => {
     await test(dedent`
       INSERT INTO client

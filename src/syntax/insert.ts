@@ -2,7 +2,7 @@ import { AllInsertNodes } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
 import { join, group, hardline, indent } from "../print_utils";
 
-export const insertMap: Partial<CstToDocMap<AllInsertNodes>> = {
+export const insertMap: CstToDocMap<AllInsertNodes> = {
   insert_stmt: (print) => join(hardline, print("clauses")),
   insert_clause: (print, node) =>
     group([
@@ -16,6 +16,8 @@ export const insertMap: Partial<CstToDocMap<AllInsertNodes>> = {
   default_values: (print) => print.spaced("defaultValuesKw"),
   upsert_clause: (print) =>
     print.spaced(["onConflictKw", "conflictTarget", "where", "doKw", "action"]),
+  conflict_target_on_constraint: (print) =>
+    print.spaced(["onConstraintKw", "constraint"]),
   upsert_action_nothing: (print) => print("nothingKw"),
   upsert_action_update: (print) => [
     print("updateKw"),
