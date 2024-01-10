@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { test, testBigquery, testMysql } from "../test_utils";
+import { test, testBigquery, testMysql, testPostgresql } from "../test_utils";
 
 describe("insert", () => {
   it(`formats INSERT statement without column names`, async () => {
@@ -170,6 +170,15 @@ describe("insert", () => {
         (id, fname)
       ON DUPLICATE KEY UPDATE
         id = new_row.id + 1
+    `);
+  });
+
+  it(`formats INSERT with OVERRIDING clause`, async () => {
+    await testPostgresql(dedent`
+      INSERT INTO client
+      OVERRIDING SYSTEM VALUE
+      VALUES
+        (1, 'John')
     `);
   });
 });

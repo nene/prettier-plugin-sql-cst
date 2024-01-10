@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { testBigquery } from "../test_utils";
+import { testBigquery, testPostgresql } from "../test_utils";
 
 describe("merge", () => {
   it(`formats MERGE .. DELETE`, async () => {
@@ -65,6 +65,22 @@ describe("merge", () => {
           INSERT
             (col1, col2, col3)
           ROW
+      `,
+    );
+  });
+
+  it(`formats INSERT .. OVERRIDING clause`, async () => {
+    await testPostgresql(
+      dedent`
+        MERGE INTO target
+        USING source
+        ON target.id = source.id
+        WHEN NOT MATCHED THEN
+          INSERT
+            (col1, col2, col3)
+          OVERRIDING USER VALUE
+          VALUES
+            (1000, 2000, 3000)
       `,
     );
   });

@@ -29,4 +29,5 @@ export const insertMap: Partial<CstToDocMap<AllInsertNodes>> = {
     print.spaced("onDuplicateKeyUpdateKw"),
     indent([hardline, print("assignments")]),
   ],
+  overriding_clause: (print) => print.spaced("overridingKw"),
 };
