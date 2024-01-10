@@ -1,25 +1,18 @@
 import { TruncateStmt } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
-import { group, indent, join, line } from "../print_utils";
-import { isDefined } from "../utils";
+import { group, indent, line } from "../print_utils";
 
 export const truncateMap: CstToDocMap<TruncateStmt> = {
-  truncate_stmt: (print, node) => [
-    print.spaced(["truncateKw", "tableKw"]),
-    group(
+  truncate_stmt: (print) =>
+    group([
+      print.spaced(["truncateKw", "tableKw"]),
       indent([
         line,
-        join(
-          line,
-          [
-            print("tables"),
-            node.restartOrContinueKw
-              ? print.spaced("restartOrContinueKw")
-              : undefined,
-            node.cascadeOrRestrictKw ? print("cascadeOrRestrictKw") : undefined,
-          ].filter(isDefined),
-        ),
+        print.separated(line, [
+          "tables",
+          "restartOrContinueKw",
+          "cascadeOrRestrictKw",
+        ]),
       ]),
-    ),
-  ],
+    ]),
 };
