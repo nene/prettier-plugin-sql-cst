@@ -133,8 +133,8 @@ It also has experimental support for the following dialects:
 The main limitation is that [the parser][sql-parser-cst] does not support full syntax of
 these dialects. One should expect the parser to crash for syntax that's more specific to
 these dialects. But as long as the parsing succeeds, the formatting should also succeed.
-Mainly one can expect the formatting of SELECT statements to work. But beyond that you should
-keep your expectations low. You have been warned.
+Mainly one can expect the formatting of SELECT, INSERT, UPDATE, DELETE statements to work.
+But beyond that you should keep your expectations low. You have been warned.
 
 The specifics of the [SQL formatting style][STYLE_GUIDE] are still very much subject to change.
 Though the general principles should be mostly in place by now.
