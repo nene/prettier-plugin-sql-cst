@@ -37,7 +37,7 @@ import { mysqlMap } from "./dialects/mysql";
 import { sqliteMap } from "./dialects/sqlite";
 import { postgresqlMap } from "./dialects/postgresql";
 
-export const transformMap: Partial<CstToDocMap<Node>> = {
+export const transformMap: CstToDocMap<Node> = {
   ...aliasMap,
   ...alterTableMap,
   ...analyzeMap,
