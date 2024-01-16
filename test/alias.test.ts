@@ -14,12 +14,13 @@ describe("aliases", () => {
     );
   });
 
-  it(`converts implicit aliases to use AS keyword`, async () => {
+  // Behavior when sqlCanonicalSyntax: false
+  it(`preserves implicit and explicit aliases as-is`, async () => {
     expect(await pretty(`SELECT 1 AS foo, 2 bar FROM client c, tbl AS t`))
       .toBe(dedent`
-        SELECT 1 AS foo, 2 AS bar
+        SELECT 1 AS foo, 2 bar
         FROM
-          client AS c,
+          client c,
           tbl AS t
       `);
   });

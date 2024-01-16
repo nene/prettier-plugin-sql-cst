@@ -15,12 +15,11 @@ export const transformCst = (
     // Note that we first perform moveCommentsToRoot transform,
     // so we don't need to worry about comments interfering with other transforms
     moveCommentsToRoot,
-    processAliasAs,
     stripTrailingCommas,
     addFinalSemicolon,
   ];
   if (options.sqlCanonicalSyntax) {
-    transforms.push(tempToTemporary);
+    transforms.push(processAliasAs, tempToTemporary);
   }
 
   return transforms.reduce(
