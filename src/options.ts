@@ -4,6 +4,7 @@ import { Node, ParserOptions as CstParserOptions } from "sql-parser-cst";
 export interface SqlPluginOptions {
   sqlKeywordCase: "preserve" | "upper" | "lower";
   sqlParamTypes: NonNullable<CstParserOptions["paramTypes"]>;
+  sqlCanonicalSyntax: boolean;
 }
 
 // Prettier builtin options + options of this plugin
@@ -41,5 +42,13 @@ export const options: SupportOptions = {
     description: "Syntax for bound parameters",
     // Since 0.7.0
     // Possible values in array: "?" | "?nr" | ":name" | "$name" | "@name"
+  },
+  sqlCanonicalSyntax: {
+    type: "boolean",
+    category: "SQL",
+    default: false,
+    description:
+      "Enforces one true style of SQL syntax (adds and removes keywords)",
+    // Since 0.11.0
   },
 };

@@ -49,6 +49,7 @@ const createParser = (dialect: DialectName): Parser<Node> => ({
         paramTypes: (options as AllPrettierOptions<Node>).sqlParamTypes,
       }),
       text,
+      options as AllPrettierOptions<Node>,
     ),
   astFormat: "sql-cst",
   locStart: (node) => node.range?.[0] as number,
