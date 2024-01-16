@@ -26,4 +26,13 @@ describe("with sqlCanonicalSyntax enabled", () => {
         )
       `);
   });
+
+  it(`converts old PostgreSQL := syntax to standard => syntax for named arguments`, async () => {
+    expect(
+      await pretty(`SELECT my_func(foo := 'Hello', bar := 'World')`, {
+        dialect: "postgresql",
+        sqlCanonicalSyntax: true,
+      }),
+    ).toBe(`SELECT my_func(foo => 'Hello', bar => 'World')`);
+  });
 });

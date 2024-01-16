@@ -39,12 +39,9 @@ describe("functions", () => {
         )
     `);
   });
-  it(`converts old PostgreSQL := syntax to standard => syntax for named arguments`, async () => {
-    expect(
-      await pretty(`SELECT my_func(foo := 'Hello', bar := 'World')`, {
-        dialect: "postgresql",
-      }),
-    ).toBe(`SELECT my_func(foo => 'Hello', bar => 'World')`);
+  // Behavior when sqlCanonicalSyntax: false
+  it(`preserves old PostgreSQL := syntax for named arguments`, async () => {
+    await testPostgresql(`SELECT my_func(foo := 'Hello', bar := 'World')`);
   });
 
   it(`formats count(*) func call`, async () => {

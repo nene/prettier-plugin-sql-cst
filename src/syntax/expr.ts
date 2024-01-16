@@ -123,7 +123,12 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
   over_arg: (print) => print.spaced(["overKw", "window"]),
   having_arg: (print) => print.spaced(["havingKw", "minMaxKw", "expr"]),
   named_arg: (print) =>
-    group([print("name"), " ", "=>", indent([line, print("value")])]),
+    group([
+      print("name"),
+      " ",
+      print("operator"),
+      indent([line, print("value")]),
+    ]),
   cast_expr: (print) => print(["castKw", "args"]),
   cast_arg: (print) => print.spaced(["expr", "asKw", "dataType", "format"]),
   cast_format: (print) => print.spaced(["formatKw", "string", "timezone"]),
