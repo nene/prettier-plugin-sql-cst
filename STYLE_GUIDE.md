@@ -5,6 +5,7 @@ This document describes the style that Prettier plugin SQL-CST uses for formatti
 - :white_check_mark: - decided and implemented
 - :heavy_check_mark: - decided, but not yet implemented
 - :question: - undecided
+- :wrench: - can be disabled by setting `sqlCanonicalSyntax: false`
 
 ## Generic whitespace
 
@@ -30,7 +31,7 @@ and is therefore formatted in uppercase.
 
 ## Aliases
 
-- :white_check_mark: Always use explicit `AS` keyword in all aliases. [Rule_L011][], [Rule_L012][]
+- :white_check_mark: :wrench: Always use explicit `AS` keyword in all aliases. [Rule_L011][], [Rule_L012][]
 
 ## Semicolons
 
@@ -68,7 +69,7 @@ This definitely needs to be configurable.
 - :white_check_mark: Surround binary operators with whitespace: `1 + 2`
 - :white_check_mark: Surround unary keyword-operators with whitespace: `NOT foo`
 - :white_check_mark: Don't add whitespace to unary punctuation-operators: `-price`
-- :white_check_mark: Use `!=` instead of `<>` for "not equal to" comparisons. [Rule_L061][]
+- :white_check_mark: :wrench: Use `!=` instead of `<>` for "not equal to" comparisons. [Rule_L061][]
 - :heavy_check_mark: Add linebreak before binary operator: [Rule_L007][]
 
 ```sql
@@ -142,7 +143,7 @@ Some candidates:
 - `DELETE` -> `DELETE FROM` (standard syntax)
 - `TRUNCATE` -> `TRUNCATE TABLE` (non-standard. Some dialects support only the latter, none support only the former.)
 - `MERGE` -> `MERGE INTO` (non-standard. Like previous.)
-- `CREATE TEMP TABLE` -> `CREATE TEMPORARY TABLE` (standard syntax)
+- :white_check_mark: :wrench: `CREATE TEMP TABLE` -> `CREATE TEMPORARY TABLE` (standard syntax)
 - `ADD` -> `ADD COLUMN` (standard syntax)
 - `DROP` -> `DROP COLUMN` (more commonly supported)
 - `ALTER` -> `ALTER COLUMN` (more commonly supported)
@@ -172,7 +173,7 @@ So the pretty-printer probably shouldn't eliminate such redundant syntax.
 
 ### PostgreSQL
 
-- :white_check_mark: Convert deprecated `:=` named argument syntax to standard `=>`.
+- :white_check_mark: :wrench: Convert deprecated `:=` named argument syntax to standard `=>`.
 
 ### MySQL
 
