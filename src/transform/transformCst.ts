@@ -6,6 +6,7 @@ import { addFinalSemicolon } from "./addFinalSemicolon";
 import { SqlPluginOptions } from "src/options";
 import { tempToTemporary } from "./tempToTemporary";
 import { namedArguments } from "./namedArguments";
+import { comparisonOp } from "./comparisonOp";
 
 export const transformCst = (
   cst: Program,
@@ -20,7 +21,12 @@ export const transformCst = (
     addFinalSemicolon,
   ];
   if (options.sqlCanonicalSyntax) {
-    transforms.push(processAliasAs, tempToTemporary, namedArguments);
+    transforms.push(
+      processAliasAs,
+      tempToTemporary,
+      namedArguments,
+      comparisonOp,
+    );
   }
 
   return transforms.reduce(

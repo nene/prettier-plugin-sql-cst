@@ -35,4 +35,12 @@ describe("with sqlCanonicalSyntax enabled", () => {
       }),
     ).toBe(`SELECT my_func(foo => 'Hello', bar => 'World')`);
   });
+
+  it(`converts <> comparisons to !=`, async () => {
+    expect(
+      await pretty(`SELECT * FROM foo WHERE x <> 1 AND y <> 3`, {
+        sqlCanonicalSyntax: true,
+      }),
+    ).toBe(`SELECT * FROM foo WHERE x != 1 AND y != 3`);
+  });
 });

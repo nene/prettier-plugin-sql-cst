@@ -68,7 +68,7 @@ This definitely needs to be configurable.
 - :white_check_mark: Surround binary operators with whitespace: `1 + 2`
 - :white_check_mark: Surround unary keyword-operators with whitespace: `NOT foo`
 - :white_check_mark: Don't add whitespace to unary punctuation-operators: `-price`
-- :heavy_check_mark: Use `!=` instead of `<>` for "not equal to" comparisons. [Rule_L061][]
+- :white_check_mark: Use `!=` instead of `<>` for "not equal to" comparisons. [Rule_L061][]
 - :heavy_check_mark: Add linebreak before binary operator: [Rule_L007][]
 
 ```sql
