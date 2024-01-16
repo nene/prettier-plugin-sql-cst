@@ -127,11 +127,56 @@ SELECT * FROM my_cte;
 
 - :white_check_mark: Ensure space at the start of a line-comment: `--comment` --> `-- comment`
 
+## Syntax variations
+
+Often SQL allows for syntax variations. For example `ALTER COLUMN col_name` or just `ALTER col_name`.
+It would be nice to enforce one consistent way of expressing this.
+We should take into account:
+
+- Which variant is preferred by the SQL standard
+- Which variant is most common across various SQL dialects
+
+Some candidates:
+
+- `INSERT` -> `INSERT INTO` (standard syntax)
+- `DELETE` -> `DELETE FROM` (standard syntax)
+- `TRUNCATE` -> `TRUNCATE TABLE` (non-standard. Some dialects support only the latter, none support only the former.)
+- `MERGE` -> `MERGE INTO` (non-standard. Like previous.)
+- `CREATE TEMP TABLE` -> `CREATE TEMPORARY TABLE` (standard syntax)
+- `ADD` -> `ADD COLUMN` (standard syntax)
+- `DROP` -> `DROP COLUMN` (more commonly supported)
+- `ALTER` -> `ALTER COLUMN` (more commonly supported)
+- `RENAME new_table_name` -> `RENAME TO new_table_name` (more commonly supported)
+- `LIMIT ALL` -> (it's the same as specifying no limit)
+
+A related case is the use of non-standard function names where standard alternatives are available, like:
+
+- `NOW()` -> `CURRENT_TIMESTAMP()`
+- `CURDATE()` -> `CURRENT_DATE()`
+
+Another case is with some syntax where some keywords are effectively redundant,
+as it specifies the default behavior. For example:
+
+- `UNION DISTINCT` is the same as `UNION`.
+  Some dialects only support `UNION` and `UNION ALL`, leaving out the `DISTINCT`.
+  SQL standard includes both `ALL` and `DISTINCT`.
+- `SELECT ALL` is the same as `SELECT`.
+- `ORDER BY foo ASC` is the same as `ORDER BY foo`.
+- PostgreSQL `table_name *` is the same as just `table_name`.
+  The `*` indicates that inherited tables are to be included, which is the default.
+
+In these cases the additional redundant syntax can be useful to clarify the intention of the code.
+So the pretty-printer probably shouldn't eliminate such redundant syntax.
+
 ## Dialect-specific
 
 ### PostgreSQL
 
 - :white_check_mark: Convert deprecated `:=` named argument syntax to standard `=>`.
+
+### MySQL
+
+- :heavy_check_mark: Convert `SELECT DISTINCTROW` to `SELECT DISTINCT`.
 
 ## Rules to possibly adopt from SQLFluff
 
