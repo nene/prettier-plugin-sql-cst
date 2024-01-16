@@ -18,6 +18,10 @@ export const rawPretty = async (
   return format(sql, {
     parser: opts.dialect ?? "sqlite",
     plugins: [plugin],
+    // This defaults to true, enabling various CST transforms,
+    // but we want to test the more basic behaviour in most tests,
+    // so we turn it off for most tests.
+    sqlCanonicalSyntax: false,
     ...opts,
   });
 };

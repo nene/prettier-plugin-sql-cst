@@ -12,9 +12,15 @@ describe("create table", () => {
     `);
   });
 
+  // Behaviour when sqlCanonicalSyntax: false
   it(`formats CREATE TEMPORARY TABLE`, async () => {
     await test(dedent`
       CREATE TEMPORARY TABLE foo (
+        id INT
+      )
+    `);
+    await test(dedent`
+      CREATE TEMP TABLE foo (
         id INT
       )
     `);

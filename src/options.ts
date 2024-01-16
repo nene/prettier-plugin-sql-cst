@@ -46,7 +46,7 @@ export const options: SupportOptions = {
   sqlCanonicalSyntax: {
     type: "boolean",
     category: "SQL",
-    default: false,
+    default: true,
     description:
       "Enforces one true style of SQL syntax (adds and removes keywords)",
     // Since 0.11.0
