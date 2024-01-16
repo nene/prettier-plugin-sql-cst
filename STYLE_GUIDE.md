@@ -177,7 +177,7 @@ So the pretty-printer probably shouldn't eliminate such redundant syntax.
 
 ### MySQL
 
-- :heavy_check_mark: Convert `SELECT DISTINCTROW` to `SELECT DISTINCT`.
+- :white_check_mark: :wrench: Convert `SELECT DISTINCTROW` to `SELECT DISTINCT`.
 
 ## Rules to possibly adopt from SQLFluff
 

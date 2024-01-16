@@ -7,6 +7,7 @@ import { SqlPluginOptions } from "src/options";
 import { tempToTemporary } from "./tempToTemporary";
 import { namedArguments } from "./namedArguments";
 import { comparisonOp } from "./comparisonOp";
+import { distinctrow } from "./distinctrow";
 
 export const transformCst = (
   cst: Program,
@@ -26,6 +27,7 @@ export const transformCst = (
       tempToTemporary,
       namedArguments,
       comparisonOp,
+      distinctrow,
     );
   }
 

@@ -21,10 +21,21 @@ describe("with sqlCanonicalSyntax enabled", () => {
         sqlCanonicalSyntax: true,
       }),
     ).toBe(dedent`
-        CREATE TEMPORARY TABLE foo (
-          id INT
-        )
-      `);
+      CREATE TEMPORARY TABLE foo (
+        id INT
+      )
+    `);
+  });
+
+  it(`replaces DISTINCTROW with DISTINCT`, async () => {
+    expect(
+      await pretty(`SELECT DISTINCTROW foo FROM tbl`, {
+        dialect: "mysql",
+        sqlCanonicalSyntax: true,
+      }),
+    ).toBe(dedent`
+      SELECT DISTINCT foo FROM tbl
+    `);
   });
 
   it(`converts old PostgreSQL := syntax to standard => syntax for named arguments`, async () => {
