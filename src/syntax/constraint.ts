@@ -4,7 +4,7 @@ import { CstToDocMap } from "../CstToDocMap";
 import { PrintFn } from "../PrintFn";
 import { group, indent, line, hardline, join } from "../print_utils";
 
-export const constraintMap: CstToDocMap<AllConstraintNodes> = {
+export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
   constraint: (print, node) => {
     if (node.name) {
       return group([

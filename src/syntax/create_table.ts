@@ -3,7 +3,7 @@ import { isAsClause } from "../node_utils";
 import { CstToDocMap, ToDocFn } from "../CstToDocMap";
 import { group, join, line } from "../print_utils";
 
-export const createTableMap: CstToDocMap<AllCreateTableNodes> = {
+export const createTableMap: Partial<CstToDocMap<AllCreateTableNodes>> = {
   create_table_stmt: (print, node, ...rest) => [
     print.spaced([
       "createKw",
