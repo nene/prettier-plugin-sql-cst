@@ -181,7 +181,7 @@ So the pretty-printer probably shouldn't eliminate such redundant syntax.
 - :white_check_mark: :wrench: Convert `SELECT DISTINCTROW` to `SELECT DISTINCT`.
 - :white_check_mark: :wrench: Convert `RENAME AS tbl` to `RENAME TO tbl`.
 - :heavy_check_mark: Convert `CREATE TABLE foo (id INT KEY)` to `CREATE TABLE foo (id INT PRIMARY KEY)`
-- :heavy_check_mark: Convert `&&`, `||` to `AND`, `OR`.
+- :white_check_mark: :wrench: Convert `&&`, `||` to `AND`, `OR`.
 
 ## Rules to possibly adopt from SQLFluff
 

@@ -144,4 +144,21 @@ describe("with sqlCanonicalSyntax enabled", () => {
       }),
     ).toBe(`SELECT * FROM foo WHERE x != 1 AND y != 3`);
   });
+
+  it(`converts MySQL && and || operators to AND and OR`, async () => {
+    expect(
+      await pretty(`SELECT a && b || c`, {
+        dialect: "mysql",
+        sqlCanonicalSyntax: true,
+      }),
+    ).toBe(`SELECT a AND b OR c`);
+  });
+  it(`converts MariaDB && and || operators to AND and OR`, async () => {
+    expect(
+      await pretty(`SELECT a && b || c`, {
+        dialect: "mariadb",
+        sqlCanonicalSyntax: true,
+      }),
+    ).toBe(`SELECT a AND b OR c`);
+  });
 });

@@ -1,11 +1,26 @@
-import { cstVisitor, Program } from "sql-parser-cst";
+import { cstVisitor, Keyword, Program } from "sql-parser-cst";
+import { AllPrettierOptions } from "src/options";
 
-export const canonicOperators = (cst: Program): Program => {
+export const canonicOperators = (
+  cst: Program,
+  originalText: string,
+  options: AllPrettierOptions,
+): Program => {
   cstVisitor({
-    // Replaces <> operator with !=
     binary_expr: (node) => {
+      // Replaces <> operator with !=
       if (node.operator === "<>") {
         node.operator = "!=";
+      }
+
+      // Replace MySQL && and || operators with AND and OR
+      if (options.parser === "mysql" || options.parser === "mariadb") {
+        if (node.operator === "&&") {
+          node.operator = keyword("AND");
+        }
+        if (node.operator === "||") {
+          node.operator = keyword("OR");
+        }
       }
     },
     // Replaces PostgreSQL deprecated := operator with =>
@@ -18,3 +33,7 @@ export const canonicOperators = (cst: Program): Program => {
 
   return cst;
 };
+
+function keyword<T extends string>(name: T): Keyword<T> {
+  return { type: "keyword", name, text: name };
+}

@@ -3,16 +3,16 @@ import { moveCommentsToRoot } from "./comments";
 import { processAliasAs } from "./aliasAs";
 import { stripTrailingCommas } from "./stripTrailingCommas";
 import { addFinalSemicolon } from "./addFinalSemicolon";
-import { SqlPluginOptions } from "src/options";
+import { AllPrettierOptions, SqlPluginOptions } from "src/options";
 import { canonicKeywords } from "./canonicKeywords";
 import { canonicOperators } from "./canonicOperators";
 
-export const transformCst = (
-  cst: Program,
-  originalText: string,
-  options: SqlPluginOptions,
+export const transformCst: TransformFn = (
+  cst,
+  originalText,
+  options,
 ): Program => {
-  const transforms = [
+  const transforms: TransformFn[] = [
     // Note that we first perform moveCommentsToRoot transform,
     // so we don't need to worry about comments interfering with other transforms
     moveCommentsToRoot,
@@ -24,7 +24,13 @@ export const transformCst = (
   }
 
   return transforms.reduce(
-    (cst, transform) => transform(cst, originalText),
+    (cst, transform) => transform(cst, originalText, options),
     cst,
   );
 };
+
+type TransformFn = (
+  cst: Program,
+  originalText: string,
+  options: AllPrettierOptions,
+) => Program;
