@@ -25,6 +25,14 @@ describe("create table", () => {
       )
     `);
   });
+  // Behaviour when sqlCanonicalSyntax: false
+  it(`formats CREATE GLOBAL TEMPORARY TABLE`, async () => {
+    await testPostgresql(dedent`
+      CREATE GLOBAL TEMPORARY TABLE foo (
+        id INT
+      )
+    `);
+  });
 
   it(`formats IF NOT EXISTS`, async () => {
     await test(dedent`
