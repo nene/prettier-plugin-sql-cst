@@ -35,6 +35,18 @@ export const createTableMap: Partial<CstToDocMap<AllCreateTableNodes>> = {
   with_partition_columns_clause: (print) =>
     print.spaced(["withPartitionColumnsKw", "columns"]),
   create_table_using_clause: (print) => print.spaced(["usingKw", "module"]),
+  create_table_inherits_clause: (print) =>
+    print.spaced(["inheritsKw", "tables"]),
+  create_table_partition_by_clause: (print) =>
+    print.spaced(["partitionByKw", "strategyKw", "columns"]),
+  using_access_method_clause: (print) => print.spaced(["usingKw", "method"]),
+  create_table_tablespace_clause: (print) =>
+    print.spaced(["tablespaceKw", "name"]),
+  with_storage_parameters_clause: (print) =>
+    print.spaced(["withKw", "options"]),
+  create_table_without_oids_clause: (print) => print.spaced("withoutOidsKw"),
+  create_table_on_commit_clause: (print) =>
+    print.spaced(["onCommitKw", "actionKw"]),
 };
 
 const printClauses: ToDocFn<CreateTableStmt> = (print, node) => {

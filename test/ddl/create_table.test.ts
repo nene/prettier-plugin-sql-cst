@@ -281,6 +281,21 @@ describe("create table", () => {
     `);
   });
 
+  it("formats additional PostgeSQL CREATE TABLE clauses", async () => {
+    await testPostgresql(dedent`
+      CREATE TABLE client (
+        id INT
+      )
+      INHERITS (parent_table1, parent_table2)
+      PARTITION BY LIST (id, name my_opclass)
+      USING "SP-GiST"
+      TABLESPACE pg_default
+      WITH (fillfactor = 70, autovacuum_enabled)
+      WITHOUT OIDS
+      ON COMMIT DELETE ROWS
+    `);
+  });
+
   it(`formats CREATE TABLE AS`, async () => {
     await test(dedent`
       CREATE TABLE foo AS
