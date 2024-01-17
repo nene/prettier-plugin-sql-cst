@@ -33,6 +33,12 @@ export const canonicKeywords = (cst: Program): Program => {
         node.intoKw = keyword("INTO");
       }
     },
+    // Replaces MERGE with MERGE INTO
+    merge_clause: (node) => {
+      if (!node.intoKw) {
+        node.intoKw = keyword("INTO");
+      }
+    },
     // Replaces DELETE with DELETE FROM
     delete_clause: (node) => {
       if (!node.fromKw) {

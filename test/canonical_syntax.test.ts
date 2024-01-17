@@ -90,6 +90,21 @@ describe("with sqlCanonicalSyntax enabled", () => {
     `);
   });
 
+  it(`replaces MERGE with MERGE INTO`, async () => {
+    expect(
+      await pretty(`MERGE foo USING bar ON x = y WHEN MATCHED THEN DELETE`, {
+        dialect: "bigquery",
+        sqlCanonicalSyntax: true,
+      }),
+    ).toBe(dedent`
+      MERGE INTO foo
+      USING bar
+      ON x = y
+      WHEN MATCHED THEN
+        DELETE
+    `);
+  });
+
   it(`replaces DELETE with DELETE FROM`, async () => {
     expect(
       await pretty(`DELETE client WHERE id = 10`, {
