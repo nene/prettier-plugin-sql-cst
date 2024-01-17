@@ -149,7 +149,6 @@ Some candidates:
 - `DROP` -> `DROP COLUMN` (more commonly supported)
 - `ALTER` -> `ALTER COLUMN` (more commonly supported)
 - :white_check_mark: :wrench: `RENAME new_table_name` -> `RENAME TO new_table_name` (more commonly supported)
-- `LIMIT ALL` -> (it's the same as specifying no limit)
 
 A related case is the use of non-standard function names where standard alternatives are available, like:
 
@@ -175,6 +174,7 @@ So the pretty-printer probably shouldn't eliminate such redundant syntax.
 ### PostgreSQL
 
 - :white_check_mark: :wrench: Convert deprecated `:=` named argument syntax to standard `=>`.
+- :question: `LIMIT ALL` -> (it's the same as specifying no limit)
 
 ### MySQL
 
