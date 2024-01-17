@@ -29,7 +29,10 @@ export const createTableMap: Partial<CstToDocMap<AllCreateTableNodes>> = {
       return print.spaced("name");
     }
   },
-  create_table_like_clause: (print) => print.spaced(["likeKw", "name"]),
+  create_table_like_clause: (print) =>
+    print.spaced(["likeKw", "name", "options"]),
+  table_like_option: (print) =>
+    print.spaced(["includingOrExcludingKw", "optionKw"]),
   create_table_copy_clause: (print) => print.spaced(["copyKw", "name"]),
   create_table_clone_clause: (print) => print.spaced(["cloneKw", "table"]),
   with_partition_columns_clause: (print) =>

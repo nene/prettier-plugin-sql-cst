@@ -328,6 +328,13 @@ describe("create table", () => {
       LIKE my_old_table
     `);
   });
+  it(`formats CREATE TABLE LIKE inside parenthesis`, async () => {
+    await testPostgresql(dedent`
+      CREATE TABLE foo (
+        LIKE my_old_table INCLUDING COMMENTS EXCLUDING CONSTRAINTS
+      )
+    `);
+  });
 
   it(`formats CREATE TABLE COPY`, async () => {
     await testBigquery(dedent`
