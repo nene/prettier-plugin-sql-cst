@@ -23,7 +23,7 @@ export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
   constraint_primary_key: (print) =>
     group(print.spaced(["primaryKeyKw", "direction", "columns", "clauses"])),
   constraint_unique: (print) =>
-    group(print.spaced(["uniqueKw", "columns", "clauses"])),
+    group(print.spaced(["uniqueKw", "columns", "nullsKw", "clauses"])),
   constraint_check: (print) => group(print.spaced(["checkKw", "expr"])),
   constraint_collate: (print) =>
     group(print.spaced(["collateKw", "collation"])),
@@ -46,6 +46,7 @@ export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
   referential_match: (print) => print.spaced(["matchKw", "typeKw"]),
   constraint_generated: (print) =>
     print.spaced(["generatedKw", "asKw", "expr", "storageKw"]),
+  identity_column: (print) => print("identityKw"),
   constraint_auto_increment: (print) => print("autoIncrementKw"),
   on_conflict_clause: (print) => print.spaced(["onConflictKw", "resolutionKw"]),
   constraint_comment: (print) => print.spaced(["commentKw", "value"]),
@@ -57,6 +58,7 @@ export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
   constraint_storage: (print) => print.spaced(["storageKw", "typeKw"]),
   constraint_engine_attribute: (print, node) =>
     join(node.hasEq ? " = " : " ", print(["engineAttributeKw", "value"])),
+  constraint_compression: (print) => print.spaced(["compressionKw", "method"]),
 };
 
 const printUnnamedConstraint = <T>(
