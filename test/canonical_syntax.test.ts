@@ -102,6 +102,17 @@ describe("with sqlCanonicalSyntax enabled", () => {
     `);
   });
 
+  it(`replaces TRUNCATE with TRUNCATE TABLE`, async () => {
+    expect(
+      await pretty(`TRUNCATE client`, {
+        dialect: "mysql",
+        sqlCanonicalSyntax: true,
+      }),
+    ).toBe(dedent`
+      TRUNCATE TABLE client
+    `);
+  });
+
   it(`converts old PostgreSQL := syntax to standard => syntax for named arguments`, async () => {
     expect(
       await pretty(`SELECT my_func(foo := 'Hello', bar := 'World')`, {

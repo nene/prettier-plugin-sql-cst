@@ -39,6 +39,12 @@ export const canonicKeywords = (cst: Program): Program => {
         node.fromKw = keyword("FROM");
       }
     },
+    // Replaces TRUNCATE with TRUNCATE TABLE
+    truncate_stmt: (node) => {
+      if (!node.tableKw) {
+        node.tableKw = keyword("TABLE");
+      }
+    },
   })(cst);
 
   return cst;
