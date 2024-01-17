@@ -98,11 +98,11 @@ The plugin provides the following parsers:
 The standard Prettier options [printWidth][], [tabWidth][], [useTabs][] apply.
 There are also some SQL-specific options:
 
-| API Option           | Default | Description                                                                                                                                                                                                         |
-| -------------------- | :-----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sqlKeywordCase`     | `upper` | Converts SQL keywords to `upper` or `lower` case, or `preserve` existing.                                                                                                                                           |
-| `sqlParamTypes`      |  `[]`   | Array of bound parameter types: `?`, `?nr`, `:name`, `@name`, `$name`.                                                                                                                                              |
-| `sqlCanonicalSyntax` | `true`  | When enabled, performs some opinionated changes of keywords and operators, like enforcing the use of `AS` in aliases and replacing `<>` comparisons with `!=`. See [STYLE_GUIDE][] for more details. (Since 0.11.0) |
+| API Option           | Default | Description                                                                                                                                                                                                                 |
+| -------------------- | :-----: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sqlKeywordCase`     | `upper` | Converts SQL keywords to `upper` or `lower` case, or `preserve` existing. Note that for now `preserve` is somewhat incompatible with `sqlCanonicalSyntax: true` (e.g. the added `AS` keywords will always be in uppercase). |
+| `sqlParamTypes`      |  `[]`   | Array of bound parameter types: `?`, `?nr`, `:name`, `@name`, `$name`.                                                                                                                                                      |
+| `sqlCanonicalSyntax` | `true`  | When enabled, performs some opinionated changes of keywords and operators, like enforcing the use of `AS` in aliases and replacing `<>` comparisons with `!=`. See [STYLE_GUIDE][] for more details. (Since 0.11.0)         |
 
 ## FAQ
 
