@@ -4,7 +4,7 @@ import { CstToDocMap } from "../CstToDocMap";
 import { PrintFn } from "../PrintFn";
 import { group, indent, line, hardline, join } from "../print_utils";
 
-export const constraintMap: CstToDocMap<AllConstraintNodes> = {
+export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
   constraint: (print, node) => {
     if (node.name) {
       return group([
@@ -16,16 +16,14 @@ export const constraintMap: CstToDocMap<AllConstraintNodes> = {
     }
   },
   constraint_name: (print) => print.spaced(["constraintKw", "name"]),
-  constraint_deferrable: (print) =>
-    print.spaced(["deferrableKw", "initiallyKw"]),
+  constraint_modifier: (print) => print.spaced("kw"),
   constraint_null: (print) => print("nullKw"),
-  constraint_not_null: (print) =>
-    group(print.spaced(["notNullKw", "onConflict"])),
+  constraint_not_null: (print) => group(print.spaced(["notNullKw", "clauses"])),
   constraint_default: (print) => group(print.spaced(["defaultKw", "expr"])),
   constraint_primary_key: (print) =>
-    group(print.spaced(["primaryKeyKw", "direction", "columns", "onConflict"])),
+    group(print.spaced(["primaryKeyKw", "direction", "columns", "clauses"])),
   constraint_unique: (print) =>
-    group(print.spaced(["uniqueKw", "columns", "onConflict"])),
+    group(print.spaced(["uniqueKw", "columns", "clauses"])),
   constraint_check: (print) => group(print.spaced(["checkKw", "expr"])),
   constraint_collate: (print) =>
     group(print.spaced(["collateKw", "collation"])),
@@ -42,6 +40,8 @@ export const constraintMap: CstToDocMap<AllConstraintNodes> = {
       return baseDoc;
     }
   },
+  index_specification: (print) =>
+    print.spaced(["expr", "opclass", "direction", "nullHandlingKw"]),
   referential_action: (print) => print.spaced(["onKw", "eventKw", "actionKw"]),
   referential_match: (print) => print.spaced(["matchKw", "typeKw"]),
   constraint_generated: (print) =>
@@ -63,10 +63,10 @@ const printUnnamedConstraint = <T>(
   print: PrintFn<Constraint<T>>,
   node: Constraint<T>,
 ): Doc => {
-  if (node.deferrable) {
+  if (node.modifiers.length > 0) {
     return group([
       print("constraint"),
-      indent([hardline, print("deferrable")]),
+      indent([hardline, print.spaced("modifiers")]),
     ]);
   } else {
     return print("constraint");

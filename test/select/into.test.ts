@@ -8,7 +8,11 @@ describe("select into", () => {
 
       await testPostgresql(dedent`
         SELECT 1
-        INTO TEMPORARY UNLOGGED TABLE my_table
+        INTO TEMPORARY TABLE my_table
+      `);
+      await testPostgresql(dedent`
+        SELECT 1
+        INTO UNLOGGED TABLE my_table
       `);
     });
   });
