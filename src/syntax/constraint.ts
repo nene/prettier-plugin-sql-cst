@@ -16,16 +16,14 @@ export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
     }
   },
   constraint_name: (print) => print.spaced(["constraintKw", "name"]),
-  constraint_deferrable: (print) =>
-    print.spaced(["deferrableKw", "initiallyKw"]),
+  constraint_modifier: (print) => print.spaced("kw"),
   constraint_null: (print) => print("nullKw"),
-  constraint_not_null: (print) =>
-    group(print.spaced(["notNullKw", "onConflict"])),
+  constraint_not_null: (print) => group(print.spaced(["notNullKw", "clauses"])),
   constraint_default: (print) => group(print.spaced(["defaultKw", "expr"])),
   constraint_primary_key: (print) =>
-    group(print.spaced(["primaryKeyKw", "direction", "columns", "onConflict"])),
+    group(print.spaced(["primaryKeyKw", "direction", "columns", "clauses"])),
   constraint_unique: (print) =>
-    group(print.spaced(["uniqueKw", "columns", "onConflict"])),
+    group(print.spaced(["uniqueKw", "columns", "clauses"])),
   constraint_check: (print) => group(print.spaced(["checkKw", "expr"])),
   constraint_collate: (print) =>
     group(print.spaced(["collateKw", "collation"])),
@@ -63,11 +61,8 @@ const printUnnamedConstraint = <T>(
   print: PrintFn<Constraint<T>>,
   node: Constraint<T>,
 ): Doc => {
-  if (node.deferrable) {
-    return group([
-      print("constraint"),
-      indent([hardline, print("deferrable")]),
-    ]);
+  if (node.modifiers.length > 0) {
+    return group([print("constraint"), indent([hardline, print("modifiers")])]);
   } else {
     return print("constraint");
   }
