@@ -4,10 +4,14 @@ import { keyword } from "./transformUtils";
 export const canonicKeywords = (cst: Program): Program => {
   cstVisitor({
     // Replaces TEMP with TEMPORARY
-    create_table_stmt: (node) => {
-      if (node.temporaryKw && node.temporaryKw.name === "TEMP") {
-        node.temporaryKw.name = "TEMPORARY";
-        node.temporaryKw.text = "TEMPORARY";
+    table_kind: (node) => {
+      if (Array.isArray(node.kindKw)) {
+        // TODO...
+      } else {
+        if (node.kindKw.name === "TEMP") {
+          node.kindKw.name = "TEMPORARY";
+          node.kindKw.text = "TEMPORARY";
+        }
       }
     },
     // Replaces MySQL SELECT DISTINCTROW with SELECT DISTINCT
