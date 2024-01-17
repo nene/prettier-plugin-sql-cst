@@ -7,11 +7,7 @@ export const createTableMap: Partial<CstToDocMap<AllCreateTableNodes>> = {
   create_table_stmt: (print, node, ...rest) => [
     print.spaced([
       "createKw",
-      "orReplaceKw",
-      "temporaryKw",
-      "externalKw",
-      "snapshotKw",
-      "virtualKw",
+      "kind",
       "tableKw",
       "ifNotExistsKw",
       "name",
@@ -20,6 +16,7 @@ export const createTableMap: Partial<CstToDocMap<AllCreateTableNodes>> = {
     printClauses(print, node, ...rest),
     node.options ? [line, group(print("options"))] : [],
   ],
+  table_kind: (print) => print.spaced("kindKw"),
   column_definition: (print) =>
     print.spaced(["name", "dataType", "constraints"]),
   table_option: (print, node) => {
