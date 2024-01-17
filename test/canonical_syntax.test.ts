@@ -38,6 +38,30 @@ describe("with sqlCanonicalSyntax enabled", () => {
     `);
   });
 
+  it(`replaces RENAME with RENAME TO`, async () => {
+    expect(
+      await pretty(`ALTER TABLE foo RENAME bar`, {
+        dialect: "mysql",
+        sqlCanonicalSyntax: true,
+      }),
+    ).toBe(dedent`
+      ALTER TABLE foo
+      RENAME TO bar
+    `);
+  });
+
+  it(`replaces RENAME AS with RENAME TO`, async () => {
+    expect(
+      await pretty(`ALTER TABLE foo RENAME AS bar`, {
+        dialect: "mysql",
+        sqlCanonicalSyntax: true,
+      }),
+    ).toBe(dedent`
+      ALTER TABLE foo
+      RENAME TO bar
+    `);
+  });
+
   it(`converts old PostgreSQL := syntax to standard => syntax for named arguments`, async () => {
     expect(
       await pretty(`SELECT my_func(foo := 'Hello', bar := 'World')`, {

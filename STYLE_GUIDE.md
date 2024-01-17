@@ -147,7 +147,7 @@ Some candidates:
 - `ADD` -> `ADD COLUMN` (standard syntax)
 - `DROP` -> `DROP COLUMN` (more commonly supported)
 - `ALTER` -> `ALTER COLUMN` (more commonly supported)
-- `RENAME new_table_name` -> `RENAME TO new_table_name` (more commonly supported)
+- :white_check_mark: :wrench: `RENAME new_table_name` -> `RENAME TO new_table_name` (more commonly supported)
 - `LIMIT ALL` -> (it's the same as specifying no limit)
 
 A related case is the use of non-standard function names where standard alternatives are available, like:
@@ -178,6 +178,8 @@ So the pretty-printer probably shouldn't eliminate such redundant syntax.
 ### MySQL
 
 - :white_check_mark: :wrench: Convert `SELECT DISTINCTROW` to `SELECT DISTINCT`.
+- :white_check_mark: :wrench: Convert `RENAME AS tbl` to `RENAME TO tbl`.
+- :heavy_check_mark: Convert `CREATE TABLE foo (id INT KEY)` to `CREATE TABLE foo (id INT PRIMARY KEY)`
 
 ## Rules to possibly adopt from SQLFluff
 

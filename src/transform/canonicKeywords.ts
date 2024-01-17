@@ -16,6 +16,20 @@ export const canonicKeywords = (cst: Program): Program => {
         node.distinctKw.text = "DISTINCT";
       }
     },
+    // Replaces RENAME & RENAME AS with RENAME TO
+    alter_action_rename_table: (node) => {
+      if (Array.isArray(node.renameKw)) {
+        if (node.renameKw[1].name === "AS") {
+          node.renameKw[1].name = "TO";
+          node.renameKw[1].text = "TO";
+        }
+      } else {
+        node.renameKw = [
+          node.renameKw,
+          { type: "keyword", name: "TO", text: "TO" },
+        ];
+      }
+    },
   })(cst);
 
   return cst;
