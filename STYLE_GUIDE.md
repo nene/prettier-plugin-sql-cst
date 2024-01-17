@@ -139,7 +139,8 @@ We should take into account:
 
 Some candidates:
 
-- `INSERT` -> `INSERT INTO` (standard syntax)
+- :white_check_mark: :wrench: `INSERT` -> `INSERT INTO` (standard syntax)
+- :white_check_mark: :wrench: `REPLACE` -> `REPLACE INTO` (non-standard. More widely supported)
 - `DELETE` -> `DELETE FROM` (standard syntax)
 - `TRUNCATE` -> `TRUNCATE TABLE` (non-standard. Some dialects support only the latter, none support only the former.)
 - `MERGE` -> `MERGE INTO` (non-standard. Like previous.)

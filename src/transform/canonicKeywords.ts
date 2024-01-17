@@ -30,6 +30,12 @@ export const canonicKeywords = (cst: Program): Program => {
         ];
       }
     },
+    // Replaces INSERT with INSERT INTO
+    insert_clause: (node) => {
+      if (!node.intoKw) {
+        node.intoKw = { type: "keyword", name: "INTO", text: "INTO" };
+      }
+    },
   })(cst);
 
   return cst;

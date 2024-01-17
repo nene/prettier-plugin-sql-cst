@@ -62,6 +62,34 @@ describe("with sqlCanonicalSyntax enabled", () => {
     `);
   });
 
+  it(`replaces INSERT with INSERT INTO`, async () => {
+    expect(
+      await pretty(`INSERT foo (id) VALUES (1)`, {
+        dialect: "mysql",
+        sqlCanonicalSyntax: true,
+      }),
+    ).toBe(dedent`
+      INSERT INTO foo
+        (id)
+      VALUES
+        (1)
+    `);
+  });
+
+  it(`replaces REPLACE with REPLACE INTO`, async () => {
+    expect(
+      await pretty(`REPLACE foo (id) VALUES (1)`, {
+        dialect: "mysql",
+        sqlCanonicalSyntax: true,
+      }),
+    ).toBe(dedent`
+      REPLACE INTO foo
+        (id)
+      VALUES
+        (1)
+    `);
+  });
+
   it(`converts old PostgreSQL := syntax to standard => syntax for named arguments`, async () => {
     expect(
       await pretty(`SELECT my_func(foo := 'Hello', bar := 'World')`, {
