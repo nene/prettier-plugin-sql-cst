@@ -90,6 +90,18 @@ describe("with sqlCanonicalSyntax enabled", () => {
     `);
   });
 
+  it(`replaces DELETE with DELETE FROM`, async () => {
+    expect(
+      await pretty(`DELETE client WHERE id = 10`, {
+        dialect: "bigquery",
+        sqlCanonicalSyntax: true,
+      }),
+    ).toBe(dedent`
+      DELETE FROM client
+      WHERE id = 10
+    `);
+  });
+
   it(`converts old PostgreSQL := syntax to standard => syntax for named arguments`, async () => {
     expect(
       await pretty(`SELECT my_func(foo := 'Hello', bar := 'World')`, {

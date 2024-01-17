@@ -141,7 +141,7 @@ Some candidates:
 
 - :white_check_mark: :wrench: `INSERT` -> `INSERT INTO` (standard syntax)
 - :white_check_mark: :wrench: `REPLACE` -> `REPLACE INTO` (non-standard. More widely supported)
-- `DELETE` -> `DELETE FROM` (standard syntax)
+- :white_check_mark: :wrench: `DELETE` -> `DELETE FROM` (standard syntax)
 - `TRUNCATE` -> `TRUNCATE TABLE` (non-standard. Some dialects support only the latter, none support only the former.)
 - `MERGE` -> `MERGE INTO` (non-standard. Like previous.)
 - :white_check_mark: :wrench: `CREATE TEMP TABLE` -> `CREATE TEMPORARY TABLE` (standard syntax)
