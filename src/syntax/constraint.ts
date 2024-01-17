@@ -40,6 +40,8 @@ export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
       return baseDoc;
     }
   },
+  index_specification: (print) =>
+    print.spaced(["expr", "opclass", "direction", "nullHandlingKw"]),
   referential_action: (print) => print.spaced(["onKw", "eventKw", "actionKw"]),
   referential_match: (print) => print.spaced(["matchKw", "typeKw"]),
   constraint_generated: (print) =>
