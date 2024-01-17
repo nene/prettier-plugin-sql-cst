@@ -4,10 +4,9 @@ import { processAliasAs } from "./aliasAs";
 import { stripTrailingCommas } from "./stripTrailingCommas";
 import { addFinalSemicolon } from "./addFinalSemicolon";
 import { SqlPluginOptions } from "src/options";
-import { tempToTemporary } from "./tempToTemporary";
+import { canonicKeywords } from "./canonicKeywords";
 import { namedArguments } from "./namedArguments";
 import { comparisonOp } from "./comparisonOp";
-import { distinctrow } from "./distinctrow";
 
 export const transformCst = (
   cst: Program,
@@ -24,10 +23,9 @@ export const transformCst = (
   if (options.sqlCanonicalSyntax) {
     transforms.push(
       processAliasAs,
-      tempToTemporary,
       namedArguments,
       comparisonOp,
-      distinctrow,
+      canonicKeywords,
     );
   }
 
