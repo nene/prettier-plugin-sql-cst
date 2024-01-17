@@ -1,4 +1,4 @@
-import { cstVisitor, Program } from "sql-parser-cst";
+import { cstVisitor, Keyword, Program } from "sql-parser-cst";
 
 export const canonicKeywords = (cst: Program): Program => {
   cstVisitor({
@@ -24,19 +24,20 @@ export const canonicKeywords = (cst: Program): Program => {
           node.renameKw[1].text = "TO";
         }
       } else {
-        node.renameKw = [
-          node.renameKw,
-          { type: "keyword", name: "TO", text: "TO" },
-        ];
+        node.renameKw = [node.renameKw, keyword("TO")];
       }
     },
     // Replaces INSERT with INSERT INTO
     insert_clause: (node) => {
       if (!node.intoKw) {
-        node.intoKw = { type: "keyword", name: "INTO", text: "INTO" };
+        node.intoKw = keyword("INTO");
       }
     },
   })(cst);
 
   return cst;
 };
+
+function keyword<T extends string>(name: T): Keyword<T> {
+  return { type: "keyword", name, text: name };
+}
