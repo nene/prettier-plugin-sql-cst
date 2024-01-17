@@ -5,8 +5,7 @@ import { stripTrailingCommas } from "./stripTrailingCommas";
 import { addFinalSemicolon } from "./addFinalSemicolon";
 import { SqlPluginOptions } from "src/options";
 import { canonicKeywords } from "./canonicKeywords";
-import { namedArguments } from "./namedArguments";
-import { comparisonOp } from "./comparisonOp";
+import { canonicOperators } from "./canonicOperators";
 
 export const transformCst = (
   cst: Program,
@@ -21,12 +20,7 @@ export const transformCst = (
     addFinalSemicolon,
   ];
   if (options.sqlCanonicalSyntax) {
-    transforms.push(
-      processAliasAs,
-      namedArguments,
-      comparisonOp,
-      canonicKeywords,
-    );
+    transforms.push(processAliasAs, canonicOperators, canonicKeywords);
   }
 
   return transforms.reduce(
