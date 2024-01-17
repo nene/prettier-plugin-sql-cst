@@ -64,7 +64,10 @@ const printUnnamedConstraint = <T>(
   node: Constraint<T>,
 ): Doc => {
   if (node.modifiers.length > 0) {
-    return group([print("constraint"), indent([hardline, print("modifiers")])]);
+    return group([
+      print("constraint"),
+      indent([hardline, print.spaced("modifiers")]),
+    ]);
   } else {
     return print("constraint");
   }
