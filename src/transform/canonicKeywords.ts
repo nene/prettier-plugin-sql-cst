@@ -1,4 +1,5 @@
-import { cstVisitor, Keyword, Program } from "sql-parser-cst";
+import { cstVisitor, Program } from "sql-parser-cst";
+import { keyword } from "./transformUtils";
 
 export const canonicKeywords = (cst: Program): Program => {
   cstVisitor({
@@ -55,7 +56,3 @@ export const canonicKeywords = (cst: Program): Program => {
 
   return cst;
 };
-
-function keyword<T extends string>(name: T): Keyword<T> {
-  return { type: "keyword", name, text: name };
-}

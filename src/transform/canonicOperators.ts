@@ -1,5 +1,6 @@
-import { cstVisitor, Keyword, Program } from "sql-parser-cst";
+import { cstVisitor, Program } from "sql-parser-cst";
 import { AllPrettierOptions } from "src/options";
+import { keyword } from "./transformUtils";
 
 export const canonicOperators = (
   cst: Program,
@@ -33,7 +34,3 @@ export const canonicOperators = (
 
   return cst;
 };
-
-function keyword<T extends string>(name: T): Keyword<T> {
-  return { type: "keyword", name, text: name };
-}
