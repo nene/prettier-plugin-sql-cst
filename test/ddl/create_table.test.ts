@@ -306,7 +306,10 @@ describe("create table", () => {
       AUTOEXTEND_SIZE = 10,
       AVG_ROW_LENGTH = 100,
       DEFAULT CHARACTER SET latin1,
-      COMMENT = 'hello'
+      COMMENT = 'hello',
+      TABLESPACE ts1,
+      STORAGE DISK,
+      UNION = (foo, bar)
     `);
   });
 
