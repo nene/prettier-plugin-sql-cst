@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { test, testBigquery, testPostgresql } from "../test_utils";
+import { test, testBigquery, testMysql, testPostgresql } from "../test_utils";
 
 describe("alter table", () => {
   it(`formats ALTER TABLE..RENAME`, async () => {
@@ -138,6 +138,55 @@ describe("alter table", () => {
         ALTER TABLE client
         ALTER COLUMN price
         SET DATA TYPE INT64
+      `);
+    });
+  });
+
+  describe("constraints", () => {
+    it(`formats ADD CONSTRAINT`, async () => {
+      await testPostgresql(dedent`
+        ALTER TABLE client
+        ADD CONSTRAINT price_positive CHECK (price > 0) NOT VALID
+      `);
+      await testPostgresql(dedent`
+        ALTER TABLE client
+        ADD PRIMARY KEY (price)
+      `);
+    });
+
+    it(`formats DROP CONSTRAINT`, async () => {
+      await testPostgresql(dedent`
+        ALTER TABLE client
+        DROP CONSTRAINT price_positive
+      `);
+      await testPostgresql(dedent`
+        ALTER TABLE client
+        DROP CONSTRAINT IF EXISTS price_positive CASCADE
+      `);
+    });
+
+    it(`formats ALTER CONSTRAINT`, async () => {
+      await testPostgresql(dedent`
+        ALTER TABLE client
+        ALTER CONSTRAINT price_positive DEFERRABLE INITIALLY DEFERRED
+      `);
+      await testMysql(dedent`
+        ALTER TABLE client
+        ALTER CHECK price_positive NOT ENFORCED
+      `);
+    });
+
+    it(`formats RENAME CONSTRAINT`, async () => {
+      await testPostgresql(dedent`
+        ALTER TABLE client
+        RENAME CONSTRAINT price_positive1 TO price_positive2
+      `);
+    });
+
+    it(`formats VALIDATE CONSTRAINT`, async () => {
+      await testPostgresql(dedent`
+        ALTER TABLE client
+        VALIDATE CONSTRAINT price_positive
       `);
     });
   });

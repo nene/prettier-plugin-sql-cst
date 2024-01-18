@@ -20,6 +20,22 @@ export const alterTableMap: Partial<
   alter_action_set_options: (print) => print.spaced(["setKw", "options"]),
   alter_action_set_default_collate: (print) =>
     print.spaced(["setDefaultCollateKw", "collation"]),
+  alter_action_add_constraint: (print) => print.spaced(["addKw", "constraint"]),
+  alter_action_drop_constraint: (print) =>
+    print.spaced([
+      "dropConstraintKw",
+      "ifExistsKw",
+      "constraint",
+      "behaviorKw",
+    ]),
+  alter_action_alter_constraint: (print) =>
+    print.spaced(["alterConstraintKw", "constraint", "modifiers"]),
+  alter_action_rename_constraint: (print) =>
+    print.spaced(["renameConstraintKw", "oldName", "toKw", "newName"]),
+  alter_action_validate_constraint: (print) =>
+    print.spaced(["validateConstraintKw", "constraint"]),
+
+  // ALTER COLUMN
   alter_action_alter_column: (print) => [
     print.spaced(["alterKw", "ifExistsKw", "column"]),
     hardline,
