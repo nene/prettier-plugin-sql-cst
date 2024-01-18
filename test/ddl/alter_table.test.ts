@@ -140,6 +140,19 @@ describe("alter table", () => {
         SET DATA TYPE INT64
       `);
     });
+
+    it(`formats ALTER COLUMN .. SET VISIBLE/INVISIBLE`, async () => {
+      await testMysql(dedent`
+        ALTER TABLE client
+        ALTER COLUMN price
+        SET VISIBLE
+      `);
+      await testMysql(dedent`
+        ALTER TABLE client
+        ALTER COLUMN price
+        SET INVISIBLE
+      `);
+    });
   });
 
   describe("constraints", () => {

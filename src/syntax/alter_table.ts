@@ -34,6 +34,8 @@ export const alterTableMap: Partial<
     print.spaced(["renameConstraintKw", "oldName", "toKw", "newName"]),
   alter_action_validate_constraint: (print) =>
     print.spaced(["validateConstraintKw", "constraint"]),
+  alter_action_set_visible: (print) => print.spaced("setVisibleKw"),
+  alter_action_set_invisible: (print) => print.spaced("setInvisibleKw"),
 
   // ALTER COLUMN
   alter_action_alter_column: (print) => [
