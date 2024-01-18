@@ -224,7 +224,23 @@ describe("create table", () => {
         id INT,
         name VARCHAR(100) NOT NULL ON CONFLICT FAIL,
         uuid INT UNIQUE ON CONFLICT ROLLBACK,
-        CONSTRAINT prim_key PRIMARY KEY (id) ON CONFLICT ABORT
+        CONSTRAINT prim_key PRIMARY KEY (id) ON CONFLICT ABORT,
+        foo INT CHECK (foo > 0) ON CONFLICT IGNORE
+      )
+    `);
+  });
+
+  it(`formats constraints with index-parameter clauses`, async () => {
+    await testPostgresql(dedent`
+      CREATE TABLE client (
+        id INT,
+        PRIMARY KEY (id) INCLUDE (name),
+        UNIQUE (id) USING INDEX TABLESPACE pg_default,
+        EXCLUDE
+          (id WITH =)
+          WITH (fillfactor = 70, autovacuum_enabled)
+          USING INDEX TABLESPACE pg_default
+          WHERE (id > 0)
       )
     `);
   });
