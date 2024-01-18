@@ -24,7 +24,8 @@ export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
     group(print.spaced(["primaryKeyKw", "direction", "columns", "clauses"])),
   constraint_unique: (print) =>
     group(print.spaced(["uniqueKw", "columns", "nullsKw", "clauses"])),
-  constraint_check: (print) => group(print.spaced(["checkKw", "expr"])),
+  constraint_check: (print) =>
+    group(print.spaced(["checkKw", "expr", "clauses"])),
   constraint_collate: (print) =>
     group(print.spaced(["collateKw", "collation"])),
   constraint_foreign_key: (print) =>
@@ -75,7 +76,7 @@ const printUnnamedConstraint = <T>(
   if (node.modifiers.length > 0) {
     return group([
       print("constraint"),
-      indent([hardline, print.spaced("modifiers")]),
+      indent([line, print.spaced("modifiers")]),
     ]);
   } else {
     return print("constraint");

@@ -128,7 +128,8 @@ describe("create table", () => {
         id INT,
         name TEXT,
         KEY (id, name),
-        FULLTEXT INDEX (name)
+        FULLTEXT INDEX (name),
+        CHECK (id > 0) NOT ENFORCED
       )
     `);
   });
@@ -162,8 +163,7 @@ describe("create table", () => {
       CREATE TABLE client (
         id INT,
         CONSTRAINT fkey
-          FOREIGN KEY (org_id1) REFERENCES organization (id1)
-            DEFERRABLE,
+          FOREIGN KEY (org_id1) REFERENCES organization (id1) DEFERRABLE,
         FOREIGN KEY (org_id2) REFERENCES organization (id2)
           NOT DEFERRABLE INITIALLY DEFERRED
       )
