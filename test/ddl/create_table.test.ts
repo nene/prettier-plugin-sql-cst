@@ -146,6 +146,17 @@ describe("create table", () => {
     `);
   });
 
+  it(`formats FOREIGN KEY constraint with actions that specify columns`, async () => {
+    await testPostgresql(dedent`
+      CREATE TABLE client (
+        id INT,
+        FOREIGN KEY (org_id1) REFERENCES organization (id1)
+          ON DELETE SET NULL (id1, id2)
+          ON UPDATE SET DEFAULT (id1, id2)
+      )
+    `);
+  });
+
   it(`formats deferrable FOREIGN KEY constraint`, async () => {
     await test(dedent`
       CREATE TABLE client (
