@@ -419,6 +419,10 @@ describe("create table", () => {
       CREATE TABLE client_odd PARTITION OF client
       FOR VALUES WITH (MODULUS 3, REMAINDER 1)
     `);
+    await testPostgresql(dedent`
+      CREATE TABLE client_odd PARTITION OF client
+      DEFAULT
+    `);
   });
 
   it(`formats PostgreSQL CREATE TABLE ... OF type & WITH OPTIONS`, async () => {

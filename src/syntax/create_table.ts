@@ -56,6 +56,7 @@ export const createTableMap: Partial<CstToDocMap<AllCreateTableNodes>> = {
   partition_bound_with: (print) => print.spaced(["withKw", "values"]),
   partition_bound_modulus: (print) => print.spaced(["modulusKw", "value"]),
   partition_bound_remainder: (print) => print.spaced(["remainderKw", "value"]),
+  create_table_default_partition_clause: (print) => print.spaced("defaultKw"),
   create_table_of_type_clause: (print) => print.spaced(["ofKw", "typeName"]),
   using_access_method_clause: (print) => print.spaced(["usingKw", "method"]),
   create_table_tablespace_clause: (print) =>
