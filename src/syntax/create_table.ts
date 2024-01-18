@@ -12,6 +12,7 @@ export const createTableMap: Partial<CstToDocMap<AllCreateTableNodes>> = {
       "tableKw",
       "ifNotExistsKw",
       "name",
+      "partitionOf",
       "columns",
     ]),
     printClauses(print, node, ...rest),
@@ -42,6 +43,18 @@ export const createTableMap: Partial<CstToDocMap<AllCreateTableNodes>> = {
     print.spaced(["inheritsKw", "tables"]),
   create_table_partition_by_clause: (print) =>
     print.spaced(["partitionByKw", "strategyKw", "columns"]),
+  create_table_partition_of_clause: (print) =>
+    print.spaced(["partitionOfKw", "table"]),
+  create_table_partition_bound_clause: (print) =>
+    print.spaced(["forValuesKw", "bound"]),
+  partition_bound_in: (print) => print.spaced(["inKw", "values"]),
+  partition_bound_from_to: (print) =>
+    print.spaced(["fromKw", "from", "toKw", "to"]),
+  partition_bound_minvalue: (print) => print.spaced("minvalueKw"),
+  partition_bound_maxvalue: (print) => print.spaced("maxvalueKw"),
+  partition_bound_with: (print) => print.spaced(["withKw", "values"]),
+  partition_bound_modulus: (print) => print.spaced(["modulusKw", "value"]),
+  partition_bound_remainder: (print) => print.spaced(["remainderKw", "value"]),
   using_access_method_clause: (print) => print.spaced(["usingKw", "method"]),
   create_table_tablespace_clause: (print) =>
     print.spaced(["tablespaceKw", "name"]),

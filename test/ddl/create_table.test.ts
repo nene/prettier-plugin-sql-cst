@@ -394,4 +394,19 @@ describe("create table", () => {
       USING my_func(1, 2)
     `);
   });
+
+  it(`formats PostgreSQL CREATE TABLE ... PARTITION OF`, async () => {
+    await testPostgresql(dedent`
+      CREATE TABLE client_old PARTITION OF client
+      FOR VALUES IN (1999, 2000, 2001)
+    `);
+    await testPostgresql(dedent`
+      CREATE TABLE client_new PARTITION OF client
+      FOR VALUES FROM (2023, MINVALUE) TO (2024, MAXVALUE)
+    `);
+    await testPostgresql(dedent`
+      CREATE TABLE client_odd PARTITION OF client
+      FOR VALUES WITH (MODULUS 3, REMAINDER 1)
+    `);
+  });
 });
