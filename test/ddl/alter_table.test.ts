@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { test, testBigquery } from "../test_utils";
+import { test, testBigquery, testPostgresql } from "../test_utils";
 
 describe("alter table", () => {
   it(`formats ALTER TABLE..RENAME`, async () => {
@@ -114,6 +114,14 @@ describe("alter table", () => {
         ALTER TABLE client
         ALTER COLUMN price
         DROP DEFAULT
+      `);
+    });
+
+    it(`formats ALTER COLUMN .. SET NOT NULL`, async () => {
+      await testPostgresql(dedent`
+        ALTER TABLE client
+        ALTER COLUMN price
+        SET NOT NULL
       `);
     });
 
