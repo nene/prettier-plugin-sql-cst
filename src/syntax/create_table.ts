@@ -13,6 +13,7 @@ export const createTableMap: Partial<CstToDocMap<AllCreateTableNodes>> = {
       "ifNotExistsKw",
       "name",
       "partitionOf",
+      "ofType",
       "columns",
     ]),
     printClauses(print, node, ...rest),
@@ -20,7 +21,7 @@ export const createTableMap: Partial<CstToDocMap<AllCreateTableNodes>> = {
   ],
   table_kind: (print) => print.spaced("kindKw"),
   column_definition: (print) =>
-    print.spaced(["name", "dataType", "constraints"]),
+    print.spaced(["name", "dataType", "withOptionsKw", "constraints"]),
   table_option: (print, node) => {
     if (node.value && node.hasEq) {
       return [print.spaced("name"), " = ", print.spaced("value")];
@@ -55,6 +56,7 @@ export const createTableMap: Partial<CstToDocMap<AllCreateTableNodes>> = {
   partition_bound_with: (print) => print.spaced(["withKw", "values"]),
   partition_bound_modulus: (print) => print.spaced(["modulusKw", "value"]),
   partition_bound_remainder: (print) => print.spaced(["remainderKw", "value"]),
+  create_table_of_type_clause: (print) => print.spaced(["ofKw", "typeName"]),
   using_access_method_clause: (print) => print.spaced(["usingKw", "method"]),
   create_table_tablespace_clause: (print) =>
     print.spaced(["tablespaceKw", "name"]),

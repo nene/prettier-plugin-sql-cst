@@ -420,4 +420,12 @@ describe("create table", () => {
       FOR VALUES WITH (MODULUS 3, REMAINDER 1)
     `);
   });
+
+  it(`formats PostgreSQL CREATE TABLE ... OF type & WITH OPTIONS`, async () => {
+    await testPostgresql(dedent`
+      CREATE TABLE client OF client_type (
+        id WITH OPTIONS NOT NULL PRIMARY KEY
+      )
+    `);
+  });
 });
