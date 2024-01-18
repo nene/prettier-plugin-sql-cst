@@ -170,6 +170,27 @@ describe("create table", () => {
     `);
   });
 
+  it(`formats EXCLUDE constraint`, async () => {
+    await testPostgresql(dedent`
+      CREATE TABLE client (
+        id INT,
+        EXCLUDE (id WITH =, name WITH <>) WHERE (id > 0)
+      )
+    `);
+  });
+
+  it(`formats long EXCLUDE constraint`, async () => {
+    await testPostgresql(dedent`
+      CREATE TABLE client (
+        id INT,
+        EXCLUDE
+          USING gist
+          (id WITH =, name opClass DESC NULLS FIRST WITH <>)
+          WHERE (id > 0)
+      )
+    `);
+  });
+
   it(`formats CREATE TABLE with named column constraints`, async () => {
     await test(dedent`
       CREATE TABLE client (

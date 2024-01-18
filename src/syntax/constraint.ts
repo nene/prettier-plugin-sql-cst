@@ -60,6 +60,12 @@ export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
   constraint_engine_attribute: (print, node) =>
     join(node.hasEq ? " = " : " ", print(["engineAttributeKw", "value"])),
   constraint_compression: (print) => print.spaced(["compressionKw", "method"]),
+  constraint_exclude: (print) =>
+    group([
+      print("excludeKw"),
+      indent([line, print.separated(line, ["using", "params", "clauses"])]),
+    ]),
+  exclusion_param: (print) => print.spaced(["index", "withKw", "operator"]),
 };
 
 const printUnnamedConstraint = <T>(
