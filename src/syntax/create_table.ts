@@ -3,7 +3,7 @@ import { isAsClause } from "../node_utils";
 import { CstToDocMap, ToDocFn } from "../CstToDocMap";
 import { group, join, line } from "../print_utils";
 
-export const createTableMap: Partial<CstToDocMap<AllCreateTableNodes>> = {
+export const createTableMap: CstToDocMap<AllCreateTableNodes> = {
   create_table_stmt: (print, node, ...rest) => [
     print.spaced([
       "createKw",
@@ -66,6 +66,7 @@ export const createTableMap: Partial<CstToDocMap<AllCreateTableNodes>> = {
   create_table_without_oids_clause: (print) => print.spaced("withoutOidsKw"),
   create_table_on_commit_clause: (print) =>
     print.spaced(["onCommitKw", "actionKw"]),
+  create_table_with_data_clause: (print) => print.spaced("withDataKw"),
 };
 
 const printClauses: ToDocFn<CreateTableStmt> = (print, node) => {

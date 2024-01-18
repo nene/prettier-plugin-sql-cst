@@ -362,6 +362,15 @@ describe("create table", () => {
     `);
   });
 
+  it(`formats CREATE TABLE AS with additional clauses`, async () => {
+    await testPostgresql(dedent`
+      CREATE TABLE foo
+      AS
+        SELECT * FROM tbl WHERE x > 0
+      WITH NO DATA
+    `);
+  });
+
   it(`formats CREATE TABLE LIKE`, async () => {
     await testBigquery(dedent`
       CREATE TABLE foo
