@@ -16,7 +16,7 @@ export const alterTableMap: Partial<
   alter_action_add_column: (print) =>
     print.spaced(["addKw", "ifNotExistsKw", "column"]),
   alter_action_drop_column: (print) =>
-    print.spaced(["dropKw", "ifExistsKw", "column"]),
+    print.spaced(["dropKw", "ifExistsKw", "column", "behaviorKw"]),
   alter_action_set_options: (print) => print.spaced(["setKw", "options"]),
   alter_action_set_default_collate: (print) =>
     print.spaced(["setDefaultCollateKw", "collation"]),

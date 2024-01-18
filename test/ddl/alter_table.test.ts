@@ -70,6 +70,14 @@ describe("alter table", () => {
     `);
   });
 
+  it(`formats ALTER TABLE..DROP COLUMN RESTRICT|CASCADE`, async () => {
+    await testBigquery(dedent`
+      ALTER TABLE client
+      DROP COLUMN col1 RESTRICT,
+      DROP COLUMN col2 CASCADE
+    `);
+  });
+
   it(`formats ALTER TABLE..SET OPTIONS`, async () => {
     await testBigquery(dedent`
       ALTER TABLE client
