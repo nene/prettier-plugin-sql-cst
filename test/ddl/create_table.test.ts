@@ -170,6 +170,14 @@ describe("create table", () => {
     `);
   });
 
+  it(`formats FOREIGN KEY with index name`, async () => {
+    await testMysql(dedent`
+      CREATE TABLE client (
+        FOREIGN KEY indexName (org_id1) REFERENCES organization (id1)
+      )
+    `);
+  });
+
   it(`formats EXCLUDE constraint`, async () => {
     await testPostgresql(dedent`
       CREATE TABLE client (

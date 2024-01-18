@@ -29,7 +29,7 @@ export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
   constraint_collate: (print) =>
     group(print.spaced(["collateKw", "collation"])),
   constraint_foreign_key: (print) =>
-    group(print.spaced(["foreignKeyKw", "columns", "references"])),
+    group(print.spaced(["foreignKeyKw", "indexName", "columns", "references"])),
   references_specification: (print, node) => {
     const baseDoc = print.spaced(["referencesKw", "table", "columns"]);
     if (node.options.length > 0) {
