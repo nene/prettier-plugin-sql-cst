@@ -23,7 +23,8 @@
     "build": "yarn clean && tsc",
     "test": "yarn node --experimental-vm-modules $(yarn bin jest)",
     "pretty": "prettier -w src/ test/",
-    "ts:check": "tsc --noEmit"
+    "ts:check": "tsc --noEmit",
+    "analyze-field-access": "ts-node scripts/analyze-field-access.ts src/index.ts"
   },
   "keywords": [
     "prettier",
