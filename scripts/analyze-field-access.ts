@@ -10,6 +10,8 @@ const options = {
   target: ts.ScriptTarget.ES2015,
   module: ts.ModuleKind.CommonJS,
 };
+// We'll be populating this when we detect unused fields
+const errors: string[] = [];
 
 let program = ts.createProgram(fileNames, options);
 let checker = program.getTypeChecker();
@@ -20,6 +22,12 @@ for (const sourceFile of program.getSourceFiles()) {
       ts.forEachChild(sourceFile, (node) => analyze(node, sourceFile));
     }
   }
+}
+
+if (errors.length > 0) {
+  console.log(`Found ${errors.length} problems:\n`);
+  console.error(errors.join("\n\n"));
+  process.exit(1);
 }
 
 function isSyntaxMapFile(fileName: string): boolean {
@@ -74,12 +82,13 @@ function analyzeObjectProperty(node: ts.Node, sourceFile: ts.SourceFile) {
     .map(([key]) => key);
 
   if (missingFields.length > 0) {
-    console.log(``);
-    console.log(`Unused fields: ${missingFields.join(", ")}`);
-    console.log(
-      `In file: ${sourceFile.fileName.replace(/.*\//, "src/syntax/")}`,
+    errors.push(
+      [
+        `In file: ${sourceFile.fileName.replace(/.*\//, "src/syntax/")}`,
+        `Unused fields: ${missingFields.join(", ")}`,
+        node.getText(sourceFile),
+      ].join("\n"),
     );
-    console.log(node.getText(sourceFile));
   }
 }
 
