@@ -99,6 +99,19 @@ describe("alter table", () => {
   });
 
   describe("alter column", () => {
+    it(`formats short ALTER COLUMN on a single line (if user prefers)`, async () => {
+      await testBigquery(dedent`
+        ALTER TABLE client ALTER COLUMN price DROP DEFAULT
+      `);
+    });
+
+    it(`formats only the ALTER COLUMN-part on single line (if user prefers)`, async () => {
+      await testBigquery(dedent`
+        ALTER TABLE client
+        ALTER COLUMN price DROP DEFAULT
+      `);
+    });
+
     it(`formats ALTER COLUMN .. SET OPTIONS`, async () => {
       await testBigquery(dedent`
         ALTER TABLE client
