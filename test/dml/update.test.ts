@@ -2,7 +2,13 @@ import dedent from "dedent-js";
 import { test, testMysql, testPostgresql } from "../test_utils";
 
 describe("update", () => {
-  it(`formats UPDATE statement`, async () => {
+  it(`formats short UPDATE statement on single line`, async () => {
+    await test(dedent`
+      UPDATE employee SET salary = 1000 WHERE id = 10
+    `);
+  });
+
+  it(`preserves multi-line short UPDATE statement formatting`, async () => {
     await test(dedent`
       UPDATE employee
       SET salary = 1000

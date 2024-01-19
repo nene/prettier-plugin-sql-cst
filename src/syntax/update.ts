@@ -1,9 +1,9 @@
 import { AllUpdateNodes } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
-import { join, hardline, indent } from "../print_utils";
+import { join, hardline, indent, group } from "../print_utils";
 
 export const updateMap: CstToDocMap<AllUpdateNodes> = {
-  update_stmt: (print) => join(hardline, print("clauses")),
+  update_stmt: (print) => group(join(print.dynamicLine(), print("clauses"))),
   update_clause: (print) =>
     print.spaced(["updateKw", "modifiers", "orAction", "tables"]),
   set_clause: (print, node) => {
