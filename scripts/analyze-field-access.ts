@@ -51,6 +51,7 @@ function analyzeObjectProperty(node: ts.Node, sourceFile: ts.SourceFile) {
 
   const fields = extractExpectedFields(node.initializer);
   const fieldMap = Object.fromEntries(fields.map((field) => [field, true]));
+
   visitAll(node, (child) => {
     if (ts.isStringLiteral(child)) {
       fieldMap[child.text] = false;
@@ -61,6 +62,11 @@ function analyzeObjectProperty(node: ts.Node, sourceFile: ts.SourceFile) {
         fieldMap[text] = false;
       }
     }
+  });
+
+  // Ignore fields that are explicitly marked as ignored in the doc comment
+  extractDocCommentIgnoredFields(node).forEach((field) => {
+    fieldMap[field] = false;
   });
 
   const missingFields = Object.entries(fieldMap)
@@ -75,6 +81,26 @@ function analyzeObjectProperty(node: ts.Node, sourceFile: ts.SourceFile) {
     );
     console.log(node.getText(sourceFile));
   }
+}
+
+function extractDocCommentIgnoredFields(node: ts.PropertyAssignment): string[] {
+  const matches = extractDocComment(node).match(/\bcst-ignore: (\w+(, *\w+)*)/);
+  if (!matches) {
+    return [];
+  }
+  return matches[1].split(/, */);
+}
+
+function extractDocComment(node: ts.PropertyAssignment): string {
+  const symbol = checker.getSymbolAtLocation(node.name);
+  if (!symbol) {
+    return "";
+  }
+  const comment = symbol.getDocumentationComment(checker);
+  if (!comment) {
+    return "";
+  }
+  return comment.map((comment) => comment.text).join(" ");
 }
 
 function extractExpectedFields(node: ts.ArrowFunction): string[] {

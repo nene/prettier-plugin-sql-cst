@@ -4,6 +4,7 @@ import { CstToDocMap, ToDocFn } from "../CstToDocMap";
 import { group, join, line } from "../print_utils";
 
 export const createTableMap: CstToDocMap<AllCreateTableNodes> = {
+  /** cst-ignore: clauses */
   create_table_stmt: (print, node, ...rest) => [
     print.spaced([
       "createKw",

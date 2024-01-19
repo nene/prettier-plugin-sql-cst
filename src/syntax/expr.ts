@@ -154,10 +154,15 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
   full_text_match_expr: (print) =>
     print.spaced(["matchKw", "columns", "againstKw", "args"]),
   full_text_match_args: (print) => print.spaced(["expr", "modifier"]),
+  /** cst-ignore: value */
   number_literal: (print) => print("text"),
+  /** cst-ignore: value */
   boolean_literal: (print) => print("valueKw"),
+  /** cst-ignore: value */
   string_literal: (print) => print("text"),
+  /** cst-ignore: value */
   blob_literal: (print) => print("text"),
+  /** cst-ignore: value */
   null_literal: (print) => print("nullKw"),
   numeric_literal: (print) => print.spaced(["numericKw", "string"]),
   bignumeric_literal: (print) => print.spaced(["bignumericKw", "string"]),
@@ -167,7 +172,9 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
   timestamp_literal: (print) => print.spaced(["timestampKw", "string"]),
   json_literal: (print) => print.spaced(["jsonKw", "string"]),
   jsonb_literal: (print) => print.spaced(["jsonbKw", "string"]),
+  /** cst-ignore: name */
   identifier: (print) => print("text"),
+  /** cst-ignore: name */
   variable: (print) => print("text"),
   parameter: (print) => print("text"),
 };

@@ -200,6 +200,7 @@ export const selectMap: CstToDocMap<AllSelectNodes> = {
     group([print("qualifyKw"), indent([line, print("expr")])]),
 
   // LIMIT clause
+  /** cst-ignore: count, offsetKw, offset */
   limit_clause: (print, node) =>
     group([
       print("limitKw"),
