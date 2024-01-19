@@ -45,8 +45,7 @@ describe("with sqlCanonicalSyntax enabled", () => {
         sqlCanonicalSyntax: true,
       }),
     ).toBe(dedent`
-      ALTER TABLE foo
-      RENAME TO bar
+      ALTER TABLE foo RENAME TO bar
     `);
   });
 
@@ -57,8 +56,7 @@ describe("with sqlCanonicalSyntax enabled", () => {
         sqlCanonicalSyntax: true,
       }),
     ).toBe(dedent`
-      ALTER TABLE foo
-      RENAME TO bar
+      ALTER TABLE foo RENAME TO bar
     `);
   });
 
@@ -106,8 +104,7 @@ describe("with sqlCanonicalSyntax enabled", () => {
         sqlCanonicalSyntax: true,
       }),
     ).toBe(dedent`
-      DELETE FROM client
-      WHERE id = 10
+      DELETE FROM client WHERE id = 10
     `);
   });
 

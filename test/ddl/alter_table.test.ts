@@ -2,7 +2,13 @@ import dedent from "dedent-js";
 import { test, testBigquery, testMysql, testPostgresql } from "../test_utils";
 
 describe("alter table", () => {
-  it(`formats ALTER TABLE..RENAME`, async () => {
+  it(`formats short ALTER TABLE..RENAME on a single line`, async () => {
+    await test(dedent`
+      ALTER TABLE client RENAME TO org_client
+    `);
+  });
+
+  it(`preserves ALTER TABLE..RENAME on muliple lines`, async () => {
     await test(dedent`
       ALTER TABLE client
       RENAME TO org_client
