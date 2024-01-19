@@ -1,4 +1,4 @@
-import { test, testBigquery } from "../test_utils";
+import { test, testBigquery, testPostgresql } from "../test_utils";
 
 describe("drop table", () => {
   it(`formats DROP TABLE statement`, async () => {
@@ -15,5 +15,9 @@ describe("drop table", () => {
 
   it(`formats DROP EXTERNAL table`, async () => {
     await testBigquery(`DROP EXTERNAL TABLE foo`);
+  });
+
+  it(`formats CASCADE|RESTRICT`, async () => {
+    await testPostgresql(`DROP TABLE foo CASCADE`);
   });
 });
