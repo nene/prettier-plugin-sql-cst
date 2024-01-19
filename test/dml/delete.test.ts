@@ -2,7 +2,13 @@ import dedent from "dedent-js";
 import { test, testBigquery, testMysql } from "../test_utils";
 
 describe("delete", () => {
-  it(`formats DELETE statement`, async () => {
+  it(`formats short DELETE statement on a single line`, async () => {
+    await test(dedent`
+      DELETE FROM employee WHERE id = 10
+    `);
+  });
+
+  it(`preserves short DELETE statement on multiple lines`, async () => {
     await test(dedent`
       DELETE FROM employee
       WHERE id = 10
