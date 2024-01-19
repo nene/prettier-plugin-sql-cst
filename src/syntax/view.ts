@@ -31,7 +31,14 @@ export const viewMap: CstToDocMap<AllViewStatements> = {
       "behaviorKw",
     ]),
   alter_view_stmt: (print) => [
-    print.spaced(["alterKw", "materializedKw", "viewKw", "ifExistsKw", "name"]),
+    print.spaced([
+      "alterKw",
+      "materializedKw",
+      "viewKw",
+      "ifExistsKw",
+      "name",
+      "columns",
+    ]),
     hardline,
     join(hardline, print("actions")),
   ],

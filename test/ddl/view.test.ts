@@ -114,5 +114,15 @@ describe("view", () => {
         `,
       );
     });
+
+    it(`formats ALTER VIEW with columns`, async () => {
+      await testMysql(
+        dedent`
+          ALTER VIEW my_view (foo, bar, baz)
+          AS
+            SELECT 1, 2, 3
+        `,
+      );
+    });
   });
 });
