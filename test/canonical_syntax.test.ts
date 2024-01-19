@@ -69,10 +69,7 @@ describe("with sqlCanonicalSyntax enabled", () => {
         sqlCanonicalSyntax: true,
       }),
     ).toBe(dedent`
-      INSERT INTO foo
-        (id)
-      VALUES
-        (1)
+      INSERT INTO foo (id) VALUES (1)
     `);
   });
 
@@ -83,10 +80,7 @@ describe("with sqlCanonicalSyntax enabled", () => {
         sqlCanonicalSyntax: true,
       }),
     ).toBe(dedent`
-      REPLACE INTO foo
-        (id)
-      VALUES
-        (1)
+      REPLACE INTO foo (id) VALUES (1)
     `);
   });
 

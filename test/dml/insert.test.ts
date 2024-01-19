@@ -2,19 +2,22 @@ import dedent from "dedent-js";
 import { test, testBigquery, testMysql, testPostgresql } from "../test_utils";
 
 describe("insert", () => {
-  it(`formats INSERT statement without column names`, async () => {
+  it(`formats short INSERT statement on single line`, async () => {
     await test(dedent`
-      INSERT INTO client
-      VALUES
-        (1, 'John', 'Doe', 27)
+      INSERT INTO client VALUES (1, 'John', 'Doe', 27)
     `);
   });
 
   it(`formats INSERT statement without INTO`, async () => {
     await testBigquery(dedent`
-      INSERT client
-      VALUES
-        (1, 2, 3)
+      INSERT client VALUES (1, 2, 3)
+    `);
+  });
+
+  it(`preserves short multi-line INSERT statement on multiple lines`, async () => {
+    await testBigquery(dedent`
+      INSERT INTO client
+      VALUES (1, 2, 3)
     `);
   });
 
@@ -24,6 +27,13 @@ describe("insert", () => {
         (id, fname, lname, org_id)
       VALUES
         (1, 'John', 'Doe', 27)
+    `);
+  });
+
+  it(`preserves indentation preference of column names and values`, async () => {
+    await testBigquery(dedent`
+      INSERT INTO client (id, fname, lname, org_id)
+      VALUES (1, 'John', 'Doe', 27)
     `);
   });
 
@@ -74,16 +84,14 @@ describe("insert", () => {
   it(`formats OR ABORT modifier`, async () => {
     await test(dedent`
       INSERT OR ABORT INTO employee
-      VALUES
-        (1, 2, 3)
+      VALUES (1, 2, 3)
     `);
   });
 
   it(`formats INSERT with MySQL hints`, async () => {
     await testMysql(dedent`
       INSERT LOW_PRIORITY IGNORE INTO employee
-      VALUES
-        (1, 2, 3)
+      VALUES (1, 2, 3)
     `);
   });
 
@@ -97,8 +105,7 @@ describe("insert", () => {
   it("formats DEFAULT values among normal values", async () => {
     await testBigquery(dedent`
       INSERT INTO employee
-      VALUES
-        (1, 2, DEFAULT, 3)
+      VALUES (1, 2, DEFAULT, 3)
     `);
   });
 
@@ -112,8 +119,7 @@ describe("insert", () => {
   it("formats upsert clauses", async () => {
     await test(dedent`
       INSERT INTO client
-      VALUES
-        (1, 2, 3)
+      VALUES (1, 2, 3)
       ON CONFLICT DO NOTHING
       ON CONFLICT (name, price) DO NOTHING
       ON CONFLICT (id) WHERE id > 10 DO UPDATE
@@ -125,8 +131,7 @@ describe("insert", () => {
   it("formats upsert clause with ON CONSTRAINT", async () => {
     await testPostgresql(dedent`
       INSERT INTO client
-      VALUES
-        (1, 2, 3)
+      VALUES (1, 2, 3)
       ON CONFLICT ON CONSTRAINT client_pkey DO NOTHING
     `);
   });
@@ -134,8 +139,7 @@ describe("insert", () => {
   it(`formats INSERT with RETURNING clause`, async () => {
     await test(dedent`
       INSERT INTO client
-      VALUES
-        (1, 2, 3)
+      VALUES (1, 2, 3)
       RETURNING id, name, status
     `);
   });
@@ -143,16 +147,14 @@ describe("insert", () => {
   it(`formats INSERT with PARTITION selection`, async () => {
     await testMysql(dedent`
       INSERT INTO client PARTITION (p1, p2)
-      VALUES
-        (1, 2, 3)
+      VALUES (1, 2, 3)
     `);
   });
 
   it(`formats INSERT with ON DUPLICATE KEY UPDATE clause`, async () => {
     await testMysql(dedent`
       INSERT INTO client
-      VALUES
-        (1, 2, 3)
+      VALUES (1, 2, 3)
       ON DUPLICATE KEY UPDATE
         col1 = 2,
         col2 = DEFAULT
@@ -162,8 +164,7 @@ describe("insert", () => {
   it(`formats INSERT with ON DUPLICATE KEY UPDATE and row alias`, async () => {
     await testMysql(dedent`
       INSERT INTO client
-      VALUES
-        (1, 'John')
+      VALUES (1, 'John')
       AS new_row
       ON DUPLICATE KEY UPDATE
         id = new_row.id + 1
@@ -173,8 +174,7 @@ describe("insert", () => {
   it(`formats INSERT with ON DUPLICATE KEY UPDATE and row alias (column aliases)`, async () => {
     await testMysql(dedent`
       INSERT INTO client
-      VALUES
-        (1, 'John')
+      VALUES (1, 'John')
       AS new_row
         (id, fname)
       ON DUPLICATE KEY UPDATE
@@ -186,8 +186,7 @@ describe("insert", () => {
     await testPostgresql(dedent`
       INSERT INTO client
       OVERRIDING SYSTEM VALUE
-      VALUES
-        (1, 'John')
+      VALUES (1, 'John')
     `);
   });
 });
