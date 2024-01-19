@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { test } from "./test_utils";
+import { test, testPostgresql } from "./test_utils";
 
 describe("explain", () => {
   it(`formats EXPLAIN statement`, async () => {
@@ -8,6 +8,10 @@ describe("explain", () => {
 
   it(`formats EXPLAIN QUERY PLAIN statement`, async () => {
     await test(`EXPLAIN QUERY PLAN SELECT 1`);
+  });
+
+  it(`formats EXPLAIN ANALYZE statement`, async () => {
+    await testPostgresql(`EXPLAIN ANALYZE SELECT 1`);
   });
 
   it(`formats long EXPLAIN statement to multiple lines`, async () => {
