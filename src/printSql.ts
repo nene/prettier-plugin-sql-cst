@@ -34,7 +34,7 @@ function createPrintFn(
   cachedPath = path;
   cachedPrintFn = ((selector): Doc => {
     if (isArray(selector)) {
-      const node = path.getValue();
+      const node = path.node;
       return selector.filter((sel) => isDefined(node[sel])).map(oldPrint);
     } else {
       return oldPrint(selector);
@@ -45,7 +45,7 @@ function createPrintFn(
     separator: Doc,
     selector: PrintableKey<Node> | PrintableKey<Node>[],
   ): Doc[] => {
-    const node = path.getValue();
+    const node = path.node;
     const docs = arrayWrap(selector)
       .filter((sel) => isDefined(node[sel]))
       .map((sel) => [sel, oldPrint(sel)] as [PrintableKey<Node>, Doc])
@@ -61,7 +61,7 @@ function createPrintFn(
   ): Doc[] => cachedPrintFn.separated(" ", selector);
 
   cachedPrintFn.dynamicLine = (): Doc => {
-    const node = path.getValue();
+    const node = path.node;
     return containsNewline(node, opts) ? hardline : line;
   };
 
@@ -73,7 +73,7 @@ function printNode(
   options: AllPrettierOptions,
   print: PrintFn<Node>,
 ): Doc {
-  const node = path.getValue();
+  const node = path.node;
 
   if (isArray(node)) {
     return path.map(print as OldPrintFn);
