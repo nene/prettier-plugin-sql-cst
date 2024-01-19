@@ -2,6 +2,20 @@ import dedent from "dedent-js";
 import { testBigquery } from "../test_utils";
 
 describe("revoke", () => {
+  it(`formats short REVOKE in single line`, async () => {
+    await testBigquery(dedent`
+      REVOKE \`roles/x\` ON VIEW revenue FROM 'user:tom'
+    `);
+  });
+
+  it(`formats short REVOKE in multiple lines if user prefers`, async () => {
+    await testBigquery(dedent`
+      REVOKE \`roles/x\`
+      ON VIEW revenue
+      FROM 'user:tom'
+    `);
+  });
+
   it(`formats REVOKE (single role, single user)`, async () => {
     await testBigquery(dedent`
       REVOKE \`roles/bigquery.dataViewer\`

@@ -1,6 +1,6 @@
 import { AlterTableStmt, AllAlterActionNodes } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
-import { group, hardline } from "../print_utils";
+import { group } from "../print_utils";
 
 export const alterTableMap: CstToDocMap<AlterTableStmt | AllAlterActionNodes> =
   {

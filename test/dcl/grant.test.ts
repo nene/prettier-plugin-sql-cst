@@ -2,6 +2,20 @@ import dedent from "dedent-js";
 import { testBigquery } from "../test_utils";
 
 describe("grant", () => {
+  it(`formats short GRANT in single line`, async () => {
+    await testBigquery(dedent`
+      GRANT \`roles/x\` ON TABLE revenue TO 'user:tom'
+    `);
+  });
+
+  it(`formats short GRANT in multiple lines if user prefers`, async () => {
+    await testBigquery(dedent`
+      GRANT \`roles/x\`
+      ON TABLE revenue
+      TO 'user:tom'
+    `);
+  });
+
   it(`formats GRANT (single role, single user)`, async () => {
     await testBigquery(dedent`
       GRANT \`roles/bigquery.dataViewer\`
