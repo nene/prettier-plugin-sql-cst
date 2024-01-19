@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { test, testBigquery } from "../test_utils";
+import { test, testBigquery, testMysql } from "../test_utils";
 
 describe("view", () => {
   describe("create view", () => {
@@ -85,6 +85,10 @@ describe("view", () => {
 
     it(`formats DROP VIEW IF EXISTS`, async () => {
       await test(`DROP VIEW IF EXISTS my_schema.active_client_view`);
+    });
+
+    it(`formats DROP VIEW .. CASCADE|RESTRICT`, async () => {
+      await testMysql(`DROP VIEW my_view CASCADE`);
     });
 
     it(`formats DROP MATERIALIZED VIEW`, async () => {

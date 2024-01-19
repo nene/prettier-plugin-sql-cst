@@ -22,7 +22,14 @@ export const viewMap: CstToDocMap<AllViewStatements> = {
     ];
   },
   drop_view_stmt: (print) =>
-    print.spaced(["dropKw", "materializedKw", "viewKw", "ifExistsKw", "views"]),
+    print.spaced([
+      "dropKw",
+      "materializedKw",
+      "viewKw",
+      "ifExistsKw",
+      "views",
+      "behaviorKw",
+    ]),
   alter_view_stmt: (print) => [
     print.spaced(["alterKw", "materializedKw", "viewKw", "ifExistsKw", "name"]),
     hardline,
