@@ -21,6 +21,11 @@ export type PrintFn<T, K = PrintableKey<T>> = {
   // while the inner items will be space-separated (as in spaced()).
   separated(separator: Doc, path: K): Doc[];
   separated(separator: Doc, path: K[]): Doc[];
+
+  // Returns either:
+  // - line: when the node contains a newline
+  // - hardline: when the original source contains no newlines
+  dynamicLine(): Doc;
 };
 
 export type PrintableKey<T> = Exclude<keyof T, ReservedKey>;

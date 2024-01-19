@@ -16,10 +16,7 @@ import {
 export const selectMap: CstToDocMap<AllSelectNodes> = {
   compound_select_stmt: (print) =>
     join(hardline, [print("left"), print.spaced("operator"), print("right")]),
-  select_stmt: (print, node, path, opts) => {
-    const lineType = containsNewline(node, opts) ? hardline : line;
-    return group(join(lineType, print("clauses")));
-  },
+  select_stmt: (print) => group(join(print.dynamicLine(), print("clauses"))),
 
   // WITH clause
   with_clause: (print) =>

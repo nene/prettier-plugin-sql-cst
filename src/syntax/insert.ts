@@ -1,30 +1,16 @@
 import { AllInsertNodes } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
-import {
-  join,
-  group,
-  hardline,
-  indent,
-  containsNewline,
-  line,
-} from "../print_utils";
+import { join, group, hardline, indent } from "../print_utils";
 
 export const insertMap: CstToDocMap<AllInsertNodes> = {
-  insert_stmt: (print, node, path, opts) => {
-    const lineType = containsNewline(node, opts) ? hardline : line;
-    return group(join(lineType, print("clauses")));
-  },
-  insert_clause: (print, node, path, opts) => {
-    const lineType = containsNewline(node, opts) ? hardline : line;
-    return group([
+  insert_stmt: (print) => group(join(print.dynamicLine(), print("clauses"))),
+  insert_clause: (print, node) =>
+    group([
       print.spaced(["insertKw", "modifiers", "orAction", "intoKw", "table"]),
-      node.columns ? indent([lineType, print("columns")]) : [],
-    ]);
-  },
-  values_clause: (print, node, path, opts) => {
-    const lineType = containsNewline(node, opts) ? hardline : line;
-    return group([print("valuesKw"), indent([lineType, print("values")])]);
-  },
+      node.columns ? indent([print.dynamicLine(), print("columns")]) : [],
+    ]),
+  values_clause: (print) =>
+    group([print("valuesKw"), indent([print.dynamicLine(), print("values")])]),
   or_alternate_action: (print) => print.spaced(["orKw", "actionKw"]),
   default: (print) => print("defaultKw"),
   default_values: (print) => print.spaced("defaultValuesKw"),

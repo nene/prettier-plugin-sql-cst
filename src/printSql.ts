@@ -5,14 +5,14 @@ import { arrayWrap, isArray, isDefined, isEmptyArray, isString } from "./utils";
 import { transformMap } from "./syntax/transformMap";
 import { NodeByType, ToDocFn } from "./CstToDocMap";
 import { AllPrettierOptions } from "./options";
-import { join } from "./print_utils";
+import { containsNewline, hardline, join, line } from "./print_utils";
 
 export function printSql(
   path: AstPath<Node>,
   options: AllPrettierOptions,
   oldPrint: OldPrintFn,
 ): Doc {
-  return printNode(path, options, createPrintFn(path, oldPrint));
+  return printNode(path, options, createPrintFn(path, oldPrint, options));
 }
 
 let cachedPrintFn: PrintFn<Node>;
@@ -21,6 +21,7 @@ let cachedPath: AstPath<Node>;
 function createPrintFn(
   path: AstPath<Node>,
   oldPrint: OldPrintFn,
+  opts: AllPrettierOptions,
 ): PrintFn<Node> {
   // The path parameter will reference the same AstPath instance
   // during the whole printing cycle.
@@ -58,6 +59,11 @@ function createPrintFn(
   cachedPrintFn.spaced = (
     selector: PrintableKey<Node> | PrintableKey<Node>[],
   ): Doc[] => cachedPrintFn.separated(" ", selector);
+
+  cachedPrintFn.dynamicLine = (): Doc => {
+    const node = path.getValue();
+    return containsNewline(node, opts) ? hardline : line;
+  };
 
   return cachedPrintFn;
 }
