@@ -110,7 +110,7 @@ export const proceduralLanguageMap: CstToDocMap<AllProceduralNodes> = {
   // CALL
   call_stmt: (print) => print.spaced(["callKw", "func"]),
   // RETURN
-  return_stmt: (print) => print("returnKw"),
+  return_stmt: (print) => print.spaced(["returnKw", "expr"]),
   // RAISE
   raise_stmt: (print) => print.spaced(["raiseKw", "message"]),
   raise_message: (print) => [
