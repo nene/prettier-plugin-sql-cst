@@ -31,7 +31,13 @@ describe("index", () => {
       `);
     });
 
-    it(`formats WHERE clause on separate line`, async () => {
+    it(`formats WHERE clause on same line (if user prefers)`, async () => {
+      await test(dedent`
+        CREATE INDEX my_index ON my_table (col) WHERE col > 10
+      `);
+    });
+
+    it(`formats WHERE clause on separate line (if user prefers)`, async () => {
       await test(dedent`
         CREATE INDEX my_index ON my_table (col)
         WHERE col > 10

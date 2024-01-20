@@ -1,22 +1,24 @@
 import { AllIndexNodes } from "sql-parser-cst";
-import { hardline, join } from "../print_utils";
+import { group, join } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
 export const indexMap: CstToDocMap<AllIndexNodes> = {
-  create_index_stmt: (print, node) =>
-    join(hardline, [
-      print.spaced([
-        "createKw",
-        "indexTypeKw",
-        "indexKw",
-        "ifNotExistsKw",
-        "name",
-        "onKw",
-        "table",
-        "columns",
+  create_index_stmt: (print) =>
+    group(
+      join(print.dynamicLine(), [
+        print.spaced([
+          "createKw",
+          "indexTypeKw",
+          "indexKw",
+          "ifNotExistsKw",
+          "name",
+          "onKw",
+          "table",
+          "columns",
+        ]),
+        ...print("clauses"),
       ]),
-      ...(node.clauses.length > 0 ? [join(hardline, print("clauses"))] : []),
-    ]),
+    ),
   drop_index_stmt: (print) =>
     print.spaced([
       "dropKw",
