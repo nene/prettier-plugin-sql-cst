@@ -116,24 +116,26 @@ describe("insert", () => {
     `);
   });
 
-  it("formats upsert clauses", async () => {
-    await test(dedent`
-      INSERT INTO client
-      VALUES (1, 2, 3)
-      ON CONFLICT DO NOTHING
-      ON CONFLICT (name, price) DO NOTHING
-      ON CONFLICT (id) WHERE id > 10 DO UPDATE
-        SET id = uuid + 1
-        WHERE id < 100
-    `);
-  });
+  describe("upsert", () => {
+    it("formats upsert clauses", async () => {
+      await test(dedent`
+        INSERT INTO client
+        VALUES (1, 2, 3)
+        ON CONFLICT DO NOTHING
+        ON CONFLICT (name, price) DO NOTHING
+        ON CONFLICT (id) WHERE id > 10 DO UPDATE
+          SET id = uuid + 1
+          WHERE id < 100
+      `);
+    });
 
-  it("formats upsert clause with ON CONSTRAINT", async () => {
-    await testPostgresql(dedent`
-      INSERT INTO client
-      VALUES (1, 2, 3)
-      ON CONFLICT ON CONSTRAINT client_pkey DO NOTHING
-    `);
+    it("formats upsert clause with ON CONSTRAINT", async () => {
+      await testPostgresql(dedent`
+        INSERT INTO client
+        VALUES (1, 2, 3)
+        ON CONFLICT ON CONSTRAINT client_pkey DO NOTHING
+      `);
+    });
   });
 
   it(`formats INSERT with RETURNING clause`, async () => {
