@@ -146,6 +146,56 @@ describe("insert", () => {
     });
   });
 
+  describe("on duplicate key update", () => {
+    it(`formats single-line (if user prefers)`, async () => {
+      await testMysql(dedent`
+        INSERT INTO client
+        VALUES (1, 2, 3)
+        ON DUPLICATE KEY UPDATE col1 = 2, col2 = DEFAULT
+      `);
+    });
+
+    it(`formats multi-line (if user prefers)`, async () => {
+      await testMysql(dedent`
+        INSERT INTO client
+        VALUES (1, 2, 3)
+        ON DUPLICATE KEY UPDATE
+          col1 = 2,
+          col2 = DEFAULT
+      `);
+    });
+
+    it(`formats with simple row alias`, async () => {
+      await testMysql(dedent`
+        INSERT INTO client
+        VALUES (1, 'John')
+        AS new_row
+        ON DUPLICATE KEY UPDATE
+          id = new_row.id + 1
+      `);
+    });
+
+    it(`formats with row alias using column aliases`, async () => {
+      await testMysql(dedent`
+        INSERT INTO client
+        VALUES (1, 'John')
+        AS new_row
+          (id, fname)
+        ON DUPLICATE KEY UPDATE
+          id = new_row.id + 1
+      `);
+    });
+
+    it(`formats with row alias + column aliases on a single line`, async () => {
+      await testMysql(dedent`
+        INSERT INTO client
+        VALUES (1, 'John')
+        AS new_row (id, fname)
+        ON DUPLICATE KEY UPDATE id = new_row.id + 1
+      `);
+    });
+  });
+
   it(`formats INSERT with RETURNING clause`, async () => {
     await test(dedent`
       INSERT INTO client
@@ -158,37 +208,6 @@ describe("insert", () => {
     await testMysql(dedent`
       INSERT INTO client PARTITION (p1, p2)
       VALUES (1, 2, 3)
-    `);
-  });
-
-  it(`formats INSERT with ON DUPLICATE KEY UPDATE clause`, async () => {
-    await testMysql(dedent`
-      INSERT INTO client
-      VALUES (1, 2, 3)
-      ON DUPLICATE KEY UPDATE
-        col1 = 2,
-        col2 = DEFAULT
-    `);
-  });
-
-  it(`formats INSERT with ON DUPLICATE KEY UPDATE and row alias`, async () => {
-    await testMysql(dedent`
-      INSERT INTO client
-      VALUES (1, 'John')
-      AS new_row
-      ON DUPLICATE KEY UPDATE
-        id = new_row.id + 1
-    `);
-  });
-
-  it(`formats INSERT with ON DUPLICATE KEY UPDATE and row alias (column aliases)`, async () => {
-    await testMysql(dedent`
-      INSERT INTO client
-      VALUES (1, 'John')
-      AS new_row
-        (id, fname)
-      ON DUPLICATE KEY UPDATE
-        id = new_row.id + 1
     `);
   });
 

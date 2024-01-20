@@ -27,13 +27,17 @@ export const insertMap: CstToDocMap<AllInsertNodes> = {
         join(print.dynamicLine(), print(["set", "where"])),
       ]),
     ]),
-  row_alias_clause: (print, node) => [
-    print.spaced(["asKw", "rowAlias"]),
-    node.columnAliases ? indent([hardline, print("columnAliases")]) : [],
-  ],
-  on_duplicate_key_update_clause: (print) => [
-    print.spaced("onDuplicateKeyUpdateKw"),
-    indent([hardline, print("assignments")]),
-  ],
+  row_alias_clause: (print, node) =>
+    group([
+      print.spaced(["asKw", "rowAlias"]),
+      node.columnAliases
+        ? indent([print.dynamicLine(), print("columnAliases")])
+        : [],
+    ]),
+  on_duplicate_key_update_clause: (print) =>
+    group([
+      print.spaced("onDuplicateKeyUpdateKw"),
+      indent([print.dynamicLine(), print("assignments")]),
+    ]),
   overriding_clause: (print) => print.spaced("overridingKw"),
 };
