@@ -1,6 +1,6 @@
 import { AllInsertNodes } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
-import { join, group, hardline, indent } from "../print_utils";
+import { join, group, hardline, indent, line } from "../print_utils";
 
 export const insertMap: CstToDocMap<AllInsertNodes> = {
   insert_stmt: (print) => group(join(print.dynamicLine(), print("clauses"))),
@@ -19,10 +19,14 @@ export const insertMap: CstToDocMap<AllInsertNodes> = {
   conflict_target_on_constraint: (print) =>
     print.spaced(["onConstraintKw", "constraint"]),
   upsert_action_nothing: (print) => print("nothingKw"),
-  upsert_action_update: (print) => [
-    print("updateKw"),
-    indent([hardline, join(hardline, print(["set", "where"]))]),
-  ],
+  upsert_action_update: (print) =>
+    group([
+      print("updateKw"),
+      indent([
+        print.dynamicLine(),
+        join(print.dynamicLine(), print(["set", "where"])),
+      ]),
+    ]),
   row_alias_clause: (print, node) => [
     print.spaced(["asKw", "rowAlias"]),
     node.columnAliases ? indent([hardline, print("columnAliases")]) : [],

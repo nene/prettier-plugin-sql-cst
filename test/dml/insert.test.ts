@@ -129,6 +129,14 @@ describe("insert", () => {
       `);
     });
 
+    it("formats short DO UPDATE on a single line (if user prefers)", async () => {
+      await test(dedent`
+        INSERT INTO client
+        VALUES (1, 2, 3)
+        ON CONFLICT (id) DO UPDATE SET id = uuid + 1
+      `);
+    });
+
     it("formats upsert clause with ON CONSTRAINT", async () => {
       await testPostgresql(dedent`
         INSERT INTO client
