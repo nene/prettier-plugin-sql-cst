@@ -6,11 +6,11 @@ export const baseMap: CstToDocMap<Keyword | Empty | AllColumns> = {
   keyword: (print, node, path, options) => {
     switch (options.sqlKeywordCase) {
       case "preserve":
-        return path.getValue().text;
+        return path.node.text;
       case "upper":
-        return path.getValue().text.toUpperCase();
+        return path.node.text.toUpperCase();
       case "lower":
-        return path.getValue().text.toLowerCase();
+        return path.node.text.toLowerCase();
     }
   },
   all_columns: () => "*",

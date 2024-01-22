@@ -9,7 +9,7 @@ import {
 import { hardline, indent, stripTrailingHardline } from "./print_utils";
 
 export const embedJs: NonNullable<Printer<Node>["embed"]> = (path, options) => {
-  const node = path.getValue(); // TODO: Don't use deprecated method
+  const node = path.node;
   const parent = path.getParentNode(0);
   const grandParent = path.getParentNode(1);
   if (

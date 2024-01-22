@@ -12,7 +12,7 @@ export const embedJson: NonNullable<Printer<Node>["embed"]> = (
   path,
   options,
 ) => {
-  const node = path.getValue(); // TODO: Don't use deprecated method
+  const node = path.node;
   const parent = path.getParentNode();
   if (
     isStringLiteral(node) &&
