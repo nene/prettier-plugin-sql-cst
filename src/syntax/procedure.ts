@@ -18,7 +18,6 @@ export const procedureMap: CstToDocMap<AllProcedureNodes> = {
       print("clauses").map((clause) => group(clause)),
     ),
   ],
-  procedure_param: (print) => print.spaced(["mode", "name", "dataType"]),
   drop_procedure_stmt: (print) =>
     print.spaced(["dropKw", "procedureKw", "ifExistsKw", "name"]),
 };
