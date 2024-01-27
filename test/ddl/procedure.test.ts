@@ -40,6 +40,17 @@ describe("procedure", () => {
       );
     });
 
+    it(`formats default parameter values`, async () => {
+      await testPostgresql(
+        dedent`
+          CREATE PROCEDURE eliminate_tbl(id INT = 1, TEXT DEFAULT 'foo')
+          BEGIN ATOMIC
+            DROP TABLE my_table;
+          END
+        `,
+      );
+    });
+
     it(`formats OPTIONS (..)`, async () => {
       await testBigquery(
         dedent`

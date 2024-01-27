@@ -11,13 +11,14 @@ describe("function", () => {
     });
 
     it(`formats long parameter list to multiple lines`, async () => {
-      await testBigquery(dedent`
+      await testPostgresql(dedent`
         CREATE FUNCTION my_func(
-          first_name STRING,
-          last_name STRING,
-          year_of_birth INT64
-        ) AS
-          (SELECT * FROM client)
+          IN first_name TEXT,
+          OUT last_name TEXT,
+          year_of_birth INT DEFAULT 2000,
+          INOUT age INT = 0,
+          VARIADIC other_names TEXT[]
+        ) AS 'SELECT 1'
       `);
     });
 

@@ -25,7 +25,9 @@ export const functionMap: Partial<CstToDocMap<AllFunctionNodes>> = {
           ),
         ],
   ],
-  function_param: (print) => print.spaced(["mode", "name", "dataType"]),
+  function_param: (print) =>
+    print.spaced(["mode", "name", "dataType", "default"]),
+  function_param_default: (print) => print.spaced(["operator", "expr"]),
   drop_function_stmt: (print) =>
     group([
       print.spaced(["dropKw", "tableKw", "functionKw", "ifExistsKw", "name"]),

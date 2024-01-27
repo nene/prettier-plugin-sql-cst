@@ -12,7 +12,7 @@ import { CstToDocMap } from "../CstToDocMap";
 export const proceduralLanguageMap: CstToDocMap<AllProceduralNodes> = {
   // BEGIN .. END
   block_stmt: (print, node) => [
-    print("beginKw"),
+    print.spaced(["beginKw", "atomicKw"]),
     indent([hardline, stripTrailingHardline(print("program"))]),
     node.exception ? [hardline, print("exception")] : [],
     hardline,
