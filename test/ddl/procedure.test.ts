@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { testBigquery } from "../test_utils";
+import { testBigquery, testPostgresql } from "../test_utils";
 
 describe("procedure", () => {
   describe("create procedure", () => {
@@ -88,6 +88,19 @@ describe("procedure", () => {
 
     it(`formats IF EXISTS`, async () => {
       await testBigquery(`DROP PROCEDURE IF EXISTS foo`);
+    });
+
+    it(`formats parameter list`, async () => {
+      await testPostgresql(`DROP PROCEDURE my_func(foo INT, bar TEXT)`);
+    });
+    it(`formats long parameter list and CASCADE|RESTRICT`, async () => {
+      await testPostgresql(dedent`
+        DROP PROCEDURE is_user_allowed_to_enter(
+          user_id INT,
+          event_id INT,
+          OUT event_date DATE
+        ) RESTRICT
+      `);
     });
   });
 });

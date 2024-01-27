@@ -19,5 +19,8 @@ export const procedureMap: CstToDocMap<AllProcedureNodes> = {
     ),
   ],
   drop_procedure_stmt: (print) =>
-    print.spaced(["dropKw", "procedureKw", "ifExistsKw", "name"]),
+    group([
+      print.spaced(["dropKw", "procedureKw", "ifExistsKw", "name"]),
+      print.spaced(["params", "behaviorKw"]),
+    ]),
 };
