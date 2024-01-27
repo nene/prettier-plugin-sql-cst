@@ -45,16 +45,24 @@ describe("function", () => {
 
     it(`formats RETURNS clause`, async () => {
       await testBigquery(dedent`
-        CREATE FUNCTION IF NOT EXISTS my_func()
+        CREATE FUNCTION my_func()
         RETURNS INT64
         AS
           (SELECT 1)
       `);
     });
 
+    it(`formats RETURNS TABLE`, async () => {
+      await testPostgresql(dedent`
+        CREATE FUNCTION foo()
+        RETURNS TABLE (id INT, name TEXT)
+        AS 'SELECT 1'
+      `);
+    });
+
     it(`formats OPTIONS (...)`, async () => {
       await testBigquery(dedent`
-        CREATE FUNCTION IF NOT EXISTS my_func()
+        CREATE FUNCTION my_func()
         AS
           (SELECT 1)
         OPTIONS (description = 'constant-value function')
