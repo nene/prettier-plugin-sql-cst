@@ -87,6 +87,47 @@ describe("function", () => {
       `);
     });
 
+    it(`formats PostgreSQL-specific clauses`, async () => {
+      await testPostgresql(dedent`
+        CREATE FUNCTION my_func()
+        RETURNS INT
+        LANGUAGE SQL
+        IMMUTABLE
+        NOT LEAKPROOF
+        CALLED ON NULL INPUT
+        EXTERNAL SECURITY DEFINER
+        PARALLEL UNSAFE
+        COST 100
+        ROWS 1000
+        SUPPORT schm.foo
+        TRANSFORM FOR TYPE INT, FOR TYPE VARCHAR(100)
+        RETURN 5 + 5
+      `);
+    });
+
+    it(`formats WINDOW function loaded from object file`, async () => {
+      await testPostgresql(dedent`
+        CREATE FUNCTION my_func()
+        RETURNS INT
+        AS 'my_lib.so', 'my_func'
+        LANGUAGE C
+        WINDOW
+        STRICT
+      `);
+    });
+
+    it(`formats SET config variables`, async () => {
+      await testPostgresql(dedent`
+        CREATE FUNCTION my_func()
+        SET search_path TO my_schema, my_other_schema
+        SET check_function_bodies = DEFAULT
+        SET client_min_messages FROM CURRENT
+        BEGIN ATOMIC
+          RETURN 1;
+        END
+      `);
+    });
+
     it(`formats JavaScript FUNCTION`, async () => {
       await testBigquery(dedent`
         CREATE FUNCTION gen_random()
