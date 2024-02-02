@@ -2,7 +2,7 @@ import { AllViewStatements } from "sql-parser-cst";
 import { hardline, join } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const viewMap: CstToDocMap<AllViewStatements> = {
+export const viewMap: Partial<CstToDocMap<AllViewStatements>> = {
   create_view_stmt: (print, node) => {
     const hasOnlyAsClause = node.clauses.length === 1;
     const hasManyClauses = node.clauses.length > 1;
@@ -10,8 +10,7 @@ export const viewMap: CstToDocMap<AllViewStatements> = {
       print.spaced([
         "createKw",
         "orReplaceKw",
-        "temporaryKw",
-        "materializedKw",
+        "kinds",
         "viewKw",
         "ifNotExistsKw",
         "name",
@@ -24,7 +23,7 @@ export const viewMap: CstToDocMap<AllViewStatements> = {
   drop_view_stmt: (print) =>
     print.spaced([
       "dropKw",
-      "materializedKw",
+      "kind",
       "viewKw",
       "ifExistsKw",
       "views",
@@ -33,7 +32,7 @@ export const viewMap: CstToDocMap<AllViewStatements> = {
   alter_view_stmt: (print) => [
     print.spaced([
       "alterKw",
-      "materializedKw",
+      "kind",
       "viewKw",
       "ifExistsKw",
       "name",

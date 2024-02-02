@@ -8,11 +8,7 @@ export const truncateMap: CstToDocMap<TruncateStmt> = {
       print.spaced(["truncateKw", "tableKw"]),
       indent([
         line,
-        print.separated(line, [
-          "tables",
-          "restartOrContinueKw",
-          "cascadeOrRestrictKw",
-        ]),
+        print.separated(line, ["tables", "restartOrContinueKw", "behaviorKw"]),
       ]),
     ]),
 };
