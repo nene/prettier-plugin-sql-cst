@@ -1,6 +1,7 @@
 import { Node } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
 import { aliasMap } from "./alias";
+import { alterActionMap } from "./alter_action";
 import { alterTableMap } from "./alter_table";
 import { analyzeMap } from "./analyze";
 import { baseMap } from "./base";
@@ -39,6 +40,7 @@ import { postgresqlMap } from "./dialects/postgresql";
 
 export const transformMap: Partial<CstToDocMap<Node>> = {
   ...aliasMap,
+  ...alterActionMap,
   ...alterTableMap,
   ...analyzeMap,
   ...baseMap,
