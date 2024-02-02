@@ -11,14 +11,15 @@ export const alterTableMap: Partial<
       print.dynamicLine(),
       print("actions"),
     ]),
-  alter_action_rename_table: (print) => print.spaced(["renameKw", "newName"]),
+  alter_action_rename: (print) => print.spaced(["renameKw", "newName"]),
   alter_action_rename_column: (print) =>
     print.spaced(["renameKw", "ifExistsKw", "oldName", "toKw", "newName"]),
   alter_action_add_column: (print) =>
     print.spaced(["addKw", "ifNotExistsKw", "column"]),
   alter_action_drop_column: (print) =>
     print.spaced(["dropKw", "ifExistsKw", "column", "behaviorKw"]),
-  alter_action_set_options: (print) => print.spaced(["setKw", "options"]),
+  alter_action_set_bigquery_options: (print) =>
+    print.spaced(["setKw", "options"]),
   alter_action_set_default_collate: (print) =>
     print.spaced(["setDefaultCollateKw", "collation"]),
   alter_action_add_constraint: (print) => print.spaced(["addKw", "constraint"]),

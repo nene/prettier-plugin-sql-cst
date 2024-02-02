@@ -10,8 +10,7 @@ export const viewMap: Partial<CstToDocMap<AllViewStatements>> = {
       print.spaced([
         "createKw",
         "orReplaceKw",
-        "temporaryKw",
-        "materializedKw",
+        "kinds",
         "viewKw",
         "ifNotExistsKw",
         "name",
@@ -24,7 +23,7 @@ export const viewMap: Partial<CstToDocMap<AllViewStatements>> = {
   drop_view_stmt: (print) =>
     print.spaced([
       "dropKw",
-      "materializedKw",
+      "kind",
       "viewKw",
       "ifExistsKw",
       "views",
@@ -33,7 +32,7 @@ export const viewMap: Partial<CstToDocMap<AllViewStatements>> = {
   alter_view_stmt: (print) => [
     print.spaced([
       "alterKw",
-      "materializedKw",
+      "kind",
       "viewKw",
       "ifExistsKw",
       "name",

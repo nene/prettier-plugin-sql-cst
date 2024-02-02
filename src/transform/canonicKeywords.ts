@@ -22,7 +22,7 @@ export const canonicKeywords = (cst: Program): Program => {
       }
     },
     // Replaces RENAME & RENAME AS with RENAME TO
-    alter_action_rename_table: (node) => {
+    alter_action_rename: (node) => {
       if (Array.isArray(node.renameKw)) {
         if (node.renameKw[1].name === "AS") {
           node.renameKw[1].name = "TO";

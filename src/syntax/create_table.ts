@@ -3,7 +3,7 @@ import { isAsClause } from "../node_utils";
 import { CstToDocMap, ToDocFn } from "../CstToDocMap";
 import { group, join, line } from "../print_utils";
 
-export const createTableMap: CstToDocMap<AllCreateTableNodes> = {
+export const createTableMap: Partial<CstToDocMap<AllCreateTableNodes>> = {
   /** cst-ignore: clauses */
   create_table_stmt: (print, node, ...rest) => [
     print.spaced([
@@ -60,14 +60,11 @@ export const createTableMap: CstToDocMap<AllCreateTableNodes> = {
   create_table_default_partition_clause: (print) => print.spaced("defaultKw"),
   create_table_of_type_clause: (print) => print.spaced(["ofKw", "typeName"]),
   using_access_method_clause: (print) => print.spaced(["usingKw", "method"]),
-  create_table_tablespace_clause: (print) =>
-    print.spaced(["tablespaceKw", "name"]),
-  with_storage_parameters_clause: (print) =>
-    print.spaced(["withKw", "options"]),
+  tablespace_clause: (print) => print.spaced(["tablespaceKw", "name"]),
   create_table_without_oids_clause: (print) => print.spaced("withoutOidsKw"),
   create_table_on_commit_clause: (print) =>
     print.spaced(["onCommitKw", "actionKw"]),
-  create_table_with_data_clause: (print) => print.spaced("withDataKw"),
+  with_data_clause: (print) => print.spaced("withDataKw"),
 };
 
 const printClauses: ToDocFn<CreateTableStmt> = (print, node) => {

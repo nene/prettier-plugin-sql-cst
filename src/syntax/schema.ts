@@ -6,10 +6,10 @@ export const schemaMap: Partial<CstToDocMap<AllSchemaStatements>> = {
   create_schema_stmt: (print) =>
     join(hardline, [
       print.spaced(["createSchemaKw", "ifNotExistsKw", "name"]),
-      ...print("options"),
+      ...print("clauses"),
     ]),
   drop_schema_stmt: (print) =>
-    print.spaced(["dropSchemaKw", "ifExistsKw", "name", "behaviorKw"]),
+    print.spaced(["dropSchemaKw", "ifExistsKw", "schemas", "behaviorKw"]),
   alter_schema_stmt: (print) =>
     join(hardline, [
       print.spaced(["alterSchemaKw", "ifExistsKw", "name"]),
