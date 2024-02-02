@@ -98,6 +98,13 @@ describe("alter table", () => {
     `);
   });
 
+  it(`formats ALTER TABLE..SET SCHEMA`, async () => {
+    await testPostgresql(dedent`
+      ALTER TABLE client
+      SET SCHEMA new_schema
+    `);
+  });
+
   describe("alter column", () => {
     it(`formats short ALTER COLUMN on a single line (if user prefers)`, async () => {
       await testBigquery(dedent`
@@ -239,7 +246,7 @@ describe("alter table", () => {
       ALTER TABLE ALL IN TABLESPACE my_tablespace OWNED BY
         john_doe_the_second,
         CURRENT_USER
-      SET TABLESPACE new_tablespace
+      SET TABLESPACE new_tablespace NOWAIT
     `);
   });
 });

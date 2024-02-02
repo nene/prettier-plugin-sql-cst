@@ -32,6 +32,7 @@ export const alterActionMap: Partial<CstToDocMap<AllAlterActionNodes>> = {
   alter_action_set_invisible: (print) => print.spaced("setInvisibleKw"),
   alter_action_set_tablespace: (print) =>
     print.spaced(["setTablespaceKw", "tablespace", "nowaitKw"]),
+  alter_action_set_schema: (print) => print.spaced(["setSchemaKw", "schema"]),
 
   // ALTER COLUMN
   alter_action_alter_column: (print) =>
