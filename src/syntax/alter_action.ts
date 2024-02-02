@@ -30,6 +30,8 @@ export const alterActionMap: Partial<CstToDocMap<AllAlterActionNodes>> = {
     print.spaced(["validateConstraintKw", "constraint"]),
   alter_action_set_visible: (print) => print.spaced("setVisibleKw"),
   alter_action_set_invisible: (print) => print.spaced("setInvisibleKw"),
+  alter_action_set_tablespace: (print) =>
+    print.spaced(["setTablespaceKw", "tablespace", "nowaitKw"]),
 
   // ALTER COLUMN
   alter_action_alter_column: (print) =>

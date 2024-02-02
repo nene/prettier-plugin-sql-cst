@@ -222,4 +222,24 @@ describe("alter table", () => {
       `);
     });
   });
+
+  it("formats ALTER TABLE ALL IN TABLESPACE", async () => {
+    await testPostgresql(dedent`
+      ALTER TABLE ALL IN TABLESPACE my_tablespace
+      SET TABLESPACE new_tablespace
+    `);
+  });
+
+  it("formats ALTER TABLE ALL IN TABLESPACE..OWNED BY", async () => {
+    await testPostgresql(dedent`
+      ALTER TABLE ALL IN TABLESPACE my_ts OWNED BY user1, user2
+      SET TABLESPACE new_ts
+    `);
+    await testPostgresql(dedent`
+      ALTER TABLE ALL IN TABLESPACE my_tablespace OWNED BY
+        john_doe_the_second,
+        CURRENT_USER
+      SET TABLESPACE new_tablespace
+    `);
+  });
 });
