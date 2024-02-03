@@ -4,7 +4,7 @@ import { keyword } from "./transformUtils";
 export const canonicKeywords = (cst: Program): Program => {
   cstVisitor({
     // Replaces TEMP with TEMPORARY
-    table_kind: (node) => {
+    relation_kind: (node) => {
       if (Array.isArray(node.kindKw)) {
         // TODO...
       } else {
