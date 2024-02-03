@@ -509,4 +509,15 @@ describe("create table", () => {
       )
     `);
   });
+
+  it(`formats PostgreSQL CREATE FOREIGN TABLE`, async () => {
+    await testPostgresql(dedent`
+      CREATE FOREIGN TABLE film (
+        title TEXT,
+        ryear INT OPTIONS (column_name 'release_year')
+      )
+      SERVER film_server
+      OPTIONS (format 'csv', delimiter ',', header 'true')
+    `);
+  });
 });

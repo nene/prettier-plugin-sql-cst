@@ -3,7 +3,7 @@ import { isAsClause } from "../node_utils";
 import { CstToDocMap, ToDocFn } from "../CstToDocMap";
 import { group, join, line } from "../print_utils";
 
-export const createTableMap: Partial<CstToDocMap<AllCreateTableNodes>> = {
+export const createTableMap: CstToDocMap<AllCreateTableNodes> = {
   /** cst-ignore: clauses */
   create_table_stmt: (print, node, ...rest) => [
     print.spaced([
@@ -65,6 +65,7 @@ export const createTableMap: Partial<CstToDocMap<AllCreateTableNodes>> = {
   create_table_on_commit_clause: (print) =>
     print.spaced(["onCommitKw", "actionKw"]),
   with_data_clause: (print) => print.spaced("withDataKw"),
+  create_table_server_clause: (print) => print.spaced(["serverKw", "name"]),
 };
 
 const printClauses: ToDocFn<CreateTableStmt> = (print, node) => {
