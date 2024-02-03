@@ -47,6 +47,19 @@ describe("schema", () => {
         CREATE SCHEMA AUTHORIZATION my_user
       `);
     });
+
+    it(`formats nested statements`, async () => {
+      await testPostgresql(dedent`
+        CREATE SCHEMA inventory
+        AUTHORIZATION my_user
+          CREATE TABLE product (
+            name TEXT,
+            price DECIMAL(5, 2)
+          )
+          CREATE VIEW all_products AS
+            SELECT * FROM product
+      `);
+    });
   });
 
   describe("drop schema", () => {
