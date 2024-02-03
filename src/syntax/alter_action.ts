@@ -37,6 +37,9 @@ export const alterActionMap: Partial<CstToDocMap<AllAlterActionNodes>> = {
   alter_action_disable: (print) => print.spaced(["disableKw", "item"]),
   alter_action_force: (print) => print.spaced(["forceKw", "item"]),
   alter_action_no_force: (print) => print.spaced(["noForceKw", "item"]),
+  alter_action_cluster_on: (print) => print.spaced(["clusterOnKw", "index"]),
+  alter_action_set_without_cluster: (print) =>
+    print.spaced("setWithoutClusterKw"),
 
   // ALTER COLUMN
   alter_action_alter_column: (print) =>

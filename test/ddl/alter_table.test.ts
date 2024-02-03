@@ -135,6 +135,14 @@ describe("alter table", () => {
     `);
   });
 
+  it(`formats ALTER TABLE with clustering actions`, async () => {
+    await testPostgresql(dedent`
+      ALTER TABLE client
+      CLUSTER ON index_name,
+      SET WITHOUT CLUSTER
+    `);
+  });
+
   describe("alter column", () => {
     it(`formats short ALTER COLUMN on a single line (if user prefers)`, async () => {
       await testBigquery(dedent`
