@@ -8,7 +8,6 @@ export const sequenceMap: CstToDocMap<AllSequenceNodes> = {
       print.spaced(["createKw", "kind", "sequenceKw", "ifNotExistsKw", "name"]),
       indent([print.dynamicLine(), join(line, print("options"))]),
     ]),
-  sequence_kind: (print) => print.spaced("kindKw"),
   alter_sequence_stmt: (print) =>
     group([
       print.spaced(["alterKw", "sequenceKw", "ifExistsKw", "sequence"]),

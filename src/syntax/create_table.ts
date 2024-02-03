@@ -20,7 +20,7 @@ export const createTableMap: CstToDocMap<AllCreateTableNodes> = {
     printClauses(print, node, ...rest),
     node.options ? [line, group(print("options"))] : [],
   ],
-  table_kind: (print) => print.spaced("kindKw"),
+  relation_kind: (print) => print.spaced("kindKw"),
   column_definition: (print) =>
     print.spaced(["name", "dataType", "withOptionsKw", "constraints"]),
   table_option: (print, node) => {

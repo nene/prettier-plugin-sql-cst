@@ -20,7 +20,6 @@ export const viewMap: CstToDocMap<AllViewNodes> = {
       hasManyClauses ? [hardline, join(hardline, print("clauses"))] : [],
     ];
   },
-  view_kind: (print) => print.spaced("kindKw"),
   with_check_option_clause: (print) =>
     print.spaced(["withKw", "levelKw", "checkOptionKw"]),
 
