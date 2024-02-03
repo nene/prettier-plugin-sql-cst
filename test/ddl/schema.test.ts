@@ -70,6 +70,12 @@ describe("schema", () => {
   });
 
   describe("alter schema", () => {
+    it(`formats ALTER SCHEMA on single line if user prefers`, async () => {
+      await testBigquery(dedent`
+        ALTER SCHEMA IF EXISTS my_schema SET OPTIONS (description = 'blah')
+      `);
+    });
+
     it(`formats ALTER SCHEMA .. SET OPTIONS`, async () => {
       await testBigquery(dedent`
         ALTER SCHEMA IF EXISTS my_schema
