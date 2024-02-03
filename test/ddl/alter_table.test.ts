@@ -215,43 +215,44 @@ describe("alter table", () => {
       `);
     });
 
+    it(`formats ALTER COLUMN [IF EXISTS]`, async () => {
+      await testBigquery(dedent`
+        ALTER TABLE client
+        ALTER COLUMN IF EXISTS price
+        DROP DEFAULT
+      `);
+    });
+
+    [
+      "SET DEFAULT 100",
+      "DROP DEFAULT",
+      "SET NOT NULL",
+      "DROP NOT NULL",
+    ].forEach((action) => {
+      it(`formats ALTER COLUMN .. ${action}`, async () => {
+        await testPostgresql(dedent`
+          ALTER TABLE client
+          ALTER COLUMN price
+          ${action}
+        `);
+      });
+    });
+
+    ["SET VISIBLE", "SET INVISIBLE"].forEach((action) => {
+      it(`formats ALTER COLUMN .. ${action}`, async () => {
+        await testMysql(dedent`
+          ALTER TABLE client
+          ALTER COLUMN price
+          ${action}
+        `);
+      });
+    });
+
     it(`formats ALTER COLUMN .. SET OPTIONS`, async () => {
       await testBigquery(dedent`
         ALTER TABLE client
         ALTER COLUMN price
         SET OPTIONS (description = 'Price per unit')
-      `);
-    });
-
-    it(`formats ALTER COLUMN [IF EXISTS] .. SET DEFAULT`, async () => {
-      await testBigquery(dedent`
-        ALTER TABLE client
-        ALTER COLUMN IF EXISTS price
-        SET DEFAULT 100
-      `);
-    });
-
-    it(`formats ALTER COLUMN .. DROP DEFAULT`, async () => {
-      await testBigquery(dedent`
-        ALTER TABLE client
-        ALTER COLUMN price
-        DROP DEFAULT
-      `);
-    });
-
-    it(`formats ALTER COLUMN .. SET NOT NULL`, async () => {
-      await testPostgresql(dedent`
-        ALTER TABLE client
-        ALTER COLUMN price
-        SET NOT NULL
-      `);
-    });
-
-    it(`formats ALTER COLUMN .. DROP NOT NULL`, async () => {
-      await testBigquery(dedent`
-        ALTER TABLE client
-        ALTER COLUMN price
-        DROP NOT NULL
       `);
     });
 
@@ -265,19 +266,6 @@ describe("alter table", () => {
         ALTER TABLE client
         ALTER COLUMN price
         TYPE INT COLLATE "en_US" USING price > 0
-      `);
-    });
-
-    it(`formats ALTER COLUMN .. SET VISIBLE/INVISIBLE`, async () => {
-      await testMysql(dedent`
-        ALTER TABLE client
-        ALTER COLUMN price
-        SET VISIBLE
-      `);
-      await testMysql(dedent`
-        ALTER TABLE client
-        ALTER COLUMN price
-        SET INVISIBLE
       `);
     });
   });
