@@ -1,6 +1,6 @@
 import { AllAlterActionNodes } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
-import { group } from "../print_utils";
+import { group, join, line } from "../print_utils";
 
 export const alterActionMap: Partial<CstToDocMap<AllAlterActionNodes>> = {
   alter_action_rename: (print) => print.spaced(["renameKw", "newName"]),
@@ -88,7 +88,7 @@ export const alterActionMap: Partial<CstToDocMap<AllAlterActionNodes>> = {
       "asIdentityKw",
       "sequenceOptions",
     ]),
-  alter_action_alter_identity: (print) => print.spaced("actions"),
+  alter_action_alter_identity: (print) => group(join(line, print("actions"))),
   alter_action_set_generated: (print) =>
     print.spaced(["setGeneratedKw", "whenKw"]),
   alter_action_restart: (print) =>

@@ -2,7 +2,7 @@ import { AllSequenceNodes } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
 import { group, indent, join, line } from "../print_utils";
 
-export const sequenceMap: Partial<CstToDocMap<AllSequenceNodes>> = {
+export const sequenceMap: CstToDocMap<AllSequenceNodes> = {
   create_sequence_stmt: (print) =>
     group([
       print.spaced(["createKw", "kind", "sequenceKw", "ifNotExistsKw", "name"]),
@@ -40,4 +40,6 @@ export const sequenceMap: Partial<CstToDocMap<AllSequenceNodes>> = {
   sequence_option_cycle: (print) => print.spaced("cycleKw"),
   sequence_option_no_cycle: (print) => print.spaced("noCycleKw"),
   sequence_option_owned_by: (print) => print.spaced(["ownedByKw", "owner"]),
+
+  sequence_option_list: (print) => join(line, print("options")),
 };

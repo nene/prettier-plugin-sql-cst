@@ -247,6 +247,27 @@ describe("alter table", () => {
       });
     });
 
+    it(`formats ALTER COLUMN .. ADD GENERATED with (sequence options)`, async () => {
+      await testPostgresql(dedent`
+        ALTER TABLE client
+        ALTER COLUMN price
+        ADD GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1)
+      `);
+    });
+    it(`formats ALTER COLUMN .. ADD GENERATED with long (sequence options list)`, async () => {
+      await testPostgresql(dedent`
+        ALTER TABLE client
+        ALTER COLUMN price
+        ADD GENERATED ALWAYS AS IDENTITY (
+          START WITH 1
+          INCREMENT BY 1
+          MINVALUE -1000
+          MAXVALUE 1000
+          NO CYCLE
+        )
+      `);
+    });
+
     ["SET VISIBLE", "SET INVISIBLE"].forEach((action) => {
       it(`formats ALTER COLUMN .. ${action}`, async () => {
         await testMysql(dedent`
@@ -282,7 +303,19 @@ describe("alter table", () => {
       await testPostgresql(dedent`
         ALTER TABLE client
         ALTER COLUMN price
-        SET GENERATED ALWAYS RESTART WITH 100
+        SET GENERATED ALWAYS RESTART WITH 100 SET MAXVALUE 1000
+      `);
+    });
+
+    it("formats lots of identity altering actions", async () => {
+      await testPostgresql(dedent`
+        ALTER TABLE client
+        ALTER COLUMN price
+        SET GENERATED ALWAYS
+        RESTART WITH 100
+        SET MAXVALUE 1000
+        SET MINVALUE 0
+        SET NO CYCLE
       `);
     });
   });
