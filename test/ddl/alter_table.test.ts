@@ -159,6 +159,34 @@ describe("alter table", () => {
     `);
   });
 
+  it(`formats ALTER TABLE with SET/RESET (storage parameters)`, async () => {
+    await testPostgresql(dedent`
+      ALTER TABLE client
+      SET (fillfactor = 70, autovacuum_enabled),
+      RESET (toast.autovacuum_enabled, max_rows)
+    `);
+  });
+
+  it(`formats ALTER TABLE with SET/RESET (long storage parameters list)`, async () => {
+    await testPostgresql(dedent`
+      ALTER TABLE client
+      SET (
+        fillfactor = 70,
+        autovacuum_enabled,
+        toast.autovacuum_enabled,
+        max_rows = 100,
+        visibility_map
+      ),
+      RESET (
+        toast.autovacuum_enabled,
+        max_rows,
+        autovacuum_enabled,
+        fillfactor,
+        parallel_workers
+      )
+    `);
+  });
+
   it(`formats ALTER TABLE with PostgreSQL alter-actions`, async () => {
     await testPostgresql(dedent`
       ALTER TABLE client

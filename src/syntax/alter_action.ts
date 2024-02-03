@@ -54,6 +54,10 @@ export const alterActionMap: Partial<CstToDocMap<AllAlterActionNodes>> = {
     print.spaced(["replicaIdentityKw", "identity"]),
   replica_identity_using_index: (print) =>
     print.spaced(["usingIndexKw", "index"]),
+  alter_action_set_postgresql_options: (print) =>
+    print.spaced(["setKw", "options"]),
+  alter_action_reset_postgresql_options: (print) =>
+    print.spaced(["resetKw", "options"]),
 
   // ALTER COLUMN
   alter_action_alter_column: (print) =>
