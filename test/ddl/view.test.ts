@@ -177,4 +177,28 @@ describe("view", () => {
       `);
     });
   });
+
+  describe("refresh materialized view", () => {
+    it(`formats REFRESH MATERIALIZED VIEW`, async () => {
+      await testPostgresql(dedent`
+        REFRESH MATERIALIZED VIEW my_view
+      `);
+    });
+
+    it(`formats CONCURRENTLY`, async () => {
+      await testPostgresql(dedent`
+        REFRESH MATERIALIZED VIEW CONCURRENTLY my_view
+      `);
+    });
+
+    it(`formats WITH [NO] DATA ... on one or multiple lines`, async () => {
+      await testPostgresql(dedent`
+        REFRESH MATERIALIZED VIEW my_view
+        WITH NO DATA
+      `);
+      await testPostgresql(dedent`
+        REFRESH MATERIALIZED VIEW my_view WITH DATA
+      `);
+    });
+  });
 });
