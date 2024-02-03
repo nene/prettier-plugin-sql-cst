@@ -105,14 +105,6 @@ describe("alter table", () => {
     `);
   });
 
-  it(`formats ALTER TABLE with PostgreSQL alter-actions`, async () => {
-    await testPostgresql(dedent`
-      ALTER TABLE client
-      SET SCHEMA new_schema,
-      SET TABLESPACE new_tablespace NOWAIT
-    `);
-  });
-
   it(`formats ALTER TABLE with ENABLE/DISABLE actions`, async () => {
     await testPostgresql(dedent`
       ALTER TABLE client
@@ -140,6 +132,44 @@ describe("alter table", () => {
       ALTER TABLE client
       CLUSTER ON index_name,
       SET WITHOUT CLUSTER
+    `);
+  });
+
+  it(`formats ALTER TABLE with logging actions`, async () => {
+    await testPostgresql(dedent`
+      ALTER TABLE client
+      SET LOGGED,
+      SET UNLOGGED
+    `);
+  });
+
+  it(`formats ALTER TABLE with inheritance actions`, async () => {
+    await testPostgresql(dedent`
+      ALTER TABLE client
+      INHERIT parent_table,
+      NO INHERIT grandparent_table
+    `);
+  });
+
+  it(`formats ALTER TABLE with OF type actions`, async () => {
+    await testPostgresql(dedent`
+      ALTER TABLE client
+      OF new_type,
+      NOT OF
+    `);
+  });
+
+  it(`formats ALTER TABLE with PostgreSQL alter-actions`, async () => {
+    await testPostgresql(dedent`
+      ALTER TABLE client
+      SET SCHEMA new_schema,
+      SET TABLESPACE new_tablespace NOWAIT,
+      SET WITHOUT OIDS,
+      SET ACCESS METHOD heap,
+      OWNER TO new_owner,
+      OWNER TO CURRENT_USER,
+      REPLICA IDENTITY DEFAULT,
+      REPLICA IDENTITY USING INDEX index_name
     `);
   });
 
