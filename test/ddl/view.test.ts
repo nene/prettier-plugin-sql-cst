@@ -132,5 +132,49 @@ describe("view", () => {
           SELECT 1, 2, 3
       `);
     });
+
+    [
+      "ALTER COLUMN foo SET DEFAULT 1",
+      "ALTER COLUMN foo DROP DEFAULT",
+      "OWNER TO john_doe",
+      "RENAME COLUMN foo TO bar",
+      "RENAME TO new_name",
+      "SET SCHEMA my_schema",
+      "SET (security_barrier = TRUE, check_option = local)",
+      "RESET (security_barrier, check_option)",
+    ].forEach((action) => {
+      it(`formats ${action}`, async () => {
+        await testPostgresql(dedent`
+            ALTER VIEW my_view
+            ${action}
+          `);
+      });
+    });
+
+    [
+      "DEPENDS ON EXTENSION my_extension",
+      "NO DEPENDS ON EXTENSION my_extension",
+    ].forEach((action) => {
+      it(`formats ${action}`, async () => {
+        await testPostgresql(dedent`
+          ALTER MATERIALIZED VIEW my_view
+          ${action}
+        `);
+      });
+    });
+
+    it(`formats multiple actions`, async () => {
+      await testPostgresql(dedent`
+        ALTER MATERIALIZED VIEW my_view
+        CLUSTER ON my_index,
+        SET WITHOUT CLUSTER,
+        OWNER TO my_role,
+        ALTER COLUMN foo SET STATISTICS 100,
+        ALTER COLUMN foo SET (n_distinct = 100),
+        ALTER COLUMN foo RESET (n_distinct),
+        ALTER COLUMN foo SET STORAGE PLAIN,
+        ALTER COLUMN foo SET COMPRESSION my_method
+      `);
+    });
   });
 });

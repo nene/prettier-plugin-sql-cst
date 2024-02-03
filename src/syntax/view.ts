@@ -44,6 +44,6 @@ export const viewMap: Partial<CstToDocMap<AllViewNodes>> = {
       "columns",
     ]),
     hardline,
-    join(hardline, print("actions")),
+    print("actions"),
   ],
 };
