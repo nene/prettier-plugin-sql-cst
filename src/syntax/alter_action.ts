@@ -72,6 +72,22 @@ export const alterActionMap: Partial<CstToDocMap<AllAlterActionNodes>> = {
   alter_action_drop_not_null: (print) => print.spaced("dropNotNullKw"),
   alter_action_set_data_type: (print) =>
     print.spaced(["setDataTypeKw", "dataType", "clauses"]),
+  alter_action_set_statistics: (print) =>
+    print.spaced(["setStatisticsKw", "value"]),
+  alter_action_set_compression: (print) =>
+    print.spaced(["setCompressionKw", "method"]),
+  alter_action_set_storage: (print) => print.spaced(["setStorageKw", "typeKw"]),
+  alter_action_drop_expression: (print) =>
+    print.spaced(["dropExpressionKw", "ifExistsKw"]),
+  alter_action_drop_identity: (print) =>
+    print.spaced(["dropIdentityKw", "ifExistsKw"]),
+  alter_action_add_identity: (print) =>
+    print.spaced([
+      "addGeneratedKw",
+      "whenKw",
+      "asIdentityKw",
+      "sequenceOptions",
+    ]),
 
   // ENABLE/DISABLE ..
   toggle_trigger: (print) => print.spaced(["triggerKw", "name"]),
