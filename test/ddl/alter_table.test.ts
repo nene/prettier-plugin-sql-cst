@@ -127,6 +127,14 @@ describe("alter table", () => {
     `);
   });
 
+  it(`formats ALTER TABLE with [NO] FORCE actions`, async () => {
+    await testPostgresql(dedent`
+      ALTER TABLE client
+      FORCE ROW LEVEL SECURITY,
+      NO FORCE ROW LEVEL SECURITY
+    `);
+  });
+
   describe("alter column", () => {
     it(`formats short ALTER COLUMN on a single line (if user prefers)`, async () => {
       await testBigquery(dedent`
