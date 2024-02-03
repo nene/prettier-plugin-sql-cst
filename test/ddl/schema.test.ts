@@ -89,5 +89,17 @@ describe("schema", () => {
         SET DEFAULT COLLATE 'und:ci'
       `);
     });
+
+    it(`formats ALTER SCHEMA .. RENAME TO`, async () => {
+      await testPostgresql(dedent`
+        ALTER SCHEMA my_schema RENAME TO new_schema
+      `);
+    });
+
+    it(`formats ALTER SCHEMA .. OWNER TO`, async () => {
+      await testPostgresql(dedent`
+        ALTER SCHEMA my_schema OWNER TO CURRENT_USER
+      `);
+    });
   });
 });
