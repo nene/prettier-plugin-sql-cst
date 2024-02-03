@@ -9,6 +9,16 @@ export const sequenceMap: Partial<CstToDocMap<AllSequenceNodes>> = {
       indent([print.dynamicLine(), join(line, print("options"))]),
     ]),
   sequence_kind: (print) => print.spaced("kindKw"),
+  drop_sequence_stmt: (print) =>
+    group(
+      print.spaced([
+        "dropKw",
+        "sequenceKw",
+        "ifExistsKw",
+        "sequences",
+        "behaviorKw",
+      ]),
+    ),
 
   sequence_option_as_type: (print) => print.spaced(["asKw", "dataType"]),
   sequence_option_increment: (print) =>

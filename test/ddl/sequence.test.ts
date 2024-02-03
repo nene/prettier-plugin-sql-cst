@@ -52,4 +52,18 @@ describe("sequence", () => {
       `);
     });
   });
+
+  describe("drop sequence", () => {
+    it(`formats DROP SEQUENCE`, async () => {
+      await testPostgresql("DROP SEQUENCE seq1, seq2");
+    });
+
+    it(`formats DROP IF EXISTS`, async () => {
+      await testPostgresql("DROP SEQUENCE IF EXISTS my_seq");
+    });
+
+    it(`formats CASCADE/RESTRICT`, async () => {
+      await testPostgresql("DROP SEQUENCE my_seq CASCADE");
+    });
+  });
 });
