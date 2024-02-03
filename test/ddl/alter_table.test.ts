@@ -199,6 +199,10 @@ describe("alter table", () => {
         ALTER TABLE client
         ADD PRIMARY KEY (price)
       `);
+      await testPostgresql(dedent`
+        ALTER TABLE client
+        ADD UNIQUE USING INDEX price_unique
+      `);
     });
 
     it(`formats DROP CONSTRAINT`, async () => {

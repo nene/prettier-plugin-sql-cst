@@ -25,6 +25,7 @@ export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
     group(print.spaced(["primaryKeyKw", "direction", "columns", "clauses"])),
   constraint_unique: (print) =>
     group(print.spaced(["uniqueKw", "columns", "nullsKw", "clauses"])),
+  existing_index: (print) => print.spaced(["usingIndexKw", "index"]),
   constraint_check: (print) =>
     group(print.spaced(["checkKw", "expr", "clauses"])),
   constraint_collate: (print) =>
