@@ -18,12 +18,10 @@ describe("view", () => {
     });
 
     it(`formats CREATE OR REPLACE VIEW`, async () => {
-      await testBigquery(
-        dedent`
-          CREATE OR REPLACE VIEW active_client_id AS
-            SELECT 1
-        `,
-      );
+      await testBigquery(dedent`
+        CREATE OR REPLACE VIEW active_client_id AS
+          SELECT 1
+      `);
     });
 
     it(`formats CREATE VIEW with column list`, async () => {
@@ -46,14 +44,12 @@ describe("view", () => {
     });
 
     it(`formats CREATE VIEW with BigQuery options`, async () => {
-      await testBigquery(
-        dedent`
-          CREATE VIEW foo
-          OPTIONS (friendly_name = "newview")
-          AS
-            SELECT 1
-        `,
-      );
+      await testBigquery(dedent`
+        CREATE VIEW foo
+        OPTIONS (friendly_name = "newview")
+        AS
+          SELECT 1
+      `);
     });
 
     it(`formats CREATE VIEW with PostgreSQL options`, async () => {
@@ -67,24 +63,20 @@ describe("view", () => {
     });
 
     it(`formats simple CREATE MATERIALIZED VIEW`, async () => {
-      await testBigquery(
-        dedent`
-          CREATE MATERIALIZED VIEW foo AS
-            SELECT 1
-        `,
-      );
+      await testBigquery(dedent`
+        CREATE MATERIALIZED VIEW foo AS
+          SELECT 1
+      `);
     });
 
     it(`formats CREATE MATERIALIZED VIEW with extra clauses`, async () => {
-      await testBigquery(
-        dedent`
-          CREATE MATERIALIZED VIEW foo
-          PARTITION BY DATE(col_datetime)
-          CLUSTER BY col_int
-          AS
-            SELECT 1
-        `,
-      );
+      await testBigquery(dedent`
+        CREATE MATERIALIZED VIEW foo
+        PARTITION BY DATE(col_datetime)
+        CLUSTER BY col_int
+        AS
+          SELECT 1
+      `);
     });
 
     it(`formats CREATE MATERIALIZED VIEW with extra PostgreSQL clauses`, async () => {
@@ -120,31 +112,25 @@ describe("view", () => {
 
   describe("alter view", () => {
     it(`formats ALTER VIEW .. SET OPTIONS`, async () => {
-      await testBigquery(
-        dedent`
-          ALTER VIEW IF EXISTS my_view
-          SET OPTIONS (description = 'blah')
-        `,
-      );
+      await testBigquery(dedent`
+        ALTER VIEW IF EXISTS my_view
+        SET OPTIONS (description = 'blah')
+      `);
     });
 
     it(`formats ALTER MATERIALIZED VIEW .. SET OPTIONS`, async () => {
-      await testBigquery(
-        dedent`
-          ALTER MATERIALIZED VIEW my_view
-          SET OPTIONS (description = 'blah')
-        `,
-      );
+      await testBigquery(dedent`
+        ALTER MATERIALIZED VIEW my_view
+        SET OPTIONS (description = 'blah')
+      `);
     });
 
     it(`formats ALTER VIEW with columns`, async () => {
-      await testMysql(
-        dedent`
-          ALTER VIEW my_view (foo, bar, baz)
-          AS
-            SELECT 1, 2, 3
-        `,
-      );
+      await testMysql(dedent`
+        ALTER VIEW my_view (foo, bar, baz)
+        AS
+          SELECT 1, 2, 3
+      `);
     });
   });
 });
