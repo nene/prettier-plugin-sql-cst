@@ -109,6 +109,26 @@ describe("create table", () => {
     `);
   });
 
+  it(`formats PostgreSQL GENERATED AS IDENTITY with sequence options`, async () => {
+    await testPostgresql(dedent`
+      CREATE TABLE client (
+        id INT GENERATED ALWAYS AS IDENTITY (START WITH 1)
+      )
+    `);
+
+    await testPostgresql(dedent`
+      CREATE TABLE client (
+        id INT GENERATED ALWAYS AS IDENTITY (
+          START WITH 1
+          INCREMENT BY 1
+          MINVALUE 1
+          MAXVALUE 1000
+          CYCLE
+        )
+      )
+    `);
+  });
+
   it(`formats CREATE TABLE with table constraints`, async () => {
     await test(dedent`
       CREATE TABLE client (

@@ -49,7 +49,13 @@ export const constraintMap: Partial<CstToDocMap<AllConstraintNodes>> = {
     print.spaced(["onKw", "eventKw", "actionKw", "columns"]),
   referential_match: (print) => print.spaced(["matchKw", "typeKw"]),
   constraint_generated: (print) =>
-    print.spaced(["generatedKw", "asKw", "expr", "storageKw"]),
+    print.spaced([
+      "generatedKw",
+      "asKw",
+      "expr",
+      "storageKw",
+      "sequenceOptions",
+    ]),
   identity_column: (print) => print("identityKw"),
   constraint_auto_increment: (print) => print("autoIncrementKw"),
   on_conflict_clause: (print) => print.spaced(["onConflictKw", "resolutionKw"]),
