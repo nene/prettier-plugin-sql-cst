@@ -88,6 +88,13 @@ export const alterActionMap: Partial<CstToDocMap<AllAlterActionNodes>> = {
       "asIdentityKw",
       "sequenceOptions",
     ]),
+  alter_action_alter_identity: (print) => print.spaced("actions"),
+  alter_action_set_generated: (print) =>
+    print.spaced(["setGeneratedKw", "whenKw"]),
+  alter_action_restart: (print) =>
+    print.spaced(["restartKw", "withKw", "value"]),
+  alter_action_set_sequence_option: (print) =>
+    print.spaced(["setKw", "option"]),
 
   // ENABLE/DISABLE ..
   toggle_trigger: (print) => print.spaced(["triggerKw", "name"]),

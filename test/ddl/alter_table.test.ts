@@ -277,6 +277,14 @@ describe("alter table", () => {
         TYPE INT COLLATE "en_US" USING price > 0
       `);
     });
+
+    it("formats identity altering actions", async () => {
+      await testPostgresql(dedent`
+        ALTER TABLE client
+        ALTER COLUMN price
+        SET GENERATED ALWAYS RESTART WITH 100
+      `);
+    });
   });
 
   describe("constraints", () => {
