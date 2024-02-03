@@ -58,6 +58,13 @@ describe("alter table", () => {
     `);
   });
 
+  it(`formats ALTER TABLE..ADD COLUMN with constraints`, async () => {
+    await testPostgresql(dedent`
+      ALTER TABLE client
+      ADD COLUMN col1 INT COLLATE "en_US" NOT NULL
+    `);
+  });
+
   it(`formats ALTER TABLE..DROP COLUMN`, async () => {
     await test(dedent`
       ALTER TABLE client
