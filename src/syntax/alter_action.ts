@@ -33,6 +33,8 @@ export const alterActionMap: Partial<CstToDocMap<AllAlterActionNodes>> = {
   alter_action_set_tablespace: (print) =>
     print.spaced(["setTablespaceKw", "tablespace", "nowaitKw"]),
   alter_action_set_schema: (print) => print.spaced(["setSchemaKw", "schema"]),
+  alter_action_enable: (print) => print.spaced(["enableKw", "modeKw", "item"]),
+  alter_action_disable: (print) => print.spaced(["disableKw", "item"]),
 
   // ALTER COLUMN
   alter_action_alter_column: (print) =>
@@ -47,4 +49,9 @@ export const alterActionMap: Partial<CstToDocMap<AllAlterActionNodes>> = {
   alter_action_drop_not_null: (print) => print.spaced("dropNotNullKw"),
   alter_action_set_data_type: (print) =>
     print.spaced(["setDataTypeKw", "dataType"]),
+
+  // ENABLE/DISABLE ..
+  toggle_trigger: (print) => print.spaced(["triggerKw", "name"]),
+  toggle_rule: (print) => print.spaced(["ruleKw", "name"]),
+  toggle_row_level_security: (print) => print.spaced("rowLevelSecurityKw"),
 };

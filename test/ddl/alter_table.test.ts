@@ -113,6 +113,20 @@ describe("alter table", () => {
     `);
   });
 
+  it(`formats ALTER TABLE with ENABLE/DISABLE actions`, async () => {
+    await testPostgresql(dedent`
+      ALTER TABLE client
+      DISABLE TRIGGER ALL,
+      ENABLE TRIGGER my_trigger,
+      ENABLE REPLICA TRIGGER trigger2,
+      ENABLE ALWAYS TRIGGER trigger3,
+      ENABLE REPLICA RULE my_rule,
+      DISABLE RULE r2,
+      DISABLE ROW LEVEL SECURITY,
+      ENABLE ROW LEVEL SECURITY
+    `);
+  });
+
   describe("alter column", () => {
     it(`formats short ALTER COLUMN on a single line (if user prefers)`, async () => {
       await testBigquery(dedent`
