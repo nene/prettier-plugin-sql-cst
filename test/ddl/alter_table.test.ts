@@ -98,10 +98,11 @@ describe("alter table", () => {
     `);
   });
 
-  it(`formats ALTER TABLE..SET SCHEMA`, async () => {
+  it(`formats ALTER TABLE with PostgreSQL alter-actions`, async () => {
     await testPostgresql(dedent`
       ALTER TABLE client
-      SET SCHEMA new_schema
+      SET SCHEMA new_schema,
+      SET TABLESPACE new_tablespace NOWAIT
     `);
   });
 
