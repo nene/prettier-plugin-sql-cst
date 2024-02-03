@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { testBigquery } from "../test_utils";
+import { testBigquery, testPostgresql } from "../test_utils";
 
 describe("schema", () => {
   describe("create schema", () => {
@@ -22,10 +22,29 @@ describe("schema", () => {
       `);
     });
 
+    it(`formats CREATE SCHEMA on single line if user prefers`, async () => {
+      await testBigquery(dedent`
+        CREATE SCHEMA hello OPTIONS (friendly_name = 'Hello')
+      `);
+    });
+
     it(`formats DEFAULT COLLATE`, async () => {
       await testBigquery(dedent`
         CREATE SCHEMA schema_name
         DEFAULT COLLATE 'und:ci'
+      `);
+    });
+
+    it(`formats AUTHORIZATION`, async () => {
+      await testPostgresql(dedent`
+        CREATE SCHEMA schema_name
+        AUTHORIZATION CURRENT_USER
+      `);
+    });
+
+    it(`formats CREATE SCHEMA without schema name`, async () => {
+      await testPostgresql(dedent`
+        CREATE SCHEMA AUTHORIZATION my_user
       `);
     });
   });
