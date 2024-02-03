@@ -67,10 +67,15 @@ export const alterActionMap: Partial<CstToDocMap<AllAlterActionNodes>> = {
   alter_action_set_not_null: (print) => print.spaced("setNotNullKw"),
   alter_action_drop_not_null: (print) => print.spaced("dropNotNullKw"),
   alter_action_set_data_type: (print) =>
-    print.spaced(["setDataTypeKw", "dataType"]),
+    print.spaced(["setDataTypeKw", "dataType", "clauses"]),
 
   // ENABLE/DISABLE ..
   toggle_trigger: (print) => print.spaced(["triggerKw", "name"]),
   toggle_rule: (print) => print.spaced(["ruleKw", "name"]),
   toggle_row_level_security: (print) => print.spaced("rowLevelSecurityKw"),
+
+  // SET DATA TYPE ...
+  set_data_type_collate_clause: (print) =>
+    print.spaced(["collateKw", "collation"]),
+  set_data_type_using_clause: (print) => print.spaced(["usingKw", "expr"]),
 };

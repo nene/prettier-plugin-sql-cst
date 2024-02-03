@@ -233,6 +233,11 @@ describe("alter table", () => {
         ALTER COLUMN price
         SET DATA TYPE INT64
       `);
+      await testPostgresql(dedent`
+        ALTER TABLE client
+        ALTER COLUMN price
+        TYPE INT COLLATE "en_US" USING price > 0
+      `);
     });
 
     it(`formats ALTER COLUMN .. SET VISIBLE/INVISIBLE`, async () => {
