@@ -1,5 +1,5 @@
 import { AllViewNodes } from "sql-parser-cst";
-import { hardline, join } from "../print_utils";
+import { group, hardline, join } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
 export const viewMap: Partial<CstToDocMap<AllViewNodes>> = {
@@ -24,14 +24,16 @@ export const viewMap: Partial<CstToDocMap<AllViewNodes>> = {
     print.spaced(["withKw", "levelKw", "checkOptionKw"]),
 
   drop_view_stmt: (print) =>
-    print.spaced([
-      "dropKw",
-      "kind",
-      "viewKw",
-      "ifExistsKw",
-      "views",
-      "behaviorKw",
-    ]),
+    group(
+      print.spaced([
+        "dropKw",
+        "kind",
+        "viewKw",
+        "ifExistsKw",
+        "views",
+        "behaviorKw",
+      ]),
+    ),
   alter_view_stmt: (print) => [
     print.spaced([
       "alterKw",

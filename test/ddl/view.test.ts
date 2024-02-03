@@ -102,7 +102,7 @@ describe("view", () => {
 
   describe("drop view", () => {
     it(`formats DROP VIEW`, async () => {
-      await test(`DROP VIEW active_client_view`);
+      await test(`DROP VIEW active_client_view, other_view, another_view`);
     });
 
     it(`formats DROP VIEW IF EXISTS`, async () => {
