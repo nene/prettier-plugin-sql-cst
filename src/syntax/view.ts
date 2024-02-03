@@ -1,8 +1,8 @@
-import { AllViewStatements } from "sql-parser-cst";
+import { AllViewNodes } from "sql-parser-cst";
 import { hardline, join } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const viewMap: Partial<CstToDocMap<AllViewStatements>> = {
+export const viewMap: Partial<CstToDocMap<AllViewNodes>> = {
   create_view_stmt: (print, node) => {
     const hasOnlyAsClause = node.clauses.length === 1;
     const hasManyClauses = node.clauses.length > 1;
@@ -20,6 +20,9 @@ export const viewMap: Partial<CstToDocMap<AllViewStatements>> = {
       hasManyClauses ? [hardline, join(hardline, print("clauses"))] : [],
     ];
   },
+  with_check_option_clause: (print) =>
+    print.spaced(["withKw", "levelKw", "checkOptionKw"]),
+
   drop_view_stmt: (print) =>
     print.spaced([
       "dropKw",

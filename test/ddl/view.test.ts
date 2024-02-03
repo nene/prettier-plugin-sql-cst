@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { test, testBigquery, testMysql } from "../test_utils";
+import { test, testBigquery, testMysql, testPostgresql } from "../test_utils";
 
 describe("view", () => {
   describe("create view", () => {
@@ -10,9 +10,9 @@ describe("view", () => {
       `);
     });
 
-    it(`formats CREATE TEMPORARY VIEW IF NOT EXISTS`, async () => {
-      await test(dedent`
-        CREATE TEMPORARY VIEW IF NOT EXISTS active_client_id AS
+    it(`formats CREATE TEMPORARY RECURSIVE VIEW IF NOT EXISTS`, async () => {
+      await testPostgresql(dedent`
+        CREATE TEMPORARY RECURSIVE VIEW IF NOT EXISTS active_client_id AS
           SELECT 1
       `);
     });
@@ -56,6 +56,16 @@ describe("view", () => {
       );
     });
 
+    it(`formats CREATE VIEW with PostgreSQL options`, async () => {
+      await testPostgresql(dedent`
+        CREATE VIEW foo
+        WITH (security_barrier = TRUE, check_option = local)
+        AS
+          SELECT 1
+        WITH CASCADED CHECK OPTION
+      `);
+    });
+
     it(`formats simple CREATE MATERIALIZED VIEW`, async () => {
       await testBigquery(
         dedent`
@@ -75,6 +85,18 @@ describe("view", () => {
             SELECT 1
         `,
       );
+    });
+
+    it(`formats CREATE MATERIALIZED VIEW with extra PostgreSQL clauses`, async () => {
+      await testPostgresql(dedent`
+        CREATE MATERIALIZED VIEW foo
+        USING "SP-GiST"
+        WITH (fillfactor = 70)
+        TABLESPACE pg_default
+        AS
+          SELECT 1
+        WITH NO DATA
+      `);
     });
   });
 
