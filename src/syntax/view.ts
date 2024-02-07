@@ -2,7 +2,7 @@ import { AllViewNodes } from "sql-parser-cst";
 import { group, hardline, join, line } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const viewMap: CstToDocMap<AllViewNodes> = {
+export const viewMap: Partial<CstToDocMap<AllViewNodes>> = {
   create_view_stmt: (print, node) => {
     const hasOnlyAsClause = node.clauses.length === 1;
     const hasManyClauses = node.clauses.length > 1;

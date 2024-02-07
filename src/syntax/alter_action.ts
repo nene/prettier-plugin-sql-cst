@@ -2,7 +2,7 @@ import { AllAlterActionNodes } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
 import { group, join, line } from "../print_utils";
 
-export const alterActionMap: CstToDocMap<AllAlterActionNodes> = {
+export const alterActionMap: Partial<CstToDocMap<AllAlterActionNodes>> = {
   alter_action_rename: (print) => print.spaced(["renameKw", "newName"]),
   alter_action_rename_column: (print) =>
     print.spaced(["renameKw", "ifExistsKw", "oldName", "toKw", "newName"]),
@@ -14,7 +14,10 @@ export const alterActionMap: CstToDocMap<AllAlterActionNodes> = {
     print.spaced(["setKw", "options"]),
   alter_action_set_default_collate: (print) =>
     print.spaced(["setDefaultCollateKw", "collation"]),
-  alter_action_add_constraint: (print) => print.spaced(["addKw", "constraint"]),
+  alter_action_add_constraint: (print) =>
+    print.spaced(["addKw", "name", "constraint", "modifiers"]),
+  alter_action_add_constraint_constraint_name: (print) =>
+    print.spaced(["constraintKw", "name"]),
   alter_action_drop_constraint: (print) =>
     print.spaced([
       "dropConstraintKw",

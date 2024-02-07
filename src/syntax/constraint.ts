@@ -43,8 +43,6 @@ export const constraintMap: CstToDocMap<AllConstraintNodes> = {
       return baseDoc;
     }
   },
-  index_specification: (print) =>
-    print.spaced(["expr", "opclass", "direction", "nullHandlingKw"]),
   referential_action: (print) =>
     print.spaced(["onKw", "eventKw", "actionKw", "columns"]),
   referential_match: (print) => print.spaced(["matchKw", "typeKw"]),
@@ -81,7 +79,6 @@ export const constraintMap: CstToDocMap<AllConstraintNodes> = {
       ]),
     ]),
   exclusion_param: (print) => print.spaced(["index", "withKw", "operator"]),
-  index_include_clause: (print) => print.spaced(["includeKw", "columns"]),
   index_tablespace_clause: (print) =>
     print.spaced(["usingIndexTablespaceKw", "name"]),
 };
