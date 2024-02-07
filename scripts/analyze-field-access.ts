@@ -1,4 +1,5 @@
 import * as ts from "typescript";
+import chalk from "chalk";
 
 /**
  * This script analyzes the syntax map files in src/syntax/ dir
@@ -25,8 +26,9 @@ for (const sourceFile of program.getSourceFiles()) {
 }
 
 if (errors.length > 0) {
-  console.log(`Found ${errors.length} problems:\n`);
+  console.log(chalk.red(`Found ${errors.length} problems:\n`));
   console.error(errors.join("\n\n"));
+  console.log();
   process.exit(1);
 }
 
@@ -84,9 +86,13 @@ function analyzeObjectProperty(node: ts.Node, sourceFile: ts.SourceFile) {
   if (missingFields.length > 0) {
     errors.push(
       [
-        `In file: ${sourceFile.fileName.replace(/.*\//, "src/syntax/")}`,
-        `Unused fields: ${missingFields.join(", ")}`,
-        node.getText(sourceFile),
+        chalk.yellow(
+          `${"In file:"} ${chalk.bold(
+            sourceFile.fileName.replace(/.*\//, "src/syntax/"),
+          )}`,
+        ),
+        chalk.red(`Unused fields: ${chalk.bold(missingFields.join(", "))}`),
+        chalk.blackBright(node.getText(sourceFile)),
       ].join("\n"),
     );
   }

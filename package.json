@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "@types/jest": "^29.2.5",
+    "chalk": "^4.3.0",
     "dedent-js": "^1.0.1",
     "jest": "^29.7.0",
     "ts-jest": "^29.1.1",
