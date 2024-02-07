@@ -81,7 +81,6 @@ export const constraintMap: CstToDocMap<AllConstraintNodes> = {
       ]),
     ]),
   exclusion_param: (print) => print.spaced(["index", "withKw", "operator"]),
-  index_include_clause: (print) => print.spaced(["includeKw", "columns"]),
   index_tablespace_clause: (print) =>
     print.spaced(["usingIndexTablespaceKw", "name"]),
 };

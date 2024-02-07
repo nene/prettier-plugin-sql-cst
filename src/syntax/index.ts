@@ -19,6 +19,7 @@ export const indexMap: Partial<CstToDocMap<AllIndexNodes>> = {
         ...print("clauses"),
       ]),
     ),
+  index_include_clause: (print) => print.spaced(["includeKw", "columns"]),
   drop_index_stmt: (print) =>
     print.spaced([
       "dropKw",
