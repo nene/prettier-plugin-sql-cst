@@ -14,7 +14,10 @@ export const alterActionMap: Partial<CstToDocMap<AllAlterActionNodes>> = {
     print.spaced(["setKw", "options"]),
   alter_action_set_default_collate: (print) =>
     print.spaced(["setDefaultCollateKw", "collation"]),
-  alter_action_add_constraint: (print) => print.spaced(["addKw", "constraint"]),
+  alter_action_add_constraint: (print) =>
+    print.spaced(["addKw", "name", "constraint", "modifiers"]),
+  alter_action_add_constraint_constraint_name: (print) =>
+    print.spaced(["constraintKw", "name"]),
   alter_action_drop_constraint: (print) =>
     print.spaced([
       "dropConstraintKw",
