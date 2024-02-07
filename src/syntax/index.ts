@@ -30,4 +30,5 @@ export const indexMap: Partial<CstToDocMap<AllIndexNodes>> = {
       "table",
     ]),
   verbose_all_columns: (print) => print.spaced("allColumnsKw"),
+  reindex_stmt: (print) => print.spaced(["reindexKw", "name"]),
 };
