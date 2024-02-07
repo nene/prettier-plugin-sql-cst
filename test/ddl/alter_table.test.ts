@@ -326,6 +326,10 @@ describe("alter table", () => {
         ALTER TABLE client
         ADD CONSTRAINT price_positive CHECK (price > 0) NOT VALID
       `);
+      await testBigquery(dedent`
+        ALTER TABLE client
+        ADD CONSTRAINT IF NOT EXISTS pk PRIMARY KEY (id) NOT ENFORCED
+      `);
       await testPostgresql(dedent`
         ALTER TABLE client
         ADD PRIMARY KEY (price)

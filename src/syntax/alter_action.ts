@@ -17,7 +17,7 @@ export const alterActionMap: Partial<CstToDocMap<AllAlterActionNodes>> = {
   alter_action_add_constraint: (print) =>
     print.spaced(["addKw", "name", "constraint", "modifiers"]),
   alter_action_add_constraint_constraint_name: (print) =>
-    print.spaced(["constraintKw", "name"]),
+    print.spaced(["constraintKw", "ifNotExistsKw", "name"]),
   alter_action_drop_constraint: (print) =>
     print.spaced([
       "dropConstraintKw",
