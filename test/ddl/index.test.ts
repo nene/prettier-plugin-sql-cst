@@ -21,6 +21,12 @@ describe("index", () => {
       `);
     });
 
+    it(`formats OR REPLACE`, async () => {
+      await testBigquery(dedent`
+        CREATE OR REPLACE INDEX my_index ON my_table (col)
+      `);
+    });
+
     it(`formats long columns list on multiple lines`, async () => {
       await test(dedent`
         CREATE UNIQUE INDEX IF NOT EXISTS my_index ON my_table (

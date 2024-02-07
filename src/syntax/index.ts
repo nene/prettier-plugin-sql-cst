@@ -8,6 +8,7 @@ export const indexMap: Partial<CstToDocMap<AllIndexNodes>> = {
       join(print.dynamicLine(), [
         print.spaced([
           "createKw",
+          "orReplaceKw",
           "indexTypeKw",
           "indexKw",
           "ifNotExistsKw",
