@@ -88,6 +88,14 @@ describe("view", () => {
       `);
     });
 
+    it(`formats CREATE MATERIALIZED VIEW .. AS REPLICA OF`, async () => {
+      await testBigquery(dedent`
+        CREATE MATERIALIZED VIEW foo
+        OPTIONS (description = 'blah')
+        AS REPLICA OF my_other_view
+      `);
+    });
+
     it(`formats CREATE MATERIALIZED VIEW with extra PostgreSQL clauses`, async () => {
       await testPostgresql(dedent`
         CREATE MATERIALIZED VIEW foo

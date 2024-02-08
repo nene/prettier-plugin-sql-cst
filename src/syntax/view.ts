@@ -22,6 +22,7 @@ export const viewMap: Partial<CstToDocMap<AllViewNodes>> = {
   },
   with_check_option_clause: (print) =>
     print.spaced(["withKw", "levelKw", "checkOptionKw"]),
+  as_replica_of_clause: (print) => print.spaced(["asReplicaOfKw", "view"]),
 
   drop_view_stmt: (print) =>
     group(
