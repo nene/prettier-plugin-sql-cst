@@ -355,6 +355,10 @@ describe("alter table", () => {
         ALTER TABLE client
         DROP PRIMARY KEY
       `);
+      await testBigquery(dedent`
+        ALTER TABLE client
+        DROP PRIMARY KEY IF EXISTS
+      `);
     });
 
     it(`formats ALTER CONSTRAINT`, async () => {
