@@ -30,6 +30,15 @@ describe("view", () => {
           SELECT 1
       `);
     });
+    it(`formats CREATE VIEW with BigQuery OPTIONS() in columns list`, async () => {
+      await testBigquery(dedent`
+        CREATE VIEW foobar (
+          id OPTIONS (description = 'Unique identifier'),
+          name OPTIONS (description = 'Name of the user')
+        ) AS
+          SELECT 1
+      `);
+    });
 
     it(`formats CREATE VIEW with long column list`, async () => {
       await test(dedent`
