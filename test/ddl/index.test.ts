@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { test, testBigquery } from "../test_utils";
+import { test, testBigquery, testPostgresql } from "../test_utils";
 
 describe("index", () => {
   describe("create index", () => {
@@ -24,6 +24,21 @@ describe("index", () => {
     it(`formats OR REPLACE`, async () => {
       await testBigquery(dedent`
         CREATE OR REPLACE INDEX my_index ON my_table (col)
+      `);
+    });
+
+    it(`formats CONCURRENTLY`, async () => {
+      await testPostgresql(dedent`
+        CREATE INDEX CONCURRENTLY my_index ON my_table (col)
+      `);
+      await testPostgresql(dedent`
+        CREATE INDEX CONCURRENTLY IF NOT EXISTS my_index ON my_table (col)
+      `);
+    });
+
+    it(`formats USING clause`, async () => {
+      await testPostgresql(dedent`
+        CREATE INDEX my_index ON my_table USING "btree" (col)
       `);
     });
 
@@ -80,9 +95,30 @@ describe("index", () => {
       `);
     });
 
+    it(`formats CASCADE|RESTRICT`, async () => {
+      await testPostgresql(dedent`
+        DROP INDEX my_index CASCADE
+      `);
+    });
+
     it(`formats DROP SEARCH INDEX`, async () => {
       await testBigquery(dedent`
         DROP SEARCH INDEX my_index ON my_table
+      `);
+    });
+
+    it(`formats CONCURRENTLY`, async () => {
+      await testPostgresql(dedent`
+        DROP INDEX CONCURRENTLY my_index
+      `);
+      await testPostgresql(dedent`
+        DROP INDEX CONCURRENTLY IF EXISTS my_index
+      `);
+    });
+
+    it(`formats multiple indexes`, async () => {
+      await testPostgresql(dedent`
+        DROP INDEX my_index1, my_index2
       `);
     });
   });
