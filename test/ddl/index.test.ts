@@ -52,6 +52,16 @@ describe("index", () => {
       `);
     });
 
+    it(`formats column list with various index parameters`, async () => {
+      await testPostgresql(dedent`
+        CREATE INDEX my_index ON my_table (
+          column_name_one COLLATE "C" ASC NULLS FIRST,
+          column_name_two DESC NULLS LAST,
+          (col3 + col4) my_opclass (foo = 'bar', baz = 'qux') ASC
+        )
+      `);
+    });
+
     it(`formats WHERE clause on same line (if user prefers)`, async () => {
       await test(dedent`
         CREATE INDEX my_index ON my_table (col) WHERE col > 10
