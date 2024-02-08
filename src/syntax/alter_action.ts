@@ -25,6 +25,7 @@ export const alterActionMap: Partial<CstToDocMap<AllAlterActionNodes>> = {
       "constraint",
       "behaviorKw",
     ]),
+  alter_action_drop_primary_key: (print) => print.spaced("dropPrimaryKeyKw"),
   alter_action_alter_constraint: (print) =>
     print.spaced(["alterConstraintKw", "constraint", "modifiers"]),
   alter_action_rename_constraint: (print) =>

@@ -350,6 +350,12 @@ describe("alter table", () => {
         DROP CONSTRAINT IF EXISTS price_positive CASCADE
       `);
     });
+    it(`formats DROP PRIMARY KEY`, async () => {
+      await testBigquery(dedent`
+        ALTER TABLE client
+        DROP PRIMARY KEY
+      `);
+    });
 
     it(`formats ALTER CONSTRAINT`, async () => {
       await testPostgresql(dedent`
