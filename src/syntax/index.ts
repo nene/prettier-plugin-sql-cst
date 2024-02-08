@@ -25,6 +25,9 @@ export const indexMap: Partial<CstToDocMap<AllIndexNodes>> = {
   index_specification: (print) =>
     print.spaced(["expr", "opclass", "direction", "nullHandlingKw"]),
   index_include_clause: (print) => print.spaced(["includeKw", "columns"]),
+  index_nulls_distinct_clause: (print) => print.spaced(["nullsDistinctKw"]),
+  index_nulls_not_distinct_clause: (print) =>
+    print.spaced(["nullsNotDistinctKw"]),
   drop_index_stmt: (print) =>
     group(
       print.spaced([

@@ -90,6 +90,18 @@ describe("index", () => {
         CREATE SEARCH INDEX my_index ON my_table (ALL COLUMNS)
       `);
     });
+
+    it(`formats CREATE INDEX with PostgreSQL clauses`, async () => {
+      await testPostgresql(dedent`
+        CREATE INDEX my_index ON my_table (col1)
+        INCLUDE (col2, col3)
+        NULLS NOT DISTINCT
+        NULLS DISTINCT
+        WITH (fillfactor = 70)
+        TABLESPACE my_tablespace
+        WHERE col4 > 10
+      `);
+    });
   });
 
   describe("drop index", () => {
