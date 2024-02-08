@@ -141,5 +141,29 @@ describe("index", () => {
     it(`formats plain REINDEX`, async () => {
       await test(`REINDEX`);
     });
+
+    it(`formats REINDEX type`, async () => {
+      await testPostgresql(`REINDEX TABLE my_schema.my_table`);
+      await testPostgresql(`REINDEX INDEX my_index`);
+      await testPostgresql(`REINDEX SYSTEM`);
+    });
+
+    it(`formats CONCURRENTLY`, async () => {
+      await testPostgresql(`REINDEX TABLE CONCURRENTLY my_schema.my_table`);
+      await testPostgresql(`REINDEX DATABASE CONCURRENTLY`);
+    });
+
+    it("formats options", async () => {
+      await testPostgresql(
+        `REINDEX (CONCURRENTLY TRUE, TABLESPACE my_tbs) TABLE my_table`,
+      );
+      await testPostgresql(dedent`
+        REINDEX (
+          CONCURRENTLY TRUE,
+          TABLESPACE another_tablespace,
+          VERBOSE FALSE
+        ) TABLE my_table
+      `);
+    });
   });
 });

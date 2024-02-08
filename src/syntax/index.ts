@@ -40,5 +40,17 @@ export const indexMap: Partial<CstToDocMap<AllIndexNodes>> = {
       ]),
     ),
   verbose_all_columns: (print) => print.spaced("allColumnsKw"),
-  reindex_stmt: (print) => print.spaced(["reindexKw", "name"]),
+
+  reindex_stmt: (print) =>
+    print.spaced([
+      "reindexKw",
+      "options",
+      "targetKw",
+      "concurrentlyKw",
+      "name",
+    ]),
+  reindex_option_concurrently: (print) =>
+    print.spaced(["concurrentlyKw", "value"]),
+  reindex_option_tablespace: (print) => print.spaced(["tablespaceKw", "name"]),
+  reindex_option_verbose: (print) => print.spaced(["verboseKw", "value"]),
 };
