@@ -146,6 +146,7 @@ describe("expr", () => {
 
   it(`formats quantifier expressions`, async () => {
     await testPostgresql(`SELECT x > ALL (SELECT y FROM tbl)`);
+    await testBigquery(`SELECT 'x' LIKE SOME ('X', 'Y', 'Z')`);
   });
 
   describe("BigQuery", () => {
