@@ -145,6 +145,66 @@ describe("index", () => {
     });
   });
 
+  describe("alter index", () => {
+    it(`formats IF EXISTS`, async () => {
+      await testPostgresql(dedent`
+        ALTER INDEX IF EXISTS my_index RENAME TO new_index
+      `);
+    });
+
+    it(`formats RENAME TO`, async () => {
+      await testPostgresql(dedent`
+        ALTER INDEX my_index RENAME TO new_index
+      `);
+    });
+
+    it(`formats to multiple lines if user prefers`, async () => {
+      await testPostgresql(dedent`
+        ALTER INDEX my_index
+        RENAME TO new_index
+      `);
+    });
+
+    it(`formats SET TABLESPACE`, async () => {
+      await testPostgresql(dedent`
+        ALTER INDEX my_index SET TABLESPACE my_tablespace
+      `);
+    });
+
+    it(`formats ATTACH PARTITION`, async () => {
+      await testPostgresql(dedent`
+        ALTER INDEX my_index ATTACH PARTITION my_partition
+      `);
+    });
+
+    it(`formats [NO] DEPENDS ON EXTENSION`, async () => {
+      await testPostgresql(dedent`
+        ALTER INDEX my_index DEPENDS ON EXTENSION my_extension
+      `);
+      await testPostgresql(dedent`
+        ALTER INDEX my_index NO DEPENDS ON EXTENSION my_extension
+      `);
+    });
+
+    it(`formats SET`, async () => {
+      await testPostgresql(dedent`
+        ALTER INDEX my_index SET (fillfactor = 70)
+      `);
+    });
+
+    it(`formats RESET`, async () => {
+      await testPostgresql(dedent`
+        ALTER INDEX my_index RESET (fillfactor)
+      `);
+    });
+
+    it(`formats ALTER COLUMN SET STATISTICS`, async () => {
+      await testPostgresql(dedent`
+        ALTER INDEX my_index ALTER COLUMN col SET STATISTICS 100
+      `);
+    });
+  });
+
   describe("reindex", () => {
     it(`formats REINDEX`, async () => {
       await test(`REINDEX my_schema.my_table`);

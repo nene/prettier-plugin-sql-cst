@@ -28,6 +28,7 @@ export const indexMap: Partial<CstToDocMap<AllIndexNodes>> = {
   index_nulls_distinct_clause: (print) => print.spaced(["nullsDistinctKw"]),
   index_nulls_not_distinct_clause: (print) =>
     print.spaced(["nullsNotDistinctKw"]),
+
   drop_index_stmt: (print) =>
     group(
       print.spaced([
@@ -43,6 +44,13 @@ export const indexMap: Partial<CstToDocMap<AllIndexNodes>> = {
       ]),
     ),
   verbose_all_columns: (print) => print.spaced("allColumnsKw"),
+
+  alter_index_stmt: (print) =>
+    group([
+      print.spaced(["alterKw", "indexKw", "ifExistsKw", "index"]),
+      print.dynamicLine(),
+      print("action"),
+    ]),
 
   reindex_stmt: (print) =>
     print.spaced([
