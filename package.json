@@ -1,6 +1,6 @@
 {
   "name": "prettier-plugin-sql-cst",
-  "version": "0.11.2",
+  "version": "0.11.3",
   "description": "Prettier plugin for SQL",
   "author": "Rene Saarsoo <nene@triin.net>",
   "license": "GPL-3.0-or-later",
