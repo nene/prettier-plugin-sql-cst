@@ -203,6 +203,13 @@ describe("index", () => {
         ALTER INDEX my_index ALTER COLUMN col SET STATISTICS 100
       `);
     });
+
+    it(`formats ALTER INDEX ALL IN TABLESPACE`, async () => {
+      await testPostgresql(dedent`
+        ALTER INDEX ALL IN TABLESPACE my_tablespace OWNED BY my_user, CURRENT_USER
+        SET TABLESPACE another_tablespace NOWAIT
+      `);
+    });
   });
 
   describe("reindex", () => {

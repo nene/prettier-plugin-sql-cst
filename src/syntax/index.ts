@@ -51,6 +51,17 @@ export const indexMap: Partial<CstToDocMap<AllIndexNodes>> = {
       print.dynamicLine(),
       print("action"),
     ]),
+  alter_index_all_in_tablespace_stmt: (print) =>
+    group([
+      print.spaced([
+        "alterIndexKw",
+        "allInTablespaceKw",
+        "tablespace",
+        "ownedBy",
+      ]),
+      print.dynamicLine(),
+      print("action"),
+    ]),
 
   reindex_stmt: (print) =>
     print.spaced([
