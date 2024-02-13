@@ -19,6 +19,12 @@ describe("sqlParamTypes option", () => {
     });
   });
 
+  it(`indexed parameters: $nr`, async () => {
+    await test(`SELECT * FROM tbl WHERE x = $1 AND y = $2`, {
+      sqlParamTypes: ["$nr"],
+    });
+  });
+
   it(`named parameters: :name`, async () => {
     await test(`SELECT * FROM tbl WHERE x = :foo AND y = :bar`, {
       sqlParamTypes: [":name"],
