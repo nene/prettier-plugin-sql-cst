@@ -2,31 +2,28 @@ import { AllTriggerNodes } from "sql-parser-cst";
 import { group, hardline, indent, join, line } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const triggerMap: CstToDocMap<AllTriggerNodes> = {
+export const triggerMap: Partial<CstToDocMap<AllTriggerNodes>> = {
   create_trigger_stmt: (print, node) =>
     join(hardline, [
-      print.spaced([
-        "createKw",
-        "temporaryKw",
-        "triggerKw",
-        "ifNotExistsKw",
-        "name",
+      print.spaced(["createKw", "kind", "triggerKw", "ifNotExistsKw", "name"]),
+      group([
+        node.timeKw ? [print.spaced("timeKw"), " "] : [],
+        print("event"),
+        line,
+        print("target"),
       ]),
-      print("event"),
-      ...print.spaced(["forEachRowKw"]),
-      ...print(["condition"]),
+      ...print("clauses"),
       print("body"),
     ]),
-  trigger_event: (print) =>
+  trigger_event: (print, node) =>
     group([
-      print.spaced(["timeKw", "eventKw", "ofKw"]),
-      indent([
-        line,
-        join(line, [...print(["columns"]), print.spaced(["onKw", "table"])]),
-      ]),
+      print.spaced(["eventKw", "ofKw"]),
+      node.columns ? indent([line, print("columns")]) : [],
     ]),
-  trigger_condition: (print) =>
+  trigger_target: (print) => print.spaced(["onKw", "table"]),
+  when_clause: (print) =>
     group([print("whenKw"), indent([line, print("expr")])]),
+  for_each_clause: (print) => print.spaced(["forEachKw", "itemKw"]),
   drop_trigger_stmt: (print) =>
     print.spaced(["dropTriggerKw", "ifExistsKw", "trigger"]),
 };

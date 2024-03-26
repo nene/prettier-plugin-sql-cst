@@ -22,7 +22,7 @@ import {
 } from "../node_utils";
 import { isString, last } from "../utils";
 
-export const exprMap: CstToDocMap<AllExprNodes> = {
+export const exprMap: Partial<CstToDocMap<AllExprNodes>> = {
   list_expr: (print, node, path) => {
     const parent = path.getParentNode() as Node;
     const children = print("items").map((it) => group(it));

@@ -21,8 +21,9 @@ describe("trigger", () => {
         INSTEAD OF UPDATE OF
           cust_address,
           cust_zip_code,
-          cust_country
-          ON customer_address
+          cust_country,
+          super_long_column_name
+        ON customer_address
         BEGIN
           DELETE FROM customer;
         END
