@@ -1,9 +1,9 @@
 import { AllFunctionNodes, CreateFunctionStmt } from "sql-parser-cst";
-import { group, hardline, join } from "../print_utils";
+import { group, hardline, join, line } from "../print_utils";
 import { isAsClause } from "../node_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const functionMap: Partial<CstToDocMap<AllFunctionNodes>> = {
+export const functionMap: CstToDocMap<AllFunctionNodes> = {
   create_function_stmt: (print, node) => [
     print.spaced([
       "createKw",
@@ -49,6 +49,19 @@ export const functionMap: Partial<CstToDocMap<AllFunctionNodes>> = {
       print.spaced(["dropKw", "tableKw", "functionKw", "ifExistsKw", "name"]),
       print.spaced(["params", "behaviorKw"]),
     ]),
+
+  // almost exact copy of alter_procedure_stmt
+  alter_function_stmt: (print, node) =>
+    group([
+      print.spaced(["alterKw", "functionKw"]),
+      " ",
+      print(["name", "params"]),
+      print.dynamicLine(),
+      join(print.dynamicLine(), print("actions")),
+      node.behaviorKw ? [print.dynamicLine(), print("behaviorKw")] : [],
+    ]),
+  reset_parameter_clause: (print) => print.spaced(["resetKw", "name"]),
+  reset_all_parameters_clause: (print) => print.spaced("resetAllKw"),
 };
 
 const hasOnlyAsClause = (node: CreateFunctionStmt): boolean =>
