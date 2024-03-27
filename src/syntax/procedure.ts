@@ -23,4 +23,15 @@ export const procedureMap: CstToDocMap<AllProcedureNodes> = {
       print.spaced(["dropKw", "procedureKw", "ifExistsKw", "name"]),
       print.spaced(["params", "behaviorKw"]),
     ]),
+
+  // almost exact copy of alter_function_stmt
+  alter_procedure_stmt: (print, node) =>
+    group([
+      print.spaced(["alterKw", "procedureKw"]),
+      " ",
+      print(["name", "params"]),
+      print.dynamicLine(),
+      join(print.dynamicLine(), print("actions")),
+      node.behaviorKw ? [print.dynamicLine(), print("behaviorKw")] : [],
+    ]),
 };

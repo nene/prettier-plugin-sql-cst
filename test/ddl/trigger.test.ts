@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { test } from "../test_utils";
+import { test, testPostgresql } from "../test_utils";
 
 describe("trigger", () => {
   describe("create trigger", () => {
@@ -21,8 +21,9 @@ describe("trigger", () => {
         INSTEAD OF UPDATE OF
           cust_address,
           cust_zip_code,
-          cust_country
-          ON customer_address
+          cust_country,
+          super_long_column_name
+        ON customer_address
         BEGIN
           DELETE FROM customer;
         END
@@ -74,6 +75,80 @@ describe("trigger", () => {
         BEGIN
           DELETE FROM customer;
         END
+      `);
+    });
+
+    it(`formats PostgreSQL EXECUTE FUNCTION syntax`, async () => {
+      await testPostgresql(dedent`
+        CREATE TRIGGER my_trig
+        AFTER TRUNCATE ON my_tbl
+        EXECUTE FUNCTION my_func(1, 2, 3, 'Hello')
+      `);
+    });
+
+    it(`formats long PostgreSQL EXECUTE FUNCTION syntax`, async () => {
+      await testPostgresql(dedent`
+        CREATE TRIGGER my_trig
+        AFTER TRUNCATE ON my_tbl
+        EXECUTE FUNCTION my_funtion_name(
+          'first argument',
+          'second argument',
+          'third argument',
+          'fourth argument'
+        )
+      `);
+    });
+
+    it(`formats OR REPLACE CONSTRAINT TRIGGER`, async () => {
+      await testPostgresql(dedent`
+        CREATE OR REPLACE CONSTRAINT TRIGGER my_trig
+        INSTEAD OF UPDATE ON my_tbl
+        EXECUTE FUNCTION fn()
+      `);
+    });
+
+    it(`formats multiple events`, async () => {
+      await testPostgresql(dedent`
+        CREATE TRIGGER my_trig
+        AFTER INSERT OR UPDATE OF col1, col2 OR DELETE ON my_tbl
+        EXECUTE FUNCTION my_func()
+      `);
+    });
+
+    it(`formats FROM clause`, async () => {
+      await testPostgresql(dedent`
+        CREATE CONSTRAINT TRIGGER my_trig
+        AFTER INSERT ON my_tbl
+        FROM schm.my_tbl
+        EXECUTE FUNCTION my_func()
+      `);
+    });
+
+    it(`formats timing clause`, async () => {
+      await testPostgresql(dedent`
+        CREATE TRIGGER my_trig
+        AFTER INSERT ON my_tbl
+        DEFERRABLE INITIALLY DEFERRED
+        EXECUTE FUNCTION my_func()
+      `);
+    });
+
+    it(`formats referencing clause`, async () => {
+      await testPostgresql(dedent`
+        CREATE TRIGGER my_trig
+        AFTER INSERT ON my_tbl
+        REFERENCING OLD TABLE AS old_table, NEW ROW AS ref_tbl_new
+        EXECUTE FUNCTION my_func()
+      `);
+    });
+    it(`formats long referencing clause`, async () => {
+      await testPostgresql(dedent`
+        CREATE TRIGGER my_trig
+        AFTER INSERT ON my_tbl
+        REFERENCING
+          OLD TABLE AS very_long_old_table,
+          NEW ROW AS especially_long_new_row_name
+        EXECUTE FUNCTION my_func()
       `);
     });
   });

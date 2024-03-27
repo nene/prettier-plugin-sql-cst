@@ -7,26 +7,45 @@ export const triggerMap: CstToDocMap<AllTriggerNodes> = {
     join(hardline, [
       print.spaced([
         "createKw",
-        "temporaryKw",
+        "orReplaceKw",
+        "kind",
         "triggerKw",
         "ifNotExistsKw",
         "name",
       ]),
-      print("event"),
-      ...print.spaced(["forEachRowKw"]),
-      ...print(["condition"]),
+      group([
+        node.timeKw ? [print.spaced("timeKw"), " "] : [],
+        print("event"),
+        line,
+        print("target"),
+      ]),
+      ...print("clauses"),
       print("body"),
     ]),
-  trigger_event: (print) =>
+  trigger_event: (print, node) =>
     group([
-      print.spaced(["timeKw", "eventKw", "ofKw"]),
-      indent([
-        line,
-        join(line, [...print(["columns"]), print.spaced(["onKw", "table"])]),
-      ]),
+      print.spaced(["eventKw", "ofKw"]),
+      node.columns ? indent([line, print("columns")]) : [],
     ]),
-  trigger_condition: (print) =>
+  trigger_target: (print) => print.spaced(["onKw", "table"]),
+  when_clause: (print) =>
     group([print("whenKw"), indent([line, print("expr")])]),
+  for_each_clause: (print) => print.spaced(["forEachKw", "itemKw"]),
+  execute_clause: (print) => [
+    print.spaced(["executeKw", "functionKw", "name"]),
+    print("args"),
+  ],
+  from_referenced_table_clause: (print) => print.spaced(["fromKw", "table"]),
+  trigger_timing_clause: (print) => print.spaced(["timingKw"]),
+  trigger_referencing_clause: (print) =>
+    group([
+      print.spaced(["referencingKw"]),
+      indent([line, print("transitions")]),
+    ]),
+  trigger_transition: (print) => [
+    print.spaced(["oldOrNewKw", "rowOrTableKw", "asKw", "name"]),
+  ],
+
   drop_trigger_stmt: (print) =>
     print.spaced(["dropTriggerKw", "ifExistsKw", "trigger"]),
 };
