@@ -22,7 +22,7 @@ import {
 } from "../node_utils";
 import { isString, last } from "../utils";
 
-export const exprMap: Partial<CstToDocMap<AllExprNodes>> = {
+export const exprMap: CstToDocMap<AllExprNodes> = {
   list_expr: (print, node, path) => {
     const parent = path.getParentNode() as Node;
     const children = print("items").map((it) => group(it));
@@ -150,6 +150,7 @@ export const exprMap: Partial<CstToDocMap<AllExprNodes>> = {
     group(["(", indent([softline, print("expr")]), softline, ")"]),
   typed_expr: (print) => print(["dataType", "expr"]),
   row_constructor: (print) => print(["rowKw", "row"]),
+  array_constructor: (print) => print(["arrayKw", "expr"]),
   quantifier_expr: (print) => print.spaced(["quantifierKw", "expr"]),
   full_text_match_expr: (print) =>
     print.spaced(["matchKw", "columns", "againstKw", "args"]),
