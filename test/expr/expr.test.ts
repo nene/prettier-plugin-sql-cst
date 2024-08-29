@@ -110,6 +110,27 @@ describe("expr", () => {
     `);
   });
 
+  it(`preserves parenthesis around SELECT inside function arguments`, async () => {
+    await test(dedent`
+      SELECT coalesce((SELECT foo FROM bar), 'default') FROM tbl
+    `);
+  });
+
+  it(`preserves parenthesis around compound-SELECT inside function arguments`, async () => {
+    await test(dedent`
+      SELECT
+        coalesce(
+          '',
+          (
+            SELECT x FROM xs
+            UNION
+            SELECT y FROM ys
+          )
+        )
+      FROM tbl
+    `);
+  });
+
   describe("case", () => {
     it(`formats CASE expression always on multiple lines`, async () => {
       await test(dedent`

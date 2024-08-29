@@ -2,7 +2,10 @@
   "name": "prettier-plugin-sql-cst",
   "version": "0.11.6",
   "description": "Prettier plugin for SQL",
-  "author": "Rene Saarsoo <nene@triin.net>",
+  "contributors": [
+    "Bowen Parnell <bparnell@4tel.com.au>",
+    "Rene Saarsoo <nene@triin.net>"
+  ],
   "license": "GPL-3.0-or-later",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
