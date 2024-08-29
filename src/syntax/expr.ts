@@ -19,6 +19,8 @@ import {
   isFuncArgs,
   isListExpr,
   isProgram,
+  isSelectStmt,
+  isCompoundSelectStmt,
 } from "../node_utils";
 import { isString, last } from "../utils";
 
@@ -48,7 +50,9 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
     // Discard unnecessary parenthesis around function arguments
     if (
       isListExpr(path.getParentNode(0)) &&
-      isFuncArgs(path.getParentNode(1))
+      isFuncArgs(path.getParentNode(1)) &&
+      !isSelectStmt(node.expr) &&
+      !isCompoundSelectStmt(node.expr)
     ) {
       return print("expr");
     }
