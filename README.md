@@ -72,16 +72,33 @@ By default the plugin will determine SQL dialect based on file extension:
 - `.sql` or `.sqlite` - SQLite
 - `.bigquery` - BigQuery
 
-You can override this behavior with a prettier configuration:
+You can override this behavior with a prettier configuration in `.prettierrc.json` file:
 
 ```json
 {
+  "plugins": ["prettier-plugin-sql-cst"],
   "overrides": [
     {
       "files": ["*.sql"],
       "options": { "parser": "bigquery" }
     }
   ]
+}
+```
+
+Or you could also store it inside your `package.json`:
+
+```json
+{
+  "prettier": {
+    "plugins": ["prettier-plugin-sql-cst"],
+    "overrides": [
+      {
+        "files": ["*.sql"],
+        "options": { "parser": "bigquery" }
+      }
+    ]
+  }
 }
 ```
 
