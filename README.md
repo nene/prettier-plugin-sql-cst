@@ -60,6 +60,10 @@ Install it as any other Prettier plugin:
 
 ```
 npm install --save-dev prettier prettier-plugin-sql-cst
+# or
+pnpm add --save-dev prettier prettier-plugin-sql-cst
+# or
+yarn add --dev prettier prettier-plugin-sql-cst
 ```
 
 Then use it on SQL files through Prettier command line tool or Prettier extension
