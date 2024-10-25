@@ -121,6 +121,23 @@ There are also some SQL-specific options:
 | `sqlParamTypes`      |  `[]`   | Array of bound parameter types: `?`, `?nr`, `$nr`, `:name`, `@name`, `$name`.                                                                                                                                               |
 | `sqlCanonicalSyntax` | `true`  | When enabled, performs some opinionated changes of keywords and operators, like enforcing the use of `AS` in aliases and replacing `<>` comparisons with `!=`. See [STYLE_GUIDE][] for more details. (Since 0.11.0)         |
 
+## Usage inside VSCode
+
+To use this plugin inside VSCode,
+install the [Prettier VSCode](https://github.com/prettier/prettier-vscode?tab=readme-ov-file#installation) extension.
+
+Follow [Prettier VSCode docs](https://github.com/prettier/prettier-vscode?tab=readme-ov-file#default-formatter)
+to configure it as the default formatter.
+
+You might also need to configure
+[prettier.documentSelectors](https://github.com/prettier/prettier-vscode?tab=readme-ov-file#prettierdocumentselectors)
+to enable Prettier for `*.sql` files.
+
+To see what Prettier is, or is not doing - open the VSCode Output window and select the Prettier dropdown.
+On format, the window should show your `inferredParser`. It should reconfirm that by showing `"parser": "sqlite"`
+(or whichever perser you have configured inside your prettier config `overrides` section)
+and `plugins` with the path to this package. If you don't see that part, Prettier not using this package.
+
 ## FAQ
 
 ### The SQL dialect I'm using is not supported. Can you add support for it?
