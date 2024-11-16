@@ -52,4 +52,24 @@ describe("type", () => {
       `);
     });
   });
+
+  describe("drop type", () => {
+    it(`formats DROP TYPE`, async () => {
+      await testPostgresql(dedent`
+        DROP TYPE foo
+      `);
+    });
+
+    it(`formats DROP TYPE ... IF EXISTS ... CASCADE`, async () => {
+      await testPostgresql(dedent`
+        DROP TYPE IF EXISTS foo CASCADE
+      `);
+    });
+
+    it(`formats DROP TYPE with multiple names`, async () => {
+      await testPostgresql(dedent`
+        DROP TYPE foo, bar, baz
+      `);
+    });
+  });
 });

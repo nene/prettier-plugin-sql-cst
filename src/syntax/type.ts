@@ -8,4 +8,6 @@ export const typeMap: Partial<CstToDocMap<AllTypeNodes>> = {
   composite_type_definition: (print) =>
     group(print.spaced(["asKw", "columns"])),
   enum_type_definition: (print) => group(print.spaced(["asEnumKw", "values"])),
+  drop_type_stmt: (print) =>
+    group(print.spaced(["dropTypeKw", "ifExistsKw", "types", "behaviorKw"])),
 };
