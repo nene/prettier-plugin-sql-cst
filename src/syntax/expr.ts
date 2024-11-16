@@ -137,7 +137,11 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
   cast_arg: (print) => print.spaced(["expr", "asKw", "dataType", "format"]),
   cast_format: (print) => print.spaced(["formatKw", "string", "timezone"]),
   cast_format_timezone: (print) => print.spaced(["atTimeZoneKw", "timezone"]),
-  cast_operator_expr: (print) => [print("expr"), "::", print("dataType")],
+  cast_operator_expr: (print) => [
+    print("left"),
+    print("operator"),
+    print("right"),
+  ],
   string_with_charset: (print) => ["_", print(["charset", "string"])],
   raise_expr: (print) => print(["raiseKw", "args"]),
   raise_expr_type: (print) => print("typeKw"),
