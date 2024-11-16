@@ -38,6 +38,7 @@ import { bigqueryMap } from "./dialects/bigquery";
 import { mysqlMap } from "./dialects/mysql";
 import { sqliteMap } from "./dialects/sqlite";
 import { postgresqlMap } from "./dialects/postgresql";
+import { domainMap } from "./domain";
 
 export const transformMap: Partial<CstToDocMap<Node>> = {
   ...aliasMap,
@@ -50,6 +51,7 @@ export const transformMap: Partial<CstToDocMap<Node>> = {
   ...dataTypeMap,
   ...dclMap,
   ...deleteMap,
+  ...domainMap,
   ...dropTableMap,
   ...explainMap,
   ...exprMap,
