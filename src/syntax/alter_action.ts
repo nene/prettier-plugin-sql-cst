@@ -69,6 +69,39 @@ export const alterActionMap: Partial<CstToDocMap<AllAlterActionNodes>> = {
     print.spaced(["noDependsOnExtensionKw", "extension"]),
   alter_action_attach_partition: (print) =>
     print.spaced(["attachPartitionKw", "index"]),
+  alter_action_add_enum_value: (print) =>
+    print.spaced(["addValueKw", "ifNotExistsKw", "value", "position"]),
+  alter_action_add_enum_value_position: (print) =>
+    print.spaced(["positionKw", "value"]),
+  alter_action_rename_enum_value: (print) =>
+    print.spaced(["renameValueKw", "oldValue", "toKw", "newValue"]),
+  alter_action_add_attribute: (print) =>
+    print.spaced([
+      "addAttributeKw",
+      "name",
+      "dataType",
+      "constraint",
+      "behaviorKw",
+    ]),
+  alter_action_drop_attribute: (print) =>
+    print.spaced(["dropAttributeKw", "ifExistsKw", "name", "behaviorKw"]),
+  alter_action_alter_attribute: (print) =>
+    print.spaced([
+      "alterAttributeKw",
+      "name",
+      "setDataTypeKw",
+      "dataType",
+      "constraint",
+      "behaviorKw",
+    ]),
+  alter_action_rename_attribute: (print) =>
+    print.spaced([
+      "renameAttributeKw",
+      "oldName",
+      "toKw",
+      "newName",
+      "behaviorKw",
+    ]),
 
   // ALTER COLUMN
   alter_action_alter_column: (print) =>
