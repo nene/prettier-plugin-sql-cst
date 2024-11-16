@@ -2,7 +2,7 @@ import { AllDomainNodes } from "sql-parser-cst";
 import { group, line, indent, join } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const domainMap: Partial<CstToDocMap<AllDomainNodes>> = {
+export const domainMap: CstToDocMap<AllDomainNodes> = {
   create_domain_stmt: (print, node) =>
     group([
       print.spaced(["createDomainKw", "name", "asKw", "dataType"]),
