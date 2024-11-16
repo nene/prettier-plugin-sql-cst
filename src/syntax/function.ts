@@ -4,7 +4,6 @@ import { isAsClause } from "../node_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
 export const functionMap: CstToDocMap<AllFunctionNodes> = {
-  /** cst-ignore: behaviorKw */
   create_function_stmt: (print, node) => [
     print.spaced([
       "createKw",
@@ -62,7 +61,6 @@ export const functionMap: CstToDocMap<AllFunctionNodes> = {
       node.behaviorKw ? [print.dynamicLine(), print("behaviorKw")] : [],
     ]),
   reset_parameter_clause: (print) => print.spaced(["resetKw", "name"]),
-  /** cst-ignore: name */
   reset_all_parameters_clause: (print) => print.spaced("resetAllKw"),
 };
 
