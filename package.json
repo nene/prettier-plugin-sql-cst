@@ -36,7 +36,7 @@
   ],
   "dependencies": {
     "prettier": "^3.0.3",
-    "sql-parser-cst": "^0.29.0"
+    "sql-parser-cst": "^0.29.1"
   },
   "devDependencies": {
     "@types/jest": "^29.2.5",
