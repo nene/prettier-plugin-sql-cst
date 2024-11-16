@@ -38,6 +38,36 @@ describe("domain", () => {
     });
   });
 
+  describe("alter domain", () => {
+    it(`formats ALTER DOMAIN`, async () => {
+      await testPostgresql(dedent`
+        ALTER DOMAIN my_domain SET DEFAULT 0
+      `);
+    });
+
+    [
+      "SET DEFAULT 1",
+      "DROP DEFAULT",
+      "SET NOT NULL",
+      "DROP NOT NULL",
+      "ADD CONSTRAINT zipchk CHECK (char_length(VALUE) = 5)",
+      "ADD CHECK (x > 0) NOT VALID",
+      "DROP CONSTRAINT zipchk",
+      "DROP CONSTRAINT IF EXISTS zipchk RESTRICT",
+      "RENAME CONSTRAINT zipchk TO zipcheck",
+      "VALIDATE CONSTRAINT zipchk",
+      "OWNER TO CURRENT_USER",
+      "RENAME TO new_name",
+      "SET SCHEMA myschema",
+    ].forEach((action) => {
+      it(`formats ALTER DOMAIN ... ${action}`, async () => {
+        await testPostgresql(dedent`
+          ALTER DOMAIN my_domain ${action}
+        `);
+      });
+    });
+  });
+
   describe("drop domain", () => {
     it(`formats DROP DOMAIN`, async () => {
       await testPostgresql(dedent`
