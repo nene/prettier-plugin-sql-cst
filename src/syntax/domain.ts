@@ -10,4 +10,8 @@ export const domainMap: Partial<CstToDocMap<AllDomainNodes>> = {
         ? indent([print.dynamicLine(), join(line, print("constraints"))])
         : [],
     ]),
+  drop_domain_stmt: (print) =>
+    group(
+      print.spaced(["dropDomainKw", "ifExistsKw", "domains", "behaviorKw"]),
+    ),
 };

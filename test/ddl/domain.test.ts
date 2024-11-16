@@ -37,4 +37,24 @@ describe("domain", () => {
       `);
     });
   });
+
+  describe("drop domain", () => {
+    it(`formats DROP DOMAIN`, async () => {
+      await testPostgresql(dedent`
+        DROP DOMAIN my_domain
+      `);
+    });
+
+    it(`formats DROP DOMAIN with multiple domain names`, async () => {
+      await testPostgresql(dedent`
+        DROP DOMAIN my_domain1, my_domain2, my_domain3
+      `);
+    });
+
+    it(`formats DROP DOMAIN .. IF EXISTS ... CASCADE`, async () => {
+      await testPostgresql(dedent`
+        DROP DOMAIN IF EXISTS my_domain CASCADE
+      `);
+    });
+  });
 });
