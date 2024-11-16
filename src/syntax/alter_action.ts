@@ -2,7 +2,7 @@ import { AllAlterActionNodes } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
 import { group, join, line } from "../print_utils";
 
-export const alterActionMap: Partial<CstToDocMap<AllAlterActionNodes>> = {
+export const alterActionMap: CstToDocMap<AllAlterActionNodes> = {
   alter_action_rename: (print) => print.spaced(["renameKw", "newName"]),
   alter_action_rename_column: (print) =>
     print.spaced(["renameKw", "ifExistsKw", "oldName", "toKw", "newName"]),
