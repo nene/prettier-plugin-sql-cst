@@ -1,6 +1,6 @@
 {
   "name": "prettier-plugin-sql-cst",
-  "version": "0.11.7",
+  "version": "0.11.8",
   "description": "Prettier plugin for SQL",
   "contributors": [
     "Bowen Parnell <bparnell@4tel.com.au>",
