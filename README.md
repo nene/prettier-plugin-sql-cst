@@ -119,11 +119,12 @@ The plugin provides the following parsers:
 The standard Prettier options [printWidth][], [tabWidth][], [useTabs][] apply.
 There are also some SQL-specific options:
 
-| API Option           | Default | Description                                                                                                                                                                                                                 |
-| -------------------- | :-----: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sqlKeywordCase`     | `upper` | Converts SQL keywords to `upper` or `lower` case, or `preserve` existing. Note that for now `preserve` is somewhat incompatible with `sqlCanonicalSyntax: true` (e.g. the added `AS` keywords will always be in uppercase). |
-| `sqlParamTypes`      |  `[]`   | Array of bound parameter types: `?`, `?nr`, `$nr`, `:name`, `@name`, `$name`.                                                                                                                                               |
-| `sqlCanonicalSyntax` | `true`  | When enabled, performs some opinionated changes of keywords and operators, like enforcing the use of `AS` in aliases and replacing `<>` comparisons with `!=`. See [STYLE_GUIDE][] for more details. (Since 0.11.0)         |
+| API Option                    | Default | Description                                                                                                                                                                                                                     |
+| ----------------------------- | :-----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sqlKeywordCase`              | `upper` | Converts SQL keywords to `upper` or `lower` case, or `preserve` existing. Note that for now `preserve` is somewhat incompatible with `sqlCanonicalSyntax: true` (e.g. the added `AS` keywords will always be in uppercase).     |
+| `sqlParamTypes`               |  `[]`   | Array of bound parameter types: `?`, `?nr`, `$nr`, `:name`, `@name`, `$name`.                                                                                                                                                   |
+| `sqlCanonicalSyntax`          | `true`  | When enabled, performs some opinionated changes of keywords and operators, like enforcing the use of `AS` in aliases and replacing `<>` comparisons with `!=`. See [STYLE_GUIDE][] for more details. (Since 0.11.0)             |
+| `sqlAcceptUnsupportedGrammar` | `false` | Normally when the plugin encounters SQL syntax it doesn't support it will throw an error and won't format anything at all. With this option enabled, it will skip over SQL statements it doesn't recognize, leaving them as-is. |
 
 ## Usage inside VSCode
 
@@ -173,7 +174,9 @@ The main limitation is that [the parser][sql-parser-cst] does not support full s
 these dialects. One should expect the parser to crash for syntax that's more specific to
 these dialects. But as long as the parsing succeeds, the formatting should also succeed.
 Mainly one can expect the formatting of SELECT, INSERT, UPDATE, DELETE statements to work.
-But beyond that you should keep your expectations low. You have been warned.
+
+To overcome this limitation you can enable the `sqlAcceptUnsupportedGrammar` option,
+which will make the plugin skip the SQL statements it doesn't recognize.
 
 The specifics of the [SQL formatting style][STYLE_GUIDE] are still very much subject to change.
 Though the general principles should be mostly in place by now.
