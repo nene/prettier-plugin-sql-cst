@@ -1,5 +1,5 @@
 import { AllTypeNodes } from "sql-parser-cst";
-import { group, hardline, indent, join, line } from "../print_utils";
+import { group } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
 export const typeMap: CstToDocMap<AllTypeNodes> = {
