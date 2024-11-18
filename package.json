@@ -40,6 +40,7 @@
   },
   "devDependencies": {
     "@types/jest": "^29.2.5",
+    "@types/node": "^22.9.0",
     "chalk": "^4.1.2",
     "dedent-js": "^1.0.1",
     "jest": "^29.7.0",
