@@ -5,6 +5,7 @@ export interface SqlPluginOptions {
   sqlKeywordCase: "preserve" | "upper" | "lower";
   sqlParamTypes: NonNullable<CstParserOptions["paramTypes"]>;
   sqlCanonicalSyntax: boolean;
+  sqlAcceptUnsupportedGrammar: boolean;
 }
 
 // Prettier builtin options + options of this plugin
@@ -50,5 +51,13 @@ export const options: SupportOptions = {
     description:
       "Enforces one true style of SQL syntax (adds and removes keywords)",
     // Since 0.11.0
+  },
+  sqlAcceptUnsupportedGrammar: {
+    type: "boolean",
+    category: "SQL",
+    default: false,
+    description:
+      "Skips formatting unsupported SQL statements instead of exiting with an error",
+    // Since 0.12.0
   },
 };
