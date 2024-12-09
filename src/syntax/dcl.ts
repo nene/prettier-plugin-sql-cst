@@ -1,9 +1,9 @@
-import { AllDclStatements } from "sql-parser-cst";
+import { AllDclNodes } from "sql-parser-cst";
 import { group, indent, join, line } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const dclMap: CstToDocMap<AllDclStatements> = {
-  grant_stmt: (print) =>
+export const dclMap: Partial<CstToDocMap<AllDclNodes>> = {
+  grant_privilege_stmt: (print) =>
     group(
       join(print.dynamicLine(), [
         group([print("grantKw"), indent([line, print("roles")])]),
@@ -11,7 +11,7 @@ export const dclMap: CstToDocMap<AllDclStatements> = {
         group([print("toKw"), indent([line, print("users")])]),
       ]),
     ),
-  revoke_stmt: (print) =>
+  revoke_privilege_stmt: (print) =>
     group(
       join(print.dynamicLine(), [
         group([print("revokeKw"), indent([line, print("roles")])]),

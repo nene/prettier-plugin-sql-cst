@@ -2,7 +2,7 @@ import { AllTriggerNodes } from "sql-parser-cst";
 import { group, hardline, indent, join, line } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const triggerMap: CstToDocMap<AllTriggerNodes> = {
+export const triggerMap: Partial<CstToDocMap<AllTriggerNodes>> = {
   create_trigger_stmt: (print, node) =>
     join(hardline, [
       print.spaced([
