@@ -15,9 +15,13 @@ export const dclMap: Partial<CstToDocMap<AllDclNodes>> = {
   revoke_privilege_stmt: (print) =>
     group(
       join(print.dynamicLine(), [
-        group([print("revokeKw"), indent([line, print("privileges")])]),
+        group([
+          print.spaced(["revokeKw", "option"]),
+          indent([line, print("privileges")]),
+        ]),
         group(print.spaced(["onKw", "resource"])),
         group([print("fromKw"), indent([line, print("roles")])]),
+        ...print(["grantedBy", "behaviorKw"]),
       ]),
     ),
 
@@ -59,6 +63,8 @@ export const dclMap: Partial<CstToDocMap<AllDclNodes>> = {
 
   with_grant_option_clause: (print) =>
     group(print.spaced(["withKw", "nameKw", "value"])),
+  grant_option_for_clause: (print) =>
+    group(print.spaced(["nameKw", "optionForKw"])),
   granted_by_clause: (print) => group(print.spaced(["grantedByKw", "role"])),
 
   grantee_public: (print) => print("publicKw"),

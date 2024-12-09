@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { testBigquery } from "../test_utils";
+import { testBigquery, testPostgresql } from "../test_utils";
 
 describe("revoke", () => {
   describe("bigquery", () => {
@@ -44,6 +44,44 @@ describe("revoke", () => {
           'user:tom@example.com',
           'user:sara@example.com',
           'specialGroup:allAuthenticatedUsers'
+      `);
+    });
+  });
+
+  describe("postgresql", () => {
+    // NOTE: Most of the syntax is covered by GRANT tests
+
+    it(`formats short REVOKE in single line`, async () => {
+      await testPostgresql(dedent`
+        REVOKE SELECT ON schm.my_table FROM john_doe
+      `);
+    });
+
+    it(`formats GRANT OPTION FOR clause`, async () => {
+      await testPostgresql(dedent`
+        REVOKE GRANT OPTION FOR INSERT ON tbl FROM john
+      `);
+    });
+
+    it(`formats GRANTED BY clause`, async () => {
+      await testPostgresql(dedent`
+        REVOKE SELECT ON tbl FROM john GRANTED BY johnny
+      `);
+    });
+
+    it(`formats RESTRICT/CASCADE`, async () => {
+      await testPostgresql(dedent`
+        REVOKE SELECT ON tbl FROM john CASCADE
+      `);
+    });
+
+    it(`formats long REVOKE to multiple lines`, async () => {
+      await testPostgresql(dedent`
+        REVOKE GRANT OPTION FOR SELECT
+        ON tbl1, tbl2
+        FROM john, alice, mary
+        GRANTED BY john_doe
+        RESTRICT
       `);
     });
   });
