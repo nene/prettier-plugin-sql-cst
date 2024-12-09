@@ -1,7 +1,7 @@
 import { AllTransactionNodes } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const transactionMap: CstToDocMap<AllTransactionNodes> = {
+export const transactionMap: Partial<CstToDocMap<AllTransactionNodes>> = {
   start_transaction_stmt: (print) =>
     print.spaced(["startKw", "behaviorKw", "transactionKw"]),
   commit_transaction_stmt: (print) =>

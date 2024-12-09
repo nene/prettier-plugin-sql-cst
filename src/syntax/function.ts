@@ -3,7 +3,7 @@ import { group, hardline, join, line } from "../print_utils";
 import { isAsClause } from "../node_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const functionMap: CstToDocMap<AllFunctionNodes> = {
+export const functionMap: Partial<CstToDocMap<AllFunctionNodes>> = {
   create_function_stmt: (print, node) => [
     print.spaced([
       "createKw",
