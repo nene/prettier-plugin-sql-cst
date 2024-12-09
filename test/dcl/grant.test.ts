@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { testBigquery } from "../test_utils";
+import { testBigquery, testPostgresql } from "../test_utils";
 
 describe("grant", () => {
   describe("bigquery", () => {
@@ -45,6 +45,59 @@ describe("grant", () => {
           'user:sara@example.com',
           'specialGroup:allAuthenticatedUsers'
       `);
+    });
+  });
+
+  describe("postgresql", () => {
+    it(`formats short GRANT in single line`, async () => {
+      await testPostgresql(dedent`
+        GRANT SELECT ON schm.my_table TO john_doe
+      `);
+    });
+
+    it(`formats privilege limited to specific columns`, async () => {
+      await testPostgresql(dedent`
+        GRANT UPDATE (foo, bar, baz) ON tbl TO john
+      `);
+    });
+
+    it(`formats ALL PRIVILEGES`, async () => {
+      await testPostgresql(dedent`
+        GRANT ALL PRIVILEGES ON tbl TO john
+      `);
+      await testPostgresql(dedent`
+        GRANT ALL ON tbl TO john
+      `);
+    });
+
+    it(`formats ALL PRIVILEGES on specific columns`, async () => {
+      await testPostgresql(dedent`
+        GRANT ALL PRIVILEGES (foo, bar, baz) ON tbl TO john
+      `);
+    });
+
+    [
+      "TABLE foo, bar",
+      "ALL TABLES IN SCHEMA schm1, schm2",
+      "SEQUENCE seq1, seq2",
+      "ALL SEQUENCES IN SCHEMA schm1, schm2",
+      "DATABASE db1, db2",
+      "DOMAIN dom1, dom2",
+      "FOREIGN DATA WRAPPER fdw1, fdw2",
+      "FOREIGN SERVER fs1, fs2",
+      // TODO: functions
+      "LANGUAGE lang1, lang2",
+      "LARGE OBJECT 1234, 5678",
+      "PARAMETER foo, bar",
+      "SCHEMA schm1, schm2",
+      "TABLESPACE ts1, ts2",
+      "TYPE typ1, typ2",
+    ].forEach((resource) => {
+      it(`formats ON ${resource}`, async () => {
+        await testPostgresql(dedent`
+          GRANT USAGE ON ${resource} TO john
+        `);
+      });
     });
   });
 });
