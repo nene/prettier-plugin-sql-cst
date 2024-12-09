@@ -102,5 +102,41 @@ describe("grant", () => {
         `);
       });
     });
+
+    it(`formats WITH GRANT OPTION clause`, async () => {
+      await testPostgresql(dedent`
+        GRANT SELECT ON tbl TO john WITH GRANT OPTION
+      `);
+    });
+
+    it(`formats GRANTED BY clause`, async () => {
+      await testPostgresql(dedent`
+        GRANT SELECT ON tbl TO john GRANTED BY CURRENT_USER
+      `);
+    });
+
+    it(`formats long GRANT to multiple lines`, async () => {
+      await testPostgresql(dedent`
+        GRANT SELECT
+        ON tbl
+        TO john
+        GRANTED BY john_doe
+        WITH GRANT OPTION
+      `);
+    });
+
+    [
+      "PUBLIC",
+      "GROUP my_group",
+      "CURRENT_USER",
+      "CURRENT_ROLE",
+      "SESSION_USER",
+    ].forEach((role) => {
+      it(`formats GRANT TO ${role}`, async () => {
+        await testPostgresql(dedent`
+          GRANT SELECT ON tbl TO ${role}
+        `);
+      });
+    });
   });
 });

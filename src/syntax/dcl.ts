@@ -9,6 +9,7 @@ export const dclMap: Partial<CstToDocMap<AllDclNodes>> = {
         group([print("grantKw"), indent([line, print("privileges")])]),
         group(print.spaced(["onKw", "resource"])),
         group([print("toKw"), indent([line, print("roles")])]),
+        ...print("clauses"),
       ]),
     ),
   revoke_privilege_stmt: (print) =>
@@ -55,4 +56,11 @@ export const dclMap: Partial<CstToDocMap<AllDclNodes>> = {
     group(print.spaced(["allSequencesInSchemaKw", "schemas"])),
   grant_resource_all_functions_in_schema: (print) =>
     group(print.spaced(["allFunctionsInSchemaKw", "schemas"])),
+
+  with_grant_option_clause: (print) =>
+    group(print.spaced(["withKw", "nameKw", "value"])),
+  granted_by_clause: (print) => group(print.spaced(["grantedByKw", "role"])),
+
+  grantee_public: (print) => print("publicKw"),
+  grantee_group: (print) => group(print.spaced(["groupKw", "name"])),
 };
