@@ -85,7 +85,10 @@ describe("grant", () => {
       "DOMAIN dom1, dom2",
       "FOREIGN DATA WRAPPER fdw1, fdw2",
       "FOREIGN SERVER fs1, fs2",
-      // TODO: functions
+      "FUNCTION func1, func2",
+      "FUNCTION func1(), func2()",
+      "FUNCTION f(INT), g(INOUT a INT, OUT b TEXT)",
+      "ALL FUNCTIONS IN SCHEMA schm1, schm2",
       "LANGUAGE lang1, lang2",
       "LARGE OBJECT 1234, 5678",
       "PARAMETER foo, bar",

@@ -37,6 +37,8 @@ export const dclMap: Partial<CstToDocMap<AllDclNodes>> = {
     group(print.spaced(["foreignDataWrapperKw", "dataWrappers"])),
   grant_resource_foreign_server: (print) =>
     group(print.spaced(["foreignServerKw", "servers"])),
+  grant_resource_function: (print) =>
+    group(print.spaced(["functionKw", "functions"])),
   grant_resource_language: (print) =>
     group(print.spaced(["languageKw", "languages"])),
   grant_resource_large_object: (print) =>
@@ -51,4 +53,6 @@ export const dclMap: Partial<CstToDocMap<AllDclNodes>> = {
     group(print.spaced(["allTablesInSchemaKw", "schemas"])),
   grant_resource_all_sequences_in_schema: (print) =>
     group(print.spaced(["allSequencesInSchemaKw", "schemas"])),
+  grant_resource_all_functions_in_schema: (print) =>
+    group(print.spaced(["allFunctionsInSchemaKw", "schemas"])),
 };
