@@ -127,4 +127,16 @@ describe("roles", () => {
       await testPostgresql("DROP ROLE role1, role2");
     });
   });
+
+  describe("SET ROLE", () => {
+    it("formats SET ROLE", async () => {
+      await testPostgresql("SET ROLE moderator");
+      await testPostgresql("SET SESSION ROLE moderator");
+      await testPostgresql("SET LOCAL ROLE NONE");
+    });
+
+    it("formats RESET ROLE", async () => {
+      await testPostgresql("RESET ROLE");
+    });
+  });
 });

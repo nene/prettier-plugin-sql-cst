@@ -2,7 +2,7 @@ import { AllRoleNodes } from "sql-parser-cst";
 import { group, indent, join, line } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const roleMap: Partial<CstToDocMap<AllRoleNodes>> = {
+export const roleMap: CstToDocMap<AllRoleNodes> = {
   create_role_stmt: (print, node) =>
     group([
       print.spaced(["createRoleKw", "name", "withKw"]),
@@ -23,6 +23,9 @@ export const roleMap: Partial<CstToDocMap<AllRoleNodes>> = {
     ]),
   drop_role_stmt: (print) =>
     group(print.spaced(["dropRoleKw", "ifExistsKw", "names"])),
+  set_role_stmt: (print) =>
+    group(print.spaced(["setKw", "scopeKw", "roleKw", "name"])),
+  reset_role_stmt: (print) => group(print.spaced("resetRoleKw")),
 
   role_option_keyword: (print) => print("kw"),
   role_option_connection_limit: (print) =>
