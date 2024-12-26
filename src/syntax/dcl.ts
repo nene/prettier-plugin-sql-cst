@@ -2,13 +2,25 @@ import { AllDclNodes } from "sql-parser-cst";
 import { group, indent, join, line } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const dclMap: Partial<CstToDocMap<AllDclNodes>> = {
+export const dclMap: CstToDocMap<AllDclNodes> = {
   grant_privilege_stmt: (print) =>
     group(
       join(print.dynamicLine(), [
         group([print("grantKw"), indent([line, print("privileges")])]),
         group(print.spaced(["onKw", "resource"])),
         group([print("toKw"), indent([line, print("roles")])]),
+        ...print("clauses"),
+      ]),
+    ),
+  grant_role_stmt: (print) =>
+    group(
+      join(print.dynamicLine(), [
+        group(
+          join(line, [
+            group([print("grantKw"), indent([line, print("grantedRoles")])]),
+            group([print("toKw"), indent([line, print("granteeRoles")])]),
+          ]),
+        ),
         ...print("clauses"),
       ]),
     ),
@@ -21,6 +33,21 @@ export const dclMap: Partial<CstToDocMap<AllDclNodes>> = {
         ]),
         group(print.spaced(["onKw", "resource"])),
         group([print("fromKw"), indent([line, print("roles")])]),
+        ...print(["grantedBy", "behaviorKw"]),
+      ]),
+    ),
+  revoke_role_stmt: (print) =>
+    group(
+      join(print.dynamicLine(), [
+        group(
+          join(line, [
+            group([
+              print.spaced(["revokeKw", "option"]),
+              indent([line, print("grantedRoles")]),
+            ]),
+            group([print("fromKw"), indent([line, print("granteeRoles")])]),
+          ]),
+        ),
         ...print(["grantedBy", "behaviorKw"]),
       ]),
     ),

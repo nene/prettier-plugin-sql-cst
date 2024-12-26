@@ -84,5 +84,58 @@ describe("revoke", () => {
         RESTRICT
       `);
     });
+
+    describe("REVOKE role FROM role", () => {
+      it(`formats basic statement`, async () => {
+        await testPostgresql(dedent`
+          REVOKE moderator FROM john
+        `);
+      });
+
+      it(`formats multiple roles`, async () => {
+        await testPostgresql(dedent`
+          REVOKE moderator, administrator FROM john, mary, alice
+        `);
+      });
+
+      it(`formats long lists of roles`, async () => {
+        await testPostgresql(dedent`
+          REVOKE moderator, administrator, accelerator, composer
+          FROM john_doe, mary_jane, alice_malice
+        `);
+      });
+
+      it(`formats extra long lists of roles`, async () => {
+        await testPostgresql(dedent`
+          REVOKE
+            moderator,
+            administrator,
+            accelerator,
+            composer,
+            director,
+            editor,
+            generator
+          FROM
+            john_doe_of_london,
+            mary_jane_from_singapure,
+            alice_malice_from_paris_suburbs
+        `);
+      });
+
+      it(`formats extra clauses`, async () => {
+        await testPostgresql(dedent`
+          REVOKE moderator FROM john
+          GRANTED BY alice
+          CASCADE
+        `);
+      });
+
+      it(`formats ... OPTION FOR`, async () => {
+        await testPostgresql(dedent`
+          REVOKE ADMIN OPTION FOR moderator FROM john
+          RESTRICT
+        `);
+      });
+    });
   });
 });

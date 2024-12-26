@@ -138,5 +138,51 @@ describe("grant", () => {
         `);
       });
     });
+
+    describe("GRANT role TO role", () => {
+      it(`formats basic statement`, async () => {
+        await testPostgresql(dedent`
+          GRANT moderator TO john
+        `);
+      });
+
+      it(`formats multiple roles`, async () => {
+        await testPostgresql(dedent`
+          GRANT moderator, administrator TO john, mary, alice
+        `);
+      });
+
+      it(`formats long lists of roles`, async () => {
+        await testPostgresql(dedent`
+          GRANT moderator, administrator, accelerator, composer
+          TO john_doe, mary_jane, alice_malice
+        `);
+      });
+
+      it(`formats extra long lists of roles`, async () => {
+        await testPostgresql(dedent`
+          GRANT
+            moderator,
+            administrator,
+            accelerator,
+            composer,
+            director,
+            editor,
+            generator
+          TO
+            john_doe_of_london,
+            mary_jane_from_singapure,
+            alice_malice_from_paris_suburbs
+        `);
+      });
+
+      it(`formats extra clauses`, async () => {
+        await testPostgresql(dedent`
+          GRANT moderator TO john
+          WITH ADMIN OPTION
+          GRANTED BY alice
+        `);
+      });
+    });
   });
 });
