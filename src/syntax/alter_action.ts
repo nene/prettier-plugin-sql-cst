@@ -2,7 +2,7 @@ import { AllAlterActionNodes } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
 import { group, indent, join, line } from "../print_utils";
 
-export const alterActionMap: Partial<CstToDocMap<AllAlterActionNodes>> = {
+export const alterActionMap: CstToDocMap<AllAlterActionNodes> = {
   alter_action_rename: (print) => print.spaced(["renameKw", "newName"]),
   alter_action_rename_column: (print) =>
     print.spaced(["renameKw", "ifExistsKw", "oldName", "toKw", "newName"]),
@@ -146,6 +146,8 @@ export const alterActionMap: Partial<CstToDocMap<AllAlterActionNodes>> = {
         group(join(line, print("options"))),
   alter_action_set_postgresql_option: (print) =>
     print.spaced(["setKw", "name", "operator", "value"]),
+  alter_action_set_postgresql_option_from_current: (print) =>
+    print.spaced(["setKw", "name", "fromCurrentKw"]),
   alter_action_reset_postgresql_option: (print) =>
     print.spaced(["resetKw", "name"]),
   alter_action_add_user: (print) => group(print.spaced(["addUserKw", "users"])),

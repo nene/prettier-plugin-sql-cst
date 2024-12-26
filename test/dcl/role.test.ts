@@ -101,6 +101,10 @@ describe("roles", () => {
       await testPostgresql("ALTER ROLE john SET search_path = DEFAULT");
     });
 
+    it("formats ALTER ROLE .. SET option FROM CURRENT", async () => {
+      await testPostgresql("ALTER ROLE john SET search_path FROM CURRENT");
+    });
+
     it("formats ALTER ROLE .. RESET option", async () => {
       await testPostgresql("ALTER ROLE john RESET search_path");
       await testPostgresql("ALTER ROLE john RESET ALL");
