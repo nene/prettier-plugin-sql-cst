@@ -112,6 +112,14 @@ describe("roles", () => {
       );
       await testPostgresql("ALTER ROLE john IN DATABASE my_db RESET ALL");
     });
+
+    it("formats ALTER GROUP .. ADD USER", async () => {
+      await testPostgresql("ALTER GROUP director ADD USER john, jane, jimmy");
+    });
+
+    it("formats ALTER GROUP .. DROP USER", async () => {
+      await testPostgresql("ALTER GROUP director DROP USER alice, bob");
+    });
   });
 
   describe("DROP ROLE", () => {

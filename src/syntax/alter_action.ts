@@ -148,6 +148,9 @@ export const alterActionMap: Partial<CstToDocMap<AllAlterActionNodes>> = {
     print.spaced(["setKw", "name", "operator", "value"]),
   alter_action_reset_postgresql_option: (print) =>
     print.spaced(["resetKw", "name"]),
+  alter_action_add_user: (print) => group(print.spaced(["addUserKw", "users"])),
+  alter_action_drop_user: (print) =>
+    group(print.spaced(["dropUserKw", "users"])),
 
   // ENABLE/DISABLE ..
   toggle_trigger: (print) => print.spaced(["triggerKw", "name"]),
