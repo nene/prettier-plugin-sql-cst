@@ -10,6 +10,17 @@ export const roleMap: Partial<CstToDocMap<AllRoleNodes>> = {
         ? [indent([line, join(print.dynamicLine(), print("options"))])]
         : []),
     ]),
+  alter_role_stmt: (print, node) =>
+    group([
+      join(print.dynamicLine(), [
+        group([print.spaced("alterRoleKw"), indent([line, print("name")])]),
+        ...(node.database ? print(["database"]) : []),
+      ]),
+      node.action.type === "alter_action_with_role_options" &&
+      !node.action.withKw
+        ? indent([print.dynamicLine(), print("action")])
+        : [print.dynamicLine(), print("action")],
+    ]),
   drop_role_stmt: (print) =>
     group(print.spaced(["dropRoleKw", "ifExistsKw", "names"])),
 
@@ -24,4 +35,6 @@ export const roleMap: Partial<CstToDocMap<AllRoleNodes>> = {
   role_option_role: (print) => group(print.spaced(["roleKw", "names"])),
   role_option_admin: (print) => group(print.spaced(["adminKw", "names"])),
   role_option_sysid: (print) => group(print.spaced(["sysIdKw", "sysId"])),
+
+  in_database_clause: (print) => group(print.spaced(["inDatabaseKw", "name"])),
 };

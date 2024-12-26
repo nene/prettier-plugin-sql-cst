@@ -48,6 +48,72 @@ describe("roles", () => {
     });
   });
 
+  describe("ALTER ROLE", () => {
+    it("formats ALTER ROLE .. options", async () => {
+      await testPostgresql(
+        "ALTER ROLE john LOGIN CREATEDB CONNECTION LIMIT 15",
+      );
+    });
+
+    it("formats ALTER ROLE .. WITH options", async () => {
+      await testPostgresql(
+        "ALTER ROLE john WITH LOGIN CREATEDB CONNECTION LIMIT 15",
+      );
+    });
+
+    it("formats ALTER ROLE on multiple lines if user prefers", async () => {
+      await testPostgresql(dedent`
+        ALTER ROLE john
+        WITH LOGIN CREATEDB CONNECTION LIMIT 15
+      `);
+    });
+
+    it("formats long list of WITH options to multiple lines", async () => {
+      await testPostgresql(dedent`
+        ALTER ROLE john
+        WITH
+          LOGIN
+          CREATEDB
+          ADMIN role1, role2
+          CONNECTION LIMIT 15
+          ENCRYPTED PASSWORD 'mypass'
+      `);
+    });
+
+    it("formats long list of options to multiple lines", async () => {
+      await testPostgresql(dedent`
+        ALTER ROLE john
+          LOGIN
+          CREATEDB
+          ADMIN role1, role2
+          CONNECTION LIMIT 15
+          ENCRYPTED PASSWORD 'mypass'
+      `);
+    });
+
+    it("formats ALTER ROLE .. RENAME TO", async () => {
+      await testPostgresql("ALTER ROLE john RENAME TO johnny");
+    });
+
+    it("formats ALTER ROLE .. SET option TO value", async () => {
+      await testPostgresql("ALTER ROLE john SET search_path TO myschema");
+      await testPostgresql("ALTER ROLE john SET search_path = DEFAULT");
+      await testPostgresql("ALTER ROLE john SET search_path = DEFAULT");
+    });
+
+    it("formats ALTER ROLE .. RESET option", async () => {
+      await testPostgresql("ALTER ROLE john RESET search_path");
+      await testPostgresql("ALTER ROLE john RESET ALL");
+    });
+
+    it("formats ALTER ROLE .. IN DATABASE db {RESET | SET}", async () => {
+      await testPostgresql(
+        "ALTER ROLE john IN DATABASE my_db SET search_path TO myschema",
+      );
+      await testPostgresql("ALTER ROLE john IN DATABASE my_db RESET ALL");
+    });
+  });
+
   describe("DROP ROLE", () => {
     it("formats basic DROP ROLE", async () => {
       await testPostgresql("DROP ROLE john");

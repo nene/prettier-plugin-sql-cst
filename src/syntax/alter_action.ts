@@ -1,6 +1,6 @@
 import { AllAlterActionNodes } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
-import { group, join, line } from "../print_utils";
+import { group, indent, join, line } from "../print_utils";
 
 export const alterActionMap: Partial<CstToDocMap<AllAlterActionNodes>> = {
   alter_action_rename: (print) => print.spaced(["renameKw", "newName"]),
@@ -139,6 +139,15 @@ export const alterActionMap: Partial<CstToDocMap<AllAlterActionNodes>> = {
     print.spaced(["restartKw", "withKw", "value"]),
   alter_action_set_sequence_option: (print) =>
     print.spaced(["setKw", "option"]),
+  alter_action_with_role_options: (print, node) =>
+    node.withKw
+      ? group([print("withKw"), indent([line, join(line, print("options"))])])
+      : // This works in tandem with the logic inside alter_role_stmt
+        group(join(line, print("options"))),
+  alter_action_set_postgresql_option: (print) =>
+    print.spaced(["setKw", "name", "operator", "value"]),
+  alter_action_reset_postgresql_option: (print) =>
+    print.spaced(["resetKw", "name"]),
 
   // ENABLE/DISABLE ..
   toggle_trigger: (print) => print.spaced(["triggerKw", "name"]),
