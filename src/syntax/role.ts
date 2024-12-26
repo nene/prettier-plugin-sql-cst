@@ -10,6 +10,8 @@ export const roleMap: Partial<CstToDocMap<AllRoleNodes>> = {
         ? [indent([line, join(print.dynamicLine(), print("options"))])]
         : []),
     ]),
+  drop_role_stmt: (print) =>
+    group(print.spaced(["dropRoleKw", "ifExistsKw", "names"])),
 
   role_option_keyword: (print) => print("kw"),
   role_option_connection_limit: (print) =>

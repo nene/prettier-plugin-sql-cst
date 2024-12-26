@@ -47,4 +47,18 @@ describe("roles", () => {
       `);
     });
   });
+
+  describe("DROP ROLE", () => {
+    it("formats basic DROP ROLE", async () => {
+      await testPostgresql("DROP ROLE john");
+    });
+
+    it("formats DROP ROLE IF EXISTS", async () => {
+      await testPostgresql("DROP ROLE IF EXISTS john");
+    });
+
+    it("formats DROP ROLE with multiple roles", async () => {
+      await testPostgresql("DROP ROLE role1, role2");
+    });
+  });
 });
