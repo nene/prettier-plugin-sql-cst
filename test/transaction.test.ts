@@ -86,4 +86,14 @@ describe("transaction", () => {
 
     `);
   });
+
+  it(`formats AND [NO] CHAIN clauses`, async () => {
+    testPostgresql(dedent`
+      START TRANSACTION;
+
+      ROLLBACK AND NO CHAIN;
+
+      COMMIT AND CHAIN
+    `);
+  });
 });
