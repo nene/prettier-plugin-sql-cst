@@ -189,7 +189,7 @@ describe("trigger", () => {
     });
 
     it(`formats CASCADE/RESTRICT`, async () => {
-      await testPostgresql(`DROP TRIGGER my_trigger CASCADE`);
+      await testPostgresql(`DROP TRIGGER my_trigger ON my_table CASCADE`);
     });
   });
 });

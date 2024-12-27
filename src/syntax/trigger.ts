@@ -55,5 +55,11 @@ export const triggerMap: CstToDocMap<AllTriggerNodes> = {
     ),
 
   drop_trigger_stmt: (print) =>
-    print.spaced(["dropTriggerKw", "ifExistsKw", "trigger", "behaviorKw"]),
+    print.spaced([
+      "dropTriggerKw",
+      "ifExistsKw",
+      "trigger",
+      "target",
+      "behaviorKw",
+    ]),
 };
