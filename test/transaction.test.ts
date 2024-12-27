@@ -96,4 +96,24 @@ describe("transaction", () => {
       COMMIT AND CHAIN
     `);
   });
+
+  it(`formats transaction modes`, async () => {
+    testPostgresql(dedent`
+      BEGIN TRANSACTION ISOLATION LEVEL SERIALIZABLE, READ ONLY, DEFERRABLE;
+
+      COMMIT
+    `);
+  });
+
+  it(`formats transaction modes on multiple lines`, async () => {
+    testPostgresql(dedent`
+      BEGIN TRANSACTION
+        ISOLATION LEVEL READ COMMITTED,
+        READ WRITE,
+        NOT DEFERRABLE,
+        ISOLATION LEVEL REPEATABLE READ;
+
+      COMMIT
+    `);
+  });
 });
