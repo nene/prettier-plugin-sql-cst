@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { rawTest } from "./test_utils";
+import { rawTest, testPostgresql } from "./test_utils";
 
 describe("transaction", () => {
   it(`formats basic BEGIN..COMMIT`, async () => {
@@ -32,6 +32,22 @@ describe("transaction", () => {
 
       COMMIT TRANSACTION;
 
+    `);
+  });
+
+  it(`formats BEGIN TRANSACTION .. END TRANSACTION`, async () => {
+    testPostgresql(dedent`
+      BEGIN TRANSACTION;
+
+      END TRANSACTION
+    `);
+  });
+
+  it(`formats BEGIN WORK .. END WORK`, async () => {
+    testPostgresql(dedent`
+      BEGIN WORK;
+
+      END WORK
     `);
   });
 
