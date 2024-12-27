@@ -47,5 +47,5 @@ export const triggerMap: Partial<CstToDocMap<AllTriggerNodes>> = {
   ],
 
   drop_trigger_stmt: (print) =>
-    print.spaced(["dropTriggerKw", "ifExistsKw", "trigger"]),
+    print.spaced(["dropTriggerKw", "ifExistsKw", "trigger", "behaviorKw"]),
 };

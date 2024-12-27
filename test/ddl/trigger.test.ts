@@ -161,5 +161,9 @@ describe("trigger", () => {
     it(`formats IF EXISTS`, async () => {
       await test(`DROP TRIGGER IF EXISTS my_trigger`);
     });
+
+    it(`formats CASCADE/RESTRICT`, async () => {
+      await testPostgresql(`DROP TRIGGER my_trigger CASCADE`);
+    });
   });
 });
