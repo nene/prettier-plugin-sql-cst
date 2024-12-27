@@ -153,6 +153,32 @@ describe("trigger", () => {
     });
   });
 
+  describe("alter trigger", () => {
+    it(`formats ALTER TRIGGER .. RENAME TO on single line`, async () => {
+      await testPostgresql(dedent`
+        ALTER TRIGGER my_trigger ON my_table RENAME TO new_name
+      `);
+    });
+
+    it(`formats ALTER TRIGGER .. RENAME TO on multiple lines (if user prefers)`, async () => {
+      await testPostgresql(dedent`
+        ALTER TRIGGER my_trigger ON my_table
+        RENAME TO new_name
+      `);
+    });
+
+    it(`formats ALTER TRIGGER .. [NO] DEPENDS ON EXTENSION`, async () => {
+      await testPostgresql(dedent`
+        ALTER TRIGGER my_trigger ON my_table
+        DEPENDS ON EXTENSION ext_name
+      `);
+      await testPostgresql(dedent`
+        ALTER TRIGGER my_trigger ON my_table
+        NO DEPENDS ON EXTENSION ext_name
+      `);
+    });
+  });
+
   describe("drop trigger", () => {
     it(`formats DROP TRIGGER`, async () => {
       await test(`DROP TRIGGER my_trigger`);
