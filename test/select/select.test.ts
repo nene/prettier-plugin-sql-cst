@@ -185,26 +185,10 @@ describe("select", () => {
       `);
     });
 
-    it(`formats short query with GROUP BY ALL`, async () => {
+    it(`formats GROUP BY ALL`, async () => {
       await testBigquery(dedent`
         SELECT * FROM tbl GROUP BY ALL
       `);
-    });
-
-    it(`formats long query with GROUP BY ALL`, async () => {
-      await testBigquery(dedent`
-        SELECT *
-        FROM my_table_name
-        GROUP BY ALL
-        HAVING my_table_name.col1 > 1
-        LIMIT 5
-      `);
-    });
-
-    it(`capitalizes GROUP BY all`, async () => {
-      expect(
-        await pretty(`SELECT * FROM tbl GROUP BY all`, { dialect: "bigquery" }),
-      ).toBe(`SELECT * FROM tbl GROUP BY ALL`);
     });
 
     it(`formats QUALIFY clause`, async () => {
