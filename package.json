@@ -3,6 +3,7 @@
   "version": "0.12.1",
   "description": "Prettier plugin for SQL",
   "contributors": [
+    "Barna Magyarkuti <bmagyarkuti@gmail.com>",
     "Bowen Parnell <bparnell@4tel.com.au>",
     "Rene Saarsoo <nene@triin.net>"
   ],
