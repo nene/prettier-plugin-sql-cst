@@ -180,6 +180,7 @@ export const selectMap: CstToDocMap<AllSelectNodes> = {
   group_by_cube: (print) => print(["cubeKw", "columns"]),
   group_by_grouping_sets: (print) =>
     print.spaced(["groupingSetsKw", "columns"]),
+  group_by_all: (print) => print(["allKw"]),
 
   // PARTITION BY clause
   partition_by_clause: (print) =>

@@ -185,6 +185,12 @@ describe("select", () => {
       `);
     });
 
+    it(`formats GROUP BY ALL`, async () => {
+      await testBigquery(dedent`
+        SELECT * FROM tbl GROUP BY ALL
+      `);
+    });
+
     it(`formats QUALIFY clause`, async () => {
       await testBigquery(`SELECT * FROM tbl QUALIFY x > 10`);
     });
