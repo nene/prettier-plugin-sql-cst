@@ -1,5 +1,5 @@
 import { Doc, doc, util } from "prettier";
-import { Node } from "sql-parser-cst";
+import { Node, Whitespace } from "sql-parser-cst";
 import { isArray } from "./utils";
 
 export const {
@@ -44,8 +44,46 @@ export const hasEmptyLineBetweenNodes = (
   if (!node1.range || !node2.range) {
     throw new Error("emptyLineBetweenNodes() expects Nodes with range info");
   }
+  const start = node1.range[1];
+  const end = node2.range[0];
 
-  return /\n[ \t]*\r?\n/.test(
-    opts.originalText.slice(node1.range[1], node2.range[0]),
+  const indexes = emptyLineIndexes(opts.originalText.slice(start, end)).map(
+    (i) => start + i,
+  );
+
+  // when no empty lines between nodes, we can return early
+  if (indexes.length === 0) {
+    return false;
+  }
+
+  // otherwise we need to check whether the empty line happens to be inside a comment
+  const comments = [...(node1.trailing ?? []), ...(node2.leading ?? [])].filter(
+    isBlockComment,
+  );
+  return (
+    indexes.filter((index) => !isIndexInsideComment(index, comments)).length > 0
   );
 };
+
+function emptyLineIndexes(text: string): number[] {
+  const indexes: number[] = [];
+  const re = /\n[ \t]*\r?\n/g;
+  let match: RegExpExecArray | null;
+  while ((match = re.exec(text))) {
+    indexes.push(match.index);
+  }
+  return indexes;
+}
+
+function isBlockComment(comment: Whitespace): boolean {
+  return comment.type === "block_comment";
+}
+
+function isIndexInsideComment(index: number, comments: Whitespace[]): boolean {
+  return comments.some((comment) => {
+    if (!comment.range) {
+      return false;
+    }
+    return comment.range[0] < index && index < comment.range[1];
+  });
+}

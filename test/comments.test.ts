@@ -123,6 +123,19 @@ describe("comments", () => {
     `);
   });
 
+  // Issue #45
+  it(`does not introduce empty line before comment containing an empty line`, async () => {
+    rawTest(dedent`
+      SELECT 1;
+      /* */
+      /*
+
+      */
+      SELECT 1;
+
+    `);
+  });
+
   // Issue #9
   it.skip(`keeps separate-line line-comments on a separate line (not moving them to line end)`, async () => {
     rawTest(dedent`
