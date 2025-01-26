@@ -136,6 +136,19 @@ describe("comments", () => {
     `);
   });
 
+  it(`preserves empty lines between comments`, async () => {
+    rawTest(dedent`
+      SELECT 1;
+      -- foo
+
+      -- bar
+
+      -- baz
+      SELECT 1;
+
+    `);
+  });
+
   // Issue #9
   it.skip(`keeps separate-line line-comments on a separate line (not moving them to line end)`, async () => {
     rawTest(dedent`

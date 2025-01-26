@@ -56,12 +56,12 @@ export const hasEmptyLineBetweenNodes = (
     return false;
   }
 
-  // otherwise we need to check whether the empty line happens to be inside a comment
-  const comments = [...(node1.trailing ?? []), ...(node2.leading ?? [])].filter(
-    isBlockComment,
-  );
+  // otherwise we need to check whether the empty line happens to be
+  // inside a comment or between comments
+  const comments = [...(node1.trailing ?? []), ...(node2.leading ?? [])];
   return (
-    indexes.filter((index) => !isIndexInsideComment(index, comments)).length > 0
+    indexes.filter((index) => !isIndexInsideOrBetweenComments(index, comments))
+      .length > 0
   );
 };
 
@@ -75,15 +75,15 @@ function emptyLineIndexes(text: string): number[] {
   return indexes;
 }
 
-function isBlockComment(comment: Whitespace): boolean {
-  return comment.type === "block_comment";
-}
-
-function isIndexInsideComment(index: number, comments: Whitespace[]): boolean {
-  return comments.some((comment) => {
-    if (!comment.range) {
-      return false;
-    }
-    return comment.range[0] < index && index < comment.range[1];
-  });
+function isIndexInsideOrBetweenComments(
+  index: number,
+  comments: Whitespace[],
+): boolean {
+  if (comments.length === 0) {
+    return false;
+  }
+  // Assume all nodes have range info
+  const start = comments[0].range![0];
+  const end = comments[comments.length - 1].range![1];
+  return start <= index && index <= end;
 }
