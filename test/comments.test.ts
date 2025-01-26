@@ -149,6 +149,27 @@ describe("comments", () => {
     `);
   });
 
+  it(`collapses multiple empty lines between comments to one`, async () => {
+    expect(
+      await rawPretty(dedent`
+      SELECT 1;
+      -- foo
+
+
+      -- baz
+      SELECT 1;
+
+    `),
+    ).toBe(dedent`
+      SELECT 1;
+      -- foo
+
+      -- baz
+      SELECT 1;
+
+    `);
+  });
+
   // Issue #9
   it.skip(`keeps separate-line line-comments on a separate line (not moving them to line end)`, async () => {
     rawTest(dedent`
