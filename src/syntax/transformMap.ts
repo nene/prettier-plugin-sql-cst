@@ -22,6 +22,7 @@ import { mergeMap } from "./merge";
 import { otherClausesMap } from "./other_clauses";
 import { renameTableMap } from "./rename_table";
 import { roleMap } from "./role";
+import { policyMap } from "./policy";
 import { preparedStatementsMap } from "./prepared_statements";
 import { proceduralLanguageMap } from "./procedural_language";
 import { procedureMap } from "./procedure";
@@ -64,6 +65,7 @@ export const transformMap: CstToDocMap<Node> = {
   ...insertMap,
   ...mergeMap,
   ...otherClausesMap,
+  ...policyMap,
   ...preparedStatementsMap,
   ...procClauseMap,
   ...proceduralLanguageMap,
