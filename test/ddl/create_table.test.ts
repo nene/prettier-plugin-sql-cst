@@ -2,7 +2,13 @@ import dedent from "dedent-js";
 import { test, testBigquery, testMysql, testPostgresql } from "../test_utils";
 
 describe("create table", () => {
-  it(`formats CREATE TABLE always on multiple lines`, async () => {
+  it(`formats short CREATE TABLE on single line if it fits`, async () => {
+    await test(dedent`
+      CREATE TABLE client (id INT, name VARCHAR(100), org_id INT)
+    `);
+  });
+
+  it(`formats short CREATE TABLE on multiple lines if user prefers`, async () => {
     await test(dedent`
       CREATE TABLE client (
         id INT,

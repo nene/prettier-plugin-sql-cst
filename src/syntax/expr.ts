@@ -57,7 +57,10 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
       return print("expr");
     }
     const parent = path.getParentNode() as Node;
-    const lineStyle = isCreateTableStmt(parent) ? hardline : softline;
+    const lineStyle =
+      isCreateTableStmt(parent) && print.dynamicLine() === hardline
+        ? hardline
+        : softline;
     return group(["(", indent([lineStyle, print("expr")]), lineStyle, ")"]);
   },
   binary_expr: (print, node) => {

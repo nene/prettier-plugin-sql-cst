@@ -23,8 +23,8 @@ export type PrintFn<T, K = PrintableKey<T>> = {
   separated(separator: Doc, path: K[]): Doc[];
 
   // Returns either:
-  // - line: when the node contains a newline
-  // - hardline: when the original source contains no newlines
+  // - line: when the node contains no newlines
+  // - hardline: when the original source contains a newline
   dynamicLine(): Doc;
 };
 

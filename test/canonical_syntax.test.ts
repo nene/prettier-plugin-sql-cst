@@ -21,9 +21,7 @@ describe("with sqlCanonicalSyntax enabled", () => {
         sqlCanonicalSyntax: true,
       }),
     ).toBe(dedent`
-      CREATE TEMPORARY TABLE foo (
-        id INT
-      )
+      CREATE TEMPORARY TABLE foo (id INT)
     `);
   });
 
