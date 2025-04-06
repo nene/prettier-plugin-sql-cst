@@ -124,6 +124,7 @@ There are also some SQL-specific options:
 | `sqlKeywordCase`              | `upper` | Converts SQL keywords to `upper` or `lower` case, or `preserve` existing. Note that for now `preserve` is somewhat incompatible with `sqlCanonicalSyntax: true` (e.g. the added `AS` keywords will always be in uppercase).     |
 | `sqlParamTypes`               |  `[]`   | Array of bound parameter types: `?`, `?nr`, `$nr`, `:name`, `@name`, `$name`.                                                                                                                                                   |
 | `sqlCanonicalSyntax`          | `true`  | When enabled, performs some opinionated changes of keywords and operators, like enforcing the use of `AS` in aliases and replacing `<>` comparisons with `!=`. See [STYLE_GUIDE][] for more details. (Since 0.11.0)             |
+| `sqlFinalSemicolon`           | `true`  | When enabled, enforces a semicolon at the end of last statement. When disabled leaves it up to the author whether to add a final semicolon or not. (Since 0.13.0)                                                               |
 | `sqlAcceptUnsupportedGrammar` | `false` | Normally when the plugin encounters SQL syntax it doesn't support it will throw an error and won't format anything at all. With this option enabled, it will skip over SQL statements it doesn't recognize, leaving them as-is. |
 
 ## Usage inside VSCode
