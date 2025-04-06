@@ -5,6 +5,7 @@ export interface SqlPluginOptions {
   sqlKeywordCase: "preserve" | "upper" | "lower";
   sqlParamTypes: NonNullable<CstParserOptions["paramTypes"]>;
   sqlCanonicalSyntax: boolean;
+  sqlFinalSemicolon: boolean;
   sqlAcceptUnsupportedGrammar: boolean;
 }
 
@@ -51,6 +52,13 @@ export const options: SupportOptions = {
     description:
       "Enforces one true style of SQL syntax (adds and removes keywords)",
     // Since 0.11.0
+  },
+  sqlFinalSemicolon: {
+    type: "boolean",
+    category: "SQL",
+    default: true,
+    description: "Enforces a semicolon at the end of last SQL statement",
+    // Since 0.13.0
   },
   sqlAcceptUnsupportedGrammar: {
     type: "boolean",

@@ -17,8 +17,10 @@ export const transformCst: TransformFn = (
     // so we don't need to worry about comments interfering with other transforms
     moveCommentsToRoot,
     stripTrailingCommas,
-    addFinalSemicolon,
   ];
+  if (options.sqlFinalSemicolon) {
+    transforms.push(addFinalSemicolon);
+  }
   if (options.sqlCanonicalSyntax) {
     transforms.push(processAliasAs, canonicOperators, canonicKeywords);
   }
