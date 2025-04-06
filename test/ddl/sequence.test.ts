@@ -3,6 +3,12 @@ import { testPostgresql } from "../test_utils";
 
 describe("sequence", () => {
   describe("create sequence", () => {
+    it(`formats minimal CREATE SEQUENCE`, async () => {
+      await testPostgresql(dedent`
+        CREATE SEQUENCE my_seq
+      `);
+    });
+
     it(`formats CREATE SEQUENCE on a single line`, async () => {
       await testPostgresql(dedent`
         CREATE SEQUENCE my_seq START WITH 10 NO CYCLE MAXVALUE 1000

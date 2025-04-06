@@ -3,10 +3,12 @@ import { CstToDocMap } from "../CstToDocMap";
 import { group, indent, join, line } from "../print_utils";
 
 export const sequenceMap: CstToDocMap<AllSequenceNodes> = {
-  create_sequence_stmt: (print) =>
+  create_sequence_stmt: (print, node) =>
     group([
       print.spaced(["createKw", "kind", "sequenceKw", "ifNotExistsKw", "name"]),
-      indent([print.dynamicLine(), join(line, print("options"))]),
+      node.options.length > 0
+        ? indent([print.dynamicLine(), join(line, print("options"))])
+        : [],
     ]),
   alter_sequence_stmt: (print) =>
     group([
