@@ -41,7 +41,8 @@ export const options: SupportOptions = {
     type: "choice",
     category: "SQL",
     default: "upper",
-    description: "Enforces upper/lower case for SQL literals",
+    description:
+      "Enforces upper/lower case for SQL literals (TRUE, FALSE, NULL)",
     choices: [
       {
         value: "preserve",

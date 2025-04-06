@@ -23,6 +23,7 @@ import {
   isCompoundSelectStmt,
 } from "../node_utils";
 import { isString, last } from "../utils";
+import { AllPrettierOptions } from "src/options";
 
 export const exprMap: CstToDocMap<AllExprNodes> = {
   list_expr: (print, node, path) => {
@@ -169,13 +170,15 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
   /** cst-ignore: value */
   number_literal: (print) => print("text"),
   /** cst-ignore: value */
-  boolean_literal: (print) => print("valueKw"),
+  boolean_literal: (print, node, path, options) =>
+    printLiteral(node.valueKw, options),
   /** cst-ignore: value */
   string_literal: (print) => print("text"),
   /** cst-ignore: value */
   blob_literal: (print) => print("text"),
   /** cst-ignore: value */
-  null_literal: (print) => print("nullKw"),
+  null_literal: (print, node, path, options) =>
+    printLiteral(node.nullKw, options),
   numeric_literal: (print) => print.spaced(["numericKw", "string"]),
   bignumeric_literal: (print) => print.spaced(["bignumericKw", "string"]),
   date_literal: (print) => print.spaced(["dateKw", "string"]),
@@ -189,6 +192,17 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
   /** cst-ignore: name */
   variable: (print) => print("text"),
   parameter: (print) => print("text"),
+};
+
+const printLiteral = <T>(node: Keyword, options: AllPrettierOptions<T>) => {
+  switch (options.sqlLiteralCase) {
+    case "preserve":
+      return node.text;
+    case "upper":
+      return node.text.toUpperCase();
+    case "lower":
+      return node.text.toLowerCase();
+  }
 };
 
 const isBooleanOp = ({ name }: Keyword) => name === "AND" || name === "OR";
