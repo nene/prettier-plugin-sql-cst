@@ -51,12 +51,12 @@ export const options: SupportOptions = {
       },
       {
         value: "upper",
-        description: "forces all keywords to uppercase",
+        description: "forces all literals to uppercase",
         since: "0.14.0",
       },
       {
         value: "lower",
-        description: "forces all keywords to lowercase",
+        description: "forces all literals to lowercase",
         since: "0.14.0",
       },
     ],
