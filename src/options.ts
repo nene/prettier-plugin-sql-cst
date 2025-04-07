@@ -3,6 +3,7 @@ import { Node, ParserOptions as CstParserOptions } from "sql-parser-cst";
 
 export interface SqlPluginOptions {
   sqlKeywordCase: "preserve" | "upper" | "lower";
+  sqlLiteralCase: "preserve" | "upper" | "lower";
   sqlParamTypes: NonNullable<CstParserOptions["paramTypes"]>;
   sqlCanonicalSyntax: boolean;
   sqlFinalSemicolon: boolean;
@@ -33,6 +34,30 @@ export const options: SupportOptions = {
         value: "lower",
         description: "forces all keywords to lowercase",
         since: "0.1.0",
+      },
+    ],
+  },
+  sqlLiteralCase: {
+    type: "choice",
+    category: "SQL",
+    default: "upper",
+    description:
+      "Enforces upper/lower case for SQL literals (TRUE, FALSE, NULL)",
+    choices: [
+      {
+        value: "preserve",
+        description: "preserves the existing case",
+        since: "0.14.0",
+      },
+      {
+        value: "upper",
+        description: "forces all keywords to uppercase",
+        since: "0.14.0",
+      },
+      {
+        value: "lower",
+        description: "forces all keywords to lowercase",
+        since: "0.14.0",
       },
     ],
   },
