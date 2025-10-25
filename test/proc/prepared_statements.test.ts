@@ -115,4 +115,16 @@ describe("prepared statements", () => {
         'SELECT 1 AS col1, 2 AS col2, 3 AS col3, 4 AS col4, 5 AS col5'
     `);
   });
+
+  it(`formats DEALLOCATE PREPARE name`, async () => {
+    await testPostgresql(dedent`
+      DEALLOCATE PREPARE my_statement
+    `);
+  });
+
+  it(`formats DEALLOCATE ALL`, async () => {
+    await testPostgresql(dedent`
+      DEALLOCATE ALL
+    `);
+  });
 });

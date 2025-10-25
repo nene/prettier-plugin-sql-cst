@@ -36,4 +36,8 @@ export const preparedStatementsMap: Partial<
     ),
   prepare_from_clause: (print) =>
     group([print("fromKw"), indent([line, print("expr")])]),
+
+  // DEALLOCATE
+  deallocate_stmt: (print) => print.spaced(["deallocateKw", "name"]),
+  deallocate_all: (print) => print("allKw"),
 };
