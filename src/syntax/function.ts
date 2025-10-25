@@ -1,5 +1,5 @@
 import { AllFunctionNodes, CreateFunctionStmt } from "sql-parser-cst";
-import { group, hardline, join, line } from "../print_utils";
+import { group, hardline, join } from "../print_utils";
 import { isAsClause } from "../node_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
@@ -39,10 +39,6 @@ export const functionMap: CstToDocMap<AllFunctionNodes> = {
   function_window_clause: (print) => print.spaced("windowKw"),
   function_transform_clause: (print) => print.spaced(["transformKw", "types"]),
   transform_type: (print) => print.spaced(["forTypeKw", "dataType"]),
-  set_parameter_clause: (print) =>
-    print.spaced(["setKw", "name", "operator", "value"]),
-  set_parameter_from_current_clause: (print) =>
-    print.spaced(["setKw", "name", "fromCurrentKw"]),
   dynamically_loaded_function: (print) =>
     join(", ", print(["objectFile", "symbol"])),
   drop_function_stmt: (print) =>
@@ -61,8 +57,6 @@ export const functionMap: CstToDocMap<AllFunctionNodes> = {
       join(print.dynamicLine(), print("actions")),
       node.behaviorKw ? [print.dynamicLine(), print("behaviorKw")] : [],
     ]),
-  reset_parameter_clause: (print) => print.spaced(["resetKw", "name"]),
-  reset_all_parameters_clause: (print) => print.spaced("resetAllKw"),
 };
 
 const hasOnlyAsClause = (node: CreateFunctionStmt): boolean =>
