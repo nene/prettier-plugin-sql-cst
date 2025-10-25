@@ -42,6 +42,8 @@ describe("sequence", () => {
     it(`formats all possible sequence options`, async () => {
       await testPostgresql(dedent`
         CREATE SEQUENCE my_seq
+          SEQUENCE NAME my_sequence
+          LOGGED
           AS INTEGER
           INCREMENT BY -2
           MINVALUE -1000
@@ -77,6 +79,8 @@ describe("sequence", () => {
     it(`formats all possible sequence options`, async () => {
       await testPostgresql(dedent`
         ALTER SEQUENCE IF EXISTS my_seq
+          SEQUENCE NAME my_sequence
+          UNLOGGED
           RESTART WITH 100
           INCREMENT BY 2
           MINVALUE 0
