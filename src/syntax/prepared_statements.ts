@@ -2,8 +2,11 @@ import { AllPreparedStatementNodes } from "sql-parser-cst";
 import { group, hardline, indent, join, line } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const preparedStatementsMap: CstToDocMap<AllPreparedStatementNodes> = {
-  execute_stmt: (print) =>
+export const preparedStatementsMap: Partial<
+  CstToDocMap<AllPreparedStatementNodes>
+> = {
+  execute_stmt: (print) => print.spaced(["executeKw", "name", "args"]),
+  execute_immediate_stmt: (print) =>
     join(hardline, [
       group([
         print.spaced(["executeKw", "immediateKw"]),

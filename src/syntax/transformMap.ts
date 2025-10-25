@@ -22,6 +22,7 @@ import { mergeMap } from "./merge";
 import { otherClausesMap } from "./other_clauses";
 import { renameTableMap } from "./rename_table";
 import { roleMap } from "./role";
+import { parameterMap } from "./parameter";
 import { policyMap } from "./policy";
 import { preparedStatementsMap } from "./prepared_statements";
 import { proceduralLanguageMap } from "./procedural_language";
@@ -44,7 +45,7 @@ import { mysqlMap } from "./dialects/mysql";
 import { sqliteMap } from "./dialects/sqlite";
 import { postgresqlMap } from "./dialects/postgresql";
 
-export const transformMap: CstToDocMap<Node> = {
+export const transformMap: Partial<CstToDocMap<Node>> = {
   ...aliasMap,
   ...alterActionMap,
   ...alterTableMap,
@@ -65,6 +66,7 @@ export const transformMap: CstToDocMap<Node> = {
   ...insertMap,
   ...mergeMap,
   ...otherClausesMap,
+  ...parameterMap,
   ...policyMap,
   ...preparedStatementsMap,
   ...procClauseMap,
