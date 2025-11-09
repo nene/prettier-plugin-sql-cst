@@ -2,7 +2,7 @@ import { AllDclNodes } from "sql-parser-cst";
 import { group, indent, join, line } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const dclMap: CstToDocMap<AllDclNodes> = {
+export const dclMap: Partial<CstToDocMap<AllDclNodes>> = {
   grant_privilege_stmt: (print) =>
     group(
       join(print.dynamicLine(), [

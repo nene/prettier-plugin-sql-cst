@@ -1,7 +1,7 @@
 import { AllParameterNodes } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const parameterMap: CstToDocMap<AllParameterNodes> = {
+export const parameterMap: Partial<CstToDocMap<AllParameterNodes>> = {
   // SET
   set_parameter_stmt: (print) =>
     print.spaced(["setKw", "modifierKw", "name", "operator", "value"]),
