@@ -8,7 +8,7 @@ describe("sqlLiteralCase option", () => {
     `);
   });
 
-  it(`sqlKeywordCase: "preserve" keeps keywords case as-is`, async () => {
+  it(`sqlLiteralCase: "preserve" keeps literals case as-is`, async () => {
     expect(
       await pretty(`SELECT true, False, NULL`, {
         sqlLiteralCase: "preserve",
@@ -18,7 +18,7 @@ describe("sqlLiteralCase option", () => {
     `);
   });
 
-  it(`sqlLiteralCase: "upper" converts keywords to uppercase`, async () => {
+  it(`sqlLiteralCase: "upper" converts literals to uppercase`, async () => {
     expect(
       await pretty(`SELECT true, False, NULL`, {
         sqlLiteralCase: "upper",
@@ -28,7 +28,7 @@ describe("sqlLiteralCase option", () => {
     `);
   });
 
-  it(`sqlLiteralCase: "lower" converts keywords to lowercase`, async () => {
+  it(`sqlLiteralCase: "lower" converts literals to lowercase`, async () => {
     expect(
       await pretty(`SELECT true, False, NULL`, {
         sqlLiteralCase: "lower",
