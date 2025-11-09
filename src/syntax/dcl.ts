@@ -98,7 +98,13 @@ export const dclMap: CstToDocMap<AllDclNodes> = {
   grantee_group: (print) => group(print.spaced(["groupKw", "name"])),
 
   alter_default_privileges_stmt: (print) =>
-    group(print.spaced(["alterDefaultPrivilegesKw", "clauses", "action"])),
+    group(
+      join(line, [
+        print.spaced("alterDefaultPrivilegesKw"),
+        ...print("clauses"),
+        print("action"),
+      ]),
+    ),
 
   default_acl_for_role_clause: (print) =>
     group(print.spaced(["forKw", "roleKw", "roles"])),
@@ -108,27 +114,26 @@ export const dclMap: CstToDocMap<AllDclNodes> = {
 
   grant_default_privileges_action: (print) =>
     group(
-      print.spaced([
-        "grantKw",
-        "privileges",
-        "onKw",
-        "resourcesKw",
-        "toKw",
-        "roles",
-        "withGrantOption",
+      join(line, [
+        group(print.spaced(["grantKw", "privileges", "onKw", "resourcesKw"])),
+        group(print.spaced(["toKw", "roles", "withGrantOption"])),
       ]),
     ),
 
   revoke_default_privileges_action: (print) =>
     group(
-      print.spaced([
-        "revokeKw",
-        "grantOptionFor",
-        "privileges",
-        "onKw",
-        "resourcesKw",
-        "fromKw",
-        "roles",
+      join(line, [
+        group([
+          print.spaced(["revokeKw", "grantOptionFor"]),
+          indent([
+            line,
+            join(line, [
+              group(print("privileges")),
+              print.spaced(["onKw", "resourcesKw"]),
+            ]),
+          ]),
+        ]),
+        group(print.spaced(["fromKw", "roles", "behaviorKw"])),
       ]),
     ),
 };
