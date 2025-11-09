@@ -14,6 +14,15 @@ describe("parameters", () => {
     `);
   });
 
+  it(`formats SET with ON/OFF values`, async () => {
+    await testPostgresql(dedent`
+      SET log_statement TO ON
+    `);
+    await testPostgresql(dedent`
+      SET log_statement = OFF
+    `);
+  });
+
   it(`formats SET TIME ZONE statement`, async () => {
     await testPostgresql(dedent`
       SET TIME ZONE 'UTC'
