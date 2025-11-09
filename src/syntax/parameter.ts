@@ -1,5 +1,6 @@
 import { AllParameterNodes } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
+import { printLiteral } from "./expr";
 
 export const parameterMap: CstToDocMap<AllParameterNodes> = {
   // SET
@@ -21,5 +22,6 @@ export const parameterMap: CstToDocMap<AllParameterNodes> = {
   // SHOW
   show_parameter_stmt: (print) => print.spaced(["showKw", "name"]),
 
-  boolean_on_off_literal: (print) => print("valueKw"),
+  boolean_on_off_literal: (print, node, path, options) =>
+    printLiteral(node.valueKw, options),
 };

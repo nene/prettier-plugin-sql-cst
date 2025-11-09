@@ -194,7 +194,10 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
   parameter: (print) => print("text"),
 };
 
-const printLiteral = <T>(node: Keyword, options: AllPrettierOptions<T>) => {
+export const printLiteral = <T>(
+  node: Keyword,
+  options: AllPrettierOptions<T>,
+) => {
   switch (options.sqlLiteralCase) {
     case "preserve":
       return node.text;

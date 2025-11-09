@@ -37,4 +37,26 @@ describe("sqlLiteralCase option", () => {
       SELECT true, false, null
     `);
   });
+
+  it(`sqlLiteralCase effects ON/OFF values in PostgreSQL SET statements`, async () => {
+    expect(
+      await pretty(`set log_statement = on`, {
+        dialect: "postgresql",
+        sqlKeywordCase: "lower",
+        sqlLiteralCase: "upper",
+      }),
+    ).toBe(dedent`
+      set log_statement = ON
+    `);
+
+    expect(
+      await pretty(`set log_statement = OFF`, {
+        dialect: "postgresql",
+        sqlKeywordCase: "upper",
+        sqlLiteralCase: "lower",
+      }),
+    ).toBe(dedent`
+      SET log_statement = off
+    `);
+  });
 });
