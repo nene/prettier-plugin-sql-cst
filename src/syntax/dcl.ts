@@ -2,7 +2,7 @@ import { AllDclNodes } from "sql-parser-cst";
 import { group, indent, join, line } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const dclMap: Partial<CstToDocMap<AllDclNodes>> = {
+export const dclMap: CstToDocMap<AllDclNodes> = {
   grant_privilege_stmt: (print) =>
     group(
       join(print.dynamicLine(), [
@@ -96,4 +96,39 @@ export const dclMap: Partial<CstToDocMap<AllDclNodes>> = {
 
   grantee_public: (print) => print("publicKw"),
   grantee_group: (print) => group(print.spaced(["groupKw", "name"])),
+
+  alter_default_privileges_stmt: (print) =>
+    group(print.spaced(["alterDefaultPrivilegesKw", "clauses", "action"])),
+
+  default_acl_for_role_clause: (print) =>
+    group(print.spaced(["forKw", "roleKw", "roles"])),
+
+  default_acl_in_schema_clause: (print) =>
+    group(print.spaced(["inKw", "schemaKw", "schemas"])),
+
+  grant_default_privileges_action: (print) =>
+    group(
+      print.spaced([
+        "grantKw",
+        "privileges",
+        "onKw",
+        "resourcesKw",
+        "toKw",
+        "roles",
+        "withGrantOption",
+      ]),
+    ),
+
+  revoke_default_privileges_action: (print) =>
+    group(
+      print.spaced([
+        "revokeKw",
+        "grantOptionFor",
+        "privileges",
+        "onKw",
+        "resourcesKw",
+        "fromKw",
+        "roles",
+      ]),
+    ),
 };
