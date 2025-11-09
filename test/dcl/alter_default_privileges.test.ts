@@ -26,6 +26,13 @@ describe("alter default privileges", () => {
     `);
   });
 
+  it(`formats short ALTER DEFAULT PRIVILEGES to multiple lines when original code is multiline`, async () => {
+    await testPostgresql(dedent`
+      ALTER DEFAULT PRIVILEGES
+      REVOKE ALL ON TABLES FROM PUBLIC
+    `);
+  });
+
   it(`formats long clauses to multiple lines`, async () => {
     await testPostgresql(dedent`
       ALTER DEFAULT PRIVILEGES

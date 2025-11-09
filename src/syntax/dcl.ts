@@ -99,7 +99,7 @@ export const dclMap: CstToDocMap<AllDclNodes> = {
 
   alter_default_privileges_stmt: (print) =>
     group(
-      join(line, [
+      join(print.dynamicLine(), [
         print.spaced("alterDefaultPrivilegesKw"),
         ...print("clauses"),
         print("action"),
