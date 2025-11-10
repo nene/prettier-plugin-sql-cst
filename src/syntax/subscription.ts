@@ -1,8 +1,8 @@
 import { AllSubscriptionNodes } from "sql-parser-cst";
-import { group, indent, line, join } from "../print_utils";
+import { group, line, join } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const subscriptionMap: Partial<CstToDocMap<AllSubscriptionNodes>> = {
+export const subscriptionMap: CstToDocMap<AllSubscriptionNodes> = {
   create_subscription_stmt: (print, node) =>
     group(
       join(line, [
@@ -11,5 +11,10 @@ export const subscriptionMap: Partial<CstToDocMap<AllSubscriptionNodes>> = {
         print.spaced(["publicationKw", "publications"]),
         ...(node.with ? [print.spaced(["with"])] : []),
       ]),
+    ),
+
+  drop_subscription_stmt: (print) =>
+    group(
+      print.spaced(["dropSubscriptionKw", "ifExistsKw", "name", "behaviorKw"]),
     ),
 };

@@ -34,4 +34,12 @@ describe("subscriptions", () => {
       `);
     });
   });
+
+  describe("DROP SUBSCRIPTION", () => {
+    it(`formats DROP SUBSCRIPTION`, async () => {
+      await testPostgresql(dedent`
+        DROP SUBSCRIPTION IF EXISTS my_sub CASCADE
+      `);
+    });
+  });
 });
