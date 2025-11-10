@@ -76,6 +76,68 @@ describe("publications", () => {
     });
   });
 
+  describe("ALTER PUBLICATION", () => {
+    it(`formats RENAME TO`, async () => {
+      await testPostgresql(dedent`
+        ALTER PUBLICATION my_publication RENAME TO new_name
+      `);
+    });
+
+    it(`formats OWNER TO`, async () => {
+      await testPostgresql(dedent`
+        ALTER PUBLICATION my_publication OWNER TO new_owner
+      `);
+    });
+
+    it(`formats SET (...)`, async () => {
+      await testPostgresql(dedent`
+        ALTER PUBLICATION my_publication SET (param = 'value')
+      `);
+    });
+
+    it(`formats ADD publication_object, ...`, async () => {
+      await testPostgresql(dedent`
+        ALTER PUBLICATION my_publication ADD TABLE foo, TABLES IN SCHEMA bar
+      `);
+    });
+
+    it(`formats SET publication_object, ...`, async () => {
+      await testPostgresql(dedent`
+        ALTER PUBLICATION my_publication SET TABLE foo, TABLES IN SCHEMA bar
+      `);
+    });
+
+    it(`formats DROP publication_object, ...`, async () => {
+      await testPostgresql(dedent`
+        ALTER PUBLICATION my_publication DROP TABLE foo, TABLES IN SCHEMA bar
+      `);
+    });
+
+    it(`formats to multiple lines when long`, async () => {
+      await testPostgresql(dedent`
+        ALTER PUBLICATION my_publication
+        DROP TABLE foo, TABLES IN SCHEMA bar, TABLE baz
+      `);
+    });
+
+    it(`formats multiple publication objects to multiple lines`, async () => {
+      await testPostgresql(dedent`
+        ALTER PUBLICATION my_long_publication_name
+        DROP
+          TABLE first_table_name,
+          TABLES IN SCHEMA my_schema_name,
+          TABLE second_table_name
+      `);
+    });
+
+    it(`formats to multiple lines when user prefers`, async () => {
+      await testPostgresql(dedent`
+        ALTER PUBLICATION my_pub
+        ADD TABLE foo
+      `);
+    });
+  });
+
   describe("DROP PUBLICATION", () => {
     it(`formats DROP PUBLICATION`, async () => {
       await testPostgresql(dedent`

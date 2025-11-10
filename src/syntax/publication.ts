@@ -22,6 +22,19 @@ export const publicationMap: Partial<CstToDocMap<AllPublicationNodes>> = {
   publication_object_tables_in_schema: (print) =>
     group(print.spaced(["tablesInSchemaKw", "schema"])),
 
+  alter_publication_stmt: (print) =>
+    group([
+      print.spaced(["alterPublicationKw", "name"]),
+      print.dynamicLine(),
+      print("action"),
+    ]),
+  alter_action_add_publication_objects: (print) =>
+    group([print("addKw"), indent([line, print("publicationObjects")])]),
+  alter_action_set_publication_objects: (print) =>
+    group([print("setKw"), indent([line, print("publicationObjects")])]),
+  alter_action_drop_publication_objects: (print) =>
+    group([print("dropKw"), indent([line, print("publicationObjects")])]),
+
   drop_publication_stmt: (print) =>
     group(
       print.spaced(["dropPublicationKw", "ifExistsKw", "names", "behaviorKw"]),
