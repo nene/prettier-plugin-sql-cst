@@ -37,6 +37,7 @@ import { publicationMap } from "./publication";
 import { schemaMap } from "./schema";
 import { selectMap } from "./select";
 import { sequenceMap } from "./sequence";
+import { subscriptionMap } from "./subscription";
 import { transactionMap } from "./transaction";
 import { triggerMap } from "./trigger";
 import { truncateMap } from "./truncate";
@@ -88,6 +89,7 @@ export const transformMap: Partial<CstToDocMap<Node>> = {
   ...schemaMap,
   ...selectMap,
   ...sequenceMap,
+  ...subscriptionMap,
   ...transactionMap,
   ...triggerMap,
   ...truncateMap,
