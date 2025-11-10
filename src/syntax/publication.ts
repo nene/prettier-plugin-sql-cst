@@ -3,8 +3,17 @@ import { group, indent, line } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
 export const publicationMap: Partial<CstToDocMap<AllPublicationNodes>> = {
-  create_publication_stmt: (print) =>
-    group(print.spaced(["createPublicationKw", "name", "clauses"])),
+  create_publication_stmt: (print, node) =>
+    group([
+      print.spaced(["createPublicationKw", "name"]),
+      print("clauses").map((printedClause, i) => {
+        if (node.clauses[i].type === "for_publication_objects_clause") {
+          return [" ", printedClause];
+        } else {
+          return [line, printedClause];
+        }
+      }),
+    ]),
   for_publication_objects_clause: (print) =>
     group([print("forKw"), indent([line, print("publicationObjects")])]),
   all_publication_object: (print) => group(print.spaced(["allKw", "typesKw"])),

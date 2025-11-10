@@ -62,5 +62,17 @@ describe("publications", () => {
           TABLE foo (column1, column2) WHERE (id > 10)
       `);
     });
+
+    it(`formats WITH clause`, async () => {
+      await testPostgresql(dedent`
+        CREATE PUBLICATION my_publication FOR ALL TABLES WITH (publish = '')
+      `);
+
+      await testPostgresql(dedent`
+        CREATE PUBLICATION my_publication FOR
+          TABLES IN SCHEMA my_long_schema_name_in_here
+        WITH (publish = 'insert, update')
+      `);
+    });
   });
 });
