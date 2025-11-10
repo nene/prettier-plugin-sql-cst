@@ -5,6 +5,7 @@ import { alterActionMap } from "./alter_action";
 import { alterTableMap } from "./alter_table";
 import { analyzeMap } from "./analyze";
 import { baseMap } from "./base";
+import { castMap } from "./cast";
 import { commentMap } from "./comment";
 import { constraintMap } from "./constraint";
 import { createTableMap } from "./create_table";
@@ -53,6 +54,7 @@ export const transformMap: Partial<CstToDocMap<Node>> = {
   ...alterTableMap,
   ...analyzeMap,
   ...baseMap,
+  ...castMap,
   ...commentMap,
   ...constraintMap,
   ...createTableMap,
