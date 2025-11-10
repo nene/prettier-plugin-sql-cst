@@ -2,7 +2,7 @@ import { AllPublicationNodes } from "sql-parser-cst";
 import { group, indent, line } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const publicationMap: Partial<CstToDocMap<AllPublicationNodes>> = {
+export const publicationMap: CstToDocMap<AllPublicationNodes> = {
   create_publication_stmt: (print, node) =>
     group([
       print.spaced(["createPublicationKw", "name"]),
