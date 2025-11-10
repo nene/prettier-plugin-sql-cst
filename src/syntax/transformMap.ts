@@ -17,6 +17,7 @@ import { domainMap } from "./domain";
 import { dropTableMap } from "./drop_table";
 import { explainMap } from "./explain";
 import { exprMap } from "./expr";
+import { extensionMap } from "./extension";
 import { frameMap } from "./frame";
 import { functionMap } from "./function";
 import { indexMap } from "./index";
@@ -66,6 +67,7 @@ export const transformMap: Partial<CstToDocMap<Node>> = {
   ...dropTableMap,
   ...explainMap,
   ...exprMap,
+  ...extensionMap,
   ...frameMap,
   ...functionMap,
   ...indexMap,
