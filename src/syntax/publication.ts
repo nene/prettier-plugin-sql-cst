@@ -21,4 +21,9 @@ export const publicationMap: Partial<CstToDocMap<AllPublicationNodes>> = {
     group(print.spaced(["tableKw", "table", "columns", "where"])),
   publication_object_tables_in_schema: (print) =>
     group(print.spaced(["tablesInSchemaKw", "schema"])),
+
+  drop_publication_stmt: (print) =>
+    group(
+      print.spaced(["dropPublicationKw", "ifExistsKw", "names", "behaviorKw"]),
+    ),
 };

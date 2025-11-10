@@ -75,4 +75,15 @@ describe("publications", () => {
       `);
     });
   });
+
+  describe("DROP PUBLICATION", () => {
+    it(`formats DROP PUBLICATION`, async () => {
+      await testPostgresql(dedent`
+        DROP PUBLICATION my_publication
+      `);
+      await testPostgresql(dedent`
+        DROP PUBLICATION IF EXISTS my_publication1, my_publication2 CASCADE
+      `);
+    });
+  });
 });
