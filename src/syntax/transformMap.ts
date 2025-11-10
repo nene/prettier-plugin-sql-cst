@@ -33,6 +33,7 @@ import { proceduralLanguageMap } from "./procedural_language";
 import { procedureMap } from "./procedure";
 import { procClauseMap } from "./proc_clause";
 import { programMap } from "./program";
+import { publicationMap } from "./publication";
 import { schemaMap } from "./schema";
 import { selectMap } from "./select";
 import { sequenceMap } from "./sequence";
@@ -81,6 +82,7 @@ export const transformMap: Partial<CstToDocMap<Node>> = {
   ...proceduralLanguageMap,
   ...procedureMap,
   ...programMap,
+  ...publicationMap,
   ...renameTableMap,
   ...roleMap,
   ...schemaMap,
