@@ -69,6 +69,14 @@ yarn add --dev prettier prettier-plugin-sql-cst
 Then use it on SQL files through Prettier command line tool or Prettier extension
 for your editor of choice.
 
+For a one-off run you can execute:
+
+```
+prettier --plugin prettier-plugin-sql-cst --parser sqlite myfile.sql
+```
+
+But generally you're better off using a configuration file.
+
 ## Choosing an SQL dialect
 
 By default the plugin will determine SQL dialect based on file extension:
