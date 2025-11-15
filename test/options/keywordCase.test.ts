@@ -65,7 +65,10 @@ describe("sqlKeywordCase option", () => {
     expect(
       await pretty(
         `CREATE TABLE foo (
-        col1 int, col2 character varying (255), col3 my_schema.custom_type)`,
+        col1 int, col2 character varying (255),
+        col3 my_schema.custom_type,
+        col4 timestamp with time zone
+        )`,
         {
           dialect: "postgresql",
           sqlKeywordCase: "upper",
@@ -75,7 +78,8 @@ describe("sqlKeywordCase option", () => {
       CREATE TABLE foo (
         col1 int,
         col2 character varying (255),
-        col3 my_schema.custom_type
+        col3 my_schema.custom_type,
+        col4 timestamp with time zone
       )
     `);
   });
