@@ -1,4 +1,4 @@
-import { AllDataTypeNodes } from "sql-parser-cst";
+import { AllDataTypeNodes, NamedDataType } from "sql-parser-cst";
 import { isArray } from "../utils";
 import { CstToDocMap } from "../CstToDocMap";
 import { group, indent, softline } from "../print_utils";
@@ -6,7 +6,7 @@ import { group, indent, softline } from "../print_utils";
 export const dataTypeMap: CstToDocMap<AllDataTypeNodes> = {
   // print single-word types as `TYPE(10)` and multi-word types as `MY TYPE (10)`
   named_data_type: (print, node) =>
-    (isArray(node.name) ? print.spaced : print)(["name", "params"]),
+    (isMultiWordTypeName(node) ? print.spaced : print)(["name", "params"]),
   data_type_identifier: (print) => print.spaced("name"),
   setof_data_type: (print) => print.spaced(["setofKw", "dataType"]),
   array_data_type: (print) => print(["dataType", "bounds"]),
@@ -20,3 +20,10 @@ export const dataTypeMap: CstToDocMap<AllDataTypeNodes> = {
     print.spaced(["name", "dataType", "constraints"]),
   table_data_type: (print) => print.spaced(["tableKw", "columns"]),
 };
+
+function isMultiWordTypeName(node: NamedDataType): boolean {
+  return (
+    isArray(node.name) ||
+    (node.name.type === "data_type_identifier" && isArray(node.name.name))
+  );
+}

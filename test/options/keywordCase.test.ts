@@ -1,5 +1,6 @@
 import dedent from "dedent-js";
-import { pretty } from "../test_utils";
+import { pretty, testPostgresql } from "../test_utils";
+import { DialectName } from "sql-parser-cst";
 
 describe("sqlKeywordCase option", () => {
   it(`defaults to uppercasing of all keywords`, async () => {
@@ -35,6 +36,47 @@ describe("sqlKeywordCase option", () => {
       }),
     ).toBe(dedent`
       select * from tbl where x > 0
+    `);
+  });
+
+  (["sqlite", "bigquery", "mysql", "mariadb"] as DialectName[]).forEach(
+    (dialect) => {
+      it(`sqlKeywordCase: "upper" converts ${dialect} data types to uppercase`, async () => {
+        expect(
+          await pretty(
+            `CREATE TABLE foo (
+              col1 int, col2 numeric (5, 3))`,
+            {
+              dialect,
+              sqlKeywordCase: "upper",
+            },
+          ),
+        ).toBe(dedent`
+          CREATE TABLE foo (
+            col1 INT,
+            col2 NUMERIC(5, 3)
+          )
+        `);
+      });
+    },
+  );
+
+  it(`sqlKeywordCase: "upper" does not effect PostgreSQL data types`, async () => {
+    expect(
+      await pretty(
+        `CREATE TABLE foo (
+        col1 int, col2 character varying (255), col3 my_schema.custom_type)`,
+        {
+          dialect: "postgresql",
+          sqlKeywordCase: "upper",
+        },
+      ),
+    ).toBe(dedent`
+      CREATE TABLE foo (
+        col1 int,
+        col2 character varying (255),
+        col3 my_schema.custom_type
+      )
     `);
   });
 });
