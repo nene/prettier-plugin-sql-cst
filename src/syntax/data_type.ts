@@ -7,6 +7,8 @@ export const dataTypeMap: CstToDocMap<AllDataTypeNodes> = {
   // print single-word types as `TYPE(10)` and multi-word types as `MY TYPE (10)`
   named_data_type: (print, node) =>
     (isArray(node.name) ? print.spaced : print)(["name", "params"]),
+  data_type_identifier: (print) => print.spaced("name"),
+  setof_data_type: (print) => print.spaced(["setofKw", "dataType"]),
   array_data_type: (print) => print(["dataType", "bounds"]),
   array_bounds: (print) => ["[", print("bounds"), "]"],
   with_time_zone_data_type: (print) =>

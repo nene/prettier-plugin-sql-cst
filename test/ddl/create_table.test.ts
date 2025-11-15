@@ -296,6 +296,16 @@ describe("create table", () => {
     `);
   });
 
+  it(`formats PostgreSQL SETOF data types`, async () => {
+    await testPostgresql(dedent`
+      CREATE TABLE client (
+        foo SETOF INT,
+        bar SETOF CHARACTER VARYING,
+        baz SETOF MY_CUSTOM_TYPE
+      )
+    `);
+  });
+
   it(`formats PostgreSQL array data types`, async () => {
     await testPostgresql(dedent`
       CREATE TABLE client (
