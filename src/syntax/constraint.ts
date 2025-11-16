@@ -1,5 +1,9 @@
 import { Doc } from "prettier";
-import { AllConstraintNodes, Constraint } from "sql-parser-cst";
+import {
+  AllConstraintNodes,
+  AlterActionAddConstraint,
+  Constraint,
+} from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
 import { PrintFn } from "../PrintFn";
 import { group, indent, line, hardline, join } from "../print_utils";
@@ -83,9 +87,9 @@ export const constraintMap: CstToDocMap<AllConstraintNodes> = {
     print.spaced(["usingIndexTablespaceKw", "name"]),
 };
 
-const printUnnamedConstraint = <T>(
-  print: PrintFn<Constraint<T>>,
-  node: Constraint<T>,
+export const printUnnamedConstraint = <T>(
+  print: PrintFn<Constraint<T>> | PrintFn<AlterActionAddConstraint>,
+  node: Constraint<T> | AlterActionAddConstraint,
 ): Doc => {
   if (node.modifiers.length > 0) {
     return group([

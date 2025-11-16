@@ -332,6 +332,14 @@ describe("alter table", () => {
       `);
     });
 
+    it(`formats long ADD CONSTRAINT`, async () => {
+      await testPostgresql(dedent`
+        ALTER TABLE client
+        ADD CONSTRAINT price_is_valid
+          CHECK (client.price > 0 OR client.type = 'special')
+      `);
+    });
+
     it(`formats ADD PRIMARY KEY`, async () => {
       await testPostgresql(dedent`
         ALTER TABLE client
