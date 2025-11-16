@@ -330,10 +330,16 @@ describe("alter table", () => {
         ALTER TABLE client
         ADD CONSTRAINT IF NOT EXISTS pk PRIMARY KEY (id) NOT ENFORCED
       `);
+    });
+
+    it(`formats ADD PRIMARY KEY`, async () => {
       await testPostgresql(dedent`
         ALTER TABLE client
         ADD PRIMARY KEY (price)
       `);
+    });
+
+    it(`formats ADD UNIQUE`, async () => {
       await testPostgresql(dedent`
         ALTER TABLE client
         ADD UNIQUE USING INDEX price_unique
