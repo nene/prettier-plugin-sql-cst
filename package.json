@@ -1,6 +1,6 @@
 {
   "name": "prettier-plugin-sql-cst",
-  "version": "0.15.0",
+  "version": "0.16.0",
   "description": "Prettier plugin for SQL",
   "contributors": [
     "Barna Magyarkuti <bmagyarkuti@gmail.com>",
