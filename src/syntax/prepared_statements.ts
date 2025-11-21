@@ -12,13 +12,15 @@ export const preparedStatementsMap: CstToDocMap<AllPreparedStatementNodes> = {
     }
   },
   execute_immediate_stmt: (print) =>
-    join(hardline, [
-      group([
-        print.spaced(["executeKw", "immediateKw"]),
-        indent([line, print("expr")]),
+    group(
+      join(hardline, [
+        group([
+          print.spaced(["executeKw", "immediateKw"]),
+          indent([line, print("expr")]),
+        ]),
+        ...print(["into", "using"]).map((clause) => group(clause)),
       ]),
-      ...print(["into", "using"]).map((clause) => group(clause)),
-    ]),
+    ),
   execute_into_clause: (print) => print.spaced(["intoKw", "variables"]),
   execute_using_clause: (print) =>
     group([print("usingKw"), indent([line, print("values")])]),
@@ -36,6 +38,6 @@ export const preparedStatementsMap: CstToDocMap<AllPreparedStatementNodes> = {
     group([print("fromKw"), indent([line, print("expr")])]),
 
   // DEALLOCATE
-  deallocate_stmt: (print) => print.spaced(["deallocateKw", "name"]),
+  deallocate_stmt: (print) => group(print.spaced(["deallocateKw", "name"])),
   deallocate_all: (print) => print("allKw"),
 };

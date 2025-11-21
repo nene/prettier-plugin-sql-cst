@@ -11,34 +11,38 @@ import { CstToDocMap } from "../CstToDocMap";
 
 export const proceduralLanguageMap: CstToDocMap<AllProceduralNodes> = {
   // BEGIN .. END
-  block_stmt: (print, node) => [
-    print.spaced(["beginKw", "atomicKw"]),
-    indent([hardline, stripTrailingHardline(print("program"))]),
-    node.exception ? [hardline, print("exception")] : [],
-    hardline,
-    print("endKw"),
-  ],
-  exception_clause: (print) => [
-    print.spaced(["exceptionKw", "whenKw", "condition", "thenKw"]),
-    indent([hardline, stripTrailingHardline(print("program"))]),
-  ],
+  block_stmt: (print, node) =>
+    group([
+      print.spaced(["beginKw", "atomicKw"]),
+      indent([hardline, stripTrailingHardline(print("program"))]),
+      node.exception ? [hardline, print("exception")] : [],
+      hardline,
+      print("endKw"),
+    ]),
+  exception_clause: (print) =>
+    group([
+      print.spaced(["exceptionKw", "whenKw", "condition", "thenKw"]),
+      indent([hardline, stripTrailingHardline(print("program"))]),
+    ]),
   error_category: (print) => print("errorKw"),
 
   // DECLARE
   declare_stmt: (print) =>
-    join(" ", [
-      print("declareKw"),
-      group(print("names")),
-      ...print.spaced(["dataType", "default"]),
-    ]),
+    group(
+      join(" ", [
+        print("declareKw"),
+        group(print("names")),
+        ...print.spaced(["dataType", "default"]),
+      ]),
+    ),
   declare_default: (print) => print.spaced(["defaultKw", "expr"]),
 
   // SET
-  set_stmt: (print) => print.spaced(["setKw", "assignments"]),
+  set_stmt: (print) => group(print.spaced(["setKw", "assignments"])),
 
   // IF
   if_stmt: (print) =>
-    join(hardline, [...print("clauses"), print.spaced("endIfKw")]),
+    group(join(hardline, [...print("clauses"), print.spaced("endIfKw")])),
   if_clause: (print) => [
     group([
       print("ifKw"),
@@ -63,56 +67,62 @@ export const proceduralLanguageMap: CstToDocMap<AllProceduralNodes> = {
   ],
 
   // CASE
-  case_stmt: (print) => [
-    print.spaced(["caseKw", "expr"]),
-    indent([hardline, join(hardline, print("clauses"))]),
-    hardline,
-    print.spaced("endCaseKw"),
-  ],
+  case_stmt: (print) =>
+    group([
+      print.spaced(["caseKw", "expr"]),
+      indent([hardline, join(hardline, print("clauses"))]),
+      hardline,
+      print.spaced("endCaseKw"),
+    ]),
 
   // LOOP
-  loop_stmt: (print) => [
-    print("loopKw"),
-    indent([hardline, stripTrailingHardline(print("body"))]),
-    hardline,
-    print.spaced("endLoopKw"),
-  ],
+  loop_stmt: (print) =>
+    group([
+      print("loopKw"),
+      indent([hardline, stripTrailingHardline(print("body"))]),
+      hardline,
+      print.spaced("endLoopKw"),
+    ]),
   // REPEAT
-  repeat_stmt: (print) => [
-    print("repeatKw"),
-    indent([hardline, stripTrailingHardline(print("body"))]),
-    hardline,
-    print.spaced(["untilKw", "condition", "endRepeatKw"]),
-  ],
+  repeat_stmt: (print) =>
+    group([
+      print("repeatKw"),
+      indent([hardline, stripTrailingHardline(print("body"))]),
+      hardline,
+      print.spaced(["untilKw", "condition", "endRepeatKw"]),
+    ]),
   // WHILE
-  while_stmt: (print) => [
-    print.spaced(["whileKw", "condition", "doKw"]),
-    indent([hardline, stripTrailingHardline(print("body"))]),
-    hardline,
-    print.spaced("endWhileKw"),
-  ],
+  while_stmt: (print) =>
+    group([
+      print.spaced(["whileKw", "condition", "doKw"]),
+      indent([hardline, stripTrailingHardline(print("body"))]),
+      hardline,
+      print.spaced("endWhileKw"),
+    ]),
   // FOR .. IN
-  for_stmt: (print) => [
-    print.spaced(["forKw", "left", "inKw", "right", "doKw"]),
-    indent([hardline, stripTrailingHardline(print("body"))]),
-    hardline,
-    print.spaced("endForKw"),
-  ],
+  for_stmt: (print) =>
+    group([
+      print.spaced(["forKw", "left", "inKw", "right", "doKw"]),
+      indent([hardline, stripTrailingHardline(print("body"))]),
+      hardline,
+      print.spaced("endForKw"),
+    ]),
   // BREAK/CONTINUE
-  break_stmt: (print) => print.spaced(["breakKw", "label"]),
-  continue_stmt: (print) => print.spaced(["continueKw", "label"]),
-  labeled_stmt: (print, node) => [
-    print("beginLabel"),
-    ": ",
-    print("statement"),
-    node.endLabel ? [" ", print(["endLabel"])] : [],
-  ],
+  break_stmt: (print) => group(print.spaced(["breakKw", "label"])),
+  continue_stmt: (print) => group(print.spaced(["continueKw", "label"])),
+  labeled_stmt: (print, node) =>
+    group([
+      print("beginLabel"),
+      ": ",
+      print("statement"),
+      node.endLabel ? [" ", print(["endLabel"])] : [],
+    ]),
   // CALL
-  call_stmt: (print) => print.spaced(["callKw", "func"]),
+  call_stmt: (print) => group(print.spaced(["callKw", "func"])),
   // RETURN
-  return_stmt: (print) => print.spaced(["returnKw", "expr"]),
+  return_stmt: (print) => group(print.spaced(["returnKw", "expr"])),
   // RAISE
-  raise_stmt: (print) => print.spaced(["raiseKw", "message"]),
+  raise_stmt: (print) => group(print.spaced(["raiseKw", "message"])),
   raise_message: (print) => [
     print.spaced("usingMessageKw"),
     " = ",

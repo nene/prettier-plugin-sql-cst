@@ -9,99 +9,120 @@ export const bigqueryMap: CstToDocMap<AllBigqueryNodes> = {
 
   // ROW ACCESS POLICY
   create_row_access_policy_stmt: (print) =>
-    join(hardline, [
-      print.spaced([
-        "createKw",
-        "orReplaceKw",
-        "rowAccessPolicyKw",
-        "ifNotExistsKw",
-        "name",
-        "onKw",
-        "table",
+    group(
+      join(hardline, [
+        print.spaced([
+          "createKw",
+          "orReplaceKw",
+          "rowAccessPolicyKw",
+          "ifNotExistsKw",
+          "name",
+          "onKw",
+          "table",
+        ]),
+        ...print("clauses"),
       ]),
-      ...print("clauses"),
-    ]),
+    ),
   row_access_policy_grant_clause: (print) =>
     print.spaced(["grantToKw", "grantees"]),
   row_access_policy_filter_clause: (print) =>
     print.spaced(["filterUsingKw", "expr"]),
   drop_row_access_policy_stmt: (print) =>
-    print.spaced([
-      "dropKw",
-      "allKw",
-      "rowAccessPolicyKw",
-      "ifExistsKw",
-      "name",
-      "onKw",
-      "table",
-    ]),
+    group(
+      print.spaced([
+        "dropKw",
+        "allKw",
+        "rowAccessPolicyKw",
+        "ifExistsKw",
+        "name",
+        "onKw",
+        "table",
+      ]),
+    ),
 
   // CAPACITY
-  create_capacity_stmt: (print) => [
-    print.spaced(["createKw", "capacityKw", "name"]),
-    hardline,
-    print("options"),
-  ],
+  create_capacity_stmt: (print) =>
+    group([
+      print.spaced(["createKw", "capacityKw", "name"]),
+      hardline,
+      print("options"),
+    ]),
   drop_capacity_stmt: (print) =>
-    print.spaced(["dropKw", "capacityKw", "ifExistsKw", "name"]),
+    group(print.spaced(["dropKw", "capacityKw", "ifExistsKw", "name"])),
   // RESERVATION
-  create_reservation_stmt: (print) => [
-    print.spaced(["createKw", "reservationKw", "name"]),
-    hardline,
-    print("options"),
-  ],
+  create_reservation_stmt: (print) =>
+    group([
+      print.spaced(["createKw", "reservationKw", "name"]),
+      hardline,
+      print("options"),
+    ]),
   drop_reservation_stmt: (print) =>
-    print.spaced(["dropKw", "reservationKw", "ifExistsKw", "name"]),
+    group(print.spaced(["dropKw", "reservationKw", "ifExistsKw", "name"])),
   // ASSIGNMENT
-  create_assignment_stmt: (print) => [
-    print.spaced(["createKw", "assignmentKw", "name"]),
-    hardline,
-    print("options"),
-  ],
+  create_assignment_stmt: (print) =>
+    group([
+      print.spaced(["createKw", "assignmentKw", "name"]),
+      hardline,
+      print("options"),
+    ]),
   drop_assignment_stmt: (print) =>
-    print.spaced(["dropKw", "assignmentKw", "ifExistsKw", "name"]),
+    group(print.spaced(["dropKw", "assignmentKw", "ifExistsKw", "name"])),
 
   // ALTER ORGANIZATION
   alter_organization_stmt: (print) =>
-    join(hardline, [print.spaced("alterOrganizationKw"), print("actions")]),
+    group(
+      join(hardline, [print.spaced("alterOrganizationKw"), print("actions")]),
+    ),
   // ALTER PROJECT
   alter_project_stmt: (print) =>
-    join(hardline, [
-      print.spaced(["alterProjectKw", "name"]),
-      print("actions"),
-    ]),
+    group(
+      join(hardline, [
+        print.spaced(["alterProjectKw", "name"]),
+        print("actions"),
+      ]),
+    ),
   alter_bi_capacity_stmt: (print) =>
-    join(hardline, [
-      print.spaced(["alterBiCapacityKw", "name"]),
-      print("actions"),
-    ]),
+    group(
+      join(hardline, [
+        print.spaced(["alterBiCapacityKw", "name"]),
+        print("actions"),
+      ]),
+    ),
   alter_capacity_stmt: (print) =>
-    join(hardline, [
-      print.spaced(["alterCapacityKw", "name"]),
-      print("actions"),
-    ]),
+    group(
+      join(hardline, [
+        print.spaced(["alterCapacityKw", "name"]),
+        print("actions"),
+      ]),
+    ),
   alter_reservation_stmt: (print) =>
-    join(hardline, [
-      print.spaced(["alterReservationKw", "name"]),
-      print("actions"),
-    ]),
+    group(
+      join(hardline, [
+        print.spaced(["alterReservationKw", "name"]),
+        print("actions"),
+      ]),
+    ),
 
   // ASSERT
-  assert_stmt: (print) => print.spaced(["assertKw", "expr", "as"]),
+  assert_stmt: (print) => group(print.spaced(["assertKw", "expr", "as"])),
 
   // EXPORT
   export_data_stmt: (print) =>
-    join(hardline, [
-      print.spaced("exportDataKw"),
-      ...print.spaced(["withConnection"]),
-      print.spaced("options"),
-      print.spaced("as"),
-    ]),
+    group(
+      join(hardline, [
+        print.spaced("exportDataKw"),
+        ...print.spaced(["withConnection"]),
+        print.spaced("options"),
+        print.spaced("as"),
+      ]),
+    ),
   // LOAD
   load_data_stmt: (print) =>
-    join(hardline, [
-      print.spaced(["loadDataKw", "intoKw", "table", "columns"]),
-      ...print("clauses"),
-    ]),
+    group(
+      join(hardline, [
+        print.spaced(["loadDataKw", "intoKw", "table", "columns"]),
+        ...print("clauses"),
+      ]),
+    ),
   from_files_options: (print) => print.spaced(["fromFilesKw", "options"]),
 };

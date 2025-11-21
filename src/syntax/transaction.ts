@@ -9,14 +9,14 @@ export const transactionMap: CstToDocMap<AllTransactionNodes> = {
       node.modes ? indent([line, print("modes")]) : [],
     ]),
   commit_transaction_stmt: (print) =>
-    print.spaced(["commitKw", "transactionKw", "chain"]),
+    group(print.spaced(["commitKw", "transactionKw", "chain"])),
   rollback_transaction_stmt: (print) =>
-    print.spaced(["rollbackKw", "transactionKw", "savepoint", "chain"]),
+    group(print.spaced(["rollbackKw", "transactionKw", "savepoint", "chain"])),
   rollback_to_savepoint: (print) =>
     print.spaced(["toKw", "savepointKw", "savepoint"]),
-  savepoint_stmt: (print) => print.spaced(["savepointKw", "savepoint"]),
+  savepoint_stmt: (print) => group(print.spaced(["savepointKw", "savepoint"])),
   release_savepoint_stmt: (print) =>
-    print.spaced(["releaseKw", "savepointKw", "savepoint"]),
+    group(print.spaced(["releaseKw", "savepointKw", "savepoint"])),
 
   transaction_chain_clause: (print) => print.spaced("andChainKw"),
   transaction_no_chain_clause: (print) => print.spaced("andNoChainKw"),

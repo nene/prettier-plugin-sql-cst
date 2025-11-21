@@ -64,13 +64,15 @@ export const indexMap: CstToDocMap<AllIndexNodes> = {
     ]),
 
   reindex_stmt: (print) =>
-    print.spaced([
-      "reindexKw",
-      "options",
-      "targetKw",
-      "concurrentlyKw",
-      "name",
-    ]),
+    group(
+      print.spaced([
+        "reindexKw",
+        "options",
+        "targetKw",
+        "concurrentlyKw",
+        "name",
+      ]),
+    ),
   reindex_option_concurrently: (print) =>
     print.spaced(["concurrentlyKw", "value"]),
   reindex_option_tablespace: (print) => print.spaced(["tablespaceKw", "name"]),

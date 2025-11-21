@@ -4,27 +4,28 @@ import { isAsClause } from "../node_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
 export const functionMap: CstToDocMap<AllFunctionNodes> = {
-  create_function_stmt: (print, node) => [
-    print.spaced([
-      "createKw",
-      "orReplaceKw",
-      "temporaryKw",
-      "tableKw",
-      "functionKw",
-      "ifNotExistsKw",
-      "name",
-    ]),
-    print("params"),
-    hasOnlyAsClause(node)
-      ? [" ", group(print("clauses"))]
-      : [
-          hardline,
-          join(
+  create_function_stmt: (print, node) =>
+    group([
+      print.spaced([
+        "createKw",
+        "orReplaceKw",
+        "temporaryKw",
+        "tableKw",
+        "functionKw",
+        "ifNotExistsKw",
+        "name",
+      ]),
+      print("params"),
+      hasOnlyAsClause(node)
+        ? [" ", group(print("clauses"))]
+        : [
             hardline,
-            print("clauses").map((cls) => group(cls)),
-          ),
-        ],
-  ],
+            join(
+              hardline,
+              print("clauses").map((cls) => group(cls)),
+            ),
+          ],
+    ]),
   function_signature: (print) => print(["name", "params"]),
   function_param: (print) =>
     print.spaced(["mode", "name", "dataType", "default"]),

@@ -4,24 +4,26 @@ import { CstToDocMap } from "../CstToDocMap";
 
 export const triggerMap: CstToDocMap<AllTriggerNodes> = {
   create_trigger_stmt: (print, node) =>
-    join(hardline, [
-      print.spaced([
-        "createKw",
-        "orReplaceKw",
-        "kind",
-        "triggerKw",
-        "ifNotExistsKw",
-        "name",
+    group(
+      join(hardline, [
+        print.spaced([
+          "createKw",
+          "orReplaceKw",
+          "kind",
+          "triggerKw",
+          "ifNotExistsKw",
+          "name",
+        ]),
+        group([
+          node.timeKw ? [print.spaced("timeKw"), " "] : [],
+          print("event"),
+          line,
+          print("target"),
+        ]),
+        ...print("clauses"),
+        print("body"),
       ]),
-      group([
-        node.timeKw ? [print.spaced("timeKw"), " "] : [],
-        print("event"),
-        line,
-        print("target"),
-      ]),
-      ...print("clauses"),
-      print("body"),
-    ]),
+    ),
   trigger_event: (print, node) =>
     group([
       print.spaced(["eventKw", "ofKw"]),
@@ -55,11 +57,13 @@ export const triggerMap: CstToDocMap<AllTriggerNodes> = {
     ),
 
   drop_trigger_stmt: (print) =>
-    print.spaced([
-      "dropTriggerKw",
-      "ifExistsKw",
-      "trigger",
-      "target",
-      "behaviorKw",
-    ]),
+    group(
+      print.spaced([
+        "dropTriggerKw",
+        "ifExistsKw",
+        "trigger",
+        "target",
+        "behaviorKw",
+      ]),
+    ),
 };

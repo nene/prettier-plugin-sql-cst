@@ -3,21 +3,22 @@ import { group, hardline, join } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
 export const procedureMap: CstToDocMap<AllProcedureNodes> = {
-  create_procedure_stmt: (print, node) => [
-    print.spaced([
-      "createKw",
-      "orReplaceKw",
-      "procedureKw",
-      "ifNotExistsKw",
-      "name",
-    ]),
-    print("params"),
-    hardline,
-    join(
+  create_procedure_stmt: (print) =>
+    group([
+      print.spaced([
+        "createKw",
+        "orReplaceKw",
+        "procedureKw",
+        "ifNotExistsKw",
+        "name",
+      ]),
+      print("params"),
       hardline,
-      print("clauses").map((clause) => group(clause)),
-    ),
-  ],
+      join(
+        hardline,
+        print("clauses").map((clause) => group(clause)),
+      ),
+    ]),
   drop_procedure_stmt: (print) =>
     group([
       print.spaced(["dropKw", "procedureKw", "ifExistsKw", "name"]),

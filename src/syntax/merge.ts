@@ -3,7 +3,7 @@ import { group, hardline, indent, join, line } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
 export const mergeMap: CstToDocMap<AllMergeNodes> = {
-  merge_stmt: (print) => join(line, print("clauses")),
+  merge_stmt: (print) => group(join(hardline, print("clauses"))),
   merge_clause: (print) =>
     join(line, [
       print.spaced(["mergeKw", "intoKw", "target"]),

@@ -1,13 +1,14 @@
 import { AllParameterNodes } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
 import { printLiteral } from "./expr";
+import { group } from "../print_utils";
 
 export const parameterMap: CstToDocMap<AllParameterNodes> = {
   // SET
   set_parameter_stmt: (print) =>
-    print.spaced(["setKw", "modifierKw", "name", "operator", "value"]),
+    group(print.spaced(["setKw", "modifierKw", "name", "operator", "value"])),
   set_time_zone_parameter_stmt: (print) =>
-    print.spaced(["setKw", "modifierKw", "timeZoneKw", "value"]),
+    group(print.spaced(["setKw", "modifierKw", "timeZoneKw", "value"])),
   set_parameter_clause: (print) =>
     print.spaced(["setKw", "name", "operator", "value"]),
   local_parameter_value: (print) => print("localKw"),
@@ -15,12 +16,12 @@ export const parameterMap: CstToDocMap<AllParameterNodes> = {
     print.spaced(["setKw", "name", "fromCurrentKw"]),
 
   // RESET
-  reset_parameter_stmt: (print) => print.spaced(["resetKw", "name"]),
+  reset_parameter_stmt: (print) => group(print.spaced(["resetKw", "name"])),
   reset_parameter_clause: (print) => print.spaced(["resetKw", "name"]),
   all_parameters: (print) => print("allKw"),
 
   // SHOW
-  show_parameter_stmt: (print) => print.spaced(["showKw", "name"]),
+  show_parameter_stmt: (print) => group(print.spaced(["showKw", "name"])),
 
   /** cst-ignore: value */
   boolean_on_off_literal: (print, node, path, options) =>

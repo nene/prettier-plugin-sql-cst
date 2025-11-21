@@ -18,7 +18,9 @@ export const schemaMap: CstToDocMap<AllSchemaStatements> = {
   create_schema_authorization_clause: (print) =>
     print.spaced(["authorizationKw", "role"]),
   drop_schema_stmt: (print) =>
-    print.spaced(["dropSchemaKw", "ifExistsKw", "schemas", "behaviorKw"]),
+    group(
+      print.spaced(["dropSchemaKw", "ifExistsKw", "schemas", "behaviorKw"]),
+    ),
   alter_schema_stmt: (print) =>
     group(
       join(print.dynamicLine(), [

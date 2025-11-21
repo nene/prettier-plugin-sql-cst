@@ -6,7 +6,7 @@ export const viewMap: CstToDocMap<AllViewNodes> = {
   create_view_stmt: (print, node) => {
     const hasOnlyAsClause = node.clauses.length === 1;
     const hasManyClauses = node.clauses.length > 1;
-    return [
+    return group([
       print.spaced([
         "createKw",
         "orReplaceKw",
@@ -18,7 +18,7 @@ export const viewMap: CstToDocMap<AllViewNodes> = {
       ]),
       hasOnlyAsClause ? [" ", print("clauses")] : [],
       hasManyClauses ? [hardline, join(hardline, print("clauses"))] : [],
-    ];
+    ]);
   },
   with_check_option_clause: (print) =>
     print.spaced(["withKw", "levelKw", "checkOptionKw"]),
@@ -35,18 +35,19 @@ export const viewMap: CstToDocMap<AllViewNodes> = {
         "behaviorKw",
       ]),
     ),
-  alter_view_stmt: (print) => [
-    print.spaced([
-      "alterKw",
-      "kind",
-      "viewKw",
-      "ifExistsKw",
-      "name",
-      "columns",
+  alter_view_stmt: (print) =>
+    group([
+      print.spaced([
+        "alterKw",
+        "kind",
+        "viewKw",
+        "ifExistsKw",
+        "name",
+        "columns",
+      ]),
+      hardline,
+      print("actions"),
     ]),
-    hardline,
-    print("actions"),
-  ],
 
   refresh_materialized_view_stmt: (print, node) =>
     group([
