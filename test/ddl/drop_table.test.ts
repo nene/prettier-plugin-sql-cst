@@ -17,6 +17,10 @@ describe("drop table", () => {
     await testBigquery(`DROP EXTERNAL TABLE foo`);
   });
 
+  it(`formats multiple table names`, async () => {
+    await testPostgresql(`DROP TABLE foo, bar, baz`);
+  });
+
   it(`formats CASCADE|RESTRICT`, async () => {
     await testPostgresql(`DROP TABLE foo CASCADE`);
   });
