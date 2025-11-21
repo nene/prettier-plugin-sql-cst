@@ -436,8 +436,7 @@ describe("create table", () => {
 
   it(`formats CREATE TABLE LIKE`, async () => {
     await testBigquery(dedent`
-      CREATE TABLE foo
-      LIKE my_old_table
+      CREATE TABLE foo LIKE my_old_table
     `);
   });
   it(`formats CREATE TABLE LIKE inside parenthesis`, async () => {
@@ -450,15 +449,13 @@ describe("create table", () => {
 
   it(`formats CREATE TABLE COPY`, async () => {
     await testBigquery(dedent`
-      CREATE TABLE foo
-      COPY my_old_table
+      CREATE TABLE foo COPY my_old_table
     `);
   });
 
   it(`formats CREATE SNAPSHOT TABLE CLONE`, async () => {
     await testBigquery(dedent`
-      CREATE SNAPSHOT TABLE foo
-      CLONE my_old_table
+      CREATE SNAPSHOT TABLE foo CLONE my_old_table
     `);
   });
 
@@ -494,15 +491,13 @@ describe("create table", () => {
 
   it(`formats CREATE VIRTUAL TABLE`, async () => {
     await test(dedent`
-      CREATE VIRTUAL TABLE my_table
-      USING my_func(1, 2)
+      CREATE VIRTUAL TABLE my_table USING my_func(1, 2)
     `);
   });
 
   it(`formats PostgreSQL CREATE TABLE ... PARTITION OF`, async () => {
     await testPostgresql(dedent`
-      CREATE TABLE client_old PARTITION OF client
-      FOR VALUES IN (1999, 2000, 2001)
+      CREATE TABLE client_old PARTITION OF client FOR VALUES IN (1999, 2000, 2001)
     `);
     await testPostgresql(dedent`
       CREATE TABLE client_new PARTITION OF client
@@ -513,8 +508,7 @@ describe("create table", () => {
       FOR VALUES WITH (MODULUS 3, REMAINDER 1)
     `);
     await testPostgresql(dedent`
-      CREATE TABLE client_odd PARTITION OF client
-      DEFAULT
+      CREATE TABLE client_odd PARTITION OF client DEFAULT
     `);
   });
 

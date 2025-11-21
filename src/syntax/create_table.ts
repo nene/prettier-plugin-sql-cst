@@ -5,21 +5,22 @@ import { group, join, line } from "../print_utils";
 
 export const createTableMap: CstToDocMap<AllCreateTableNodes> = {
   /** cst-ignore: clauses */
-  create_table_stmt: (print, node, ...rest) => [
-    print.spaced([
-      "createKw",
-      "orReplaceKw",
-      "kind",
-      "tableKw",
-      "ifNotExistsKw",
-      "name",
-      "partitionOf",
-      "ofType",
-      "columns",
+  create_table_stmt: (print, node, ...rest) =>
+    group([
+      print.spaced([
+        "createKw",
+        "orReplaceKw",
+        "kind",
+        "tableKw",
+        "ifNotExistsKw",
+        "name",
+        "partitionOf",
+        "ofType",
+        "columns",
+      ]),
+      printClauses(print, node, ...rest),
+      node.options ? [line, group(print("options"))] : [],
     ]),
-    printClauses(print, node, ...rest),
-    node.options ? [line, group(print("options"))] : [],
-  ],
   relation_kind: (print) => print.spaced("kindKw"),
   column_definition: (print) =>
     print.spaced(["name", "dataType", "withOptionsKw", "constraints"]),
