@@ -38,4 +38,61 @@ describe("sqlTypeCase option", () => {
       CREATE TABLE t (id int, age character varying (100))
     `);
   });
+
+  it(`applies to TIME data type`, async () => {
+    expect(
+      await pretty(`CREATE TABLE t (x TIMESTAMP WITH TIME ZONE)`, {
+        sqlTypeCase: "lower",
+        dialect: "postgresql",
+      }),
+    ).toBe(dedent`
+      CREATE TABLE t (x timestamp with time zone)
+    `);
+  });
+
+  it(`applies to INTERVAL data type`, async () => {
+    expect(
+      await pretty(`CREATE TABLE t (x INTERVAL DAY TO MINUTE)`, {
+        sqlTypeCase: "lower",
+        dialect: "postgresql",
+      }),
+    ).toBe(dedent`
+      CREATE TABLE t (x interval day to minute)
+    `);
+  });
+
+  it(`applies to STRUCT<> and ARRAY<> data types`, async () => {
+    expect(
+      await pretty(`CREATE TABLE t (x STRUCT<a ARRAY<STRING>>)`, {
+        sqlTypeCase: "lower",
+        dialect: "bigquery",
+      }),
+    ).toBe(dedent`
+      CREATE TABLE t (x struct<a array<string>>)
+    `);
+  });
+
+  it(`applies to SETOF data types`, async () => {
+    expect(
+      await pretty(`CREATE TABLE t (x SETOF INT)`, {
+        sqlTypeCase: "lower",
+        dialect: "postgresql",
+      }),
+    ).toBe(dedent`
+      CREATE TABLE t (x setof int)
+    `);
+  });
+
+  it(`does not apply to TABLE data type`, async () => {
+    expect(
+      await pretty(`CREATE FUNCTION foo() RETURNS TABLE (id INT) AS ''`, {
+        sqlTypeCase: "lower",
+        dialect: "postgresql",
+      }),
+    ).toBe(dedent`
+      CREATE FUNCTION foo()
+      RETURNS TABLE (id int)
+      AS ''
+    `);
+  });
 });

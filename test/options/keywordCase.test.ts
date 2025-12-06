@@ -60,29 +60,4 @@ describe("sqlKeywordCase option", () => {
       });
     },
   );
-
-  it(`sqlKeywordCase: "upper" effects PostgreSQL builtin data types`, async () => {
-    expect(
-      await pretty(
-        `CREATE TABLE foo (
-        col1 int, col2 character varying (255),
-        col3 my_schema.custom_type,
-        col4 timestamp with time zone,
-        col5 uuid
-        )`,
-        {
-          dialect: "postgresql",
-          sqlKeywordCase: "upper",
-        },
-      ),
-    ).toBe(dedent`
-      CREATE TABLE foo (
-        col1 INT,
-        col2 CHARACTER VARYING (255),
-        col3 my_schema.custom_type,
-        col4 TIMESTAMP WITH TIME ZONE,
-        col5 uuid
-      )
-    `);
-  });
 });
