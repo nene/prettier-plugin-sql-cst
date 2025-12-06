@@ -26,3 +26,4 @@ export const isListExpr = is("list_expr");
 export const isCreateFunctionStmt = is("create_function_stmt");
 export const isLanguageClause = is("language_clause");
 export const isDynamicallyLoadedFunction = is("dynamically_loaded_function");
+export const isDataTypeName = is("data_type_name");

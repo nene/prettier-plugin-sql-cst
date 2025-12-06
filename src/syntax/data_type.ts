@@ -1,18 +1,31 @@
-import { AllDataTypeNodes, NamedDataType } from "sql-parser-cst";
+import { AllDataTypeNodes, DataType } from "sql-parser-cst";
 import { isArray } from "../utils";
 import { CstToDocMap } from "../CstToDocMap";
-import { group, indent, softline } from "../print_utils";
+import { group, indent, join, softline } from "../print_utils";
+import { isDataTypeName } from "../node_utils";
 
 export const dataTypeMap: CstToDocMap<AllDataTypeNodes> = {
+  data_type_name: (print) => print.spaced("name"),
   // print single-word types as `TYPE(10)` and multi-word types as `MY TYPE (10)`
-  named_data_type: (print, node) =>
-    (isMultiWordTypeName(node) ? print.spaced : print)(["name", "params"]),
-  data_type_identifier: (print) => print.spaced("name"),
+  modified_data_type: (print, node) =>
+    (isMultiWordTypeName(node.dataType) ? print.spaced : print)([
+      "dataType",
+      "modifiers",
+    ]),
+
   setof_data_type: (print) => print.spaced(["setofKw", "dataType"]),
   array_data_type: (print) => print(["dataType", "bounds"]),
   array_bounds: (print) => ["[", print("bounds"), "]"],
-  with_time_zone_data_type: (print) =>
-    print.spaced(["dataType", "withTimeZoneKw"]),
+  time_data_type: (print, node) =>
+    group(
+      join(" ", [
+        print(["timeKw", "precision"]),
+        ...(node.timeZoneKw ? [print.spaced("timeZoneKw")] : []),
+      ]),
+    ),
+  interval_data_type: (print) =>
+    print.spaced(["intervalKw", "fieldsKw", "precision"]),
+  parametric_data_type: (print) => print(["typeKw", "params"]),
   generic_type_params: (print) =>
     group(["<", indent([softline, print("params")]), softline, ">"]),
   array_type_param: (print) => print.spaced(["dataType", "constraints"]),
@@ -21,9 +34,6 @@ export const dataTypeMap: CstToDocMap<AllDataTypeNodes> = {
   table_data_type: (print) => print.spaced(["tableKw", "columns"]),
 };
 
-function isMultiWordTypeName(node: NamedDataType): boolean {
-  return (
-    isArray(node.name) ||
-    (node.name.type === "data_type_identifier" && isArray(node.name.name))
-  );
+function isMultiWordTypeName(node: DataType): boolean {
+  return isDataTypeName(node) && isArray(node.name) && node.name.length > 1;
 }
