@@ -26,4 +26,16 @@ export const isListExpr = is("list_expr");
 export const isCreateFunctionStmt = is("create_function_stmt");
 export const isLanguageClause = is("language_clause");
 export const isDynamicallyLoadedFunction = is("dynamically_loaded_function");
+
 export const isDataTypeName = is("data_type_name");
+export const isIntervalDataType = is("interval_data_type");
+export const isTimeDataType = is("time_data_type");
+export const isParametricDataType = is("parametric_data_type");
+export const isSetofDataTye = is("setof_data_type");
+
+export const isDataType = (node: any) =>
+  isDataTypeName(node) ||
+  isIntervalDataType(node) ||
+  isTimeDataType(node) ||
+  isParametricDataType(node) ||
+  isSetofDataTye(node);
