@@ -3,6 +3,7 @@ import {
   Identifier,
   Keyword,
   Node,
+  Parameter,
   Variable,
 } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
@@ -203,7 +204,8 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
   /** cst-ignore: name, text */
   variable: (print, node, path, options) =>
     isQuotedVariable(node) ? print("text") : printIdentifier(node, options),
-  parameter: (print) => print("text"),
+  parameter: (print, node, path, options) =>
+    isQuotedParameter(node) ? print("text") : printIdentifier(node, options),
 };
 
 export const printLiteral = <T>(
@@ -239,6 +241,8 @@ const isQuotedIdentifier = (node: Identifier): boolean =>
 
 const isQuotedVariable = (node: Variable): boolean =>
   !(node.text === "@" + node.name || node.text === "@@" + node.name);
+
+const isQuotedParameter = (node: Parameter): boolean => /`$/.test(node.text);
 
 const isInsideBigqueryQuotedMemberExpr = (path: AstPath<Node>): boolean =>
   path.ancestors.some(isBigqueryQuotedMemberExpr);

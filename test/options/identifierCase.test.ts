@@ -101,4 +101,26 @@ describe("sqlIdentifierCase option", () => {
       SELECT @@FOO, @@BAR_, @@FOO_BAR_123
     `);
   });
+
+  it(`changes case of bound parameters`, async () => {
+    expect(
+      await pretty(`SELECT :foo, @bar, $baz`, {
+        sqlIdentifierCase: "upper",
+        sqlParamTypes: [":name", "@name", "$name"],
+      }),
+    ).toBe(dedent`
+      SELECT :FOO, @BAR, $BAZ
+    `);
+  });
+
+  it(`does not change case of quoted bound parameters`, async () => {
+    expect(
+      await pretty(`SELECT @\`foo\`, @foo`, {
+        sqlIdentifierCase: "upper",
+        sqlParamTypes: ["@name", "@`name`"],
+      }),
+    ).toBe(dedent`
+      SELECT @\`foo\`, @FOO
+    `);
+  });
 });
