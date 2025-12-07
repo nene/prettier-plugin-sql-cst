@@ -38,6 +38,8 @@ import {
   isCreateProcedureStmt,
   isAlterProcedureStmt,
   isDropProcedureStmt,
+  isCreateTriggerStmt,
+  isExecuteClause,
 } from "../node_utils";
 import { isString, last } from "../utils";
 import { AllPrettierOptions } from "../options";
@@ -302,7 +304,8 @@ const isFunctionContext = (
     (isAlterActionRename(node) &&
       (isAlterFunctionStmt(parent) || isAlterProcedureStmt(parent))) ||
     isDropFunctionStmt(node) ||
-    isDropProcedureStmt(node)
+    isDropProcedureStmt(node) ||
+    (isExecuteClause(node) && isCreateTriggerStmt(parent))
   );
 };
 

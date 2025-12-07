@@ -125,4 +125,44 @@ describe("sqlFunctionCase option", () => {
       `);
     });
   });
+
+  it(`changes case of function name in CREATE TRIGGER`, async () => {
+    expect(
+      await pretty(
+        `
+        CREATE TRIGGER my_trig
+        AFTER TRUNCATE ON my_tbl
+        EXECUTE FUNCTION my_func(1, 2, 3)
+      `,
+        {
+          sqlFunctionCase: "upper",
+          dialect: "postgresql",
+        },
+      ),
+    ).toBe(dedent`
+      CREATE TRIGGER my_trig
+      AFTER TRUNCATE ON my_tbl
+      EXECUTE FUNCTION MY_FUNC(1, 2, 3)
+    `);
+  });
+
+  it(`changes case of qualified function name in CREATE TRIGGER`, async () => {
+    expect(
+      await pretty(
+        `
+        CREATE TRIGGER my_trig
+        AFTER TRUNCATE ON my_tbl
+        EXECUTE FUNCTION schm.my_func(1, 2, 3)
+      `,
+        {
+          sqlFunctionCase: "upper",
+          dialect: "postgresql",
+        },
+      ),
+    ).toBe(dedent`
+      CREATE TRIGGER my_trig
+      AFTER TRUNCATE ON my_tbl
+      EXECUTE FUNCTION schm.MY_FUNC(1, 2, 3)
+    `);
+  });
 });

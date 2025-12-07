@@ -34,6 +34,8 @@ export const isAlterActionRename = is("alter_action_rename");
 export const isLanguageClause = is("language_clause");
 export const isDynamicallyLoadedFunction = is("dynamically_loaded_function");
 export const isBigqueryQuotedMemberExpr = is("bigquery_quoted_member_expr");
+export const isCreateTriggerStmt = is("create_trigger_stmt");
+export const isExecuteClause = is("execute_clause");
 
 export const isDataTypeName = is("data_type_name");
 export const isIntervalDataType = is("interval_data_type");
