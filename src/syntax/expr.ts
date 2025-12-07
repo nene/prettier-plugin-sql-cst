@@ -276,21 +276,27 @@ const isInsideBigqueryQuotedMemberExpr = (path: AstPath<Node>): boolean =>
 
 const isFunctionName = (node: Identifier, path: AstPath<Node>): boolean => {
   const parent = path.parent;
-  if (isFuncCall(parent)) {
+  if (isFunctionContext(parent, path.grandparent)) {
     return true;
   }
-  if (isMemberExpr(parent)) {
-    return isFuncCall(path.grandparent) && parent.property === node;
-  }
-  if (
-    isCreateFunctionStmt(parent) ||
-    isAlterFunctionStmt(parent) ||
-    (isAlterActionRename(parent) && isAlterFunctionStmt(path.grandparent)) ||
-    isDropFunctionStmt(parent)
-  ) {
-    return true;
+  if (isMemberExpr(parent) && parent.property === node) {
+    const [_, gp, ggp] = path.ancestors;
+    return isFunctionContext(gp, ggp);
   }
   return false;
+};
+
+const isFunctionContext = (
+  node: Node | null,
+  parent?: Node | null,
+): boolean => {
+  return (
+    isFuncCall(node) ||
+    isCreateFunctionStmt(node) ||
+    isAlterFunctionStmt(node) ||
+    (isAlterActionRename(node) && isAlterFunctionStmt(parent)) ||
+    isDropFunctionStmt(node)
+  );
 };
 
 const isBooleanOp = ({ name }: Keyword) => name === "AND" || name === "OR";
