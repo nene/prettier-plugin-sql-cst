@@ -1,4 +1,4 @@
-import { AllExprNodes, Keyword, Node } from "sql-parser-cst";
+import { AllExprNodes, Identifier, Keyword, Node } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
 import {
   join,
@@ -23,7 +23,7 @@ import {
   isCompoundSelectStmt,
 } from "../node_utils";
 import { isString, last } from "../utils";
-import { AllPrettierOptions } from "src/options";
+import { AllPrettierOptions } from "../options";
 
 export const exprMap: CstToDocMap<AllExprNodes> = {
   list_expr: (print, node, path) => {
@@ -187,8 +187,8 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
   timestamp_literal: (print) => print.spaced(["timestampKw", "string"]),
   json_literal: (print) => print.spaced(["jsonKw", "string"]),
   jsonb_literal: (print) => print.spaced(["jsonbKw", "string"]),
-  /** cst-ignore: name */
-  identifier: (print) => print("text"),
+  /** cst-ignore: name, text */
+  identifier: (print, node, path, options) => printIdentifier(node, options),
   /** cst-ignore: name */
   variable: (print) => print("text"),
   parameter: (print) => print("text"),
@@ -207,5 +207,25 @@ export const printLiteral = <T>(
       return node.text.toLowerCase();
   }
 };
+
+const printIdentifier = <T>(
+  node: Identifier,
+  options: AllPrettierOptions<T>,
+) => {
+  if (isQuotedIdentifier(node)) {
+    return node.text;
+  }
+  switch (options.sqlIdentifierCase) {
+    case "preserve":
+      return node.text;
+    case "upper":
+      return node.text.toUpperCase();
+    case "lower":
+      return node.text.toLowerCase();
+  }
+};
+
+const isQuotedIdentifier = (node: Identifier): boolean =>
+  node.name !== node.text;
 
 const isBooleanOp = ({ name }: Keyword) => name === "AND" || name === "OR";
