@@ -29,6 +29,7 @@ import {
   isSelectStmt,
   isCompoundSelectStmt,
   isBigqueryQuotedMemberExpr,
+  isFuncCall,
 } from "../node_utils";
 import { isString, last } from "../utils";
 import { AllPrettierOptions } from "../options";
@@ -197,10 +198,17 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
   json_literal: (print) => print.spaced(["jsonKw", "string"]),
   jsonb_literal: (print) => print.spaced(["jsonbKw", "string"]),
   /** cst-ignore: name */
-  identifier: (print, node, path, options) =>
-    isQuotedIdentifier(node) || isInsideBigqueryQuotedMemberExpr(path)
-      ? print("text")
-      : printIdentifier(node, options),
+  identifier: (print, node, path, options) => {
+    if (isQuotedIdentifier(node) || isInsideBigqueryQuotedMemberExpr(path)) {
+      return print("text");
+    } else {
+      if (isFuncCall(path.parent)) {
+        return printFunctionName(node, options);
+      } else {
+        return printIdentifier(node, options);
+      }
+    }
+  },
   /** cst-ignore: name */
   variable: (print, node, path, options) =>
     isQuotedVariable(node) ? print("text") : printIdentifier(node, options),
@@ -227,6 +235,20 @@ const printIdentifier = <T>(
   options: AllPrettierOptions<T>,
 ) => {
   switch (options.sqlIdentifierCase) {
+    case "preserve":
+      return node.text;
+    case "upper":
+      return node.text.toUpperCase();
+    case "lower":
+      return node.text.toLowerCase();
+  }
+};
+
+const printFunctionName = <T>(
+  node: { text: string },
+  options: AllPrettierOptions<T>,
+) => {
+  switch (options.sqlFunctionCase) {
     case "preserve":
       return node.text;
     case "upper":

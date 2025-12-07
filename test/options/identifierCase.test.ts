@@ -59,13 +59,13 @@ describe("sqlIdentifierCase option", () => {
     `);
   });
 
-  it(`changes case of function names`, async () => {
+  it(`does not change the case of function names`, async () => {
     expect(
       await pretty(`SELECT count(*), avg(age) FROM people`, {
         sqlIdentifierCase: "upper",
       }),
     ).toBe(dedent`
-      SELECT COUNT(*), AVG(AGE) FROM PEOPLE
+      SELECT count(*), avg(AGE) FROM PEOPLE
     `);
   });
 
