@@ -1,4 +1,10 @@
-import { AllExprNodes, Identifier, Keyword, Node } from "sql-parser-cst";
+import {
+  AllExprNodes,
+  Identifier,
+  Keyword,
+  Node,
+  Variable,
+} from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
 import {
   join,
@@ -189,8 +195,8 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
   jsonb_literal: (print) => print.spaced(["jsonbKw", "string"]),
   /** cst-ignore: name, text */
   identifier: (print, node, path, options) => printIdentifier(node, options),
-  /** cst-ignore: name */
-  variable: (print) => print("text"),
+  /** cst-ignore: name, text */
+  variable: (print, node, path, options) => printVariable(node, options),
   parameter: (print) => print("text"),
 };
 
@@ -227,5 +233,21 @@ const printIdentifier = <T>(
 
 const isQuotedIdentifier = (node: Identifier): boolean =>
   node.name !== node.text;
+
+const printVariable = <T>(node: Variable, options: AllPrettierOptions<T>) => {
+  if (isQuotedVariable(node)) {
+    return node.text;
+  }
+  switch (options.sqlIdentifierCase) {
+    case "preserve":
+      return node.text;
+    case "upper":
+      return node.text.toUpperCase();
+    case "lower":
+      return node.text.toLowerCase();
+  }
+};
+
+const isQuotedVariable = (node: Variable): boolean => /["'`]$/.test(node.text);
 
 const isBooleanOp = ({ name }: Keyword) => name === "AND" || name === "OR";

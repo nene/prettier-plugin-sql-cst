@@ -57,4 +57,26 @@ describe("sqlIdentifierCase option", () => {
       SELECT COUNT(*), AVG(AGE) FROM PEOPLE
     `);
   });
+
+  it(`changes case of variables`, async () => {
+    expect(
+      await pretty(`SELECT @foo, @Bar_, @foo_bar_123`, {
+        sqlIdentifierCase: "upper",
+        dialect: "mysql",
+      }),
+    ).toBe(dedent`
+      SELECT @FOO, @BAR_, @FOO_BAR_123
+    `);
+  });
+
+  it(`does not change case of quoted variables`, async () => {
+    expect(
+      await pretty(`SELECT @"foo", @'Bar_', @\`foo_bar_123\``, {
+        sqlIdentifierCase: "upper",
+        dialect: "mysql",
+      }),
+    ).toBe(dedent`
+      SELECT @"foo", @'Bar_', @\`foo_bar_123\`
+    `);
+  });
 });
