@@ -196,12 +196,12 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
   timestamp_literal: (print) => print.spaced(["timestampKw", "string"]),
   json_literal: (print) => print.spaced(["jsonKw", "string"]),
   jsonb_literal: (print) => print.spaced(["jsonbKw", "string"]),
-  /** cst-ignore: name, text */
+  /** cst-ignore: name */
   identifier: (print, node, path, options) =>
     isQuotedIdentifier(node) || isInsideBigqueryQuotedMemberExpr(path)
       ? print("text")
       : printIdentifier(node, options),
-  /** cst-ignore: name, text */
+  /** cst-ignore: name */
   variable: (print, node, path, options) =>
     isQuotedVariable(node) ? print("text") : printIdentifier(node, options),
   parameter: (print, node, path, options) =>
