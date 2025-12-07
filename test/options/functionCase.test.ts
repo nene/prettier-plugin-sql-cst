@@ -57,4 +57,37 @@ describe("sqlFunctionCase option", () => {
       SELECT schm.FOO(a, b)
     `);
   });
+
+  it(`changes case of function name in CREATE FUNCTION`, async () => {
+    expect(
+      await pretty(`CREATE FUNCTION foo(a, b) AS ''`, {
+        sqlFunctionCase: "upper",
+        dialect: "postgresql",
+      }),
+    ).toBe(dedent`
+      CREATE FUNCTION FOO(a, b) AS ''
+    `);
+  });
+
+  it(`changes case of function name in ALTER FUNCTION`, async () => {
+    expect(
+      await pretty(`ALTER FUNCTION foo RENAME TO bar`, {
+        sqlFunctionCase: "upper",
+        dialect: "postgresql",
+      }),
+    ).toBe(dedent`
+      ALTER FUNCTION FOO RENAME TO BAR
+    `);
+  });
+
+  it(`changes case of function name in DROP FUNCTION`, async () => {
+    expect(
+      await pretty(`DROP FUNCTION foo`, {
+        sqlFunctionCase: "upper",
+        dialect: "postgresql",
+      }),
+    ).toBe(dedent`
+      DROP FUNCTION FOO
+    `);
+  });
 });

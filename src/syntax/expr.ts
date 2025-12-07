@@ -31,6 +31,10 @@ import {
   isBigqueryQuotedMemberExpr,
   isFuncCall,
   isMemberExpr,
+  isCreateFunctionStmt,
+  isAlterFunctionStmt,
+  isDropFunctionStmt,
+  isAlterActionRename,
 } from "../node_utils";
 import { isString, last } from "../utils";
 import { AllPrettierOptions } from "../options";
@@ -277,6 +281,14 @@ const isFunctionName = (node: Identifier, path: AstPath<Node>): boolean => {
   }
   if (isMemberExpr(parent)) {
     return isFuncCall(path.grandparent) && parent.property === node;
+  }
+  if (
+    isCreateFunctionStmt(parent) ||
+    isAlterFunctionStmt(parent) ||
+    (isAlterActionRename(parent) && isAlterFunctionStmt(path.grandparent)) ||
+    isDropFunctionStmt(parent)
+  ) {
+    return true;
   }
   return false;
 };
