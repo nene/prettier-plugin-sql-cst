@@ -58,7 +58,7 @@ describe("sqlIdentifierCase option", () => {
     `);
   });
 
-  it(`changes case of variables`, async () => {
+  it(`changes case of MySQL variables`, async () => {
     expect(
       await pretty(`SELECT @foo, @Bar_, @foo_bar_123`, {
         sqlIdentifierCase: "upper",
@@ -69,7 +69,7 @@ describe("sqlIdentifierCase option", () => {
     `);
   });
 
-  it(`does not change case of quoted variables`, async () => {
+  it(`does not change case of quoted MySQL variables`, async () => {
     expect(
       await pretty(`SELECT @"foo", @'Bar_', @\`foo_bar_123\``, {
         sqlIdentifierCase: "upper",
@@ -77,6 +77,17 @@ describe("sqlIdentifierCase option", () => {
       }),
     ).toBe(dedent`
       SELECT @"foo", @'Bar_', @\`foo_bar_123\`
+    `);
+  });
+
+  it(`changes case of BigQuery system variables`, async () => {
+    expect(
+      await pretty(`SELECT @@foo, @@Bar_, @@foo_bar_123`, {
+        sqlIdentifierCase: "upper",
+        dialect: "bigquery",
+      }),
+    ).toBe(dedent`
+      SELECT @@FOO, @@BAR_, @@FOO_BAR_123
     `);
   });
 });

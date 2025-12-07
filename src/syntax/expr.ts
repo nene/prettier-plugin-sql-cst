@@ -194,9 +194,11 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
   json_literal: (print) => print.spaced(["jsonKw", "string"]),
   jsonb_literal: (print) => print.spaced(["jsonbKw", "string"]),
   /** cst-ignore: name, text */
-  identifier: (print, node, path, options) => printIdentifier(node, options),
+  identifier: (print, node, path, options) =>
+    isQuotedIdentifier(node) ? print("text") : printIdentifier(node, options),
   /** cst-ignore: name, text */
-  variable: (print, node, path, options) => printVariable(node, options),
+  variable: (print, node, path, options) =>
+    isQuotedVariable(node) ? print("text") : printIdentifier(node, options),
   parameter: (print) => print("text"),
 };
 
@@ -215,12 +217,9 @@ export const printLiteral = <T>(
 };
 
 const printIdentifier = <T>(
-  node: Identifier,
+  node: { text: string },
   options: AllPrettierOptions<T>,
 ) => {
-  if (isQuotedIdentifier(node)) {
-    return node.text;
-  }
   switch (options.sqlIdentifierCase) {
     case "preserve":
       return node.text;
@@ -234,20 +233,7 @@ const printIdentifier = <T>(
 const isQuotedIdentifier = (node: Identifier): boolean =>
   node.name !== node.text;
 
-const printVariable = <T>(node: Variable, options: AllPrettierOptions<T>) => {
-  if (isQuotedVariable(node)) {
-    return node.text;
-  }
-  switch (options.sqlIdentifierCase) {
-    case "preserve":
-      return node.text;
-    case "upper":
-      return node.text.toUpperCase();
-    case "lower":
-      return node.text.toLowerCase();
-  }
-};
-
-const isQuotedVariable = (node: Variable): boolean => /["'`]$/.test(node.text);
+const isQuotedVariable = (node: Variable): boolean =>
+  !(node.text === "@" + node.name || node.text === "@@" + node.name);
 
 const isBooleanOp = ({ name }: Keyword) => name === "AND" || name === "OR";
