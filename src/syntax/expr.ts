@@ -1,4 +1,11 @@
-import { AllExprNodes, Keyword, Node } from "sql-parser-cst";
+import {
+  AllExprNodes,
+  Identifier,
+  Keyword,
+  Node,
+  Parameter,
+  Variable,
+} from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
 import {
   join,
@@ -21,9 +28,11 @@ import {
   isProgram,
   isSelectStmt,
   isCompoundSelectStmt,
+  isBigqueryQuotedMemberExpr,
 } from "../node_utils";
 import { isString, last } from "../utils";
-import { AllPrettierOptions } from "src/options";
+import { AllPrettierOptions } from "../options";
+import { AstPath } from "prettier";
 
 export const exprMap: CstToDocMap<AllExprNodes> = {
   list_expr: (print, node, path) => {
@@ -187,11 +196,16 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
   timestamp_literal: (print) => print.spaced(["timestampKw", "string"]),
   json_literal: (print) => print.spaced(["jsonKw", "string"]),
   jsonb_literal: (print) => print.spaced(["jsonbKw", "string"]),
-  /** cst-ignore: name */
-  identifier: (print) => print("text"),
-  /** cst-ignore: name */
-  variable: (print) => print("text"),
-  parameter: (print) => print("text"),
+  /** cst-ignore: name, text */
+  identifier: (print, node, path, options) =>
+    isQuotedIdentifier(node) || isInsideBigqueryQuotedMemberExpr(path)
+      ? print("text")
+      : printIdentifier(node, options),
+  /** cst-ignore: name, text */
+  variable: (print, node, path, options) =>
+    isQuotedVariable(node) ? print("text") : printIdentifier(node, options),
+  parameter: (print, node, path, options) =>
+    isQuotedParameter(node) ? print("text") : printIdentifier(node, options),
 };
 
 export const printLiteral = <T>(
@@ -207,5 +221,30 @@ export const printLiteral = <T>(
       return node.text.toLowerCase();
   }
 };
+
+const printIdentifier = <T>(
+  node: { text: string },
+  options: AllPrettierOptions<T>,
+) => {
+  switch (options.sqlIdentifierCase) {
+    case "preserve":
+      return node.text;
+    case "upper":
+      return node.text.toUpperCase();
+    case "lower":
+      return node.text.toLowerCase();
+  }
+};
+
+const isQuotedIdentifier = (node: Identifier): boolean =>
+  node.name !== node.text;
+
+const isQuotedVariable = (node: Variable): boolean =>
+  !(node.text === "@" + node.name || node.text === "@@" + node.name);
+
+const isQuotedParameter = (node: Parameter): boolean => /`$/.test(node.text);
+
+const isInsideBigqueryQuotedMemberExpr = (path: AstPath<Node>): boolean =>
+  path.ancestors.some(isBigqueryQuotedMemberExpr);
 
 const isBooleanOp = ({ name }: Keyword) => name === "AND" || name === "OR";

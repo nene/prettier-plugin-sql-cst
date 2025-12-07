@@ -26,6 +26,7 @@ export const isListExpr = is("list_expr");
 export const isCreateFunctionStmt = is("create_function_stmt");
 export const isLanguageClause = is("language_clause");
 export const isDynamicallyLoadedFunction = is("dynamically_loaded_function");
+export const isBigqueryQuotedMemberExpr = is("bigquery_quoted_member_expr");
 
 export const isDataTypeName = is("data_type_name");
 export const isIntervalDataType = is("interval_data_type");
