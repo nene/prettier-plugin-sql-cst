@@ -140,7 +140,7 @@ export const options: SupportOptions = {
     default: [{ value: [] }],
     description: "Syntax for bound parameters",
     // Since 0.7.0
-    // Possible values in array: "?" | "?nr" | "$nr" | ":name" | "$name" | "@name"
+    // Possible values in array: "?" | "?nr" | "$nr" | ":name" | "$name" | "@name" | "@`name`"
   },
   sqlCanonicalSyntax: {
     type: "boolean",
