@@ -72,14 +72,14 @@ describe("sqlTypeCase option", () => {
     `);
   });
 
-  it(`applies to SETOF data types`, async () => {
+  it(`does not apply to SETOF data types`, async () => {
     expect(
       await pretty(`CREATE TABLE t (x SETOF INT)`, {
         sqlTypeCase: "lower",
         dialect: "postgresql",
       }),
     ).toBe(dedent`
-      CREATE TABLE t (x setof int)
+      CREATE TABLE t (x SETOF int)
     `);
   });
 
