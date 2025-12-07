@@ -125,19 +125,96 @@ The plugin provides the following parsers:
 ## Configuration
 
 The standard Prettier options [printWidth][], [tabWidth][], [useTabs][] apply.
-There are also some SQL-specific options:
+There are also several SQL-specific options:
 
-| API Option                    |  Default   | Description                                                                                                                                                                                                                                                                                                                                          |
-| ----------------------------- | :--------: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sqlKeywordCase`              |  `upper`   | Convert SQL keywords to `upper` or `lower` case, or `preserve` existing. Note that for now `preserve` is somewhat incompatible with `sqlCanonicalSyntax: true` (e.g. the added `AS` keywords will always be in uppercase). In most dialects this also applies to data types, but not in PostgreSQL where data type names are treated as identifiers. |
-| `sqlLiteralCase`              |  `upper`   | Convert SQL literals TRUE, FALSE and NULL to `upper` or `lower` case, or `preserve` existing. Also applies to `on` & `off` literals in PostgreSQL SET statements. (Since 0.14.0)                                                                                                                                                                     |
-| `sqlTypeCase`                 |  `upper`   | Convert SQL type names to `upper` or `lower` case, or `preserve` existing. Note that for PostgreSQL this will only have an effect on a limited set of builtin data types, the rest will be formatted as identifiers. Therefore for PostgreSQL the recommended setting of this option is `lower`. (Since 0.17.0)                                      |
-| `sqlIdentifierCase`           | `preserve` | Convert unqoted SQL identifier names to `upper` or `lower` case, or `preserve` existing. Beware that in BigQuery unquoted identifiers are case-sensitive, unlike in most SQL dialects. (Since 0.17.0)                                                                                                                                                |
-| `sqlFunctionCase`             | `preserve` | Convert unqoted SQL function names to `upper` or `lower` case, or `preserve` existing. (Since 0.17.0)                                                                                                                                                                                                                                                |
-| `sqlParamTypes`               |    `[]`    | Array of bound parameter types: `?`, `?nr`, `$nr`, `:name`, `@name`, `$name`.                                                                                                                                                                                                                                                                        |
-| `sqlCanonicalSyntax`          |   `true`   | When enabled, performs some opinionated changes of keywords and operators, like enforcing the use of `AS` in aliases and replacing `<>` comparisons with `!=`. See [STYLE_GUIDE][] for more details. (Since 0.11.0)                                                                                                                                  |
-| `sqlFinalSemicolon`           |   `true`   | When enabled, enforces a semicolon at the end of last statement. When disabled leaves it up to the author whether to add a final semicolon or not. (Since 0.13.0)                                                                                                                                                                                    |
-| `sqlAcceptUnsupportedGrammar` |  `false`   | Normally when the plugin encounters SQL syntax it doesn't support it will throw an error and won't format anything at all. With this option enabled, it will skip over SQL statements it doesn't recognize, leaving them as-is.                                                                                                                      |
+- **`sqlKeywordCase`**: `"upper" | "lower" | "preserve"` (default `"upper"`)
+
+  Enforce case of keywords.
+
+  For now `preserve` is somewhat incompatible with `sqlCanonicalSyntax: true` (e.g. the added `AS` keywords will always be in uppercase).
+
+- **`sqlLiteralCase`**: `"upper" | "lower" | "preserve"` (default `"upper"`)
+
+  Enforce case of literals TRUE, FALSE and NULL.
+
+  Also applies to ON & OFF literals in PostgreSQL SET statements.
+
+  _Since 0.14.0_
+
+- **`sqlTypeCase`**: `"upper" | "lower" | "preserve"` (default `"upper"`)
+
+  Enforce case of type names.
+
+  In PostgreSQL this will only effect a limited set of builtin data types, the rest will be formatted as identifiers.
+  Therefore for PostgreSQL the recommended setting of this option is `lower`.
+
+  In BigQuery this also effects the names parametric types,
+  for example `array<struct<x int64>>` will get formatted as `ARRAY<STRUCT<x INT64>>`.
+
+  **Experimental:** This option is still new and not thoroughly tested. You have been warned.
+
+  _Since 0.17.0_
+
+- **`sqlIdentifierCase`**: `"upper" | "lower" | "preserve"` (default `"preserve"`)
+
+  Enforce case of unquoted identifier names.
+
+  Beware that in BigQuery unquoted identifiers are case-sensitive, so use of this option with BigQuery is not recommended.
+
+  **Experimental:** This option is still new and not thoroughly tested. You have been warned.
+
+  _Since 0.17.0_
+
+- **`sqlFunctionCase`**: `"upper" | "lower" | "preserve"` (default `"preserve"`)
+
+  Enforce case of unquoted function names.
+
+  This option also applies to schema-qualified function names,
+  for example `my_schema.foo()` will get formatted as `my_schema.FOO()`
+  when `sqlFunctionCase: "upper"` is configured.
+
+  **Experimental:** This option is still new and not thoroughly tested. You have been warned.
+
+  _Since 0.17.0_
+
+- **`sqlParamTypes`**: `("?", "?nr", "$nr", ":name", "$name", "@name" "@``@name``")[]` (default `[]`)
+
+  Array of bound parameter types to support.
+
+  By default the parser will reject the following SQL:
+
+  ```sql
+  SELECT id, name FROM products WHERE price > ? AND category = ?
+  ```
+
+  Configuring `sqlParamTypes: ["?"]` will make the parser recognize the `?` placeholders.
+
+  _Since 0.7.0_
+
+- **`sqlCanonicalSyntax`**: `boolean` (default `true`)
+
+  When enabled, performs some opinionated changes of keywords and operators,
+  like enforcing the use of `AS` in aliases and replacing `<>` comparisons with `!=`.
+  See [STYLE_GUIDE][] for more details.
+
+  _Since 0.11.0_
+
+- **`sqlFinalSemicolon`**: `boolean` (default `true`)
+
+  When enabled, enforces a semicolon at the end of last statement.
+  When disabled leaves it up to the author whether to add a final semicolon or not.
+
+  _Since 0.13.0_
+
+- **`sqlAcceptUnsupportedGrammar`**: `boolean` (default `false`)
+
+  Normally when the plugin encounters SQL syntax it doesn't support
+  it will throw an error and won't format anything at all.
+  With this option enabled, it will skip over SQL statements it doesn't recognize, leaving them as-is.
+
+  **Deprecated:** This doesn't really work as advertised and will likely be removed.
+
+  _Since 0.12.0_
 
 ## Usage inside VSCode
 
