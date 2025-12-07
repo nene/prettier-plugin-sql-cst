@@ -1,9 +1,10 @@
 import { AllProcedureNodes } from "sql-parser-cst";
 import { group, hardline, join } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
+import { hasOnlyAsClause } from "./function";
 
 export const procedureMap: CstToDocMap<AllProcedureNodes> = {
-  create_procedure_stmt: (print) =>
+  create_procedure_stmt: (print, node) =>
     group([
       print.spaced([
         "createKw",
@@ -13,11 +14,15 @@ export const procedureMap: CstToDocMap<AllProcedureNodes> = {
         "name",
       ]),
       print("params"),
-      hardline,
-      join(
-        hardline,
-        print("clauses").map((clause) => group(clause)),
-      ),
+      hasOnlyAsClause(node)
+        ? [" ", group(print("clauses"))]
+        : [
+            hardline,
+            join(
+              hardline,
+              print("clauses").map((clause) => group(clause)),
+            ),
+          ],
     ]),
   drop_procedure_stmt: (print) =>
     group([
