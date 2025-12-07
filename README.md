@@ -216,7 +216,8 @@ There are also several SQL-specific options:
   it will throw an error and won't format anything at all.
   With this option enabled, it will skip over SQL statements it doesn't recognize, leaving them as-is.
 
-  **Deprecated:** This doesn't really work as advertised and will likely be removed.
+  **Deprecated:** Use conditional comments `/* sql-parser-cst-disable */` and
+  `/* sql-parser-cst-enable */` instead.
 
   _Since 0.12.0_
 
@@ -265,12 +266,16 @@ It also has experimental support for the following dialects:
 - MariaDB
 
 The main limitation is that [the parser][sql-parser-cst] does not support full syntax of
-these dialects. One should expect the parser to crash for syntax that's more specific to
-these dialects. But as long as the parsing succeeds, the formatting should also succeed.
-Mainly one can expect the formatting of SELECT, INSERT, UPDATE, DELETE statements to work.
+these dialects. To overcome this limitation you can use conditional comments
+to disable parsing of the problematic section of SQL:
 
-To overcome this limitation you can enable the `sqlAcceptUnsupportedGrammar` option,
-which will make the plugin skip the SQL statements it doesn't recognize.
+```sql
+SELECT * FROM products;
+/* sql-parser-cst-disable */
+UNSUPPORTED SQL IN HERE;
+/* sql-parser-cst-enable */
+UPDATE products SET sold = true WHERE id = 2;
+```
 
 The specifics of the [SQL formatting style][STYLE_GUIDE] are still very much subject to change.
 Though the general principles should be mostly in place by now.
