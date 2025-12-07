@@ -58,69 +58,71 @@ describe("sqlFunctionCase option", () => {
     `);
   });
 
-  it(`changes case of function name in CREATE FUNCTION`, async () => {
-    expect(
-      await pretty(`CREATE FUNCTION foo(a, b) AS ''`, {
-        sqlFunctionCase: "upper",
-        dialect: "postgresql",
-      }),
-    ).toBe(dedent`
-      CREATE FUNCTION FOO(a, b) AS ''
-    `);
-  });
+  ["FUNCTION", "PROCEDURE"].forEach((funcKw) => {
+    it(`changes case of function name in CREATE ${funcKw}`, async () => {
+      expect(
+        await pretty(`CREATE ${funcKw} foo(a, b) AS ''`, {
+          sqlFunctionCase: "upper",
+          dialect: "postgresql",
+        }),
+      ).toBe(dedent`
+        CREATE ${funcKw} FOO(a, b) AS ''
+      `);
+    });
 
-  it(`changes case of qualified function name in CREATE FUNCTION`, async () => {
-    expect(
-      await pretty(`CREATE FUNCTION schm.foo(a, b) AS ''`, {
-        sqlFunctionCase: "upper",
-        dialect: "postgresql",
-      }),
-    ).toBe(dedent`
-      CREATE FUNCTION schm.FOO(a, b) AS ''
-    `);
-  });
+    it(`changes case of qualified function name in CREATE ${funcKw}`, async () => {
+      expect(
+        await pretty(`CREATE ${funcKw} scm.foo(a, b) AS ''`, {
+          sqlFunctionCase: "upper",
+          dialect: "postgresql",
+        }),
+      ).toBe(dedent`
+        CREATE ${funcKw} scm.FOO(a, b) AS ''
+     `);
+    });
 
-  it(`changes case of function name in ALTER FUNCTION`, async () => {
-    expect(
-      await pretty(`ALTER FUNCTION foo RENAME TO bar`, {
-        sqlFunctionCase: "upper",
-        dialect: "postgresql",
-      }),
-    ).toBe(dedent`
-      ALTER FUNCTION FOO RENAME TO BAR
-    `);
-  });
+    it(`changes case of function name in ALTER ${funcKw}`, async () => {
+      expect(
+        await pretty(`ALTER ${funcKw} foo RENAME TO bar`, {
+          sqlFunctionCase: "upper",
+          dialect: "postgresql",
+        }),
+      ).toBe(dedent`
+        ALTER ${funcKw} FOO RENAME TO BAR
+      `);
+    });
 
-  it(`changes case of qualified function name in ALTER FUNCTION`, async () => {
-    expect(
-      await pretty(`ALTER FUNCTION schm1.foo RENAME TO schm2.bar`, {
-        sqlFunctionCase: "upper",
-        dialect: "postgresql",
-      }),
-    ).toBe(dedent`
-      ALTER FUNCTION schm1.FOO RENAME TO schm2.BAR
-    `);
-  });
+    it(`changes case of qualified function name in ALTER ${funcKw}`, async () => {
+      expect(
+        await pretty(`ALTER ${funcKw} scm1.foo RENAME TO scm2.bar`, {
+          sqlFunctionCase: "upper",
+          dialect: "postgresql",
+        }),
+      ).toBe(dedent`
+        ALTER ${funcKw} scm1.FOO RENAME TO scm2.BAR
+      `);
+    });
 
-  it(`changes case of function name in DROP FUNCTION`, async () => {
-    expect(
-      await pretty(`DROP FUNCTION foo`, {
-        sqlFunctionCase: "upper",
-        dialect: "postgresql",
-      }),
-    ).toBe(dedent`
-      DROP FUNCTION FOO
-    `);
-  });
+    it(`changes case of function name in DROP ${funcKw}`, async () => {
+      expect(
+        await pretty(`DROP ${funcKw} foo`, {
+          sqlFunctionCase: "upper",
+          dialect: "postgresql",
+        }),
+      ).toBe(dedent`
+        DROP ${funcKw} FOO
+      `);
+    });
 
-  it(`changes case of qualified function name in DROP FUNCTION`, async () => {
-    expect(
-      await pretty(`DROP FUNCTION schm.foo`, {
-        sqlFunctionCase: "upper",
-        dialect: "postgresql",
-      }),
-    ).toBe(dedent`
-      DROP FUNCTION schm.FOO
-    `);
+    it(`changes case of qualified function name in DROP ${funcKw}`, async () => {
+      expect(
+        await pretty(`DROP ${funcKw} scm.foo`, {
+          sqlFunctionCase: "upper",
+          dialect: "postgresql",
+        }),
+      ).toBe(dedent`
+        DROP ${funcKw} scm.FOO
+      `);
+    });
   });
 });
