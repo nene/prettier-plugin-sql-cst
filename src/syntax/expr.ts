@@ -29,6 +29,17 @@ import {
   isSelectStmt,
   isCompoundSelectStmt,
   isBigqueryQuotedMemberExpr,
+  isFuncCall,
+  isMemberExpr,
+  isCreateFunctionStmt,
+  isAlterFunctionStmt,
+  isDropFunctionStmt,
+  isAlterActionRename,
+  isCreateProcedureStmt,
+  isAlterProcedureStmt,
+  isDropProcedureStmt,
+  isCreateTriggerStmt,
+  isExecuteClause,
 } from "../node_utils";
 import { isString, last } from "../utils";
 import { AllPrettierOptions } from "../options";
@@ -196,12 +207,19 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
   timestamp_literal: (print) => print.spaced(["timestampKw", "string"]),
   json_literal: (print) => print.spaced(["jsonKw", "string"]),
   jsonb_literal: (print) => print.spaced(["jsonbKw", "string"]),
-  /** cst-ignore: name, text */
-  identifier: (print, node, path, options) =>
-    isQuotedIdentifier(node) || isInsideBigqueryQuotedMemberExpr(path)
-      ? print("text")
-      : printIdentifier(node, options),
-  /** cst-ignore: name, text */
+  /** cst-ignore: name */
+  identifier: (print, node, path, options) => {
+    if (isQuotedIdentifier(node) || isInsideBigqueryQuotedMemberExpr(path)) {
+      return print("text");
+    } else {
+      if (isFunctionName(node, path)) {
+        return printFunctionName(node, options);
+      } else {
+        return printIdentifier(node, options);
+      }
+    }
+  },
+  /** cst-ignore: name */
   variable: (print, node, path, options) =>
     isQuotedVariable(node) ? print("text") : printIdentifier(node, options),
   parameter: (print, node, path, options) =>
@@ -236,6 +254,20 @@ const printIdentifier = <T>(
   }
 };
 
+const printFunctionName = <T>(
+  node: { text: string },
+  options: AllPrettierOptions<T>,
+) => {
+  switch (options.sqlFunctionCase) {
+    case "preserve":
+      return node.text;
+    case "upper":
+      return node.text.toUpperCase();
+    case "lower":
+      return node.text.toLowerCase();
+  }
+};
+
 const isQuotedIdentifier = (node: Identifier): boolean =>
   node.name !== node.text;
 
@@ -246,5 +278,35 @@ const isQuotedParameter = (node: Parameter): boolean => /`$/.test(node.text);
 
 const isInsideBigqueryQuotedMemberExpr = (path: AstPath<Node>): boolean =>
   path.ancestors.some(isBigqueryQuotedMemberExpr);
+
+const isFunctionName = (node: Identifier, path: AstPath<Node>): boolean => {
+  const parent = path.parent;
+  if (isFunctionContext(parent, path.grandparent)) {
+    return true;
+  }
+  if (isMemberExpr(parent) && parent.property === node) {
+    const [_, gp, ggp] = path.ancestors;
+    return isFunctionContext(gp, ggp);
+  }
+  return false;
+};
+
+const isFunctionContext = (
+  node: Node | null,
+  parent?: Node | null,
+): boolean => {
+  return (
+    isFuncCall(node) ||
+    isCreateFunctionStmt(node) ||
+    isCreateProcedureStmt(node) ||
+    isAlterFunctionStmt(node) ||
+    isAlterProcedureStmt(node) ||
+    (isAlterActionRename(node) &&
+      (isAlterFunctionStmt(parent) || isAlterProcedureStmt(parent))) ||
+    isDropFunctionStmt(node) ||
+    isDropProcedureStmt(node) ||
+    (isExecuteClause(node) && isCreateTriggerStmt(parent))
+  );
+};
 
 const isBooleanOp = ({ name }: Keyword) => name === "AND" || name === "OR";

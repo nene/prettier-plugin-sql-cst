@@ -6,6 +6,7 @@ export interface SqlPluginOptions {
   sqlLiteralCase: "preserve" | "upper" | "lower";
   sqlTypeCase: "preserve" | "upper" | "lower";
   sqlIdentifierCase: "preserve" | "upper" | "lower";
+  sqlFunctionCase: "preserve" | "upper" | "lower";
   sqlParamTypes: NonNullable<CstParserOptions["paramTypes"]>;
   sqlCanonicalSyntax: boolean;
   sqlFinalSemicolon: boolean;
@@ -105,6 +106,29 @@ export const options: SupportOptions = {
       {
         value: "lower",
         description: "forces all unquoted identifier names to lowercase",
+        since: "0.17.0",
+      },
+    ],
+  },
+  sqlFunctionCase: {
+    type: "choice",
+    category: "SQL",
+    default: "preserve",
+    description: "Enforces upper/lower case for SQL function names",
+    choices: [
+      {
+        value: "preserve",
+        description: "preserves the existing case",
+        since: "0.17.0",
+      },
+      {
+        value: "upper",
+        description: "forces all unquoted function names to uppercase",
+        since: "0.17.0",
+      },
+      {
+        value: "lower",
+        description: "forces all unquoted function names to lowercase",
         since: "0.17.0",
       },
     ],

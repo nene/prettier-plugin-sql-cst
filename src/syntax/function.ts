@@ -1,4 +1,8 @@
-import { AllFunctionNodes, CreateFunctionStmt } from "sql-parser-cst";
+import {
+  AllFunctionNodes,
+  CreateFunctionStmt,
+  CreateProcedureStmt,
+} from "sql-parser-cst";
 import { group, hardline, join } from "../print_utils";
 import { isAsClause } from "../node_utils";
 import { CstToDocMap } from "../CstToDocMap";
@@ -60,5 +64,6 @@ export const functionMap: CstToDocMap<AllFunctionNodes> = {
     ]),
 };
 
-const hasOnlyAsClause = (node: CreateFunctionStmt): boolean =>
-  node.clauses.length === 1 && isAsClause(node.clauses[0]);
+export const hasOnlyAsClause = (
+  node: CreateFunctionStmt | CreateProcedureStmt,
+): boolean => node.clauses.length === 1 && isAsClause(node.clauses[0]);
