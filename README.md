@@ -131,6 +131,8 @@ There are also several SQL-specific options:
 
   Enforce case of keywords.
 
+  This effects all keywords except literals (see `sqlLiteralCase`) and data types (see `sqlTypeCase`).
+
   For now `preserve` is somewhat incompatible with `sqlCanonicalSyntax: true` (e.g. the added `AS` keywords will always be in uppercase).
 
 - **`sqlLiteralCase`**: `"upper" | "lower" | "preserve"` (default `"upper"`)
@@ -146,18 +148,20 @@ There are also several SQL-specific options:
   Enforce case of type names.
 
   In PostgreSQL this will only effect a limited set of builtin data types, the rest will be formatted as identifiers.
-  Therefore for PostgreSQL the recommended setting of this option is `lower`.
+  It will effect casing of all the keywords in types like `TIMESTAMP WITH TIME ZONE` and `INTERVAL DAY TO SECOND`,
+  but it won't effect the casing of `SETOF` and `TABLE` keywords in `SETOF type` and `TABLE (x int, y int)`.
+  For PostgreSQL the recommended setting of this option is `lower`.
 
   In BigQuery this also effects the names parametric types,
   for example `array<struct<x int64>>` will get formatted as `ARRAY<STRUCT<x INT64>>`.
-
-  **Experimental:** This option is still new and not thoroughly tested. You have been warned.
 
   _Since 0.17.0_
 
 - **`sqlIdentifierCase`**: `"upper" | "lower" | "preserve"` (default `"preserve"`)
 
   Enforce case of unquoted identifier names.
+
+  This effects all identifiers except function names (see `sqlFunctionCase`).
 
   Beware that in BigQuery unquoted identifiers are case-sensitive, so use of this option with BigQuery is not recommended.
 
