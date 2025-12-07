@@ -48,6 +48,17 @@ describe("sqlIdentifierCase option", () => {
     `);
   });
 
+  it(`does not change the case of BigQuery quoted table names`, async () => {
+    expect(
+      await pretty(`SELECT * FROM \`proj.schm.table\``, {
+        sqlIdentifierCase: "upper",
+        dialect: "bigquery",
+      }),
+    ).toBe(dedent`
+      SELECT * FROM \`proj.schm.table\`
+    `);
+  });
+
   it(`changes case of function names`, async () => {
     expect(
       await pretty(`SELECT count(*), avg(age) FROM people`, {

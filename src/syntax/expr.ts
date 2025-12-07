@@ -27,9 +27,11 @@ import {
   isProgram,
   isSelectStmt,
   isCompoundSelectStmt,
+  isBigqueryQuotedMemberExpr,
 } from "../node_utils";
 import { isString, last } from "../utils";
 import { AllPrettierOptions } from "../options";
+import { AstPath } from "prettier";
 
 export const exprMap: CstToDocMap<AllExprNodes> = {
   list_expr: (print, node, path) => {
@@ -195,7 +197,9 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
   jsonb_literal: (print) => print.spaced(["jsonbKw", "string"]),
   /** cst-ignore: name, text */
   identifier: (print, node, path, options) =>
-    isQuotedIdentifier(node) ? print("text") : printIdentifier(node, options),
+    isQuotedIdentifier(node) || isInsideBigqueryQuotedMemberExpr(path)
+      ? print("text")
+      : printIdentifier(node, options),
   /** cst-ignore: name, text */
   variable: (print, node, path, options) =>
     isQuotedVariable(node) ? print("text") : printIdentifier(node, options),
@@ -235,5 +239,8 @@ const isQuotedIdentifier = (node: Identifier): boolean =>
 
 const isQuotedVariable = (node: Variable): boolean =>
   !(node.text === "@" + node.name || node.text === "@@" + node.name);
+
+const isInsideBigqueryQuotedMemberExpr = (path: AstPath<Node>): boolean =>
+  path.ancestors.some(isBigqueryQuotedMemberExpr);
 
 const isBooleanOp = ({ name }: Keyword) => name === "AND" || name === "OR";
