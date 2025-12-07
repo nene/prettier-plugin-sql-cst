@@ -20,6 +20,7 @@ export const isStringLiteral = is("string_literal");
 export const isArraySubscript = is("array_subscript");
 export const isAsClause = is("as_clause");
 export const isParenExpr = is("paren_expr");
+export const isMemberExpr = is("member_expr");
 export const isSelectStmt = is("select_stmt");
 export const isCompoundSelectStmt = is("compound_select_stmt");
 export const isListExpr = is("list_expr");

@@ -47,4 +47,14 @@ describe("sqlFunctionCase option", () => {
       SELECT "foo"(), FOO(), \`foo\`(), [foo]()
     `);
   });
+
+  it(`changes case of schema-qualified function names`, async () => {
+    expect(
+      await pretty(`SELECT schm.foo(a, b)`, {
+        sqlFunctionCase: "upper",
+      }),
+    ).toBe(dedent`
+      SELECT schm.FOO(a, b)
+    `);
+  });
 });

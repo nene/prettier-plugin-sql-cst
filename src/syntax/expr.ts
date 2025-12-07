@@ -30,6 +30,7 @@ import {
   isCompoundSelectStmt,
   isBigqueryQuotedMemberExpr,
   isFuncCall,
+  isMemberExpr,
 } from "../node_utils";
 import { isString, last } from "../utils";
 import { AllPrettierOptions } from "../options";
@@ -202,7 +203,7 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
     if (isQuotedIdentifier(node) || isInsideBigqueryQuotedMemberExpr(path)) {
       return print("text");
     } else {
-      if (isFuncCall(path.parent)) {
+      if (isFunctionName(node, path)) {
         return printFunctionName(node, options);
       } else {
         return printIdentifier(node, options);
@@ -268,5 +269,16 @@ const isQuotedParameter = (node: Parameter): boolean => /`$/.test(node.text);
 
 const isInsideBigqueryQuotedMemberExpr = (path: AstPath<Node>): boolean =>
   path.ancestors.some(isBigqueryQuotedMemberExpr);
+
+const isFunctionName = (node: Identifier, path: AstPath<Node>): boolean => {
+  const parent = path.parent;
+  if (isFuncCall(parent)) {
+    return true;
+  }
+  if (isMemberExpr(parent)) {
+    return isFuncCall(path.grandparent) && parent.property === node;
+  }
+  return false;
+};
 
 const isBooleanOp = ({ name }: Keyword) => name === "AND" || name === "OR";
