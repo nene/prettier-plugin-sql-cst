@@ -176,6 +176,7 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
   interval_expr: (print) => print.spaced(["intervalKw", "expr", "unit"]),
   interval_unit_range: (print) => print.spaced(["fromUnit", "toKw", "toUnit"]),
   interval_unit: (print) => print("unitKw"),
+  array_literal_expr: (print) => print(["arrayKw", "expr"]),
   array_expr: (print) =>
     group(["[", indent([softline, print("expr")]), softline, "]"]),
   struct_expr: (print) =>

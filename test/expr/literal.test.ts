@@ -39,7 +39,7 @@ describe("literal", () => {
   });
 
   describe("array literals", () => {
-    it(`formats array literals`, async () => {
+    it(`formats BigQuery array literals`, async () => {
       await testBigquery(
         dedent`
           SELECT
@@ -51,11 +51,26 @@ describe("literal", () => {
       );
     });
 
-    it(`formats long array literal to multiple lines`, async () => {
+    it(`formats long BigQuery array literal to multiple lines`, async () => {
       await testBigquery(
         dedent`
           SELECT
             [
+              'a somewhat large array',
+              'containing some strings',
+              'which themselves',
+              'are somewhat long.'
+            ]
+        `,
+      );
+    });
+
+    it(`formats PostgreSQL array literals`, async () => {
+      await testPostgresql(
+        dedent`
+          SELECT
+            ARRAY[1, 2, 3],
+            ARRAY[
               'a somewhat large array',
               'containing some strings',
               'which themselves',

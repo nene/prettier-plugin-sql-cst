@@ -72,6 +72,39 @@ describe("sqlTypeCase option", () => {
     `);
   });
 
+  it(`does not apply to ARRAY[] literals in PostgreSQL`, async () => {
+    expect(
+      await pretty(`SELECT ARRAY[1, 2, 3]`, {
+        sqlTypeCase: "lower",
+        dialect: "postgresql",
+      }),
+    ).toBe(dedent`
+      SELECT ARRAY[1, 2, 3]
+    `);
+  });
+
+  it(`applies to ARRAY[] literals in BigQuery`, async () => {
+    expect(
+      await pretty(`SELECT ARRAY[1], ARRAY<INT64>[2]`, {
+        sqlTypeCase: "lower",
+        dialect: "bigquery",
+      }),
+    ).toBe(dedent`
+      SELECT array[1], array<int64>[2]
+    `);
+  });
+
+  it(`applies to STRUCT() literals in BigQuery`, async () => {
+    expect(
+      await pretty(`SELECT STRUCT(2), STRUCT<INT>(2)`, {
+        sqlTypeCase: "lower",
+        dialect: "bigquery",
+      }),
+    ).toBe(dedent`
+      SELECT struct(2), struct<int>(2)
+    `);
+  });
+
   it(`does not apply to SETOF data types`, async () => {
     expect(
       await pretty(`CREATE TABLE t (x SETOF INT)`, {
