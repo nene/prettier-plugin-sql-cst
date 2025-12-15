@@ -23,8 +23,9 @@ export const dataTypeMap: CstToDocMap<AllDataTypeNodes> = {
         ...(node.timeZoneKw ? [print.spaced("timeZoneKw")] : []),
       ]),
     ),
-  interval_data_type: (print) =>
-    print.spaced(["intervalKw", "fieldsKw", "precision"]),
+  interval_data_type: (print) => print.spaced(["intervalKw", "unit"]),
+  interval_unit_range: (print) => print.spaced(["fromUnit", "toKw", "toUnit"]),
+  interval_unit: (print) => print.spaced(["unitKw", "precision"]),
   parametric_data_type: (print) => print(["typeKw", "params"]),
   generic_type_params: (print) =>
     group(["<", indent([softline, print("params")]), softline, ">"]),

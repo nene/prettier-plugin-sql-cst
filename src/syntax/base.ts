@@ -5,7 +5,7 @@ import { isDataType } from "../node_utils";
 export const baseMap: CstToDocMap<Keyword | Empty | AllColumns> = {
   /** cst-ignore: name */
   keyword: (print, node, path, options) => {
-    const keywordCase = isDataType(path.parent)
+    const keywordCase = isDataType(path.ancestors)
       ? options.sqlTypeCase
       : options.sqlKeywordCase;
 

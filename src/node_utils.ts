@@ -39,11 +39,15 @@ export const isExecuteClause = is("execute_clause");
 
 export const isDataTypeName = is("data_type_name");
 export const isIntervalDataType = is("interval_data_type");
+export const isIntervalUnit = is("interval_unit");
+export const isIntervalUnitRange = is("interval_unit_range");
 export const isTimeDataType = is("time_data_type");
 export const isParametricDataType = is("parametric_data_type");
 
-export const isDataType = (node: any) =>
+export const isDataType = ([node, ...ancestors]: any[]): boolean =>
   isDataTypeName(node) ||
   isIntervalDataType(node) ||
+  (isIntervalUnit(node) && isDataType(ancestors)) ||
+  (isIntervalUnitRange(node) && isDataType(ancestors)) ||
   isTimeDataType(node) ||
   isParametricDataType(node);
