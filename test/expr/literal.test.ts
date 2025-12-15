@@ -10,10 +10,6 @@ describe("literal", () => {
     await testBigquery(`SELECT NUMERIC '12345', BIGNUMERIC '1.23456e05'`);
   });
 
-  it(`formats PostgreSQL INTERVAL literals`, async () => {
-    await testPostgresql(`SELECT INTERVAL '1 day'`);
-  });
-
   it(`formats DATE/TIME literals`, async () => {
     await testBigquery(
       dedent`
@@ -41,6 +37,19 @@ describe("literal", () => {
     await testBigquery(
       dedent`
         SELECT INTERVAL -90 MINUTE
+      `,
+    );
+  });
+
+  it(`formats PostgreSQL INTERVAL literals`, async () => {
+    await testPostgresql(
+      dedent`
+        SELECT
+          INTERVAL '1 day',
+          INTERVAL (3) '25 second',
+          INTERVAL '25' SECOND (15),
+          INTERVAL '30:25' MINUTE TO SECOND (15),
+          INTERVAL '30:25' MINUTE TO SECOND
       `,
     );
   });

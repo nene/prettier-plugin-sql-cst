@@ -172,7 +172,8 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
   extract_expr: (print) => print(["extractKw", "args"]),
   extract_from: (print) => print.spaced(["unit", "fromKw", "expr"]),
   week_expr: (print) => print(["weekKw", "args"]),
-  interval_literal: (print) => print.spaced(["intervalKw", "value", "unit"]),
+  interval_literal: (print) =>
+    print.spaced(["intervalKw", "precision", "value", "unit"]),
   array_literal_expr: (print) => print(["arrayKw", "expr"]),
   array_expr: (print) =>
     group(["[", indent([softline, print("expr")]), softline, "]"]),
