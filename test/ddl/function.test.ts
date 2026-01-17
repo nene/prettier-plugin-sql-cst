@@ -202,6 +202,74 @@ describe("function", () => {
         AS " return /'''|\\"\\"\\"/.test(x) "
       `);
     });
+
+    it(`formats dollar-quoted SQL function`, async () => {
+      await testPostgresql(dedent`
+        CREATE FUNCTION my_func()
+        RETURNS INT64
+        LANGUAGE sql
+        AS $$
+          SELECT 1;
+        $$
+      `);
+    });
+
+    it(`reformats SQL in dollar-quoted SQL function`, async () => {
+      expect(
+        await pretty(
+          dedent`
+            CREATE FUNCTION my_func()
+            RETURNS INT64
+            LANGUAGE sql
+            AS $body$SELECT 1;
+            select 2$body$
+          `,
+          { dialect: "postgresql" },
+        ),
+      ).toBe(dedent`
+        CREATE FUNCTION my_func()
+        RETURNS INT64
+        LANGUAGE sql
+        AS $body$
+          SELECT 1;
+          SELECT 2;
+        $body$
+      `);
+    });
+
+    it(`formats single-quoted SQL function`, async () => {
+      await testPostgresql(dedent`
+        CREATE FUNCTION my_func()
+        RETURNS TEXT
+        LANGUAGE sql
+        AS '
+          SELECT ''foo'';
+        '
+      `);
+    });
+
+    it(`reformats SQL in single-quoted SQL function`, async () => {
+      expect(
+        await pretty(
+          dedent`
+            CREATE FUNCTION my_func()
+            RETURNS TEXT
+            LANGUAGE sql
+            AS 'SELECT ''foo'';
+            select ''bar'''
+          `,
+          { dialect: "postgresql" },
+        ),
+      ).toBe(dedent`
+        CREATE FUNCTION my_func()
+        RETURNS TEXT
+        LANGUAGE sql
+        AS '
+          SELECT ''foo'';
+          SELECT ''bar'';
+        '
+      `);
+    });
   });
 
   describe("drop function", () => {
