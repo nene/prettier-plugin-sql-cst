@@ -46,11 +46,5 @@ const detectQuote = (
   node: StringLiteral,
 ): string | undefined => {
   const match = node.text.match(/^('|\$[^$]*\$)/);
-  const quote = match?.[1];
-
-  if (quote && node.text.endsWith(quote)) {
-    return quote;
-  }
-
-  return undefined;
+  return match?.[1];
 };
