@@ -237,26 +237,14 @@ describe("function", () => {
       `);
     });
 
-    it(`formats single-quoted SQL function`, async () => {
-      await testPostgresql(dedent`
-        CREATE FUNCTION my_func()
-        RETURNS TEXT
-        LANGUAGE sql
-        AS '
-          SELECT ''foo'';
-        '
-      `);
-    });
-
-    it(`reformats SQL in single-quoted SQL function`, async () => {
+    it(`converts single-quoted SQL functions to dollar-quoted SQL functions`, async () => {
       expect(
         await pretty(
           dedent`
             CREATE FUNCTION my_func()
             RETURNS TEXT
             LANGUAGE sql
-            AS 'SELECT ''foo'';
-            select ''bar'''
+            AS 'SELECT ''foo'''
           `,
           { dialect: "postgresql" },
         ),
@@ -264,10 +252,28 @@ describe("function", () => {
         CREATE FUNCTION my_func()
         RETURNS TEXT
         LANGUAGE sql
-        AS '
-          SELECT ''foo'';
-          SELECT ''bar'';
-        '
+        AS $$
+          SELECT 'foo';
+        $$
+      `);
+    });
+
+    it(`does not convert single-quoted SQL functions to dollar-quoted SQL functions when they contain dollar-quoted strings`, async () => {
+      expect(
+        await pretty(
+          dedent`
+            CREATE FUNCTION my_func()
+            RETURNS TEXT
+            LANGUAGE sql
+            AS 'SELECT $$foo$$'
+          `,
+          { dialect: "postgresql" },
+        ),
+      ).toBe(dedent`
+        CREATE FUNCTION my_func()
+        RETURNS TEXT
+        LANGUAGE sql
+        AS 'SELECT $$foo$$'
       `);
     });
   });

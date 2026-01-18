@@ -20,18 +20,29 @@ export const embedSql: NonNullable<Printer<Node>["embed"]> = (path, options) => 
     grandParent.clauses.some(isSqlLanguageClause)
   ) {
     return async (textToDoc) => {
-      const quote = detectQuote(node);
+      let quote = detectQuote(node);
 
-      if (quote) {
-        const sql = await textToDoc(node.value, options);
-
-        return [
-          quote,
-          indent([hardline, stripTrailingHardline(sql)]),
-          hardline,
-          quote,
-        ];
+      if (!quote) {
+        return;
       }
+
+      if (quote === "'") {
+        // Convert `'` quotes to `$$` to simplify handling of strings inside the
+        // function. But bail out if the function contains dollar-quoted strings.
+        if (node.value.includes("$$")) {
+          return;
+        }
+        quote = "$$";
+      }
+
+      const sql = await textToDoc(node.value, options);
+
+      return [
+        quote,
+        indent([hardline, stripTrailingHardline(sql)]),
+        hardline,
+        quote,
+      ];
     };
   }
 
