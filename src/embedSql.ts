@@ -1,8 +1,14 @@
 import { Printer } from "prettier";
-import { CreateFunctionStmt, Node, StringLiteral } from "sql-parser-cst";
+import {
+  CreateFunctionStmt,
+  CreateProcedureStmt,
+  Node,
+  StringLiteral
+} from "sql-parser-cst";
 import {
   isAsClause,
   isCreateFunctionStmt,
+  isCreateProcedureStmt,
   isLanguageClause,
   isStringLiteral,
 } from "./node_utils";
@@ -16,7 +22,7 @@ export const embedSql: NonNullable<Printer<Node>["embed"]> = (path, options) => 
   if (
     isStringLiteral(node) &&
     isAsClause(parent) &&
-    isCreateFunctionStmt(grandParent) &&
+    (isCreateFunctionStmt(grandParent) || isCreateProcedureStmt(grandParent)) &&
     grandParent.clauses.some(isSqlLanguageClause)
   ) {
     return async (textToDoc) => {
@@ -50,7 +56,7 @@ export const embedSql: NonNullable<Printer<Node>["embed"]> = (path, options) => 
 };
 
 const isSqlLanguageClause = (
-  clause: CreateFunctionStmt["clauses"][0],
+  clause: CreateFunctionStmt["clauses"][0] | CreateProcedureStmt['clauses'][0],
 ): boolean => isLanguageClause(clause) && clause.name.name.toLowerCase() === "sql";
 
 const detectQuote = (
