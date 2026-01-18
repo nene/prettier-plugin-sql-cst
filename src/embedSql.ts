@@ -51,7 +51,7 @@ export const embedSql: NonNullable<Printer<Node>["embed"]> = (path, options) => 
 
 const isSqlLanguageClause = (
   clause: CreateFunctionStmt["clauses"][0],
-): boolean => isLanguageClause(clause) && clause.name.name === "sql";
+): boolean => isLanguageClause(clause) && clause.name.name.toLowerCase() === "sql";
 
 const detectQuote = (
   node: StringLiteral,

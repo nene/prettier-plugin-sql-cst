@@ -276,6 +276,27 @@ describe("function", () => {
         AS 'SELECT $$foo$$'
       `);
     });
+
+    it(`handles SQL language identifier case-insensitively`, async () => {
+      expect(
+        await pretty(
+          dedent`
+            CREATE FUNCTION my_func()
+            RETURNS INT64
+            LANGUAGE Sql
+            AS 'SELECT 1'
+          `,
+          { dialect: "postgresql" },
+        ),
+      ).toBe(dedent`
+        CREATE FUNCTION my_func()
+        RETURNS INT64
+        LANGUAGE Sql
+        AS $$
+          SELECT 1;
+        $$
+      `);
+    });
   });
 
   describe("drop function", () => {
