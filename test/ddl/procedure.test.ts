@@ -63,118 +63,122 @@ describe("procedure", () => {
       );
     });
 
-    it(`formats remote python procedure`, async () => {
-      await testBigquery(
-        dedent`
-          CREATE PROCEDURE my_bq_project.my_dataset.spark_proc()
-          WITH CONNECTION \`my-project-id.us.my-connection\`
-          OPTIONS (engine = "SPARK", main_file_uri = "gs://my-bucket/my-pyspark-main.py")
-          LANGUAGE PYTHON
-        `,
-      );
-    });
-
-    it(`formats inline python procedure`, async () => {
-      await testBigquery(
-        dedent`
-          CREATE PROCEDURE spark_proc()
-          WITH CONNECTION my_connection
-          OPTIONS (engine = "SPARK")
-          LANGUAGE PYTHON
-          AS r'''
-            from pyspark.sql import SparkSession
-            spark = SparkSession.builder.appName("spark-bigquery-demo").getOrCreate()
-            # Load data from BigQuery.
-            words = spark.read.format("bigquery")
-          '''
-        `,
-      );
-    });
-
-    it(`formats dollar-quoted SQL procedure`, async () => {
-      await testPostgresql(dedent`
-        CREATE PROCEDURE my_proc()
-        LANGUAGE sql
-        AS $$
-          SELECT 1;
-        $$
-      `);
-    });
-
-    it(`reformats SQL in dollar-quoted SQL procedure`, async () => {
-      expect(
-        await pretty(
+    describe("LANGUAGE PYTHON", () => {
+      it(`formats remote python procedure`, async () => {
+        await testBigquery(
           dedent`
-            CREATE PROCEDURE my_proc()
-            LANGUAGE sql
-            AS $body$SELECT 1;
-            select 2$body$
+            CREATE PROCEDURE my_bq_project.my_dataset.spark_proc()
+            WITH CONNECTION \`my-project-id.us.my-connection\`
+            OPTIONS (engine = "SPARK", main_file_uri = "gs://my-bucket/my-pyspark-main.py")
+            LANGUAGE PYTHON
           `,
-          { dialect: "postgresql" },
-        ),
-      ).toBe(dedent`
-        CREATE PROCEDURE my_proc()
-        LANGUAGE sql
-        AS $body$
-          SELECT 1;
-          SELECT 2;
-        $body$
-      `);
+        );
+      });
+
+      it(`formats inline python procedure`, async () => {
+        await testBigquery(
+          dedent`
+            CREATE PROCEDURE spark_proc()
+            WITH CONNECTION my_connection
+            OPTIONS (engine = "SPARK")
+            LANGUAGE PYTHON
+            AS r'''
+              from pyspark.sql import SparkSession
+              spark = SparkSession.builder.appName("spark-bigquery-demo").getOrCreate()
+              # Load data from BigQuery.
+              words = spark.read.format("bigquery")
+            '''
+          `,
+        );
+      });
     });
 
-    it(`converts single-quoted SQL procedures to dollar-quoted SQL procedures`, async () => {
-      expect(
-        await pretty(
-          dedent`
-            CREATE PROCEDURE my_proc()
-            LANGUAGE sql
-            AS 'SELECT ''foo'''
-          `,
-          { dialect: "postgresql" },
-        ),
-      ).toBe(dedent`
-        CREATE PROCEDURE my_proc()
-        LANGUAGE sql
-        AS $$
-          SELECT 'foo';
-        $$
-      `);
-    });
+    describe("LANGUAGE sql", () => {
+      it(`formats dollar-quoted SQL procedure`, async () => {
+        await testPostgresql(dedent`
+          CREATE PROCEDURE my_proc()
+          LANGUAGE sql
+          AS $$
+            SELECT 1;
+          $$
+        `);
+      });
 
-    it(`does not convert single-quoted SQL procedures to dollar-quoted SQL procedures when they contain dollar-quoted strings`, async () => {
-      expect(
-        await pretty(
-          dedent`
-            CREATE PROCEDURE my_proc()
-            LANGUAGE sql
-            AS 'SELECT $$foo$$'
-          `,
-          { dialect: "postgresql" },
-        ),
-      ).toBe(dedent`
-        CREATE PROCEDURE my_proc()
-        LANGUAGE sql
-        AS 'SELECT $$foo$$'
-      `);
-    });
+      it(`reformats SQL in dollar-quoted SQL procedure`, async () => {
+        expect(
+          await pretty(
+            dedent`
+              CREATE PROCEDURE my_proc()
+              LANGUAGE sql
+              AS $body$SELECT 1;
+              select 2$body$
+            `,
+            { dialect: "postgresql" },
+          ),
+        ).toBe(dedent`
+          CREATE PROCEDURE my_proc()
+          LANGUAGE sql
+          AS $body$
+            SELECT 1;
+            SELECT 2;
+          $body$
+        `);
+      });
 
-    it(`handles SQL language identifier case-insensitively`, async () => {
-      expect(
-        await pretty(
-          dedent`
-            CREATE PROCEDURE my_proc()
-            LANGUAGE Sql
-            AS 'SELECT 1'
-          `,
-          { dialect: "postgresql" },
-        ),
-      ).toBe(dedent`
-        CREATE PROCEDURE my_proc()
-        LANGUAGE Sql
-        AS $$
-          SELECT 1;
-        $$
-      `);
+      it(`converts single-quoted SQL procedures to dollar-quoted SQL procedures`, async () => {
+        expect(
+          await pretty(
+            dedent`
+              CREATE PROCEDURE my_proc()
+              LANGUAGE sql
+              AS 'SELECT ''foo'''
+            `,
+            { dialect: "postgresql" },
+          ),
+        ).toBe(dedent`
+          CREATE PROCEDURE my_proc()
+          LANGUAGE sql
+          AS $$
+            SELECT 'foo';
+          $$
+        `);
+      });
+
+      it(`does not convert single-quoted SQL procedures to dollar-quoted SQL procedures when they contain dollar-quoted strings`, async () => {
+        expect(
+          await pretty(
+            dedent`
+              CREATE PROCEDURE my_proc()
+              LANGUAGE sql
+              AS 'SELECT $$foo$$'
+            `,
+            { dialect: "postgresql" },
+          ),
+        ).toBe(dedent`
+          CREATE PROCEDURE my_proc()
+          LANGUAGE sql
+          AS 'SELECT $$foo$$'
+        `);
+      });
+
+      it(`handles SQL language identifier case-insensitively`, async () => {
+        expect(
+          await pretty(
+            dedent`
+              CREATE PROCEDURE my_proc()
+              LANGUAGE Sql
+              AS 'SELECT 1'
+            `,
+            { dialect: "postgresql" },
+          ),
+        ).toBe(dedent`
+          CREATE PROCEDURE my_proc()
+          LANGUAGE Sql
+          AS $$
+            SELECT 1;
+          $$
+        `);
+      });
     });
   });
 

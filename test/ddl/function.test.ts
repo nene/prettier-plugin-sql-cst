@@ -128,174 +128,178 @@ describe("function", () => {
       `);
     });
 
-    it(`formats JavaScript FUNCTION`, async () => {
-      await testBigquery(dedent`
-        CREATE FUNCTION gen_random()
-        RETURNS FLOAT64
-        NOT DETERMINISTIC
-        LANGUAGE js
-        AS r'''
-          return Math.random();
-        '''
-      `);
+    describe("LANGUAGE js", () => {
+      it(`formats JavaScript FUNCTION`, async () => {
+        await testBigquery(dedent`
+          CREATE FUNCTION gen_random()
+          RETURNS FLOAT64
+          NOT DETERMINISTIC
+          LANGUAGE js
+          AS r'''
+            return Math.random();
+          '''
+        `);
+      });
+
+      it(`reformats JavaScript in JS function`, async () => {
+        expect(
+          await pretty(
+            dedent`
+              CREATE FUNCTION gen_random()
+              RETURNS FLOAT64
+              LANGUAGE js
+              AS ' if(true) {return Math.random () *2}'
+            `,
+            { dialect: "bigquery" },
+          ),
+        ).toBe(dedent`
+          CREATE FUNCTION gen_random()
+          RETURNS FLOAT64
+          LANGUAGE js
+          AS r'''
+            if (true) {
+              return Math.random() * 2;
+            }
+          '''
+        `);
+      });
+
+      it(`quotes JavaScript in double-quotes when single-quotes can't be used`, async () => {
+        expect(
+          await pretty(
+            dedent`
+              CREATE FUNCTION contains_quotes(x STRING)
+              RETURNS FLOAT64
+              LANGUAGE js
+              AS " return /'''/.test(x) "
+            `,
+            { dialect: "bigquery" },
+          ),
+        ).toBe(dedent`
+          CREATE FUNCTION contains_quotes(x STRING)
+          RETURNS FLOAT64
+          LANGUAGE js
+          AS r"""
+            return /'''/.test(x);
+          """
+        `);
+      });
+
+      it(`does not reformat JavaScript when neither ''' or """ can be easily used for quoting`, async () => {
+        expect(
+          await pretty(
+            dedent`
+              CREATE FUNCTION contains_quotes(x STRING)
+              RETURNS FLOAT64
+              LANGUAGE js
+              AS " return /'''|\\"\\"\\"/.test(x) "
+            `,
+            { dialect: "bigquery" },
+          ),
+        ).toBe(dedent`
+          CREATE FUNCTION contains_quotes(x STRING)
+          RETURNS FLOAT64
+          LANGUAGE js
+          AS " return /'''|\\"\\"\\"/.test(x) "
+        `);
+      });
     });
 
-    it(`reformats JavaScript in JS function`, async () => {
-      expect(
-        await pretty(
-          dedent`
-            CREATE FUNCTION gen_random()
-            RETURNS FLOAT64
-            LANGUAGE js
-            AS ' if(true) {return Math.random () *2}'
-          `,
-          { dialect: "bigquery" },
-        ),
-      ).toBe(dedent`
-        CREATE FUNCTION gen_random()
-        RETURNS FLOAT64
-        LANGUAGE js
-        AS r'''
-          if (true) {
-            return Math.random() * 2;
-          }
-        '''
-      `);
-    });
+    describe("LANGUAGE sql", () => {
+      it(`formats dollar-quoted SQL function`, async () => {
+        await testPostgresql(dedent`
+          CREATE FUNCTION my_func()
+          RETURNS INT64
+          LANGUAGE sql
+          AS $$
+            SELECT 1;
+          $$
+        `);
+      });
 
-    it(`quotes JavaScript in double-quotes when single-quotes can't be used`, async () => {
-      expect(
-        await pretty(
-          dedent`
-            CREATE FUNCTION contains_quotes(x STRING)
-            RETURNS FLOAT64
-            LANGUAGE js
-            AS " return /'''/.test(x) "
-          `,
-          { dialect: "bigquery" },
-        ),
-      ).toBe(dedent`
-        CREATE FUNCTION contains_quotes(x STRING)
-        RETURNS FLOAT64
-        LANGUAGE js
-        AS r"""
-          return /'''/.test(x);
-        """
-      `);
-    });
+      it(`reformats SQL in dollar-quoted SQL function`, async () => {
+        expect(
+          await pretty(
+            dedent`
+              CREATE FUNCTION my_func()
+              RETURNS INT64
+              LANGUAGE sql
+              AS $body$SELECT 1;
+              select 2$body$
+            `,
+            { dialect: "postgresql" },
+          ),
+        ).toBe(dedent`
+          CREATE FUNCTION my_func()
+          RETURNS INT64
+          LANGUAGE sql
+          AS $body$
+            SELECT 1;
+            SELECT 2;
+          $body$
+        `);
+      });
 
-    it(`does not reformat JavaScript when neither ''' or """ can be easily used for quoting`, async () => {
-      expect(
-        await pretty(
-          dedent`
-            CREATE FUNCTION contains_quotes(x STRING)
-            RETURNS FLOAT64
-            LANGUAGE js
-            AS " return /'''|\\"\\"\\"/.test(x) "
-          `,
-          { dialect: "bigquery" },
-        ),
-      ).toBe(dedent`
-        CREATE FUNCTION contains_quotes(x STRING)
-        RETURNS FLOAT64
-        LANGUAGE js
-        AS " return /'''|\\"\\"\\"/.test(x) "
-      `);
-    });
+      it(`converts single-quoted SQL functions to dollar-quoted SQL functions`, async () => {
+        expect(
+          await pretty(
+            dedent`
+              CREATE FUNCTION my_func()
+              RETURNS TEXT
+              LANGUAGE sql
+              AS 'SELECT ''foo'''
+            `,
+            { dialect: "postgresql" },
+          ),
+        ).toBe(dedent`
+          CREATE FUNCTION my_func()
+          RETURNS TEXT
+          LANGUAGE sql
+          AS $$
+            SELECT 'foo';
+          $$
+        `);
+      });
 
-    it(`formats dollar-quoted SQL function`, async () => {
-      await testPostgresql(dedent`
-        CREATE FUNCTION my_func()
-        RETURNS INT64
-        LANGUAGE sql
-        AS $$
-          SELECT 1;
-        $$
-      `);
-    });
+      it(`does not convert single-quoted SQL functions to dollar-quoted SQL functions when they contain dollar-quoted strings`, async () => {
+        expect(
+          await pretty(
+            dedent`
+              CREATE FUNCTION my_func()
+              RETURNS TEXT
+              LANGUAGE sql
+              AS 'SELECT $$foo$$'
+            `,
+            { dialect: "postgresql" },
+          ),
+        ).toBe(dedent`
+          CREATE FUNCTION my_func()
+          RETURNS TEXT
+          LANGUAGE sql
+          AS 'SELECT $$foo$$'
+        `);
+      });
 
-    it(`reformats SQL in dollar-quoted SQL function`, async () => {
-      expect(
-        await pretty(
-          dedent`
-            CREATE FUNCTION my_func()
-            RETURNS INT64
-            LANGUAGE sql
-            AS $body$SELECT 1;
-            select 2$body$
-          `,
-          { dialect: "postgresql" },
-        ),
-      ).toBe(dedent`
-        CREATE FUNCTION my_func()
-        RETURNS INT64
-        LANGUAGE sql
-        AS $body$
-          SELECT 1;
-          SELECT 2;
-        $body$
-      `);
-    });
-
-    it(`converts single-quoted SQL functions to dollar-quoted SQL functions`, async () => {
-      expect(
-        await pretty(
-          dedent`
-            CREATE FUNCTION my_func()
-            RETURNS TEXT
-            LANGUAGE sql
-            AS 'SELECT ''foo'''
-          `,
-          { dialect: "postgresql" },
-        ),
-      ).toBe(dedent`
-        CREATE FUNCTION my_func()
-        RETURNS TEXT
-        LANGUAGE sql
-        AS $$
-          SELECT 'foo';
-        $$
-      `);
-    });
-
-    it(`does not convert single-quoted SQL functions to dollar-quoted SQL functions when they contain dollar-quoted strings`, async () => {
-      expect(
-        await pretty(
-          dedent`
-            CREATE FUNCTION my_func()
-            RETURNS TEXT
-            LANGUAGE sql
-            AS 'SELECT $$foo$$'
-          `,
-          { dialect: "postgresql" },
-        ),
-      ).toBe(dedent`
-        CREATE FUNCTION my_func()
-        RETURNS TEXT
-        LANGUAGE sql
-        AS 'SELECT $$foo$$'
-      `);
-    });
-
-    it(`handles SQL language identifier case-insensitively`, async () => {
-      expect(
-        await pretty(
-          dedent`
-            CREATE FUNCTION my_func()
-            RETURNS INT64
-            LANGUAGE Sql
-            AS 'SELECT 1'
-          `,
-          { dialect: "postgresql" },
-        ),
-      ).toBe(dedent`
-        CREATE FUNCTION my_func()
-        RETURNS INT64
-        LANGUAGE Sql
-        AS $$
-          SELECT 1;
-        $$
-      `);
+      it(`handles SQL language identifier case-insensitively`, async () => {
+        expect(
+          await pretty(
+            dedent`
+              CREATE FUNCTION my_func()
+              RETURNS INT64
+              LANGUAGE Sql
+              AS 'SELECT 1'
+            `,
+            { dialect: "postgresql" },
+          ),
+        ).toBe(dedent`
+          CREATE FUNCTION my_func()
+          RETURNS INT64
+          LANGUAGE Sql
+          AS $$
+            SELECT 1;
+          $$
+        `);
+      });
     });
   });
 
