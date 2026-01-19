@@ -161,6 +161,23 @@ describe("procedure", () => {
         `);
       });
 
+      it(`does not reformat E'quoted' strings`, async () => {
+        expect(
+          await pretty(
+            dedent`
+              CREATE PROCEDURE foo()
+              LANGUAGE sql
+              AS E'SELECT 1'
+            `,
+            { dialect: "postgresql" },
+          ),
+        ).toBe(dedent`
+          CREATE PROCEDURE foo()
+          LANGUAGE sql
+          AS E'SELECT 1'
+        `);
+      });
+
       it(`handles SQL language identifier case-insensitively`, async () => {
         expect(
           await pretty(

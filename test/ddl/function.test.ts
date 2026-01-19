@@ -280,6 +280,25 @@ describe("function", () => {
         `);
       });
 
+      it(`does not reformat E'quoted' strings`, async () => {
+        expect(
+          await pretty(
+            dedent`
+              CREATE FUNCTION my_func()
+              RETURNS INT
+              LANGUAGE sql
+              AS E'SELECT 1'
+            `,
+            { dialect: "postgresql" },
+          ),
+        ).toBe(dedent`
+          CREATE FUNCTION my_func()
+          RETURNS INT
+          LANGUAGE sql
+          AS E'SELECT 1'
+        `);
+      });
+
       it(`handles SQL language identifier case-insensitively`, async () => {
         expect(
           await pretty(
