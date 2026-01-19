@@ -240,7 +240,7 @@ describe("function", () => {
         `);
       });
 
-      it(`converts single-quoted SQL functions to dollar-quoted SQL functions`, async () => {
+      it(`converts single-quoted SQL function to dollar-quoted SQL function`, async () => {
         expect(
           await pretty(
             dedent`
@@ -261,7 +261,7 @@ describe("function", () => {
         `);
       });
 
-      it(`does not convert single-quoted SQL functions to dollar-quoted SQL functions when they contain dollar-quoted strings`, async () => {
+      it(`does not reformat single-quoted SQL function when its source contains $$-quotes`, async () => {
         expect(
           await pretty(
             dedent`

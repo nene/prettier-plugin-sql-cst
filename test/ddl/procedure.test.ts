@@ -144,7 +144,7 @@ describe("procedure", () => {
         `);
       });
 
-      it(`does not convert single-quoted SQL procedures to dollar-quoted SQL procedures when they contain dollar-quoted strings`, async () => {
+      it(`does not reformat single-quoted SQL procedure when its source contains $$-quotes`, async () => {
         expect(
           await pretty(
             dedent`
