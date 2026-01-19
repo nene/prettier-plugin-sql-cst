@@ -3,7 +3,7 @@ import {
   CreateFunctionStmt,
   CreateProcedureStmt,
   Node,
-  StringLiteral
+  StringLiteral,
 } from "sql-parser-cst";
 import {
   isAsClause,
@@ -14,7 +14,10 @@ import {
 } from "./node_utils";
 import { hardline, indent, stripTrailingHardline } from "./print_utils";
 
-export const embedSql: NonNullable<Printer<Node>["embed"]> = (path, options) => {
+export const embedSql: NonNullable<Printer<Node>["embed"]> = (
+  path,
+  options,
+) => {
   const node = path.node;
   const parent = path.getParentNode(0);
   const grandParent = path.getParentNode(1);
@@ -26,19 +29,9 @@ export const embedSql: NonNullable<Printer<Node>["embed"]> = (path, options) => 
     grandParent.clauses.some(isSqlLanguageClause)
   ) {
     return async (textToDoc) => {
-      let quote = detectQuote(node);
-
+      const quote = detectQuote(node);
       if (!quote) {
-        return;
-      }
-
-      if (quote === "'") {
-        // Convert `'` quotes to `$$` to simplify handling of strings inside the
-        // function. But bail out if the function contains dollar-quoted strings.
-        if (node.value.includes("$$")) {
-          return;
-        }
-        quote = "$$";
+        return undefined;
       }
 
       const sql = await textToDoc(node.value, options);
@@ -56,12 +49,18 @@ export const embedSql: NonNullable<Printer<Node>["embed"]> = (path, options) => 
 };
 
 const isSqlLanguageClause = (
-  clause: CreateFunctionStmt["clauses"][0] | CreateProcedureStmt['clauses'][0],
-): boolean => isLanguageClause(clause) && clause.name.name.toLowerCase() === "sql";
+  clause: CreateFunctionStmt["clauses"][0] | CreateProcedureStmt["clauses"][0],
+): boolean =>
+  isLanguageClause(clause) && clause.name.name.toLowerCase() === "sql";
 
-const detectQuote = (
-  node: StringLiteral,
-): string | undefined => {
+const detectQuote = (node: StringLiteral): string | undefined => {
   const match = node.text.match(/^('|\$[^$]*\$)/);
-  return match?.[1];
+  const quote = match?.[1];
+  if (quote === "'") {
+    // Convert `'` quotes to `$$`.
+    // But bail out if the code already contains $$.
+    return node.value.includes("$$") ? undefined : "$$";
+  } else {
+    return quote;
+  }
 };
