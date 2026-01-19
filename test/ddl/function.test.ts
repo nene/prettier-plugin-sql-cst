@@ -202,6 +202,101 @@ describe("function", () => {
         AS " return /'''|\\"\\"\\"/.test(x) "
       `);
     });
+
+    it(`formats dollar-quoted SQL function`, async () => {
+      await testPostgresql(dedent`
+        CREATE FUNCTION my_func()
+        RETURNS INT64
+        LANGUAGE sql
+        AS $$
+          SELECT 1;
+        $$
+      `);
+    });
+
+    it(`reformats SQL in dollar-quoted SQL function`, async () => {
+      expect(
+        await pretty(
+          dedent`
+            CREATE FUNCTION my_func()
+            RETURNS INT64
+            LANGUAGE sql
+            AS $body$SELECT 1;
+            select 2$body$
+          `,
+          { dialect: "postgresql" },
+        ),
+      ).toBe(dedent`
+        CREATE FUNCTION my_func()
+        RETURNS INT64
+        LANGUAGE sql
+        AS $body$
+          SELECT 1;
+          SELECT 2;
+        $body$
+      `);
+    });
+
+    it(`converts single-quoted SQL functions to dollar-quoted SQL functions`, async () => {
+      expect(
+        await pretty(
+          dedent`
+            CREATE FUNCTION my_func()
+            RETURNS TEXT
+            LANGUAGE sql
+            AS 'SELECT ''foo'''
+          `,
+          { dialect: "postgresql" },
+        ),
+      ).toBe(dedent`
+        CREATE FUNCTION my_func()
+        RETURNS TEXT
+        LANGUAGE sql
+        AS $$
+          SELECT 'foo';
+        $$
+      `);
+    });
+
+    it(`does not convert single-quoted SQL functions to dollar-quoted SQL functions when they contain dollar-quoted strings`, async () => {
+      expect(
+        await pretty(
+          dedent`
+            CREATE FUNCTION my_func()
+            RETURNS TEXT
+            LANGUAGE sql
+            AS 'SELECT $$foo$$'
+          `,
+          { dialect: "postgresql" },
+        ),
+      ).toBe(dedent`
+        CREATE FUNCTION my_func()
+        RETURNS TEXT
+        LANGUAGE sql
+        AS 'SELECT $$foo$$'
+      `);
+    });
+
+    it(`handles SQL language identifier case-insensitively`, async () => {
+      expect(
+        await pretty(
+          dedent`
+            CREATE FUNCTION my_func()
+            RETURNS INT64
+            LANGUAGE Sql
+            AS 'SELECT 1'
+          `,
+          { dialect: "postgresql" },
+        ),
+      ).toBe(dedent`
+        CREATE FUNCTION my_func()
+        RETURNS INT64
+        LANGUAGE Sql
+        AS $$
+          SELECT 1;
+        $$
+      `);
+    });
   });
 
   describe("drop function", () => {

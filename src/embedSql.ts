@@ -1,0 +1,67 @@
+import { Printer } from "prettier";
+import {
+  CreateFunctionStmt,
+  CreateProcedureStmt,
+  Node,
+  StringLiteral
+} from "sql-parser-cst";
+import {
+  isAsClause,
+  isCreateFunctionStmt,
+  isCreateProcedureStmt,
+  isLanguageClause,
+  isStringLiteral,
+} from "./node_utils";
+import { hardline, indent, stripTrailingHardline } from "./print_utils";
+
+export const embedSql: NonNullable<Printer<Node>["embed"]> = (path, options) => {
+  const node = path.node;
+  const parent = path.getParentNode(0);
+  const grandParent = path.getParentNode(1);
+
+  if (
+    isStringLiteral(node) &&
+    isAsClause(parent) &&
+    (isCreateFunctionStmt(grandParent) || isCreateProcedureStmt(grandParent)) &&
+    grandParent.clauses.some(isSqlLanguageClause)
+  ) {
+    return async (textToDoc) => {
+      let quote = detectQuote(node);
+
+      if (!quote) {
+        return;
+      }
+
+      if (quote === "'") {
+        // Convert `'` quotes to `$$` to simplify handling of strings inside the
+        // function. But bail out if the function contains dollar-quoted strings.
+        if (node.value.includes("$$")) {
+          return;
+        }
+        quote = "$$";
+      }
+
+      const sql = await textToDoc(node.value, options);
+
+      return [
+        quote,
+        indent([hardline, stripTrailingHardline(sql)]),
+        hardline,
+        quote,
+      ];
+    };
+  }
+
+  return null;
+};
+
+const isSqlLanguageClause = (
+  clause: CreateFunctionStmt["clauses"][0] | CreateProcedureStmt['clauses'][0],
+): boolean => isLanguageClause(clause) && clause.name.name.toLowerCase() === "sql";
+
+const detectQuote = (
+  node: StringLiteral,
+): string | undefined => {
+  const match = node.text.match(/^('|\$[^$]*\$)/);
+  return match?.[1];
+};

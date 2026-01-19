@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { testBigquery, testPostgresql } from "../test_utils";
+import { pretty, testBigquery, testPostgresql } from "../test_utils";
 
 describe("procedure", () => {
   describe("create procedure", () => {
@@ -89,6 +89,92 @@ describe("procedure", () => {
           '''
         `,
       );
+    });
+
+    it(`formats dollar-quoted SQL procedure`, async () => {
+      await testPostgresql(dedent`
+        CREATE PROCEDURE my_proc()
+        LANGUAGE sql
+        AS $$
+          SELECT 1;
+        $$
+      `);
+    });
+
+    it(`reformats SQL in dollar-quoted SQL procedure`, async () => {
+      expect(
+        await pretty(
+          dedent`
+            CREATE PROCEDURE my_proc()
+            LANGUAGE sql
+            AS $body$SELECT 1;
+            select 2$body$
+          `,
+          { dialect: "postgresql" },
+        ),
+      ).toBe(dedent`
+        CREATE PROCEDURE my_proc()
+        LANGUAGE sql
+        AS $body$
+          SELECT 1;
+          SELECT 2;
+        $body$
+      `);
+    });
+
+    it(`converts single-quoted SQL procedures to dollar-quoted SQL procedures`, async () => {
+      expect(
+        await pretty(
+          dedent`
+            CREATE PROCEDURE my_proc()
+            LANGUAGE sql
+            AS 'SELECT ''foo'''
+          `,
+          { dialect: "postgresql" },
+        ),
+      ).toBe(dedent`
+        CREATE PROCEDURE my_proc()
+        LANGUAGE sql
+        AS $$
+          SELECT 'foo';
+        $$
+      `);
+    });
+
+    it(`does not convert single-quoted SQL procedures to dollar-quoted SQL procedures when they contain dollar-quoted strings`, async () => {
+      expect(
+        await pretty(
+          dedent`
+            CREATE PROCEDURE my_proc()
+            LANGUAGE sql
+            AS 'SELECT $$foo$$'
+          `,
+          { dialect: "postgresql" },
+        ),
+      ).toBe(dedent`
+        CREATE PROCEDURE my_proc()
+        LANGUAGE sql
+        AS 'SELECT $$foo$$'
+      `);
+    });
+
+    it(`handles SQL language identifier case-insensitively`, async () => {
+      expect(
+        await pretty(
+          dedent`
+            CREATE PROCEDURE my_proc()
+            LANGUAGE Sql
+            AS 'SELECT 1'
+          `,
+          { dialect: "postgresql" },
+        ),
+      ).toBe(dedent`
+        CREATE PROCEDURE my_proc()
+        LANGUAGE Sql
+        AS $$
+          SELECT 1;
+        $$
+      `);
     });
   });
 
