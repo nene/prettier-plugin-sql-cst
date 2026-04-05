@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
+    "types": ["node", "jest"],
     "target": "es5",
-    "baseUrl": "./",
+    "paths": { "src/*": ["./src/*"] },
     "strict": true,
-    "outDir": "dist",
+    "noEmit": true,
     "esModuleInterop": true,
     "moduleResolution": "node",
     "declaration": true
   },
-  "include": ["src", "tsconfig.json"]
+  "include": ["src", "tsconfig.json", "test"]
 }
