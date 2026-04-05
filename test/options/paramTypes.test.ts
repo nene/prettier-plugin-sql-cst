@@ -2,9 +2,7 @@ import { pretty, test } from "../test_utils";
 
 describe("sqlParamTypes option", () => {
   it(`by default bound parameters are not supported`, async () => {
-    await expect(
-      pretty(`SELECT * FROM tbl WHERE x = ?`),
-    ).rejects.toThrowError();
+    await expect(pretty(`SELECT * FROM tbl WHERE x = ?`)).rejects.toThrow();
   });
 
   it(`positional parameters: ?`, async () => {
