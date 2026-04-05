@@ -6,7 +6,8 @@
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
-    "moduleResolution": "node",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "declaration": true
   },
   "include": ["src", "tsconfig.json", "test"]
