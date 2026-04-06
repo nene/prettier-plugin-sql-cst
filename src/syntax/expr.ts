@@ -40,6 +40,7 @@ import {
   isDropProcedureStmt,
   isCreateTriggerStmt,
   isExecuteClause,
+  isFunctionSignature,
 } from "../node_utils";
 import { isString, last } from "../utils";
 import { AllPrettierOptions } from "../options";
@@ -296,14 +297,11 @@ const isFunctionContext = (
 ): boolean => {
   return (
     isFuncCall(node) ||
+    isFunctionSignature(node) ||
     isCreateFunctionStmt(node) ||
     isCreateProcedureStmt(node) ||
-    isAlterFunctionStmt(node) ||
-    isAlterProcedureStmt(node) ||
     (isAlterActionRename(node) &&
       (isAlterFunctionStmt(parent) || isAlterProcedureStmt(parent))) ||
-    isDropFunctionStmt(node) ||
-    isDropProcedureStmt(node) ||
     (isExecuteClause(node) && isCreateTriggerStmt(parent))
   );
 };

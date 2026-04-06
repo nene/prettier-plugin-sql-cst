@@ -48,8 +48,14 @@ export const functionMap: CstToDocMap<AllFunctionNodes> = {
     join(", ", print(["objectFile", "symbol"])),
   drop_function_stmt: (print) =>
     group([
-      print.spaced(["dropKw", "tableKw", "functionKw", "ifExistsKw", "name"]),
-      print.spaced(["params", "behaviorKw"]),
+      print.spaced([
+        "dropKw",
+        "tableKw",
+        "functionKw",
+        "ifExistsKw",
+        "signatures",
+        "behaviorKw",
+      ]),
     ]),
 
   // almost exact copy of alter_procedure_stmt
@@ -57,7 +63,7 @@ export const functionMap: CstToDocMap<AllFunctionNodes> = {
     group([
       print.spaced(["alterKw", "functionKw"]),
       " ",
-      print(["name", "params"]),
+      print(["signature"]),
       print.dynamicLine(),
       join(print.dynamicLine(), print("actions")),
       node.behaviorKw ? [print.dynamicLine(), print("behaviorKw")] : [],
