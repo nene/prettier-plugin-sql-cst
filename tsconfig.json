@@ -10,5 +10,5 @@
     "moduleResolution": "bundler",
     "declaration": true
   },
-  "include": ["src", "tsconfig.json", "test"]
+  "include": ["src", "tsconfig.json", "test", "scripts"]
 }
