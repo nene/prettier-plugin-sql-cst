@@ -29,7 +29,7 @@
     "test": "yarn node --experimental-vm-modules $(yarn bin jest)",
     "pretty": "prettier -w src/ test/",
     "ts:check": "tsc --noEmit",
-    "analyze-field-access": "ts-node scripts/analyze-field-access.ts src/index.ts"
+    "analyze-field-access": "tsx scripts/analyze-field-access.ts src/index.ts"
   },
   "keywords": [
     "prettier",
@@ -48,6 +48,7 @@
     "jest": "^30.3.0",
     "ts-jest": "^29.4.9",
     "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }
 }
