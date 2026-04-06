@@ -345,5 +345,11 @@ describe("function", () => {
         ) CASCADE
       `);
     });
+
+    it(`formats multiple function names`, async () => {
+      await testPostgresql(dedent`
+        DROP FUNCTION func1(user_id INT), func2(user_id INT) CASCADE
+      `);
+    });
   });
 });

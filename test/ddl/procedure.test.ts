@@ -220,5 +220,11 @@ describe("procedure", () => {
         ) RESTRICT
       `);
     });
+
+    it(`formats multiple procedure names`, async () => {
+      await testPostgresql(dedent`
+        DROP PROCEDURE proc1(user_id INT), proc2(user_id INT) CASCADE
+      `);
+    });
   });
 });
