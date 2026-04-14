@@ -26,7 +26,7 @@
   "scripts": {
     "prepublishOnly": "yarn analyze-field-access && yarn test && yarn build",
     "clean": "rm -rf dist",
-    "build": "yarn clean && tsc -p tsconfig.build.json",
+    "build": "yarn clean && tsup src/index.ts --format esm --dts --out-dir dist",
     "test": "yarn node --experimental-vm-modules $(yarn bin jest)",
     "pretty": "prettier -w src/ test/",
     "ts:check": "tsc --noEmit",
@@ -49,6 +49,7 @@
     "jest": "^30.3.0",
     "ts-jest": "^29.4.9",
     "ts-node": "^10.9.2",
+    "tsup": "^8.5.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }
