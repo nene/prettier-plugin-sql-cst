@@ -228,7 +228,7 @@ describe("create table", () => {
   it(`formats CREATE TABLE with named column constraints`, async () => {
     await test(dedent`
       CREATE TABLE client (
-        id INT CONSTRAINT NOT NULL CONSTRAINT prim_key PRIMARY KEY
+        id INT CONSTRAINT foo NOT NULL CONSTRAINT prim_key PRIMARY KEY
       )
     `);
   });
@@ -240,6 +240,15 @@ describe("create table", () => {
         CONSTRAINT prim_key PRIMARY KEY (id, name),
         CONSTRAINT org_for_key
           FOREIGN KEY (id, org_id) REFERENCES organization (id, org_id)
+      )
+    `);
+  });
+
+  it(`formats CREATE TABLE with unnamed table and column constraints`, async () => {
+    await testMysql(dedent`
+      CREATE TABLE client (
+        id INT CONSTRAINT CHECK (TRUE),
+        CONSTRAINT CHECK (id > 0)
       )
     `);
   });
