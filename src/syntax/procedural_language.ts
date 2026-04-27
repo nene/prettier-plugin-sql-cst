@@ -27,7 +27,7 @@ export const proceduralLanguageMap: CstToDocMap<AllProceduralNodes> = {
       indent([hardline, stripTrailingHardline(print("program"))]),
     ]),
 
-  error_category: (print) => print("errorKw"),
+  error_bigquery: (print) => print("errorKw"),
 
   // DECLARE
   declare_stmt: (print) =>
