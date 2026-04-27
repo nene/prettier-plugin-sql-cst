@@ -113,13 +113,14 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
   // BREAK/CONTINUE
   break_stmt: (print) => group(print.spaced(["breakKw", "label"])),
   continue_stmt: (print) => group(print.spaced(["continueKw", "label"])),
+  // labels
   labeled_stmt: (print, node) =>
     group([
-      print("beginLabel"),
-      ": ",
-      print("statement"),
+      print.spaced(["beginLabel", "statement"]),
       node.endLabel ? [" ", print(["endLabel"])] : [],
     ]),
+  colon_label: (print) => [print("label"), ":"],
+
   // CALL
   call_stmt: (print) => group(print.spaced(["callKw", "func"])),
   // RETURN
