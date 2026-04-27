@@ -35,10 +35,10 @@ export const proceduralLanguageMap: CstToDocMap<AllProceduralNodes> = {
       join(" ", [
         print("declareKw"),
         group(print("names")),
-        ...print.spaced(["dataType", "default"]),
+        ...print.spaced(["dataType", "init"]),
       ]),
     ),
-  declare_default: (print) => print.spaced(["defaultKw", "expr"]),
+  declare_init: (print) => print.spaced(["operator", "expr"]),
 
   // SET
   set_stmt: (print) => group(print.spaced(["setKw", "assignments"])),
