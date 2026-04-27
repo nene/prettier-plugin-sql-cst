@@ -125,12 +125,9 @@ export const proceduralLanguageMap: CstToDocMap<AllProceduralNodes> = {
   // RETURN
   return_stmt: (print) => group(print.spaced(["returnKw", "expr"])),
   // RAISE
-  raise_stmt: (print) => group(print.spaced(["raiseKw", "message"])),
-  raise_message: (print) => [
-    print.spaced("usingMessageKw"),
-    " = ",
-    print("string"),
-  ],
+  raise_stmt: (print) => group(print.spaced(["raiseKw", "using"])),
+  raise_using_clause: (print) => group(print.spaced(["usingKw", "options"])),
+  raise_option_element: (print) => [print("nameKw"), " = ", print("value")],
   // ASSERT
   assert_stmt: (print) =>
     group(print.spaced(["assertKw", "condition", "message"])),
