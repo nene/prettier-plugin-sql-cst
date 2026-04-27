@@ -20,10 +20,13 @@ export const proceduralLanguageMap: CstToDocMap<AllProceduralNodes> = {
       print("endKw"),
     ]),
   exception_clause: (print) =>
+    group([print("exceptionKw"), indent([line, print("clauses")])]),
+  exception_when_clause: (print) =>
     group([
-      print.spaced(["exceptionKw", "whenKw", "condition", "thenKw"]),
+      print.spaced(["whenKw", "condition", "thenKw"]),
       indent([hardline, stripTrailingHardline(print("program"))]),
     ]),
+
   error_category: (print) => print("errorKw"),
 
   // DECLARE
