@@ -19,8 +19,14 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
       hardline,
       print("endKw"),
     ]),
-  exception_clause: (print) =>
-    group([print("exceptionKw"), indent([line, print("clauses")])]),
+  exception_clause: (print, node) => {
+    if (node.clauses.length === 1) {
+      // Keep single exception clause on the same line as EXCEPTION keyword
+      return group(print.spaced(["exceptionKw", "clauses"]));
+    } else {
+      return group([print("exceptionKw"), indent([line, print("clauses")])]);
+    }
+  },
   exception_when_clause: (print) =>
     group([
       print.spaced(["whenKw", "condition", "thenKw"]),
