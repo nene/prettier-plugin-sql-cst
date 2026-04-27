@@ -103,9 +103,6 @@ export const bigqueryMap: CstToDocMap<AllBigqueryNodes> = {
       ]),
     ),
 
-  // ASSERT
-  assert_stmt: (print) => group(print.spaced(["assertKw", "expr", "as"])),
-
   // EXPORT
   export_data_stmt: (print) =>
     group(

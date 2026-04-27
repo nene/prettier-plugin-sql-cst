@@ -1,6 +1,7 @@
 import { AllOtherClauses } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
-import { line, indent, group } from "../print_utils";
+import { line, indent, group, hardline } from "../print_utils";
+import { isDynamicallyLoadedFunction, isStringLiteral } from "../node_utils";
 
 export const otherClausesMap: CstToDocMap<AllOtherClauses> = {
   // CLUSTER BY clause
@@ -10,6 +11,15 @@ export const otherClausesMap: CstToDocMap<AllOtherClauses> = {
   // RETURNING clause
   returning_clause: (print) =>
     group([print("returningKw"), indent([line, print("columns")])]),
+
+  as_clause: (print, node) => {
+    if (isStringLiteral(node.expr) || isDynamicallyLoadedFunction(node.expr)) {
+      return print.spaced(["asKw", "expr"]);
+    }
+    return [print("asKw"), indent([hardline, print("expr")])];
+  },
+
+  comma_clause: (print) => [",", print("expr")],
 
   // WHERE CURRENT OF clause
   where_current_of_clause: (print) =>

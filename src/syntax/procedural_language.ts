@@ -9,7 +9,7 @@ import {
 } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const proceduralLanguageMap: CstToDocMap<AllProceduralNodes> = {
+export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
   // BEGIN .. END
   block_stmt: (print, node) =>
     group([
@@ -19,12 +19,21 @@ export const proceduralLanguageMap: CstToDocMap<AllProceduralNodes> = {
       hardline,
       print("endKw"),
     ]),
-  exception_clause: (print) =>
+  exception_clause: (print, node) => {
+    if (node.clauses.length === 1) {
+      // Keep single exception clause on the same line as EXCEPTION keyword
+      return group(print.spaced(["exceptionKw", "clauses"]));
+    } else {
+      return group([print("exceptionKw"), indent([line, print("clauses")])]);
+    }
+  },
+  exception_when_clause: (print) =>
     group([
-      print.spaced(["exceptionKw", "whenKw", "condition", "thenKw"]),
+      print.spaced(["whenKw", "condition", "thenKw"]),
       indent([hardline, stripTrailingHardline(print("program"))]),
     ]),
-  error_category: (print) => print("errorKw"),
+
+  error_bigquery: (print) => print("errorKw"),
 
   // DECLARE
   declare_stmt: (print) =>
@@ -32,10 +41,10 @@ export const proceduralLanguageMap: CstToDocMap<AllProceduralNodes> = {
       join(" ", [
         print("declareKw"),
         group(print("names")),
-        ...print.spaced(["dataType", "default"]),
+        ...print.spaced(["dataType", "init"]),
       ]),
     ),
-  declare_default: (print) => print.spaced(["defaultKw", "expr"]),
+  declare_init: (print) => print.spaced(["operator", "expr"]),
 
   // SET
   set_stmt: (print) => group(print.spaced(["setKw", "assignments"])),
@@ -110,22 +119,23 @@ export const proceduralLanguageMap: CstToDocMap<AllProceduralNodes> = {
   // BREAK/CONTINUE
   break_stmt: (print) => group(print.spaced(["breakKw", "label"])),
   continue_stmt: (print) => group(print.spaced(["continueKw", "label"])),
+  // labels
   labeled_stmt: (print, node) =>
     group([
-      print("beginLabel"),
-      ": ",
-      print("statement"),
+      print.spaced(["beginLabel", "statement"]),
       node.endLabel ? [" ", print(["endLabel"])] : [],
     ]),
+  colon_label: (print) => [print("label"), ":"],
+
   // CALL
   call_stmt: (print) => group(print.spaced(["callKw", "func"])),
   // RETURN
   return_stmt: (print) => group(print.spaced(["returnKw", "expr"])),
   // RAISE
-  raise_stmt: (print) => group(print.spaced(["raiseKw", "message"])),
-  raise_message: (print) => [
-    print.spaced("usingMessageKw"),
-    " = ",
-    print("string"),
-  ],
+  raise_stmt: (print) => group(print.spaced(["raiseKw", "using"])),
+  raise_using_clause: (print) => group(print.spaced(["usingKw", "options"])),
+  raise_option_element: (print) => [print("nameKw"), " = ", print("value")],
+  // ASSERT
+  assert_stmt: (print) =>
+    group(print.spaced(["assertKw", "condition", "message"])),
 };
