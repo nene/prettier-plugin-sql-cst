@@ -128,4 +128,7 @@ export const proceduralLanguageMap: CstToDocMap<AllProceduralNodes> = {
     " = ",
     print("string"),
   ],
+  // ASSERT
+  assert_stmt: (print) =>
+    group(print.spaced(["assertKw", "condition", "message"])),
 };
