@@ -9,7 +9,7 @@ import {
 } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const proceduralLanguageMap: CstToDocMap<AllProceduralNodes> = {
+export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
   // BEGIN .. END
   block_stmt: (print, node) =>
     group([

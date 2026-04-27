@@ -2,7 +2,9 @@ import { AllPreparedStatementNodes } from "sql-parser-cst";
 import { group, hardline, indent, join, line } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const preparedStatementsMap: CstToDocMap<AllPreparedStatementNodes> = {
+export const preparedStatementsMap: Partial<
+  CstToDocMap<AllPreparedStatementNodes>
+> = {
   // EXECUTE
   execute_stmt: (print, node) => {
     if (node.args?.type === "execute_using_clause") {
