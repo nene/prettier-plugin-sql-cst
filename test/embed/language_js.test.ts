@@ -59,21 +59,13 @@ describe("LANGUAGE js", () => {
   });
 
   it(`does not reformat JavaScript when neither ''' or """ can be easily used for quoting`, async () => {
-    expect(
-      await pretty(
-        dedent`
-          CREATE FUNCTION contains_quotes(x STRING)
-          RETURNS FLOAT64
-          LANGUAGE js
-          AS " return /'''|\\"\\"\\"/.test(x) "
-        `,
-        { dialect: "bigquery" },
-      ),
-    ).toBe(dedent`
-      CREATE FUNCTION contains_quotes(x STRING)
-      RETURNS FLOAT64
-      LANGUAGE js
-      AS " return /'''|\\"\\"\\"/.test(x) "
-    `);
+    await testBigquery(
+      dedent`
+        CREATE FUNCTION contains_quotes(x STRING)
+        RETURNS FLOAT64
+        LANGUAGE js
+        AS " return /'''|\\"\\"\\"/.test(x) "
+      `,
+    );
   });
 });

@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { pretty } from "../test_utils";
+import { pretty, testPostgresql } from "../test_utils";
 
 const statements = [
   { name: "CREATE FUNCTION", code: "CREATE FUNCTION my_func()\nRETURNS INT" },
@@ -50,37 +50,23 @@ describe("LANGUAGE sql", () => {
       });
 
       it(`does not reformat single-quoted SQL string when its source contains $$-quotes`, async () => {
-        expect(
-          await pretty(
-            dedent`
-              ${code}
-              LANGUAGE sql
-              AS 'SELECT $$foo$$'
-            `,
-            { dialect: "postgresql" },
-          ),
-        ).toBe(dedent`
-          ${code}
-          LANGUAGE sql
-          AS 'SELECT $$foo$$'
-        `);
+        await testPostgresql(
+          dedent`
+            ${code}
+            LANGUAGE sql
+            AS 'SELECT $$foo$$'
+          `,
+        );
       });
 
       it(`does not reformat E'quoted' strings`, async () => {
-        expect(
-          await pretty(
-            dedent`
-              ${code}
-              LANGUAGE sql
-              AS E'SELECT 1'
-            `,
-            { dialect: "postgresql" },
-          ),
-        ).toBe(dedent`
-          ${code}
-          LANGUAGE sql
-          AS E'SELECT 1'
-        `);
+        await testPostgresql(
+          dedent`
+            ${code}
+            LANGUAGE sql
+            AS E'SELECT 1'
+          `,
+        );
       });
 
       it(`handles SQL language identifier case-insensitively`, async () => {
