@@ -10,6 +10,14 @@ import {
 import { CstToDocMap } from "../CstToDocMap";
 
 export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
+  // labels
+  labeled_stmt: (print, node) =>
+    group([
+      print.spaced(["beginLabel", "statement"]),
+      node.endLabel ? [" ", print(["endLabel"])] : [],
+    ]),
+  colon_label: (print) => [print("label"), ":"],
+
   // BEGIN .. END
   block_stmt: (print, node) =>
     group([
@@ -19,6 +27,8 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
       hardline,
       print("endKw"),
     ]),
+
+  // EXCEPTION
   exception_clause: (print, node) => {
     if (node.clauses.length === 1) {
       // Keep single exception clause on the same line as EXCEPTION keyword
@@ -127,13 +137,6 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
   // BREAK/CONTINUE
   break_stmt: (print) => group(print.spaced(["breakKw", "label"])),
   continue_stmt: (print) => group(print.spaced(["continueKw", "label"])),
-  // labels
-  labeled_stmt: (print, node) =>
-    group([
-      print.spaced(["beginLabel", "statement"]),
-      node.endLabel ? [" ", print(["endLabel"])] : [],
-    ]),
-  colon_label: (print) => [print("label"), ":"],
 
   // CALL
   call_stmt: (print) => group(print.spaced(["callKw", "func"])),
