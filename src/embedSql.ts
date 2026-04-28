@@ -25,24 +25,40 @@ export const embedSql: NonNullable<Printer<Node>["embed"]> = (
   if (
     isStringLiteral(node) &&
     isAsClause(parent) &&
-    (isCreateFunctionStmt(grandParent) || isCreateProcedureStmt(grandParent)) &&
-    grandParent.clauses.some(isSqlLanguageClause)
+    (isCreateFunctionStmt(grandParent) || isCreateProcedureStmt(grandParent))
   ) {
-    return async (textToDoc) => {
-      const quote = detectQuote(node);
-      if (!quote) {
-        return undefined;
-      }
+    if (grandParent.clauses.some(isSqlLanguageClause)) {
+      return async (textToDoc) => {
+        const quote = detectQuote(node);
+        if (!quote) {
+          return undefined;
+        }
 
-      const sql = await textToDoc(node.value, options);
+        const sql = await textToDoc(node.value, options);
 
-      return [
-        quote,
-        indent([hardline, stripTrailingHardline(sql)]),
-        hardline,
-        quote,
-      ];
-    };
+        return [
+          quote,
+          indent([hardline, stripTrailingHardline(sql)]),
+          hardline,
+          quote,
+        ];
+      };
+    }
+    if (grandParent.clauses.some(isPlpgsqlLanguageClause)) {
+      return async (textToDoc) => {
+        const quote = detectQuote(node);
+        if (!quote) {
+          return undefined;
+        }
+
+        const sql = await textToDoc(node.value, {
+          ...options,
+          parser: "plpgsql",
+        });
+
+        return [quote, [hardline, stripTrailingHardline(sql)], hardline, quote];
+      };
+    }
   }
 
   return null;
@@ -52,6 +68,11 @@ const isSqlLanguageClause = (
   clause: CreateFunctionStmt["clauses"][0] | CreateProcedureStmt["clauses"][0],
 ): boolean =>
   isLanguageClause(clause) && clause.name.name.toLowerCase() === "sql";
+
+const isPlpgsqlLanguageClause = (
+  clause: CreateFunctionStmt["clauses"][0] | CreateProcedureStmt["clauses"][0],
+): boolean =>
+  isLanguageClause(clause) && clause.name.name.toLowerCase() === "plpgsql";
 
 const detectQuote = (node: StringLiteral): string | undefined => {
   const match = node.text.match(/^('|\$[^$]*\$)/);

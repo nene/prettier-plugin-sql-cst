@@ -320,6 +320,31 @@ describe("function", () => {
         `);
       });
     });
+
+    describe("LANGUAGE plpgsql", () => {
+      it(`reformats SQL in dollar-quoted PL/pgSQL function`, async () => {
+        expect(
+          await pretty(
+            dedent`
+              CREATE FUNCTION my_func()
+              RETURNS INT
+              LANGUAGE plpgsql
+              AS $$BEGIN RETURN 1; END$$
+            `,
+            { dialect: "postgresql" },
+          ),
+        ).toBe(dedent`
+          CREATE FUNCTION my_func()
+          RETURNS INT
+          LANGUAGE plpgsql
+          AS $$
+          BEGIN
+            RETURN 1;
+          END;
+          $$
+        `);
+      });
+    });
   });
 
   describe("drop function", () => {
