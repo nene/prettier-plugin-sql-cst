@@ -331,7 +331,7 @@ describe("function", () => {
               LANGUAGE plpgsql
               AS $$BEGIN RETURN 1; END$$
             `,
-            { dialect: "postgresql" },
+            { dialect: "postgresql", sqlExperimentalPlpgsql: true },
           ),
         ).toBe(dedent`
           CREATE FUNCTION my_func()
@@ -354,7 +354,7 @@ describe("function", () => {
               LANGUAGE "plPgSQL"
               AS $$BEGIN RETURN 1; END$$
             `,
-            { dialect: "postgresql" },
+            { dialect: "postgresql", sqlExperimentalPlpgsql: true },
           ),
         ).toBe(dedent`
           CREATE FUNCTION my_func()

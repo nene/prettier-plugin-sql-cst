@@ -221,6 +221,13 @@ There are also several SQL-specific options:
 
   _Since 0.12.0_
 
+- **`sqlExperimentalPlpgsql`**: `boolean` (default `false`)
+
+  When enabled, the plugin will attempt to format PL/pgSQL function bodies.
+  This might fail, as the underlying parser support for PL/pgSQL is incomplete.
+
+  _Since 0.21.0_
+
 ## Usage inside VSCode
 
 To use this plugin inside VSCode,

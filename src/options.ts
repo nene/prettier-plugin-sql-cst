@@ -11,6 +11,7 @@ export interface SqlPluginOptions {
   sqlCanonicalSyntax: boolean;
   sqlFinalSemicolon: boolean;
   sqlAcceptUnsupportedGrammar: boolean;
+  sqlExperimentalPlpgsql: boolean;
 }
 
 // Prettier builtin options + options of this plugin
@@ -164,5 +165,13 @@ export const options: SupportOptions = {
     description:
       "Skips formatting unsupported SQL statements instead of exiting with an error",
     // Since 0.12.0
+  },
+  sqlExperimentalPlpgsql: {
+    type: "boolean",
+    category: "SQL",
+    default: false,
+    description:
+      "Enables formatting for PL/pgSQL in PostgreSQL function bodies",
+    // Since 0.21.0
   },
 };

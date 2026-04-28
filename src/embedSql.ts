@@ -13,6 +13,7 @@ import {
   isStringLiteral,
 } from "./node_utils";
 import { hardline, indent, stripTrailingHardline } from "./print_utils";
+import { AllPrettierOptions } from "./options";
 
 export const embedSql: NonNullable<Printer<Node>["embed"]> = (
   path,
@@ -21,6 +22,7 @@ export const embedSql: NonNullable<Printer<Node>["embed"]> = (
   const node = path.node;
   const parent = path.getParentNode(0);
   const grandParent = path.getParentNode(1);
+  const pluginOptions: Partial<AllPrettierOptions> = options;
 
   if (
     isStringLiteral(node) &&
@@ -34,7 +36,7 @@ export const embedSql: NonNullable<Printer<Node>["embed"]> = (
           return undefined;
         }
 
-        const sql = await textToDoc(node.value, options);
+        const sql = await textToDoc(node.value, pluginOptions);
 
         return [
           quote,
@@ -44,7 +46,10 @@ export const embedSql: NonNullable<Printer<Node>["embed"]> = (
         ];
       };
     }
-    if (grandParent.clauses.some(isPlpgsqlLanguageClause)) {
+    if (
+      grandParent.clauses.some(isPlpgsqlLanguageClause) &&
+      pluginOptions.sqlExperimentalPlpgsql
+    ) {
       return async (textToDoc) => {
         const quote = detectQuote(node);
         if (!quote) {
@@ -52,7 +57,7 @@ export const embedSql: NonNullable<Printer<Node>["embed"]> = (
         }
 
         const sql = await textToDoc(node.value, {
-          ...options,
+          ...pluginOptions,
           parser: "plpgsql",
         });
 
