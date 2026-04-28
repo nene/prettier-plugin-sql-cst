@@ -38,11 +38,32 @@ describe("block statement", () => {
     `);
   });
 
-  it(`formats DECLARE block`, async () => {
+  it(`formats empty DECLARE block`, async () => {
+    await testPlpgsql(dedent`
+      DECLARE
+      BEGIN
+        SELECT 1;
+      END
+    `);
+  });
+
+  it(`formats DECLARE block with variables`, async () => {
     await testPlpgsql(dedent`
       DECLARE
         foo INT;
         bar TEXT;
+      BEGIN
+        SELECT 1;
+      END
+    `);
+  });
+
+  it(`formats DECLARE block with initialized variables`, async () => {
+    await testPlpgsql(dedent`
+      DECLARE
+        foo INT = 10;
+        bar TEXT := 'Hello';
+        baz NUMERIC DEFAULT 12.3;
       BEGIN
         SELECT 1;
       END
