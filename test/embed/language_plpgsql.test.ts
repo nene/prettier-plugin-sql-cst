@@ -9,7 +9,7 @@ const statements = [
 describe("LANGUAGE plpgsql", () => {
   statements.forEach(({ name, code }) => {
     describe(name, () => {
-      it(`reformats SQL in dollar-quoted PL/pgSQL function`, async () => {
+      it(`reformats SQL in dollar-quoted string`, async () => {
         expect(
           await pretty(
             dedent`
@@ -30,7 +30,62 @@ describe("LANGUAGE plpgsql", () => {
         `);
       });
 
-      it(`ignores plpgsql language name case`, async () => {
+      it(`converts single-quoted string to dollar-quoted string`, async () => {
+        expect(
+          await pretty(
+            dedent`
+              ${code}
+              LANGUAGE plpgsql
+              AS 'BEGIN SELECT ''foo''; END'
+            `,
+            { dialect: "postgresql", sqlExperimentalPlpgsql: true },
+          ),
+        ).toBe(dedent`
+          ${code}
+          LANGUAGE plpgsql
+          AS $$
+          BEGIN
+            SELECT 'foo';
+          END;
+          $$
+        `);
+      });
+
+      it(`does not reformat single-quoted SQL string when its source contains $$-quotes`, async () => {
+        expect(
+          await pretty(
+            dedent`
+              ${code}
+              LANGUAGE plpgsql
+              AS 'BEGIN SELECT $$foo$$; END'
+            `,
+            { dialect: "postgresql", sqlExperimentalPlpgsql: true },
+          ),
+        ).toBe(dedent`
+          ${code}
+          LANGUAGE plpgsql
+          AS 'BEGIN SELECT $$foo$$; END'
+        `);
+      });
+
+      it(`does not reformat E'quoted' strings`, async () => {
+        expect(
+          await pretty(
+            dedent`
+              ${code}
+              LANGUAGE plpgsql
+              AS E'BEGIN SELECT 1; END'
+            `,
+            { dialect: "postgresql", sqlExperimentalPlpgsql: true },
+          ),
+        ).toBe(dedent`
+          ${code}
+          LANGUAGE plpgsql
+          AS E'BEGIN SELECT 1; END'
+        `);
+      });
+
+      it(`handles PL/pgSQL language identifier case-insensitively`, async () => {
         expect(
           await pretty(
             dedent`
