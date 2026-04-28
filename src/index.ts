@@ -36,6 +36,11 @@ export const languages: SupportLanguage[] = [
     name: "Experimental PostgreSQL SQL",
     parsers: ["postgresql"],
   },
+  {
+    extensions: [],
+    name: "Experimental PL/pgSQL",
+    parsers: ["plpgsql"],
+  },
 ];
 
 const createParser = (dialect: DialectName): Parser<Node> => ({
@@ -64,6 +69,7 @@ export const parsers: Record<string, Parser<Node>> = {
   mysql: createParser("mysql"),
   mariadb: createParser("mariadb"),
   postgresql: createParser("postgresql"),
+  plpgsql: createParser("plpgsql"),
 };
 
 export const printers: Record<string, Printer> = {
