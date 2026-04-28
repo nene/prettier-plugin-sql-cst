@@ -69,4 +69,12 @@ describe("labels", () => {
       END LOOP outer_loop
     `);
   });
+
+  it(`formats PL/pgSQL labels on block statement`, async () => {
+    await testPlpgsql(dedent`
+      <<outer_loop>> BEGIN
+        SELECT 1;
+      END outer_loop
+    `);
+  });
 });
