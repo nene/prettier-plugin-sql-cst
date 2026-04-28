@@ -344,6 +344,29 @@ describe("function", () => {
           $$
         `);
       });
+
+      it(`ignores plpgsql language name case`, async () => {
+        expect(
+          await pretty(
+            dedent`
+              CREATE FUNCTION my_func()
+              RETURNS INT
+              LANGUAGE "plPgSQL"
+              AS $$BEGIN RETURN 1; END$$
+            `,
+            { dialect: "postgresql" },
+          ),
+        ).toBe(dedent`
+          CREATE FUNCTION my_func()
+          RETURNS INT
+          LANGUAGE "plPgSQL"
+          AS $$
+          BEGIN
+            RETURN 1;
+          END;
+          $$
+        `);
+      });
     });
   });
 
