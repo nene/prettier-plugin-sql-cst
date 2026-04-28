@@ -17,6 +17,7 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
       node.endLabel ? [" ", print(["endLabel"])] : [],
     ]),
   colon_label: (print) => [print("label"), ":"],
+  chevron_label: (print) => ["<<", print("label"), ">>"],
 
   // BEGIN .. END
   block_stmt: (print, node) =>

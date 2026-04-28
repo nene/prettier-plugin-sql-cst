@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { testBigquery } from "../test_utils";
+import { testBigquery, testPlpgsql } from "../test_utils";
 
 describe("labels", () => {
   it(`formats BREAK/CONTINUE`, async () => {
@@ -14,7 +14,7 @@ describe("labels", () => {
     `);
   });
 
-  it(`formats labels`, async () => {
+  it(`formats BigQuery labels`, async () => {
     await testBigquery(dedent`
       outer_loop: LOOP
         inner_loop: LOOP
@@ -24,13 +24,33 @@ describe("labels", () => {
     `);
   });
 
-  it(`formats end labels`, async () => {
+  it(`formats BigQuery end labels`, async () => {
     await testBigquery(dedent`
       outer_loop: REPEAT
         inner_loop: LOOP
           CONTINUE outer_loop;
         END LOOP inner_loop;
       UNTIL TRUE END REPEAT outer_loop
+    `);
+  });
+
+  it(`formats PL/pgSQL labels`, async () => {
+    await testPlpgsql(dedent`
+      <<outer_loop>> LOOP
+        <<inner_loop>> LOOP
+          EXIT outer_loop;
+        END LOOP;
+      END LOOP
+    `);
+  });
+
+  it(`formats PL/pgSQL end labels`, async () => {
+    await testPlpgsql(dedent`
+      <<outer_loop>> LOOP
+        <<inner_loop>> LOOP
+          EXIT inner_loop;
+        END LOOP inner_loop;
+      END LOOP outer_loop
     `);
   });
 });
