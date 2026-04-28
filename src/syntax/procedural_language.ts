@@ -22,12 +22,29 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
   // BEGIN .. END
   block_stmt: (print, node) =>
     group([
-      print.spaced(["beginKw", "atomicKw"]),
+      stripTrailingHardline(print("declareClause")),
+      [
+        node.declareClause ? hardline : [],
+        print.spaced(["beginKw", "atomicKw"]),
+      ],
       indent([hardline, stripTrailingHardline(print("program"))]),
       node.exception ? [hardline, print("exception")] : [],
       hardline,
       print("endKw"),
     ]),
+
+  // DECLARE
+  declare_clause: (print, node) =>
+    group([print("declareKw"), indent([hardline, print("program")])]),
+  declare_stmt: (print) =>
+    group(
+      join(" ", [
+        ...print.spaced(["declareKw"]),
+        group(print("names")),
+        ...print.spaced(["dataType", "init"]),
+      ]),
+    ),
+  declare_init: (print) => print.spaced(["operator", "expr"]),
 
   // EXCEPTION
   exception_clause: (print, node) => {
@@ -53,17 +70,6 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
   error_bigquery: (print) => print("errorKw"),
   error_name: (print) => print("name"),
   error_sqlstate: (print) => print.spaced(["sqlstateKw", "code"]),
-
-  // DECLARE
-  declare_stmt: (print) =>
-    group(
-      join(" ", [
-        print("declareKw"),
-        group(print("names")),
-        ...print.spaced(["dataType", "init"]),
-      ]),
-    ),
-  declare_init: (print) => print.spaced(["operator", "expr"]),
 
   // SET
   set_stmt: (print) => group(print.spaced(["setKw", "assignments"])),

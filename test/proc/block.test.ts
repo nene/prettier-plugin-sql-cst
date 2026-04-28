@@ -12,7 +12,7 @@ describe("block statement", () => {
     `);
   });
 
-  it(`formats BEGIN .. EXCEPTION .. END`, async () => {
+  it(`formats EXCEPTION block`, async () => {
     await testBigquery(dedent`
       BEGIN
         SELECT 1;
@@ -34,6 +34,17 @@ describe("block statement", () => {
           SELECT 4;
         WHEN others THEN
           SELECT 0;
+      END
+    `);
+  });
+
+  it(`formats DECLARE block`, async () => {
+    await testPlpgsql(dedent`
+      DECLARE
+        foo INT;
+        bar TEXT;
+      BEGIN
+        SELECT 1;
       END
     `);
   });
