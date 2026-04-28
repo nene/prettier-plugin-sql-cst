@@ -38,15 +38,6 @@ describe("block statement", () => {
     `);
   });
 
-  it(`formats empty DECLARE block`, async () => {
-    await testPlpgsql(dedent`
-      DECLARE
-      BEGIN
-        SELECT 1;
-      END
-    `);
-  });
-
   it(`formats DECLARE block with variables`, async () => {
     await testPlpgsql(dedent`
       DECLARE
@@ -68,5 +59,53 @@ describe("block statement", () => {
         SELECT 1;
       END
     `);
+  });
+
+  describe("empty", () => {
+    it(`formats empty BEGIN .. END block`, async () => {
+      await testPlpgsql(dedent`
+        BEGIN
+        END
+      `);
+    });
+
+    it(`formats empty DECLARE block`, async () => {
+      await testPlpgsql(dedent`
+        DECLARE
+        BEGIN
+          SELECT 1;
+        END
+      `);
+    });
+
+    it(`formats empty EXCEPTION WHEN block`, async () => {
+      await testPlpgsql(dedent`
+        BEGIN
+          SELECT 1;
+        EXCEPTION WHEN division_by_zero THEN
+        END
+      `);
+    });
+
+    it(`formats multiple empty blocks`, async () => {
+      await testPlpgsql(dedent`
+        DECLARE
+        BEGIN
+        EXCEPTION
+          WHEN division_by_zero THEN
+          WHEN others THEN
+        END
+      `);
+    });
+
+    // Fails with Prettier error: Comment location overlaps with node location
+    // This error occurs before we even start the formatting process, during decorateComment() processing
+    it.skip(`formats block containing only comments`, async () => {
+      await testPlpgsql(dedent`
+        BEGIN
+          -- comment1
+        END
+      `);
+    });
   });
 });

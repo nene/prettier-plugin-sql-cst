@@ -27,7 +27,9 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
         node.declareClause ? hardline : [],
         print.spaced(["beginKw", "atomicKw"]),
       ],
-      indent([hardline, stripTrailingHardline(print("program"))]),
+      node.program.statements.length > 0
+        ? indent([hardline, stripTrailingHardline(print("program"))])
+        : print("program"),
       node.exception ? [hardline, print("exception")] : [],
       hardline,
       print("endKw"),
@@ -61,10 +63,12 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
       ]);
     }
   },
-  exception_when_clause: (print) =>
+  exception_when_clause: (print, node) =>
     group([
       join(" ", [print("whenKw"), group(print("condition")), print("thenKw")]),
-      indent([hardline, stripTrailingHardline(print("program"))]),
+      node.program.statements.length > 0
+        ? indent([hardline, stripTrailingHardline(print("program"))])
+        : print("program"),
     ]),
 
   error_bigquery: (print) => print("errorKw"),
