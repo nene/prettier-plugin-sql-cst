@@ -24,16 +24,24 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
       // Keep single exception clause on the same line as EXCEPTION keyword
       return group(print.spaced(["exceptionKw", "clauses"]));
     } else {
-      return group([print("exceptionKw"), indent([line, print("clauses")])]);
+      return group([
+        print("exceptionKw"),
+        indent([
+          hardline,
+          stripTrailingHardline(print("clauses").map((doc) => [doc, hardline])),
+        ]),
+      ]);
     }
   },
   exception_when_clause: (print) =>
     group([
-      print.spaced(["whenKw", "condition", "thenKw"]),
+      join(" ", [print("whenKw"), group(print("condition")), print("thenKw")]),
       indent([hardline, stripTrailingHardline(print("program"))]),
     ]),
 
   error_bigquery: (print) => print("errorKw"),
+  error_name: (print) => print("name"),
+  error_sqlstate: (print) => print.spaced(["sqlstateKw", "code"]),
 
   // DECLARE
   declare_stmt: (print) =>
