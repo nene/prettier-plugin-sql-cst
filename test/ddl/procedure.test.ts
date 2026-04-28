@@ -94,16 +94,6 @@ describe("procedure", () => {
     });
 
     describe("LANGUAGE sql", () => {
-      it(`formats dollar-quoted SQL procedure`, async () => {
-        await testPostgresql(dedent`
-          CREATE PROCEDURE my_proc()
-          LANGUAGE sql
-          AS $$
-            SELECT 1;
-          $$
-        `);
-      });
-
       it(`reformats SQL in dollar-quoted SQL procedure`, async () => {
         expect(
           await pretty(

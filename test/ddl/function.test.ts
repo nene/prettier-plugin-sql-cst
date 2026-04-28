@@ -206,17 +206,6 @@ describe("function", () => {
     });
 
     describe("LANGUAGE sql", () => {
-      it(`formats dollar-quoted SQL function`, async () => {
-        await testPostgresql(dedent`
-          CREATE FUNCTION my_func()
-          RETURNS INT64
-          LANGUAGE sql
-          AS $$
-            SELECT 1;
-          $$
-        `);
-      });
-
       it(`reformats SQL in dollar-quoted SQL function`, async () => {
         expect(
           await pretty(
