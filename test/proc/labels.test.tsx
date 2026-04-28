@@ -14,6 +14,22 @@ describe("labels", () => {
     `);
   });
 
+  it(`formats EXIT/CONTINUE with WHEN clause`, async () => {
+    await testPlpgsql(dedent`
+      <<my_label>> LOOP
+        EXIT WHEN x < 10;
+        CONTINUE WHEN x > 10;
+      END LOOP
+    `);
+
+    await testPlpgsql(dedent`
+      <<my_label>> LOOP
+        EXIT my_label WHEN x < 10;
+        CONTINUE my_label WHEN x > 10;
+      END LOOP
+    `);
+  });
+
   it(`formats BigQuery labels`, async () => {
     await testBigquery(dedent`
       outer_loop: LOOP
