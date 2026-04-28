@@ -211,7 +211,7 @@ describe("function", () => {
           await pretty(
             dedent`
               CREATE FUNCTION my_func()
-              RETURNS INT64
+              RETURNS INT
               LANGUAGE sql
               AS $body$SELECT 1;
               select 2$body$
@@ -220,7 +220,7 @@ describe("function", () => {
           ),
         ).toBe(dedent`
           CREATE FUNCTION my_func()
-          RETURNS INT64
+          RETURNS INT
           LANGUAGE sql
           AS $body$
             SELECT 1;
@@ -293,7 +293,7 @@ describe("function", () => {
           await pretty(
             dedent`
               CREATE FUNCTION my_func()
-              RETURNS INT64
+              RETURNS INT
               LANGUAGE Sql
               AS 'SELECT 1'
             `,
@@ -301,7 +301,7 @@ describe("function", () => {
           ),
         ).toBe(dedent`
           CREATE FUNCTION my_func()
-          RETURNS INT64
+          RETURNS INT
           LANGUAGE Sql
           AS $$
             SELECT 1;
