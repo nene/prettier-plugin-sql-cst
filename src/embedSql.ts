@@ -13,6 +13,7 @@ import {
   isStringLiteral,
 } from "./node_utils";
 import { hardline, indent, stripTrailingHardline } from "./print_utils";
+import { AllPrettierOptions } from "./options";
 
 export const embedSql: NonNullable<Printer<Node>["embed"]> = (
   path,
@@ -51,10 +52,13 @@ export const embedSql: NonNullable<Printer<Node>["embed"]> = (
           return undefined;
         }
 
-        const sql = await textToDoc(node.value, {
+        const opts: Partial<AllPrettierOptions> = {
           ...options,
           parser: "plpgsql",
-        });
+          sqlFinalSemicolon: false,
+        };
+
+        const sql = await textToDoc(node.value, opts);
 
         return [quote, [hardline, stripTrailingHardline(sql)], hardline, quote];
       };
