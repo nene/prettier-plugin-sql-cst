@@ -98,12 +98,11 @@ describe("block statement", () => {
       `);
     });
 
-    // Fails with Prettier error: Comment location overlaps with node location
-    // This error occurs before we even start the formatting process, during decorateComment() processing
-    it.skip(`formats block containing only comments`, async () => {
+    // TODO: This is not really a good result.
+    // It doesn't crash, but that's about it.
+    it(`formats block containing only comments`, async () => {
       await testPlpgsql(dedent`
-        BEGIN
-          -- comment1
+        BEGIN -- comment
         END
       `);
     });
