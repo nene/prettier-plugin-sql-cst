@@ -59,4 +59,31 @@ describe("return", () => {
         WHERE price > 10 AND currency = 'EUR'
     `);
   });
+
+  it(`formats RETURN QUERY EXECUTE`, async () => {
+    await testPlpgsql(dedent`
+      RETURN QUERY EXECUTE 'SELECT * FROM products WHERE id IN (?, ?)' USING 153, 82
+    `);
+  });
+
+  it(`formats RETURN QUERY EXECUTE with long query string`, async () => {
+    await testPlpgsql(dedent`
+      RETURN QUERY EXECUTE
+        'SELECT id, brand_name, product_name, price FROM products WHERE brand_name = ? OR product_name = ?'
+        USING 'Macchiato madness', 'Espresso machine'
+    `);
+  });
+
+  it(`formats RETURN QUERY EXECUTE with long USING clause`, async () => {
+    await testPlpgsql(dedent`
+      RETURN QUERY EXECUTE
+        'SELECT * FROM products WHERE name IN (?, ?, ?, ?, ?)'
+        USING
+          '3000W Blender',
+          'Espresso machine',
+          'Air fryer',
+          'Microwave oven',
+          'Slow cooker'
+    `);
+  });
 });

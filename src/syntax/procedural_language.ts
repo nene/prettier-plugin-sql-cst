@@ -159,8 +159,13 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
   // RETURN
   return_stmt: (print) => group(print.spaced(["returnKw", "expr"])),
   return_next_stmt: (print) => group(print.spaced(["returnNextKw", "expr"])),
-  return_query_stmt: (print) =>
-    group([print.spaced("returnQueryKw"), " ", indent(print("expr"))]),
+  return_query_stmt: (print, node) => {
+    if (node.expr.type === "execute_expr") {
+      return group([print.spaced("returnQueryKw"), " ", print("expr")]);
+    } else {
+      return group([print.spaced("returnQueryKw"), " ", indent(print("expr"))]);
+    }
+  },
   // RAISE
   raise_stmt: (print) => group(print.spaced(["raiseKw", "using"])),
   raise_using_clause: (print) => group(print.spaced(["usingKw", "options"])),
