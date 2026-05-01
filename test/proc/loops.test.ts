@@ -41,4 +41,28 @@ describe("loops", () => {
       END FOR
     `);
   });
+
+  it(`formats FOR .. IN range LOOP`, async () => {
+    await testPlpgsql(dedent`
+      FOR n IN 1..10 LOOP
+        x = x + n;
+      END LOOP
+    `);
+  });
+
+  it(`formats FOR .. IN REVERSE range LOOP`, async () => {
+    await testPlpgsql(dedent`
+      FOR n IN REVERSE 10..1 LOOP
+        x = x + n;
+      END LOOP
+    `);
+  });
+
+  it(`formats FOR .. IN range BY step LOOP`, async () => {
+    await testPlpgsql(dedent`
+      FOR n IN x..y BY z LOOP
+        x = x + n;
+      END LOOP
+    `);
+  });
 });

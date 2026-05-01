@@ -141,6 +141,7 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
       hardline,
       print.spaced("endWhileKw"),
     ]),
+  // WHILE .. LOOP .. END LOOP
   while_loop_stmt: (print) =>
     group(print.spaced(["whileKw", "condition", "loop"])),
   // FOR .. IN
@@ -151,6 +152,16 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
       hardline,
       print.spaced("endForKw"),
     ]),
+  // FOR .. IN range LOOP .. END LOOP
+  for_loop_stmt: (print) =>
+    group(print.spaced(["forKw", "left", "inKw", "right", "loop"])),
+  for_range: (print) =>
+    group([
+      print.spaced(["reverseKw", "from"]),
+      "..",
+      print.spaced(["to", "by"]),
+    ]),
+  for_by_clause: (print) => group(print.spaced(["byKw", "expr"])),
   // BREAK/CONTINUE
   break_stmt: (print) => group(print.spaced(["breakKw", "label", "when"])),
   continue_stmt: (print) =>
