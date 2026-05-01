@@ -43,7 +43,7 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
       join(" ", [
         ...print.spaced(["declareKw"]),
         group(print("names")),
-        ...print.spaced(["dataType", "init"]),
+        ...print.spaced(["constantKw", "dataType", "constraints", "init"]),
       ]),
     ),
   declare_init: (print) => print.spaced(["operator", "expr"]),

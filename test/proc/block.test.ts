@@ -61,6 +61,17 @@ describe("block statement", () => {
     `);
   });
 
+  it(`formats DECLARE block with various variable type modifiers`, async () => {
+    await testPlpgsql(dedent`
+      DECLARE
+        foo CONSTANT INT = 5;
+        bar TEXT NOT NULL COLLATE "en_US" = 'Hello';
+      BEGIN
+        SELECT 1;
+      END
+    `);
+  });
+
   describe("empty", () => {
     it(`formats empty BEGIN .. END block`, async () => {
       await testPlpgsql(dedent`
