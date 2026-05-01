@@ -73,4 +73,12 @@ describe("loops", () => {
       END LOOP
     `);
   });
+
+  it(`formats FOR .. IN EXECUTE .. LOOP`, async () => {
+    await testPlpgsql(dedent`
+      FOR n IN EXECUTE 'SELECT num FROM nums WHERE p > ?' USING foo LOOP
+        x = x + n;
+      END LOOP
+    `);
+  });
 });
