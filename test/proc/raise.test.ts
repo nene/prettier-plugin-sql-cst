@@ -29,7 +29,7 @@ describe("raise", () => {
   it(`formats RAISE with level and USING clause`, async () => {
     await testPlpgsql(dedent`
       RAISE WARNING index_out_of_range
-        USING MESSAGE = 'Index is out of range', HINT = 'Whatever'
+        USING MESSAGE = 'Index is out of range', HINT := 'Whatever'
     `);
   });
 

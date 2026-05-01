@@ -201,7 +201,8 @@ export const proceduralLanguageMap: CstToDocMap<AllProceduralNodes> = {
   raise_level: (print) => print("levelKw"),
   raise_using_clause: (print) =>
     group([print("usingKw"), indent([line, print("options")])]),
-  raise_option_element: (print) => [print("nameKw"), " = ", print("value")],
+  raise_option_element: (print) =>
+    group(print.spaced(["nameKw", "operator", "value"])),
   // ASSERT
   assert_stmt: (print) =>
     group(print.spaced(["assertKw", "condition", "message"])),
