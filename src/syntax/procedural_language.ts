@@ -162,6 +162,19 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
       print.spaced(["to", "by"]),
     ]),
   for_by_clause: (print) => group(print.spaced(["byKw", "expr"])),
+  // FOREACH
+  foreach_stmt: (print) =>
+    group([
+      print.spaced([
+        "foreachKw",
+        "left",
+        "slice",
+        "inArrayKw",
+        "right",
+        "loop",
+      ]),
+    ]),
+  foreach_slice: (print) => group(print.spaced(["sliceKw", "count"])),
   // BREAK/CONTINUE
   break_stmt: (print) => group(print.spaced(["breakKw", "label", "when"])),
   continue_stmt: (print) =>

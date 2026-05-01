@@ -81,4 +81,20 @@ describe("loops", () => {
       END LOOP
     `);
   });
+
+  it(`formats FOREACH .. LOOP`, async () => {
+    await testPlpgsql(dedent`
+      FOREACH n IN ARRAY arr LOOP
+        x = x + n;
+      END LOOP
+    `);
+  });
+
+  it(`formats FOREACH .. SLICE .. LOOP`, async () => {
+    await testPlpgsql(dedent`
+      FOREACH n SLICE 8 IN ARRAY arr LOOP
+        x = x + n;
+      END LOOP
+    `);
+  });
 });
