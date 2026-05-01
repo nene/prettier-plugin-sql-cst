@@ -106,5 +106,25 @@ describe("block statement", () => {
         END
       `);
     });
+
+    // The DECLARE block works much better
+    it(`formats DECLARE block containing only comments`, async () => {
+      await testPlpgsql(dedent`
+        DECLARE
+          -- comment 1
+          -- comment 2
+        BEGIN
+        END
+      `);
+    });
+
+    // TODO: Similarly this is not good.
+    it(`formats EXCEPTION block containing only comments`, async () => {
+      await testPlpgsql(dedent`
+        BEGIN
+        EXCEPTION WHEN foo THEN -- comment
+        END
+      `);
+    });
   });
 });
