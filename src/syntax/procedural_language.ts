@@ -161,4 +161,6 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
   // ASSERT
   assert_stmt: (print) =>
     group(print.spaced(["assertKw", "condition", "message"])),
+  // NULL
+  null_stmt: (print) => group(print.spaced(["nullKw"])),
 };
