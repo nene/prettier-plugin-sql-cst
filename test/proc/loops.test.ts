@@ -65,4 +65,12 @@ describe("loops", () => {
       END LOOP
     `);
   });
+
+  it(`formats FOR .. IN query LOOP`, async () => {
+    await testPlpgsql(dedent`
+      FOR n IN SELECT num FROM nums LOOP
+        x = x + n;
+      END LOOP
+    `);
+  });
 });
