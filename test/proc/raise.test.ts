@@ -42,4 +42,25 @@ describe("raise", () => {
           DETAIL = 'The index you provided is 10, but the maximum allowed is 5'
     `);
   });
+
+  it(`formats RAISE with plain string`, async () => {
+    await testPlpgsql(dedent`
+      RAISE 'An error occurred while processing your request'
+    `);
+  });
+
+  it(`formats RAISE format string`, async () => {
+    await testPlpgsql(dedent`
+      RAISE 'Index % is out of range in %', idx, array_name
+    `);
+  });
+
+  it(`formats RAISE format string with long arguments`, async () => {
+    await testPlpgsql(dedent`
+      RAISE 'Index % is out of range in %. %',
+        idx,
+        array_name,
+        'Please check the index and try again'
+    `);
+  });
 });

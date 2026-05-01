@@ -73,8 +73,8 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
 
   error_bigquery: (print) => print("errorKw"),
   error_name: (print) => print("name"),
-  error_sqlstate: (print) => print.spaced(["sqlstateKw", "code"]),
-
+  error_sqlstate: (print) => group(print.spaced(["sqlstateKw", "code"])),
+  error_format_string: (print, node) => group(print(["format", "args"])),
   // SET
   set_stmt: (print) => group(print.spaced(["setKw", "assignments"])),
 

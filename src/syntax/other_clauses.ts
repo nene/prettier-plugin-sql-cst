@@ -19,7 +19,7 @@ export const otherClausesMap: CstToDocMap<AllOtherClauses> = {
     return [print("asKw"), indent([hardline, print("expr")])];
   },
 
-  comma_clause: (print) => [",", print("expr")],
+  comma_clause: (print) => group([",", indent([line, print("expr")])]),
 
   // WHERE CURRENT OF clause
   where_current_of_clause: (print) =>
