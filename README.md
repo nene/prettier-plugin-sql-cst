@@ -119,6 +119,7 @@ The plugin provides the following parsers:
 - `sqlite`
 - `bigquery`
 - `postgresql` (**experimental! expect crashes**)
+- `plpgsql` (**experimental! expect crashes**)
 - `mysql` (**experimental! expect crashes**)
 - `mariadb` (**experimental! expect crashes**)
 
@@ -269,6 +270,7 @@ Currently this plugin supports two SQL dialects:
 It also has experimental support for the following dialects:
 
 - PostgreSQL
+- PL/pgSQL
 - MySQL
 - MariaDB
 
