@@ -193,8 +193,14 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
     }
   },
   // RAISE
-  raise_stmt: (print) => group(print.spaced(["raiseKw", "using"])),
-  raise_using_clause: (print) => group(print.spaced(["usingKw", "options"])),
+  raise_stmt: (print, node) =>
+    group([
+      print.spaced(["raiseKw", "level", "error"]),
+      node.using ? indent([line, print("using")]) : [],
+    ]),
+  raise_level: (print) => print("levelKw"),
+  raise_using_clause: (print) =>
+    group([print("usingKw"), indent([line, print("options")])]),
   raise_option_element: (print) => [print("nameKw"), " = ", print("value")],
   // ASSERT
   assert_stmt: (print) =>
