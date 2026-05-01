@@ -57,3 +57,4 @@ export const testBigquery = createTestFn("bigquery");
 export const testMysql = createTestFn("mysql");
 export const testMariadb = createTestFn("mariadb");
 export const testPostgresql = createTestFn("postgresql");
+export const testPlpgsql = createTestFn("plpgsql");

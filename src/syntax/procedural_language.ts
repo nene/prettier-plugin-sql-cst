@@ -9,45 +9,78 @@ import {
 } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
+export const proceduralLanguageMap: CstToDocMap<AllProceduralNodes> = {
+  // labels
+  labeled_stmt: (print, node) =>
+    group([
+      print.spaced(["beginLabel", "statement"]),
+      node.endLabel ? [" ", print(["endLabel"])] : [],
+    ]),
+  colon_label: (print) => [print("label"), ":"],
+  chevron_label: (print) => ["<<", print("label"), ">>"],
+
   // BEGIN .. END
   block_stmt: (print, node) =>
     group([
-      print.spaced(["beginKw", "atomicKw"]),
-      indent([hardline, stripTrailingHardline(print("program"))]),
+      stripTrailingHardline(print("declareClause")),
+      [
+        node.declareClause ? hardline : [],
+        print.spaced(["beginKw", "atomicKw"]),
+      ],
+      node.program.statements.length > 0
+        ? indent([hardline, stripTrailingHardline(print("program"))])
+        : print("program"),
       node.exception ? [hardline, print("exception")] : [],
       hardline,
       print("endKw"),
     ]),
+
+  // DECLARE
+  declare_clause: (print, node) =>
+    group([print("declareKw"), indent([hardline, print("program")])]),
+  declare_stmt: (print) =>
+    group(
+      join(" ", [
+        ...print.spaced(["declareKw"]),
+        group(print("names")),
+        ...print.spaced(["constantKw", "dataType", "constraints", "init"]),
+      ]),
+    ),
+  declare_init: (print) => print.spaced(["operator", "expr"]),
+
+  // EXCEPTION
   exception_clause: (print, node) => {
     if (node.clauses.length === 1) {
       // Keep single exception clause on the same line as EXCEPTION keyword
       return group(print.spaced(["exceptionKw", "clauses"]));
     } else {
-      return group([print("exceptionKw"), indent([line, print("clauses")])]);
+      return group([
+        print("exceptionKw"),
+        indent([
+          hardline,
+          stripTrailingHardline(print("clauses").map((doc) => [doc, hardline])),
+        ]),
+      ]);
     }
   },
-  exception_when_clause: (print) =>
+  exception_when_clause: (print, node) =>
     group([
-      print.spaced(["whenKw", "condition", "thenKw"]),
-      indent([hardline, stripTrailingHardline(print("program"))]),
+      join(" ", [print("whenKw"), group(print("condition")), print("thenKw")]),
+      node.program.statements.length > 0
+        ? indent([hardline, stripTrailingHardline(print("program"))])
+        : print("program"),
     ]),
 
   error_bigquery: (print) => print("errorKw"),
-
-  // DECLARE
-  declare_stmt: (print) =>
-    group(
-      join(" ", [
-        print("declareKw"),
-        group(print("names")),
-        ...print.spaced(["dataType", "init"]),
-      ]),
-    ),
-  declare_init: (print) => print.spaced(["operator", "expr"]),
-
+  error_name: (print) => print("name"),
+  error_sqlstate: (print) => group(print.spaced(["sqlstateKw", "code"])),
+  error_format_string: (print, node) => group(print(["format", "args"])),
   // SET
   set_stmt: (print) => group(print.spaced(["setKw", "assignments"])),
+
+  // assignment
+  assignment_stmt: (print) =>
+    group(print.spaced(["target", "operator", "expr"])),
 
   // IF
   if_stmt: (print) =>
@@ -108,6 +141,9 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
       hardline,
       print.spaced("endWhileKw"),
     ]),
+  // WHILE .. LOOP .. END LOOP
+  while_loop_stmt: (print) =>
+    group(print.spaced(["whileKw", "condition", "loop"])),
   // FOR .. IN
   for_stmt: (print) =>
     group([
@@ -116,26 +152,60 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
       hardline,
       print.spaced("endForKw"),
     ]),
-  // BREAK/CONTINUE
-  break_stmt: (print) => group(print.spaced(["breakKw", "label"])),
-  continue_stmt: (print) => group(print.spaced(["continueKw", "label"])),
-  // labels
-  labeled_stmt: (print, node) =>
+  // FOR .. IN range LOOP .. END LOOP
+  for_loop_stmt: (print) =>
+    group(print.spaced(["forKw", "left", "inKw", "right", "loop"])),
+  for_range: (print) =>
     group([
-      print.spaced(["beginLabel", "statement"]),
-      node.endLabel ? [" ", print(["endLabel"])] : [],
+      print.spaced(["reverseKw", "from"]),
+      "..",
+      print.spaced(["to", "by"]),
     ]),
-  colon_label: (print) => [print("label"), ":"],
+  for_by_clause: (print) => group(print.spaced(["byKw", "expr"])),
+  // FOREACH
+  foreach_stmt: (print) =>
+    group([
+      print.spaced([
+        "foreachKw",
+        "left",
+        "slice",
+        "inArrayKw",
+        "right",
+        "loop",
+      ]),
+    ]),
+  foreach_slice: (print) => group(print.spaced(["sliceKw", "count"])),
+  // BREAK/CONTINUE
+  break_stmt: (print) => group(print.spaced(["breakKw", "label", "when"])),
+  continue_stmt: (print) =>
+    group(print.spaced(["continueKw", "label", "when"])),
 
   // CALL
   call_stmt: (print) => group(print.spaced(["callKw", "func"])),
   // RETURN
   return_stmt: (print) => group(print.spaced(["returnKw", "expr"])),
+  return_next_stmt: (print) => group(print.spaced(["returnNextKw", "expr"])),
+  return_query_stmt: (print, node) => {
+    if (node.expr.type === "execute_expr") {
+      return group([print.spaced("returnQueryKw"), " ", print("expr")]);
+    } else {
+      return group([print.spaced("returnQueryKw"), " ", indent(print("expr"))]);
+    }
+  },
   // RAISE
-  raise_stmt: (print) => group(print.spaced(["raiseKw", "using"])),
-  raise_using_clause: (print) => group(print.spaced(["usingKw", "options"])),
-  raise_option_element: (print) => [print("nameKw"), " = ", print("value")],
+  raise_stmt: (print, node) =>
+    group([
+      print.spaced(["raiseKw", "level", "error"]),
+      node.using ? indent([line, print("using")]) : [],
+    ]),
+  raise_level: (print) => print("levelKw"),
+  raise_using_clause: (print) =>
+    group([print("usingKw"), indent([line, print("options")])]),
+  raise_option_element: (print) =>
+    group(print.spaced(["nameKw", "operator", "value"])),
   // ASSERT
   assert_stmt: (print) =>
     group(print.spaced(["assertKw", "condition", "message"])),
+  // NULL
+  null_stmt: (print) => group(print.spaced(["nullKw"])),
 };

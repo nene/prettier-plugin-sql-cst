@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { testBigquery } from "../test_utils";
+import { testBigquery, testPlpgsql } from "../test_utils";
 
 describe("loops", () => {
   it(`formats LOOP`, async () => {
@@ -26,6 +26,14 @@ describe("loops", () => {
     `);
   });
 
+  it(`formats WHILE .. LOOP .. END LOOP`, async () => {
+    await testPlpgsql(dedent`
+      WHILE x < 10 LOOP
+        x = x + 1;
+      END LOOP
+    `);
+  });
+
   it(`formats FOR .. IN`, async () => {
     await testBigquery(dedent`
       FOR record IN (SELECT * FROM tbl) DO
@@ -34,35 +42,59 @@ describe("loops", () => {
     `);
   });
 
-  it(`formats BREAK/CONTINUE`, async () => {
-    await testBigquery(dedent`
-      LOOP
-        IF TRUE THEN
-          BREAK;
-        ELSE
-          CONTINUE;
-        END IF;
+  it(`formats FOR .. IN range LOOP`, async () => {
+    await testPlpgsql(dedent`
+      FOR n IN 1..10 LOOP
+        x = x + n;
       END LOOP
     `);
   });
 
-  it(`formats labels`, async () => {
-    await testBigquery(dedent`
-      outer_loop: LOOP
-        inner_loop: LOOP
-          BREAK outer_loop;
-        END LOOP;
+  it(`formats FOR .. IN REVERSE range LOOP`, async () => {
+    await testPlpgsql(dedent`
+      FOR n IN REVERSE 10..1 LOOP
+        x = x + n;
       END LOOP
     `);
   });
 
-  it(`formats end labels`, async () => {
-    await testBigquery(dedent`
-      outer_loop: REPEAT
-        inner_loop: LOOP
-          CONTINUE outer_loop;
-        END LOOP inner_loop;
-      UNTIL TRUE END REPEAT outer_loop
+  it(`formats FOR .. IN range BY step LOOP`, async () => {
+    await testPlpgsql(dedent`
+      FOR n IN x..y BY z LOOP
+        x = x + n;
+      END LOOP
+    `);
+  });
+
+  it(`formats FOR .. IN query LOOP`, async () => {
+    await testPlpgsql(dedent`
+      FOR n IN SELECT num FROM nums LOOP
+        x = x + n;
+      END LOOP
+    `);
+  });
+
+  it(`formats FOR .. IN EXECUTE .. LOOP`, async () => {
+    await testPlpgsql(dedent`
+      FOR n IN EXECUTE 'SELECT num FROM nums WHERE p > ?' USING foo LOOP
+        x = x + n;
+      END LOOP
+    `);
+  });
+
+  it(`formats FOREACH .. LOOP`, async () => {
+    await testPlpgsql(dedent`
+      FOREACH n IN ARRAY arr LOOP
+        x = x + n;
+      END LOOP
+    `);
+  });
+
+  it(`formats FOREACH .. SLICE .. LOOP`, async () => {
+    await testPlpgsql(dedent`
+      FOREACH n SLICE 8 IN ARRAY arr LOOP
+        x = x + n;
+      END LOOP
     `);
   });
 });
