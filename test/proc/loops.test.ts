@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { testBigquery } from "../test_utils";
+import { testBigquery, testPlpgsql } from "../test_utils";
 
 describe("loops", () => {
   it(`formats LOOP`, async () => {
@@ -23,6 +23,14 @@ describe("loops", () => {
       WHILE x < 10 DO
         SET x = x + 1;
       END WHILE
+    `);
+  });
+
+  it(`formats WHILE .. LOOP .. END LOOP`, async () => {
+    await testPlpgsql(dedent`
+      WHILE x < 10 LOOP
+        x = x + 1;
+      END LOOP
     `);
   });
 
