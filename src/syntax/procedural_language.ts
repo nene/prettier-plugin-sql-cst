@@ -78,6 +78,10 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
   // SET
   set_stmt: (print) => group(print.spaced(["setKw", "assignments"])),
 
+  // assignment
+  assignment_stmt: (print) =>
+    group(print.spaced(["target", "operator", "expr"])),
+
   // IF
   if_stmt: (print) =>
     group(join(hardline, [...print("clauses"), print.spaced("endIfKw")])),
