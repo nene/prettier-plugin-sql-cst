@@ -14,14 +14,14 @@ export const otherClausesMap: CstToDocMap<AllOtherClauses> = {
 
   as_clause: (print, node) => {
     if (isStringLiteral(node.expr) || isDynamicallyLoadedFunction(node.expr)) {
-      return print.spaced(["asKw", "expr"]);
+      return group(print.spaced(["asKw", "expr"]));
     }
-    return [print("asKw"), indent([hardline, print("expr")])];
+    return group([print("asKw"), indent([hardline, print("expr")])]);
   },
 
   comma_clause: (print) => group([",", indent([line, print("expr")])]),
 
   // WHERE CURRENT OF clause
   where_current_of_clause: (print) =>
-    print.spaced(["whereCurrentOfKw", "cursor"]),
+    group(print.spaced(["whereCurrentOfKw", "cursor"])),
 };
