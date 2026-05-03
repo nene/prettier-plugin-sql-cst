@@ -44,6 +44,8 @@ export const proceduralLanguageMap: Partial<CstToDocMap<AllProceduralNodes>> = {
       ]),
     ),
   declare_init: (print) => print.spaced(["operator", "expr"]),
+  declare_alias_stmt: (print) =>
+    group(print.spaced(["newName", "aliasForKw", "oldName"])),
 
   // EXCEPTION
   exception_clause: (print, node) => {
