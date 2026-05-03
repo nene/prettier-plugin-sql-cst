@@ -4,6 +4,7 @@ import {
   test,
   testBigquery,
   testMysql,
+  testPlpgsql,
   testPostgresql,
 } from "../test_utils";
 
@@ -267,6 +268,20 @@ describe("select", () => {
 
     it(`formats ORDER BY col USING operator`, async () => {
       await testPostgresql(`SELECT * FROM tbl ORDER BY col USING >`);
+    });
+  });
+
+  describe("PL/pgSQL", () => {
+    it(`formats INTO clause`, async () => {
+      await testPlpgsql(`SELECT * INTO some_variable FROM tbl WHERE x > y`);
+    });
+
+    it(`formats INTO STRICT clause`, async () => {
+      await testPlpgsql(dedent`
+        SELECT col1, col2, col3
+        INTO STRICT var1, var2, var3
+        FROM tbl
+      `);
     });
   });
 });
