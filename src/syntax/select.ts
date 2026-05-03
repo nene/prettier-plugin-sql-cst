@@ -252,8 +252,6 @@ export const selectMap: CstToDocMap<AllSelectNodes> = {
   // INTO clause
   into_table_clause: (print) =>
     print.spaced(["intoKw", "kind", "tableKw", "name"]),
-  into_variables_clause: (print) =>
-    group([print("intoKw"), indent([line, print("variables")])]),
   into_dumpfile_clause: (print) => print.spaced(["intoDumpfileKw", "filename"]),
   into_outfile_clause: (print, node) => {
     const hasOptions = node.charset || node.fields || node.lines;
