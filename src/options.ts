@@ -10,7 +10,6 @@ export interface SqlPluginOptions {
   sqlParamTypes: NonNullable<CstParserOptions["paramTypes"]>;
   sqlCanonicalSyntax: boolean;
   sqlFinalSemicolon: boolean;
-  sqlAcceptUnsupportedGrammar: boolean;
   sqlExperimentalPlpgsql: boolean;
 }
 
@@ -157,14 +156,6 @@ export const options: SupportOptions = {
     default: true,
     description: "Enforces a semicolon at the end of last SQL statement",
     // Since 0.13.0
-  },
-  sqlAcceptUnsupportedGrammar: {
-    type: "boolean",
-    category: "SQL",
-    default: false,
-    description:
-      "Skips formatting unsupported SQL statements instead of exiting with an error",
-    // Since 0.12.0
   },
   sqlExperimentalPlpgsql: {
     type: "boolean",

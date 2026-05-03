@@ -52,8 +52,6 @@ const createParser = (dialect: DialectName): Parser<Node> => ({
         includeComments: true,
         filename: options.filepath,
         paramTypes: (options as AllPrettierOptions<Node>).sqlParamTypes,
-        acceptUnsupportedGrammar: (options as AllPrettierOptions<Node>)
-          .sqlAcceptUnsupportedGrammar,
       }),
       text,
       options as AllPrettierOptions<Node>,

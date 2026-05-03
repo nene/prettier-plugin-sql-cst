@@ -42,7 +42,6 @@ import { transactionMap } from "./transaction";
 import { triggerMap } from "./trigger";
 import { truncateMap } from "./truncate";
 import { typeMap } from "./type";
-import { unsupportedGrammarMap } from "./unsupported_grammar";
 import { updateMap } from "./update";
 import { viewMap } from "./view";
 
@@ -94,7 +93,6 @@ export const transformMap: Partial<CstToDocMap<Node>> = {
   ...triggerMap,
   ...truncateMap,
   ...typeMap,
-  ...unsupportedGrammarMap,
   ...updateMap,
   ...viewMap,
 

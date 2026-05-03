@@ -211,17 +211,6 @@ There are also several SQL-specific options:
 
   _Since 0.13.0_
 
-- **`sqlAcceptUnsupportedGrammar`**: `boolean` (default `false`)
-
-  Normally when the plugin encounters SQL syntax it doesn't support
-  it will throw an error and won't format anything at all.
-  With this option enabled, it will skip over SQL statements it doesn't recognize, leaving them as-is.
-
-  **Deprecated:** Use conditional comments `/* sql-parser-cst-disable */` and
-  `/* sql-parser-cst-enable */` instead.
-
-  _Since 0.12.0_
-
 - **`sqlExperimentalPlpgsql`**: `boolean` (default `false`)
 
   When enabled, the plugin will attempt to format PL/pgSQL function bodies.
