@@ -272,6 +272,10 @@ describe("select", () => {
   });
 
   describe("PL/pgSQL", () => {
+    it(`formats PERFORM statement`, async () => {
+      await testPlpgsql(`PERFORM foo, bar FROM tbl WHERE x > y`);
+    });
+
     it(`formats INTO clause`, async () => {
       await testPlpgsql(`SELECT * INTO some_variable FROM tbl WHERE x > y`);
     });
