@@ -72,6 +72,17 @@ describe("block statement", () => {
     `);
   });
 
+  it(`formats DECLARE block with aliases`, async () => {
+    await testPlpgsql(dedent`
+      DECLARE
+        foo ALIAS FOR param1;
+        bar ALIAS FOR param2;
+      BEGIN
+        SELECT 1;
+      END
+    `);
+  });
+
   describe("empty", () => {
     it(`formats empty BEGIN .. END block`, async () => {
       await testPlpgsql(dedent`

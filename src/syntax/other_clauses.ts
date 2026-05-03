@@ -12,6 +12,13 @@ export const otherClausesMap: CstToDocMap<AllOtherClauses> = {
   returning_clause: (print) =>
     group([print("returningKw"), indent([line, print("columns")])]),
 
+  // INTO clause
+  into_variables_clause: (print) =>
+    group([
+      print.spaced(["intoKw", "strictKw"]),
+      indent([line, print("variables")]),
+    ]),
+
   as_clause: (print, node) => {
     if (isStringLiteral(node.expr) || isDynamicallyLoadedFunction(node.expr)) {
       return group(print.spaced(["asKw", "expr"]));

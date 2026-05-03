@@ -26,7 +26,6 @@ export const preparedStatementsMap: CstToDocMap<AllPreparedStatementNodes> = {
       print("executeKw"),
       indent([line, print.separated(line, ["expr", "using"])]),
     ]),
-  execute_into_clause: (print) => print.spaced(["intoKw", "variables"]),
   execute_using_clause: (print) =>
     group([print("usingKw"), indent([line, print("values")])]),
 

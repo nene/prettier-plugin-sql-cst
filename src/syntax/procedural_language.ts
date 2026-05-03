@@ -22,11 +22,8 @@ export const proceduralLanguageMap: CstToDocMap<AllProceduralNodes> = {
   // BEGIN .. END
   block_stmt: (print, node) =>
     group([
-      stripTrailingHardline(print("declareClause")),
-      [
-        node.declareClause ? hardline : [],
-        print.spaced(["beginKw", "atomicKw"]),
-      ],
+      stripTrailingHardline(print("declare")),
+      [node.declare ? hardline : [], print.spaced(["beginKw", "atomicKw"])],
       node.program.statements.length > 0
         ? indent([hardline, stripTrailingHardline(print("program"))])
         : print("program"),
@@ -47,6 +44,8 @@ export const proceduralLanguageMap: CstToDocMap<AllProceduralNodes> = {
       ]),
     ),
   declare_init: (print) => print.spaced(["operator", "expr"]),
+  declare_alias_stmt: (print) =>
+    group(print.spaced(["newName", "aliasForKw", "oldName"])),
 
   // EXCEPTION
   exception_clause: (print, node) => {
