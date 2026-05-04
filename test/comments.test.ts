@@ -170,6 +170,29 @@ describe("comments", () => {
     `);
   });
 
+  // Issue #67
+  it(`preserves ------ comments as-is`, async () => {
+    rawTest(dedent`
+      SELECT 1;
+      ---------------------
+      -- Start main block
+      ---------------------
+      SELECT 1;
+
+    `);
+  });
+
+  it(`preserves ######### comments as-is`, async () => {
+    rawTest(dedent`
+      SELECT 1;
+      #####################
+      # Start main block
+      #####################
+      SELECT 1;
+
+    `);
+  });
+
   // Issue #9
   it.skip(`keeps separate-line line-comments on a separate line (not moving them to line end)`, async () => {
     rawTest(dedent`
