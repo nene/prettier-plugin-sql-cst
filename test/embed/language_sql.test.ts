@@ -89,4 +89,19 @@ describe("LANGUAGE sql", () => {
       });
     });
   });
+
+  it(`reformats SQL in DO statement (with LANGUAGE "sql" clause)`, async () => {
+    expect(
+      await pretty(
+        dedent`
+          DO LANGUAGE sql 'select 1'
+        `,
+        { dialect: "postgresql", sqlExperimentalPlpgsql: true },
+      ),
+    ).toBe(dedent`
+      DO LANGUAGE sql $$
+        SELECT 1;
+      $$
+    `);
+  });
 });

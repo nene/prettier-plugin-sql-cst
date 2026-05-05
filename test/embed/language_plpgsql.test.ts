@@ -95,4 +95,38 @@ describe("LANGUAGE plpgsql", () => {
       });
     });
   });
+
+  it(`reformats SQL in DO statement (without LANGUAGE clause)`, async () => {
+    expect(
+      await pretty(
+        dedent`
+          DO $$BEGIN SELECT 1; END$$
+        `,
+        { dialect: "postgresql", sqlExperimentalPlpgsql: true },
+      ),
+    ).toBe(dedent`
+      DO $$
+      BEGIN
+        SELECT 1;
+      END;
+      $$
+    `);
+  });
+
+  it(`reformats SQL in DO statement (with LANGUAGE "plpgsql" clause)`, async () => {
+    expect(
+      await pretty(
+        dedent`
+          DO LANGUAGE plpgsql $$BEGIN SELECT 1; END$$
+        `,
+        { dialect: "postgresql", sqlExperimentalPlpgsql: true },
+      ),
+    ).toBe(dedent`
+      DO LANGUAGE plpgsql $$
+      BEGIN
+        SELECT 1;
+      END;
+      $$
+    `);
+  });
 });

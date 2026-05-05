@@ -30,6 +30,7 @@ export const isDropFunctionStmt = is("drop_function_stmt");
 export const isCreateProcedureStmt = is("create_procedure_stmt");
 export const isAlterProcedureStmt = is("alter_procedure_stmt");
 export const isDropProcedureStmt = is("drop_procedure_stmt");
+export const isDoStmt = is("do_stmt");
 export const isAlterActionRename = is("alter_action_rename");
 export const isLanguageClause = is("language_clause");
 export const isDynamicallyLoadedFunction = is("dynamically_loaded_function");

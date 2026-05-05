@@ -9,6 +9,7 @@ import {
   isAsClause,
   isCreateFunctionStmt,
   isCreateProcedureStmt,
+  isDoStmt,
   isLanguageClause,
   isStringLiteral,
 } from "./node_utils";
@@ -24,11 +25,11 @@ export const embedSql: NonNullable<Printer<Node>["embed"]> = (
   const grandParent = path.getParentNode(1);
   const pluginOptions: Partial<AllPrettierOptions> = options;
 
-  if (
-    isStringLiteral(node) &&
-    isAsClause(parent) &&
-    (isCreateFunctionStmt(grandParent) || isCreateProcedureStmt(grandParent))
-  ) {
+  if (!isStringLiteral(node)) {
+    return null;
+  }
+
+  if (isRoutine(parent, grandParent)) {
     if (grandParent.clauses.some(isSqlLanguageClause)) {
       return async (textToDoc) => {
         const quote = detectQuote(node);
@@ -65,9 +66,47 @@ export const embedSql: NonNullable<Printer<Node>["embed"]> = (
       };
     }
   }
+  if (isDoStmt(parent)) {
+    if (!parent.language || isPlpgsqlLanguageClause(parent.language)) {
+      return async (textToDoc) => {
+        const quote = detectQuote(node);
+        if (!quote) {
+          return undefined;
+        }
+
+        const sql = await textToDoc(node.value, {
+          ...pluginOptions,
+          parser: "plpgsql",
+        });
+
+        return [quote, [hardline, stripTrailingHardline(sql)], hardline, quote];
+      };
+    }
+    if (isSqlLanguageClause(parent.language)) {
+      return async (textToDoc) => {
+        const quote = detectQuote(node);
+        if (!quote) {
+          return undefined;
+        }
+
+        const sql = await textToDoc(node.value, pluginOptions);
+
+        return [
+          quote,
+          indent([hardline, stripTrailingHardline(sql)]),
+          hardline,
+          quote,
+        ];
+      };
+    }
+  }
 
   return null;
 };
+
+const isRoutine = (parent: any, grandParent: any): boolean =>
+  isAsClause(parent) &&
+  (isCreateFunctionStmt(grandParent) || isCreateProcedureStmt(grandParent));
 
 const isSqlLanguageClause = (
   clause: CreateFunctionStmt["clauses"][0] | CreateProcedureStmt["clauses"][0],
