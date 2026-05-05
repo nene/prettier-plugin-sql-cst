@@ -233,6 +233,11 @@ describe("expr", () => {
       await testPostgresql(`SELECT 5 OPERATOR(+) 6`);
       await testPostgresql(`SELECT x OPERATOR(my_schema.>>) y FROM tbl`);
     });
+
+    it(`formats -> and ->> operators without spaces`, async () => {
+      await testPostgresql(`SELECT user->'name'`);
+      await testPostgresql(`SELECT col->>'field'->>'field' FROM tbl`);
+    });
   });
 
   describe("MySQL", () => {

@@ -93,6 +93,10 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
       // String concatenation with whitespace (MySQL / MariaDB)
       return print.spaced(["left", "right"]);
     }
+    if (isString(node.operator) && isCompactOp(node.operator)) {
+      // Some operators are better formatted without spaces around them
+      return print(["left", "operator", "right"]);
+    }
     return print.spaced(["left", "operator", "right"]);
   },
   prefix_op_expr: (print, node) =>
@@ -307,3 +311,5 @@ const isFunctionContext = (
 };
 
 const isBooleanOp = ({ name }: Keyword) => name === "AND" || name === "OR";
+
+const isCompactOp = (op: string) => op === "->" || op === "->>";
