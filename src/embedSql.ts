@@ -1,4 +1,4 @@
-import { Printer } from "prettier";
+import { Doc, Options, Printer } from "prettier";
 import {
   CreateFunctionStmt,
   CreateProcedureStmt,
@@ -31,77 +31,69 @@ export const embedSql: NonNullable<Printer<Node>["embed"]> = (
 
   if (isRoutine(parent, grandParent)) {
     if (grandParent.clauses.some(isSqlLanguageClause)) {
-      return async (textToDoc) => {
-        const quote = detectQuote(node);
-        if (!quote) {
-          return undefined;
-        }
-
-        const sql = await textToDoc(node.value, pluginOptions);
-
-        return [
-          quote,
-          indent([hardline, stripTrailingHardline(sql)]),
-          hardline,
-          quote,
-        ];
-      };
+      return sqlFormatter(node, pluginOptions);
     }
     if (
       grandParent.clauses.some(isPlpgsqlLanguageClause) &&
       pluginOptions.sqlExperimentalPlpgsql
     ) {
-      return async (textToDoc) => {
-        const quote = detectQuote(node);
-        if (!quote) {
-          return undefined;
-        }
-
-        const sql = await textToDoc(node.value, {
-          ...pluginOptions,
-          parser: "plpgsql",
-        });
-
-        return [quote, [hardline, stripTrailingHardline(sql)], hardline, quote];
-      };
+      return plpgsqlFormatter(node, pluginOptions);
     }
   }
   if (isDoStmt(parent)) {
     if (!parent.language || isPlpgsqlLanguageClause(parent.language)) {
-      return async (textToDoc) => {
-        const quote = detectQuote(node);
-        if (!quote) {
-          return undefined;
-        }
-
-        const sql = await textToDoc(node.value, {
-          ...pluginOptions,
-          parser: "plpgsql",
-        });
-
-        return [quote, [hardline, stripTrailingHardline(sql)], hardline, quote];
-      };
+      return plpgsqlFormatter(node, pluginOptions);
     }
     if (isSqlLanguageClause(parent.language)) {
-      return async (textToDoc) => {
-        const quote = detectQuote(node);
-        if (!quote) {
-          return undefined;
-        }
-
-        const sql = await textToDoc(node.value, pluginOptions);
-
-        return [
-          quote,
-          indent([hardline, stripTrailingHardline(sql)]),
-          hardline,
-          quote,
-        ];
-      };
+      return sqlFormatter(node, pluginOptions);
     }
   }
 
   return null;
+};
+
+const sqlFormatter = (
+  node: any,
+  pluginOptions: Partial<AllPrettierOptions>,
+) => {
+  return async (
+    textToDoc: (text: string, options: Options) => Promise<Doc>,
+  ) => {
+    const quote = detectQuote(node);
+    if (!quote) {
+      return undefined;
+    }
+
+    const sql = await textToDoc(node.value, pluginOptions);
+
+    return [
+      quote,
+      indent([hardline, stripTrailingHardline(sql)]),
+      hardline,
+      quote,
+    ];
+  };
+};
+
+const plpgsqlFormatter = (
+  node: any,
+  pluginOptions: Partial<AllPrettierOptions>,
+) => {
+  return async (
+    textToDoc: (text: string, options: Options) => Promise<Doc>,
+  ) => {
+    const quote = detectQuote(node);
+    if (!quote) {
+      return undefined;
+    }
+
+    const sql = await textToDoc(node.value, {
+      ...pluginOptions,
+      parser: "plpgsql",
+    });
+
+    return [quote, [hardline, stripTrailingHardline(sql)], hardline, quote];
+  };
 };
 
 const isRoutine = (parent: any, grandParent: any): boolean =>
