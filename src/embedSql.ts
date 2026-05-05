@@ -29,7 +29,7 @@ export const embedSql: NonNullable<Printer<Node>["embed"]> = (
     return null;
   }
 
-  if (isRoutine(parent, grandParent)) {
+  if (isAsClause(parent) && isRoutine(grandParent)) {
     if (grandParent.clauses.some(isSqlLanguageClause)) {
       return sqlFormatter(node, pluginOptions);
     }
@@ -96,9 +96,10 @@ const plpgsqlFormatter = (
   };
 };
 
-const isRoutine = (parent: any, grandParent: any): boolean =>
-  isAsClause(parent) &&
-  (isCreateFunctionStmt(grandParent) || isCreateProcedureStmt(grandParent));
+const isRoutine = (
+  node: any,
+): node is CreateFunctionStmt | CreateProcedureStmt =>
+  isCreateFunctionStmt(node) || isCreateProcedureStmt(node);
 
 const isSqlLanguageClause = (
   clause: CreateFunctionStmt["clauses"][0] | CreateProcedureStmt["clauses"][0],
