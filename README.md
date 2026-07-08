@@ -182,7 +182,7 @@ There are also several SQL-specific options:
 
   _Since 0.17.0_
 
-- **`sqlParamTypes`**: `("?", "?nr", "$nr", ":name", "$name", "@name" "@``@name``")[]` (default `[]`)
+- **`sqlParamTypes`**: ``("?", "?nr", "$nr", ":name", "$name", "@name", "@`name`")[]`` (default `[]`)
 
   Array of bound parameter types to support.
 
