@@ -10,28 +10,42 @@ describe("comment", () => {
 
   it(`formats long COMMENT ON`, async () => {
     await testPostgresql(dedent`
-      COMMENT ON CONSTRAINT constraint_name ON DOMAIN domain_name IS
-        'This is a really nice comment here.'
+      COMMENT ON
+      CONSTRAINT constraint_name ON DOMAIN domain_name
+      IS 'This is a really nice comment here.'
     `);
   });
 
   it(`formats multi-line comment`, async () => {
     await testPostgresql(dedent`
-      COMMENT ON TABLE foo IS
-        'This is a multi-line comment,
-        that spans several lines.
-        In here.'
+      COMMENT ON
+      TABLE foo
+      IS 'This is a multi-line comment,
+      that spans several lines.
+      In here.'
     `);
   });
 
   it(`formats long comment target`, async () => {
     await testPostgresql(dedent`
-      COMMENT ON FUNCTION my_absolutely_fantastic_function(
+      COMMENT ON
+      FUNCTION my_absolutely_fantastic_function(
         IN whoopsie CHARACTER VARYING,
         OUT doopsie TEXT
-      ) IS
-        'This is a really nice comment here.'
+      )
+      IS 'This is a really nice comment here.'
     `);
+  });
+
+  it(`formats long column name COMMENT ON`, async () => {
+    await testPostgresql(
+      dedent`
+        COMMENT ON
+        COLUMN column_name
+        IS E'foo'
+      `,
+      { printWidth: 35 },
+    );
   });
 
   [
