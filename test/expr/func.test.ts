@@ -23,6 +23,66 @@ describe("functions", () => {
     `);
   });
 
+  it(`keeps empty function args on one line`, async () => {
+    expect(await pretty(`SELECT my_func()`, { printWidth: 10 })).toBe(dedent`
+      SELECT
+        my_func()
+    `);
+  });
+
+  it(`does not treat count(DISTINCT) as empty function args`, async () => {
+    expect(await pretty(`SELECT count(DISTINCT id)`, { printWidth: 25 }))
+      .toBe(dedent`
+      SELECT
+        count(DISTINCT id)
+    `);
+  });
+
+  it(`keeps empty CREATE FUNCTION params on one line`, async () => {
+    expect(
+      await pretty(
+        `CREATE FUNCTION my_func() AS (SELECT 1)`,
+        { printWidth: 10, dialect: "bigquery" },
+      ),
+    ).toBe(dedent`
+      CREATE FUNCTION my_func() AS
+        (
+          SELECT
+            1
+        )
+    `);
+  });
+
+  it(`preserves block comments inside empty function args`, async () => {
+    expect(
+      await pretty(`SELECT my_func(/* comment */)`, { printWidth: 25 }),
+    ).toBe(dedent`
+      SELECT
+        my_func(
+          /* comment */
+        )
+    `);
+  });
+
+  it(`preserves line comments inside empty function args`, async () => {
+    expect(
+      await pretty(
+        dedent`
+          SELECT my_func(
+            -- comment
+          )
+        `,
+        { printWidth: 25 },
+      ),
+    ).toBe(dedent`
+      SELECT
+        my_func(
+          -- comment
+
+        )
+    `);
+  });
+
   it(`formats named function arguments`, async () => {
     await testBigquery(
       `SELECT concat_lower_or_upper(a => 'Hello', b => 'World', uppercase => TRUE)`,
