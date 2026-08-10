@@ -42,19 +42,49 @@ describe("index", () => {
       `);
     });
 
+    it(`breaks long CREATE INDEX across CREATE, ON, and USING`, async () => {
+      await testPostgresql(
+        dedent`
+          CREATE INDEX my_index
+          ON my_table
+          USING btree (col)
+        `,
+        { printWidth: 50 },
+      );
+    });
+
+    it(`breaks long CREATE UNIQUE INDEX across CREATE, ON, and USING`, async () => {
+      await testPostgresql(
+        dedent`
+          CREATE UNIQUE INDEX my_index
+          ON my_table
+          USING btree (
+            col_one,
+            col_two
+          )
+        `,
+        { printWidth: 30 },
+      );
+    });
+
     it(`formats long columns list on multiple lines`, async () => {
-      await test(dedent`
-        CREATE UNIQUE INDEX IF NOT EXISTS my_index ON my_table (
-          column_name_one,
-          column_name_two,
-          column_name_three
-        )
-      `);
+      await test(
+        dedent`
+          CREATE UNIQUE INDEX IF NOT EXISTS my_index
+          ON my_table (
+            col_one,
+            col_two,
+            col_three
+          )
+        `,
+        { printWidth: 40 },
+      );
     });
 
     it(`formats column list with various index parameters`, async () => {
       await testPostgresql(dedent`
-        CREATE INDEX my_index ON my_table (
+        CREATE INDEX my_index
+        ON my_table (
           column_name_one COLLATE "C" ASC NULLS FIRST,
           column_name_two DESC NULLS LAST,
           (col3 + col4) my_opclass (foo = 'bar', baz = 'qux') ASC
