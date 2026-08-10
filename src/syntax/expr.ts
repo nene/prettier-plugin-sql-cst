@@ -114,24 +114,28 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
     hardline,
     print("endKw"),
   ],
-  case_when: (print, node) => {
-    if (isProgram(node.result)) {
-      return [
-        print.spaced(["whenKw", "condition", "thenKw"]),
-        indent([hardline, stripTrailingHardline(print("result"))]),
-      ];
-    }
-    return print.spaced(["whenKw", "condition", "thenKw", "result"]);
-  },
-  case_else: (print, node) => {
-    if (isProgram(node.result)) {
-      return [
-        print("elseKw"),
-        indent([hardline, stripTrailingHardline(print("result"))]),
-      ];
-    }
-    return print.spaced(["elseKw", "result"]);
-  },
+  case_when: (print, node) => [
+    group([
+      group([print("whenKw"), indent([line, print("condition")])]),
+      line,
+      print("thenKw"),
+    ]),
+    indent([
+      hardline,
+      isProgram(node.result)
+        ? stripTrailingHardline(print("result"))
+        : print("result"),
+    ]),
+  ],
+  case_else: (print, node) => [
+    print("elseKw"),
+    indent([
+      hardline,
+      isProgram(node.result)
+        ? stripTrailingHardline(print("result"))
+        : print("result"),
+    ]),
+  ],
   member_expr: (print, node) =>
     isArraySubscript(node.property)
       ? print(["object", "property"])
