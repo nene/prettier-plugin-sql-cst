@@ -20,6 +20,27 @@ describe("expr", () => {
     `);
   });
 
+  it(`keeps short binary expressions on one line`, async () => {
+    await test(dedent`
+      SELECT *
+      FROM foo
+      WHERE bar = short_func()
+    `);
+  });
+
+  it(`breaks long binary expressions into multiple lines with indentation`, async () => {
+    await test(
+      dedent`
+        SELECT *
+        FROM foo
+        WHERE
+          bar =
+            my_func()
+      `,
+      { printWidth: 15 },
+    );
+  });
+
   it(`formats IN expressions`, async () => {
     await test(`SELECT col1 IN (1, 2, 3), col2 NOT IN (4, 5, 6)`);
   });

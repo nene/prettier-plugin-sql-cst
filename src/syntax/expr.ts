@@ -101,7 +101,10 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
       // Some operators are better formatted without spaces around them
       return print(["left", "operator", "right"]);
     }
-    return print.spaced(["left", "operator", "right"]);
+    return group([
+      print("left"),
+      group([" ", print.spaced("operator"), indent([line, print("right")])]),
+    ]);
   },
   prefix_op_expr: (print, node) =>
     (isString(node.operator) ? print : print.spaced)(["operator", "expr"]),

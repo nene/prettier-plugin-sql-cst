@@ -395,7 +395,8 @@ describe("create table", () => {
       OPTIONS (
         expiration_timestamp = TIMESTAMP "2025-01-01 00:00:00 UTC",
         partition_expiration_days = 1,
-        description = "a table that expires in 2025, with each partition living for 24 hours",
+        description =
+          "a table that expires in 2025, with each partition living for 24 hours",
         labels = [("org_unit", "development")]
       )
     `);
