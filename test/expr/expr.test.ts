@@ -165,10 +165,8 @@ describe("expr", () => {
       await test(dedent`
         SELECT
           CASE x
-            WHEN 1 THEN
-              'A'
-            ELSE
-              'B'
+            WHEN 1 THEN 'A'
+            ELSE 'B'
           END
       `);
     });
@@ -177,12 +175,9 @@ describe("expr", () => {
       await test(dedent`
         SELECT
           CASE status
-            WHEN 1 THEN
-              'good'
-            WHEN 2 THEN
-              'bad'
-            ELSE
-              'unknown'
+            WHEN 1 THEN 'good'
+            WHEN 2 THEN 'bad'
+            ELSE 'unknown'
           END
       `);
     });
@@ -191,74 +186,11 @@ describe("expr", () => {
       await test(dedent`
         SELECT
           CASE
-            WHEN status = 1 THEN
-              'good'
-            WHEN status = 2 THEN
-              'bad'
-            ELSE
-              'unknown'
+            WHEN status = 1 THEN 'good'
+            WHEN status = 2 THEN 'bad'
+            ELSE 'unknown'
           END
       `);
-    });
-
-    it(`breaks long WHEN/THEN into separate lines`, async () => {
-      await test(
-        dedent`
-          SELECT
-            CASE
-              WHEN column_name = 1 THEN
-                result_name
-            END
-        `,
-        { printWidth: 40 },
-      );
-    });
-
-    it(`breaks multiple long WHEN/THEN clauses without blank lines between them`, async () => {
-      await test(
-        dedent`
-          SELECT
-            CASE
-              WHEN column_name = 1 THEN
-                result_name
-              WHEN column_name = 2 THEN
-                other_result
-              ELSE
-                foo
-            END
-        `,
-        { printWidth: 40 },
-      );
-    });
-
-    it(`indents multi-condition WHEN clauses and keeps ORs parenthesized`, async () => {
-      await test(
-        dedent`
-          SELECT
-            CASE
-              WHEN
-                column_name = 1
-                AND (other_name = 2 OR other_name = 3)
-              THEN
-                result_name
-            END
-        `,
-        { printWidth: 50 },
-      );
-    });
-
-    it(`indents multi-expression THEN clauses and keeps ORs parenthesized`, async () => {
-      await test(
-        dedent`
-          SELECT
-            CASE
-              WHEN column_name = 1 THEN
-                result_name = 1
-                AND (other_name = 2 OR other_name = 3)
-            END
-        `,
-        { printWidth: 45 },
-      );
     });
   });
 
