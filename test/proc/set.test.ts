@@ -16,10 +16,8 @@ describe("set", () => {
 
   it(`formats long SET expressions`, async () => {
     await testBigquery(dedent`
-      SET (first_variable, second_variable) = (
-        FORMAT('%d', word_count),
-        FORMAT('%d', line_count)
-      )
+      SET (first_variable, second_variable) =
+        (FORMAT('%d', word_count), FORMAT('%d', line_count))
     `);
   });
 

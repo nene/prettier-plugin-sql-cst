@@ -1,12 +1,15 @@
 import { AllCommentNodes } from "sql-parser-cst";
-import { group, indent, line } from "../print_utils";
+import { group, line } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
 export const commentMap: CstToDocMap<AllCommentNodes> = {
   comment_stmt: (print) =>
     group([
-      print.spaced(["commentKw", "onKw", "target", "isKw"]),
-      indent([line, print("message")]),
+      print.spaced(["commentKw", "onKw"]),
+      line,
+      print("target"),
+      line,
+      print.spaced(["isKw", "message"]),
     ]),
 
   comment_target_aggregate: (print) =>
