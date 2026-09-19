@@ -5,6 +5,7 @@ import { SqlPluginOptions } from "../src/options";
 
 interface PrettyOptions extends Partial<SqlPluginOptions> {
   printWidth?: number;
+  embeddedLanguageFormatting?: "auto" | "off";
 }
 
 interface TestOptions extends PrettyOptions {

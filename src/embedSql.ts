@@ -10,6 +10,8 @@ import {
   isCreateFunctionStmt,
   isCreateProcedureStmt,
   isDoStmt,
+  isExecuteExpr,
+  isExecuteImmediateStmt,
   isLanguageClause,
   isStringLiteral,
 } from "./node_utils";
@@ -47,6 +49,23 @@ export const embedSql: NonNullable<Printer<Node>["embed"]> = (
     if (isSqlLanguageClause(parent.language)) {
       return sqlFormatter(node, pluginOptions);
     }
+  }
+
+  if (
+    options.parser === "plpgsql" &&
+    (isExecuteImmediateStmt(parent) || isExecuteExpr(parent)) &&
+    parent.expr === node &&
+    node.text.startsWith("$")
+  ) {
+    return sqlFormatter(node, {
+      ...pluginOptions,
+      parser: "postgresql",
+      sqlParamTypes: [
+        ...new Set([...(pluginOptions.sqlParamTypes ?? []), "$nr" as const]),
+      ],
+      // Nested embedding can introduce dollar delimiters that close an outer string.
+      embeddedLanguageFormatting: "off",
+    });
   }
 
   return null;
