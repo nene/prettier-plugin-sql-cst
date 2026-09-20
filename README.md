@@ -120,6 +120,11 @@ The plugin provides the following parsers:
 - `bigquery`
 - `postgresql` (**experimental! expect crashes**)
 - `plpgsql` (**experimental! expect crashes**)
+- `psql` (**experimental!**): preserves standalone backslash command lines and
+  formats PostgreSQL between them. Final semicolons are never added, regardless
+  of `sqlFinalSemicolon`, because commands such as `\gset` execute the query.
+  Unparseable SQL fragments (including unsupported variable interpolation) and
+  scripts mentioning `COPY` are preserved. Inline commands are not formatted.
 - `mysql` (**experimental! expect crashes**)
 - `mariadb` (**experimental! expect crashes**)
 
