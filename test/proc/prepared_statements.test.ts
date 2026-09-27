@@ -51,13 +51,19 @@ describe("prepared statements", () => {
 
   it(`formats EXECUTE IMMEDIATE`, async () => {
     await testBigquery(dedent`
-      EXECUTE IMMEDIATE 'SELECT * FROM tbl'
+      EXECUTE IMMEDIATE
+        r'''
+          SELECT * FROM tbl;
+        '''
     `);
   });
 
   it(`formats EXECUTE IMMEDIATE with INTO and USING`, async () => {
     await testBigquery(dedent`
-      EXECUTE IMMEDIATE 'SELECT ? + ?'
+      EXECUTE IMMEDIATE
+        r'''
+          SELECT ? + ?;
+        '''
       INTO sum
       USING 1, 2
     `);
@@ -66,7 +72,11 @@ describe("prepared statements", () => {
   it(`formats EXECUTE IMMEDIATE with long query`, async () => {
     await testBigquery(dedent`
       EXECUTE IMMEDIATE
-        'SELECT count(*) FROM myschema.mytable WHERE operations > 10 AND name IS NOT NULL'
+        r'''
+          SELECT count(*)
+          FROM myschema.mytable
+          WHERE operations > 10 AND name IS NOT NULL;
+        '''
       INTO cnt
     `);
   });

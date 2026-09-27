@@ -249,13 +249,6 @@ it's unlikely that work on any other dialect will start.
 
 Use [prettier-plugin-embed][] together with `prettier-plugin-sql-cst`.
 
-### Can I format SQL inside PL/pgSQL EXECUTE commands?
-
-Dollar-quoted literal commands are formatted as PostgreSQL, preserving their
-delimiters. Computed commands, single-quoted commands, and commands that cannot
-be parsed are left unchanged. Further embedded languages inside the command
-are not formatted, to avoid conflicting dollar-quote delimiters.
-
 ## Limitations and development status
 
 Currently this plugin supports two SQL dialects:

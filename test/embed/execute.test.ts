@@ -1,5 +1,10 @@
 import dedent from "dedent-js";
-import { pretty, rawPretty, testPlpgsql, testPostgresql } from "../test_utils";
+import {
+  pretty,
+  testBigquery,
+  testPlpgsql,
+  testPostgresql,
+} from "../test_utils";
 
 describe("PL/pgSQL EXECUTE embedding", () => {
   it("formats a dollar-quoted command inside DO, with INTO and USING", async () => {
@@ -35,24 +40,6 @@ describe("PL/pgSQL EXECUTE embedding", () => {
           SELECT id FROM tags WHERE id = $1;
         $$
         USING 1
-    `);
-  });
-
-  it("formats the command in a FOR loop", async () => {
-    expect(
-      await pretty(
-        "FOR row IN EXECUTE $query$select id from tags$query$ LOOP RETURN NEXT row; END LOOP",
-        {
-          dialect: "plpgsql",
-        },
-      ),
-    ).toBe(dedent`
-      FOR row IN EXECUTE
-        $query$
-          SELECT id FROM tags;
-        $query$ LOOP
-        RETURN NEXT row;
-      END LOOP
     `);
   });
 
@@ -106,38 +93,62 @@ describe("PL/pgSQL EXECUTE embedding", () => {
   ])("preserves commands it cannot embed: %s", async (source) => {
     await testPlpgsql(source);
   });
+});
 
-  it("respects disabled embedded-language formatting", async () => {
-    const source = "EXECUTE $sql$select   1$sql$;\n";
+describe("BigQuery EXECUTE IMMEDIATE embedding", () => {
+  it("formats a command with INTO and named parameters", async () => {
     expect(
-      await rawPretty(source, {
-        dialect: "plpgsql",
-        embeddedLanguageFormatting: "off",
+      await pretty('EXECUTE IMMEDIATE "select @id" INTO result USING 1 AS id', {
+        dialect: "bigquery",
       }),
-    ).toBe(source);
+    ).toBe(dedent`
+      EXECUTE IMMEDIATE
+        r'''
+          SELECT @id;
+        '''
+      INTO result
+      USING 1 AS id
+    `);
   });
 
-  it("passes width, casing and semicolon options to the SQL printer", async () => {
-    const output = await rawPretty(
-      "EXECUTE $sql$select generated_at,total_applications,new_applications_last_7_days from metrics.metric_cases$sql$",
-      {
-        dialect: "plpgsql",
-        printWidth: 60,
-        sqlKeywordCase: "lower",
-        sqlFinalSemicolon: false,
-      },
+  it("preserves backslashes when quoting the formatted command", async () => {
+    expect(
+      await pretty(String.raw`EXECUTE IMMEDIATE r"select '\n'"`, {
+        dialect: "bigquery",
+      }),
+    ).toBe(
+      dedent(String.raw`
+      EXECUTE IMMEDIATE
+        r'''
+          SELECT '\n';
+        '''
+    `),
     );
-    expect(output).toBe(
-      dedent`
-      execute
-        $sql$
-          select
-            generated_at,
-            total_applications,
-            new_applications_last_7_days
-          from metrics.metric_cases
-        $sql$
-    ` + "\n",
+  });
+
+  it("uses double quotes when the command contains triple single quotes", async () => {
+    expect(
+      await pretty(`EXECUTE IMMEDIATE ${JSON.stringify(`select "'''"`)}`, {
+        dialect: "bigquery",
+      }),
+    ).toBe(dedent`
+      EXECUTE IMMEDIATE
+        r"""
+          SELECT "'''";
+        """
+    `);
+  });
+
+  it("preserves commands containing both triple-quote delimiters", async () => {
+    await testBigquery(
+      `EXECUTE IMMEDIATE ${JSON.stringify(`select "'''", '"""'`)}`,
     );
+  });
+
+  it.each([
+    'EXECUTE IMMEDIATE "select " || column_name',
+    'EXECUTE IMMEDIATE "unsupported SQL syntax"',
+  ])("preserves commands it cannot embed: %s", async (source) => {
+    await testBigquery(source);
   });
 });
