@@ -182,7 +182,10 @@ export const proceduralLanguageMap: CstToDocMap<AllProceduralNodes> = {
   // CALL
   call_stmt: (print) => group(print.spaced(["callKw", "func"])),
   // RETURN
-  return_stmt: (print) => group(print.spaced(["returnKw", "expr"])),
+  return_stmt: (print, node) =>
+    node.expr
+      ? group([print("returnKw"), indent([line, print("expr")])])
+      : print("returnKw"),
   return_next_stmt: (print) => group(print.spaced(["returnNextKw", "expr"])),
   return_query_stmt: (print, node) => {
     if (node.expr.type === "execute_expr") {
