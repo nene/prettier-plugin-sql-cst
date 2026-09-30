@@ -17,6 +17,7 @@ import {
 } from "./node_utils";
 import { hardline, indent, stripTrailingHardline } from "./print_utils";
 import { AllPrettierOptions } from "./options";
+import { formatBigqueryString } from "./formatBigqueryString";
 
 export const embedSql: NonNullable<Printer<Node>["embed"]> = (
   path,
@@ -74,7 +75,7 @@ export const embedSql: NonNullable<Printer<Node>["embed"]> = (
     isExecuteImmediateStmt(parent) &&
     parent.expr === node
   ) {
-    return bigqueryFormatter(node, {
+    return formatBigqueryString(node, {
       ...pluginOptions,
       // EXECUTE IMMEDIATE ... USING binds positional or named parameters.
       sqlParamTypes: [
@@ -107,32 +108,6 @@ const sqlFormatter = (
 
     return [
       quote,
-      indent([hardline, stripTrailingHardline(sql)]),
-      hardline,
-      quote,
-    ];
-  };
-};
-
-const bigqueryFormatter = (
-  node: StringLiteral,
-  pluginOptions: Partial<AllPrettierOptions>,
-) => {
-  return async (
-    textToDoc: (text: string, options: Options) => Promise<Doc>,
-  ) => {
-    const quote = !node.value.includes("'''")
-      ? "'''"
-      : !node.value.includes('"""')
-      ? '"""'
-      : undefined;
-    if (!quote) {
-      return undefined;
-    }
-
-    const sql = await textToDoc(node.value, pluginOptions);
-    return [
-      "r" + quote,
       indent([hardline, stripTrailingHardline(sql)]),
       hardline,
       quote,
