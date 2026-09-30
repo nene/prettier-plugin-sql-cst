@@ -139,15 +139,14 @@ describe("expr", () => {
 
   it(`preserves parenthesis around compound-SELECT inside function arguments`, async () => {
     await test(dedent`
-      SELECT
-        coalesce(
-          '',
-          (
-            SELECT x FROM xs
-            UNION
-            SELECT y FROM ys
-          )
+      SELECT coalesce(
+        '',
+        (
+          SELECT x FROM xs
+          UNION
+          SELECT y FROM ys
         )
+      )
       FROM tbl
     `);
   });
@@ -163,33 +162,30 @@ describe("expr", () => {
   describe("case", () => {
     it(`formats CASE expression always on multiple lines`, async () => {
       await test(dedent`
-        SELECT
-          CASE x
-            WHEN 1 THEN 'A'
-            ELSE 'B'
-          END
+        SELECT CASE x
+          WHEN 1 THEN 'A'
+          ELSE 'B'
+        END
       `);
     });
 
     it(`formats CASE expression with base expression`, async () => {
       await test(dedent`
-        SELECT
-          CASE status
-            WHEN 1 THEN 'good'
-            WHEN 2 THEN 'bad'
-            ELSE 'unknown'
-          END
+        SELECT CASE status
+          WHEN 1 THEN 'good'
+          WHEN 2 THEN 'bad'
+          ELSE 'unknown'
+        END
       `);
     });
 
     it(`formats CASE expression without base expression`, async () => {
       await test(dedent`
-        SELECT
-          CASE
-            WHEN status = 1 THEN 'good'
-            WHEN status = 2 THEN 'bad'
-            ELSE 'unknown'
-          END
+        SELECT CASE
+          WHEN status = 1 THEN 'good'
+          WHEN status = 2 THEN 'bad'
+          ELSE 'unknown'
+        END
       `);
     });
 
@@ -290,10 +286,9 @@ describe("expr", () => {
 
     it(`formats BigQuery array field access to multiple lines`, async () => {
       await testBigquery(dedent`
-        SELECT
-          ["Coffee Cup", "Tea Kettle", "Milk Glass"][
-            SAFE_OFFSET(some_really_long_index_number)
-          ]
+        SELECT ["Coffee Cup", "Tea Kettle", "Milk Glass"][
+          SAFE_OFFSET(some_really_long_index_number)
+        ]
       `);
     });
 

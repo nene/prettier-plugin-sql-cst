@@ -52,14 +52,13 @@ describe("json", () => {
       ),
     ).toBe(
       dedent`
-        SELECT
-          JSON '''
-            {
-              "firstName": "John",
-              "lastName": "Doe",
-              "inventory": ["Pickaxe", "Compass", "Dirt"]
-            }
-          '''
+        SELECT JSON '''
+          {
+            "firstName": "John",
+            "lastName": "Doe",
+            "inventory": ["Pickaxe", "Compass", "Dirt"]
+          }
+        '''
       `,
     );
   });
@@ -96,14 +95,13 @@ describe("json", () => {
       ),
     ).toBe(
       dedent`
-        SELECT
-          JSON '''
-            {
-              "firstName": "John",
-              "lastName": "Doe",
-              "inventory": ["Pickaxe", "Compass", "Dirt"]
-            }
-          '''
+        SELECT JSON '''
+          {
+            "firstName": "John",
+            "lastName": "Doe",
+            "inventory": ["Pickaxe", "Compass", "Dirt"]
+          }
+        '''
       `,
     );
   });
