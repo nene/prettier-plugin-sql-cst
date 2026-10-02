@@ -10,11 +10,14 @@ import {
   isCreateFunctionStmt,
   isCreateProcedureStmt,
   isDoStmt,
+  isExecuteExpr,
+  isExecuteImmediateStmt,
   isLanguageClause,
   isStringLiteral,
 } from "./node_utils";
 import { hardline, indent, stripTrailingHardline } from "./print_utils";
 import { AllPrettierOptions } from "./options";
+import { formatBigqueryString } from "./formatBigqueryString";
 
 export const embedSql: NonNullable<Printer<Node>["embed"]> = (
   path,
@@ -47,6 +50,43 @@ export const embedSql: NonNullable<Printer<Node>["embed"]> = (
     if (isSqlLanguageClause(parent.language)) {
       return sqlFormatter(node, pluginOptions);
     }
+  }
+
+  if (
+    options.parser === "plpgsql" &&
+    (isExecuteImmediateStmt(parent) || isExecuteExpr(parent)) &&
+    parent.expr === node &&
+    node.text.startsWith("$")
+  ) {
+    return sqlFormatter(node, {
+      ...pluginOptions,
+      parser: "postgresql",
+      // Enable $1-style parameters supplied by EXECUTE ... USING.
+      sqlParamTypes: [
+        ...new Set([...(pluginOptions.sqlParamTypes ?? []), "$nr" as const]),
+      ],
+      // Nested embedding can introduce dollar delimiters that close an outer string.
+      embeddedLanguageFormatting: "off",
+    });
+  }
+
+  if (
+    options.parser === "bigquery" &&
+    isExecuteImmediateStmt(parent) &&
+    parent.expr === node
+  ) {
+    return formatBigqueryString(node, {
+      ...pluginOptions,
+      // EXECUTE IMMEDIATE ... USING binds positional or named parameters.
+      sqlParamTypes: [
+        ...new Set([
+          ...(pluginOptions.sqlParamTypes ?? []),
+          "?" as const,
+          "@name" as const,
+        ]),
+      ],
+      embeddedLanguageFormatting: "off",
+    });
   }
 
   return null;
