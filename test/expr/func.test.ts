@@ -4,37 +4,33 @@ import { pretty, test, testBigquery, testPostgresql } from "../test_utils";
 // Functions and function-like language constructs
 describe("functions", () => {
   it(`formats function call to single line`, async () => {
-    expect(await pretty(`SELECT sqrt(1, 2, 3)`, { printWidth: 16 }))
+    expect(await pretty(`SELECT sqrt(1, 2, 3)`, { printWidth: 25 }))
       .toBe(dedent`
-      SELECT
-        sqrt(1, 2, 3)
+      SELECT sqrt(1, 2, 3)
     `);
   });
 
   it(`formats function call to multiple lines`, async () => {
     expect(await pretty(`SELECT sqrt(1, 2, 3)`, { printWidth: 10 }))
       .toBe(dedent`
-      SELECT
-        sqrt(
-          1,
-          2,
-          3
-        )
+      SELECT sqrt(
+        1,
+        2,
+        3
+      )
     `);
   });
 
   it(`keeps empty function args on one line`, async () => {
     expect(await pretty(`SELECT my_func()`, { printWidth: 10 })).toBe(dedent`
-      SELECT
-        my_func()
+      SELECT my_func()
     `);
   });
 
   it(`does not treat count(DISTINCT) as empty function args`, async () => {
-    expect(await pretty(`SELECT count(DISTINCT id)`, { printWidth: 25 }))
+    expect(await pretty(`SELECT count(DISTINCT id)`, { printWidth: 30 }))
       .toBe(dedent`
-      SELECT
-        count(DISTINCT id)
+      SELECT count(DISTINCT id)
     `);
   });
 
@@ -47,8 +43,7 @@ describe("functions", () => {
     ).toBe(dedent`
       CREATE FUNCTION my_func() AS
         (
-          SELECT
-            1
+          SELECT 1
         )
     `);
   });
@@ -57,10 +52,9 @@ describe("functions", () => {
     expect(
       await pretty(`SELECT my_func(/* comment */)`, { printWidth: 25 }),
     ).toBe(dedent`
-      SELECT
-        my_func(
-          /* comment */
-        )
+      SELECT my_func(
+        /* comment */
+      )
     `);
   });
 
@@ -75,11 +69,10 @@ describe("functions", () => {
         { printWidth: 25 },
       ),
     ).toBe(dedent`
-      SELECT
-        my_func(
-          -- comment
+      SELECT my_func(
+        -- comment
 
-        )
+      )
     `);
   });
 
@@ -90,13 +83,12 @@ describe("functions", () => {
   });
   it(`formats long named function arguments`, async () => {
     await testBigquery(dedent`
-      SELECT
-        concat_lower_or_upper(
-          first_parameter =>
-            another_function_call(another_function_param => 'Hohoho Hello'),
-          second_parameter => 'World',
-          uppercase => TRUE
-        )
+      SELECT concat_lower_or_upper(
+        first_parameter =>
+          another_function_call(another_function_param => 'Hohoho Hello'),
+        second_parameter => 'World',
+        uppercase => TRUE
+      )
     `);
   });
   // Behavior when sqlCanonicalSyntax: false
@@ -134,15 +126,14 @@ describe("functions", () => {
 
     it(`formats long combo of DISTINCT, IGNORE NULLS, ORDER BY, LIMIT to multiple lines`, async () => {
       await testBigquery(dedent`
-        SELECT
-          my_function_name(
-            DISTINCT
-            first_argument,
-            second_argument
-            IGNORE NULLS
-            ORDER BY some_field_name, other_field_name
-            LIMIT 10000, 200
-          )
+        SELECT my_function_name(
+          DISTINCT
+          first_argument,
+          second_argument
+          IGNORE NULLS
+          ORDER BY some_field_name, other_field_name
+          LIMIT 10000, 200
+        )
       `);
     });
   });

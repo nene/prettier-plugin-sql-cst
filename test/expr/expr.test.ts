@@ -139,15 +139,14 @@ describe("expr", () => {
 
   it(`preserves parenthesis around compound-SELECT inside function arguments`, async () => {
     await test(dedent`
-      SELECT
-        coalesce(
-          '',
-          (
-            SELECT x FROM xs
-            UNION
-            SELECT y FROM ys
-          )
+      SELECT coalesce(
+        '',
+        (
+          SELECT x FROM xs
+          UNION
+          SELECT y FROM ys
         )
+      )
       FROM tbl
     `);
   });
@@ -163,74 +162,68 @@ describe("expr", () => {
   describe("case", () => {
     it(`formats CASE expression always on multiple lines`, async () => {
       await test(dedent`
-        SELECT
-          CASE x
-            WHEN 1 THEN 'A'
-            ELSE 'B'
-          END
+        SELECT CASE x
+          WHEN 1 THEN 'A'
+          ELSE 'B'
+        END
       `);
     });
 
     it(`formats CASE expression with base expression`, async () => {
       await test(dedent`
-        SELECT
-          CASE status
-            WHEN 1 THEN 'good'
-            WHEN 2 THEN 'bad'
-            ELSE 'unknown'
-          END
+        SELECT CASE status
+          WHEN 1 THEN 'good'
+          WHEN 2 THEN 'bad'
+          ELSE 'unknown'
+        END
       `);
     });
 
     it(`formats CASE expression without base expression`, async () => {
       await test(dedent`
-        SELECT
-          CASE
-            WHEN status = 1 THEN 'good'
-            WHEN status = 2 THEN 'bad'
-            ELSE 'unknown'
-          END
+        SELECT CASE
+          WHEN status = 1 THEN 'good'
+          WHEN status = 2 THEN 'bad'
+          ELSE 'unknown'
+        END
       `);
     });
 
     it(`breaks long WHEN/THEN into separate lines`, async () => {
       await test(
         dedent`
-          SELECT
-            CASE
-              WHEN column_name = 1 THEN
-                result_name
-            END
+          SELECT CASE
+            WHEN column_name = 1 THEN
+              result_name
+          END
         `,
-        { printWidth: 40 },
+        { printWidth: 35 },
       );
     });
 
     it(`breaks multiple long WHEN/THEN clauses without blank lines between them`, async () => {
       await test(
         dedent`
-          SELECT
-            CASE
-              WHEN column_name = 1 THEN
-                result_name
-              WHEN column_name = 2 THEN
-                other_result
-              ELSE foo
-            END
+          SELECT CASE
+            WHEN column_name = 1 THEN
+              result_name
+            WHEN column_name = 2 THEN
+              other_result
+            ELSE foo
+          END
         `,
-        { printWidth: 40 },
+        { printWidth: 35 },
       );
     });
 
     it(`breaks long ELSE into separate lines`, async () => {
       await test(
         dedent`
-          SELECT
-            CASE
-              WHEN x = 1 THEN 'A'
-              ELSE
-                long_fallback_expression
-            END
+          SELECT CASE
+            WHEN x = 1 THEN 'A'
+            ELSE
+              long_fallback_expression
+          END
         `,
         { printWidth: 25 },
       );
@@ -239,14 +232,13 @@ describe("expr", () => {
     it(`indents long multi-condition WHEN clauses`, async () => {
       await test(
         dedent`
-          SELECT
-            CASE
-              WHEN
-                column_name = 1
-                AND (other_name = 2 OR other_name = 3)
-              THEN
-                result_name
-            END
+          SELECT CASE
+            WHEN
+              column_name = 1
+              AND (other_name = 2 OR other_name = 3)
+            THEN
+              result_name
+          END
         `,
         { printWidth: 50 },
       );
@@ -255,12 +247,11 @@ describe("expr", () => {
     it(`indents long multi-expression THEN clauses`, async () => {
       await test(
         dedent`
-          SELECT
-            CASE
-              WHEN column_name = 1 THEN
-                result_name = 1
-                AND other_name = 2
-            END
+          SELECT CASE
+            WHEN column_name = 1 THEN
+              result_name = 1
+              AND other_name = 2
+          END
         `,
         { printWidth: 45 },
       );
@@ -290,10 +281,9 @@ describe("expr", () => {
 
     it(`formats BigQuery array field access to multiple lines`, async () => {
       await testBigquery(dedent`
-        SELECT
-          ["Coffee Cup", "Tea Kettle", "Milk Glass"][
-            SAFE_OFFSET(some_really_long_index_number)
-          ]
+        SELECT ["Coffee Cup", "Tea Kettle", "Milk Glass"][
+          SAFE_OFFSET(some_really_long_index_number)
+        ]
       `);
     });
 

@@ -63,13 +63,12 @@ describe("literal", () => {
     it(`formats long BigQuery array literal to multiple lines`, async () => {
       await testBigquery(
         dedent`
-          SELECT
-            [
-              'a somewhat large array',
-              'containing some strings',
-              'which themselves',
-              'are somewhat long.'
-            ]
+          SELECT [
+            'a somewhat large array',
+            'containing some strings',
+            'which themselves',
+            'are somewhat long.'
+          ]
         `,
       );
     });
@@ -107,13 +106,12 @@ describe("literal", () => {
     it(`formats long struct literal to multiple lines`, async () => {
       await testBigquery(
         dedent`
-          SELECT
-            STRUCT(
-              22541 AS id,
-              'Sherlock Holmes' AS name,
-              'Baker Street' AS address,
-              'Private detective' AS occupation
-            )
+          SELECT STRUCT(
+            22541 AS id,
+            'Sherlock Holmes' AS name,
+            'Baker Street' AS address,
+            'Private detective' AS occupation
+          )
         `,
       );
     });
