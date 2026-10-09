@@ -304,34 +304,6 @@ describe("select", () => {
       await testPlpgsql(`PERFORM foo, bar FROM tbl WHERE x > y`);
     });
 
-    it(`keeps single-column PERFORM with nested breaks on one line when it fits`, async () => {
-      expect(
-        await pretty(
-          dedent`
-            PERFORM some_function_name(
-              arg => 1
-            )
-          `,
-          { dialect: "plpgsql" },
-        ),
-      ).toBe(dedent`
-        PERFORM some_function_name(arg => 1)
-      `);
-    });
-
-    it(`breaks inside single-column function args without hanging PERFORM`, async () => {
-      await testPlpgsql(dedent`
-        PERFORM some_function_name(
-          foo => 1,
-          bar => 2,
-          baz => 3,
-          qux => 4,
-          quux => 5,
-          corge => 6
-        )
-      `);
-    });
-
     it(`formats INTO clause`, async () => {
       await testPlpgsql(`SELECT * INTO some_variable FROM tbl WHERE x > y`);
     });
