@@ -14,6 +14,14 @@ describe("return", () => {
     `);
   });
 
+  it(`indents long RETURN expressions`, async () => {
+    await testPlpgsql(dedent`
+      RETURN
+        my_function_name(some_long_column_name)
+        AND other_function_name(another_long_column_name)
+    `);
+  });
+
   it(`formats RETURN NEXT`, async () => {
     await testPlpgsql(dedent`
       RETURN NEXT foo

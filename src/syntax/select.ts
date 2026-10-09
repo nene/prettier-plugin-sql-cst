@@ -1,8 +1,9 @@
 import { Doc } from "prettier";
-import { AllSelectNodes, LimitClause } from "sql-parser-cst";
+import { AllSelectNodes, LimitClause, SelectClause } from "sql-parser-cst";
 import { PrintFn } from "../PrintFn";
 import { isDefined } from "../utils";
 import { CstToDocMap } from "../CstToDocMap";
+import { isEmpty } from "../node_utils";
 import {
   join,
   line,
@@ -62,12 +63,16 @@ export const selectMap: CstToDocMap<AllSelectNodes> = {
     ]),
 
   // SELECT clause
-  select_clause: (print, node, path, opts) =>
-    group([
+  select_clause: (print, node, path, opts) => {
+    if (hasSingleColumn(node)) {
+      return group(print.spaced(["selectKw", "modifiers", "columns"]));
+    }
+    return group([
       print.spaced(["selectKw", "modifiers"]),
       node.columns ? indent([line, print("columns")]) : [],
       containsNewline(node, opts) ? breakParent : [],
-    ]),
+    ]);
+  },
   select_all: (print) => print.spaced(["allKw"]),
   select_distinct: (print) => print.spaced(["distinctKw"]),
   select_distinct_on: (print) =>
@@ -304,4 +309,11 @@ const printLimitValues = (
   } else {
     return print("count");
   }
+};
+
+const hasSingleColumn = (node: SelectClause): boolean => {
+  if (!node.columns) {
+    return false;
+  }
+  return node.columns.items.filter((item) => !isEmpty(item)).length === 1;
 };

@@ -83,6 +83,34 @@ describe("select", () => {
     `);
   });
 
+  it(`keeps single-column SELECT with nested breaks on one line when it fits`, async () => {
+    expect(
+      await pretty(
+        dedent`
+          SELECT some_function_name(
+            arg => 1
+          )
+        `,
+        { dialect: "postgresql" },
+      ),
+    ).toBe(dedent`
+      SELECT some_function_name(arg => 1)
+    `);
+  });
+
+  it(`breaks inside single-column function args without hanging SELECT`, async () => {
+    await testPostgresql(dedent`
+      SELECT some_function_name(
+        foo => 1,
+        bar => 2,
+        baz => 3,
+        qux => 4,
+        quux => 5,
+        corge => 6
+      )
+    `);
+  });
+
   it(`formats SELECT *`, async () => {
     await test(`SELECT *`);
   });
@@ -221,8 +249,7 @@ describe("select", () => {
 
       await testMysql(
         dedent`
-          SELECT
-            my_col
+          SELECT my_col
           GROUP BY
             first_column,
             second_column
@@ -237,8 +264,7 @@ describe("select", () => {
 
       await testMysql(
         dedent`
-          SELECT
-            my_col
+          SELECT my_col
           ORDER BY
             first_column ASC,
             second_column DESC

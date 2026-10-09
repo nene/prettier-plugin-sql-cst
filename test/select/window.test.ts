@@ -59,11 +59,10 @@ describe("select", () => {
 
   it("formats longer window function calls on multiple lines", async () => {
     await test(dedent`
-      SELECT
-        row_number() OVER (
-          PARTITION BY y
-          ORDER BY x
-        )
+      SELECT row_number() OVER (
+        PARTITION BY y
+        ORDER BY x
+      )
       FROM tbl
     `);
   });
@@ -77,10 +76,9 @@ describe("select", () => {
 
   it("formats window function call with longer FILTER and OVER clauses on multiple lines", async () => {
     await test(dedent`
-      SELECT
-        group_concat(entity_name, '.')
-          FILTER (WHERE entity_type IS NOT NULL)
-          OVER (ORDER BY entity_name DESC)
+      SELECT group_concat(entity_name, '.')
+        FILTER (WHERE entity_type IS NOT NULL)
+        OVER (ORDER BY entity_name DESC)
       FROM tbl
     `);
   });
