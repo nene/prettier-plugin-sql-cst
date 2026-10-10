@@ -14,6 +14,7 @@ export const isFuncArgs = is("func_args");
 export const isCreateTableStmt = is("create_table_stmt");
 export const isKeyword = is("keyword");
 export const isEmpty = is("empty");
+export const isIdentifier = is("identifier");
 export const isJsonLiteral = is("json_literal");
 export const isJsonbLiteral = is("jsonb_literal");
 export const isStringLiteral = is("string_literal");
