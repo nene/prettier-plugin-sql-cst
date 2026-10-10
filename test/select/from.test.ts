@@ -2,6 +2,16 @@ import dedent from "dedent-js";
 import { test, testBigquery, testMysql, testPostgresql } from "../test_utils";
 
 describe("select FROM", () => {
+  it(`formats single table on same line as FROM, no matter how long the line`, async () => {
+    await test(
+      dedent`
+        SELECT *
+        FROM my_super_long_table_name_that_is_quite_magnificently_long
+      `,
+      { printWidth: 20 },
+    );
+  });
+
   it(`formats join always to multiple lines`, async () => {
     await test(dedent`
       SELECT *
