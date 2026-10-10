@@ -42,7 +42,7 @@ describe("select", () => {
     expect(
       await pretty(
         `SELECT very_long_col_name, another_long_col_name
-        FROM my_super_long_table_name
+        FROM my_super_long_table_name, another_long_table_name
         WHERE my_table_name.x > my_table_name.y
         GROUP BY long_col, even_longer_col
         HAVING foo > some_long_col_name
@@ -56,7 +56,8 @@ describe("select", () => {
         very_long_col_name,
         another_long_col_name
       FROM
-        my_super_long_table_name
+        my_super_long_table_name,
+        another_long_table_name
       WHERE
         my_table_name.x >
           my_table_name.y
