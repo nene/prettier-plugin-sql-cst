@@ -109,13 +109,13 @@ describe("select FROM", () => {
     `);
   });
 
-  it(`formats FROM DUAL`, () => {
-    testMysql(`SELECT * FROM DUAL`);
+  it(`formats FROM DUAL`, async () => {
+    await testMysql(`SELECT * FROM DUAL`);
   });
 
   describe("LATERAL", () => {
-    it(`formats LATERAL subquery`, () => {
-      testMysql(dedent`
+    it(`formats LATERAL subquery`, async () => {
+      await testMysql(dedent`
         SELECT *
         FROM
           tbl
@@ -123,8 +123,8 @@ describe("select FROM", () => {
       `);
     });
 
-    it(`formats LATERAL table function`, () => {
-      testPostgresql(dedent`
+    it(`formats LATERAL table function`, async () => {
+      await testPostgresql(dedent`
         SELECT *
         FROM LATERAL schm.foo(1, 2, 3) AS t
       `);
