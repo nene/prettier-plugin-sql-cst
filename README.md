@@ -29,10 +29,9 @@ SELECT
   client.name AS client_name,
   organization.name AS org_name,
   count(orders.id) AS nr_of_orders
-FROM
-  client
-  LEFT JOIN organization ON client.organization_id = organization.id
-  LEFT JOIN orders ON orders.client_id = client.id
+FROM client
+LEFT JOIN organization ON client.organization_id = organization.id
+LEFT JOIN orders ON orders.client_id = client.id
 WHERE
   client.status = 'active'
   AND client.id IN (28, 214, 457)

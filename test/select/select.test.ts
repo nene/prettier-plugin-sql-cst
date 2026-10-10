@@ -55,8 +55,7 @@ describe("select", () => {
       SELECT
         very_long_col_name,
         another_long_col_name
-      FROM
-        my_super_long_table_name
+      FROM my_super_long_table_name
       WHERE
         my_table_name.x >
           my_table_name.y

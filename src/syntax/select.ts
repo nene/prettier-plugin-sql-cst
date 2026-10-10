@@ -1,9 +1,14 @@
 import { Doc } from "prettier";
-import { AllSelectNodes, LimitClause, SelectClause } from "sql-parser-cst";
+import {
+  AllSelectNodes,
+  LimitClause,
+  Node,
+  SelectClause,
+} from "sql-parser-cst";
 import { PrintFn } from "../PrintFn";
 import { isDefined } from "../utils";
 import { CstToDocMap } from "../CstToDocMap";
-import { isEmpty } from "../node_utils";
+import { isEmpty, isJoinExpr } from "../node_utils";
 import {
   join,
   line,
@@ -83,8 +88,10 @@ export const selectMap: CstToDocMap<AllSelectNodes> = {
   replace_columns: (print) => print.spaced(["expr", "replaceKw", "columns"]),
 
   // FROM clause
-  from_clause: (print) =>
-    group([print("fromKw"), indent([line, print("expr")])]),
+  from_clause: (print, node) =>
+    hasCommaJoin(node.expr)
+      ? group([print("fromKw"), indent([line, print("expr")])])
+      : print.spaced(["fromKw", "expr"]),
   join_expr: (print, node) => {
     if (node.operator === ",") {
       return join([",", hardline], print(["left", "right"]));
@@ -114,7 +121,10 @@ export const selectMap: CstToDocMap<AllSelectNodes> = {
   not_indexed_table: (print) => print.spaced(["table", "notIndexedKw"]),
   unnest_expr: (print) => print(["unnestKw", "expr"]),
   unnest_with_offset_expr: (print) => print.spaced(["unnest", "withOffsetKw"]),
-  pivot_expr: (print) => [print("left"), hardline, print(["pivotKw", "args"])],
+  pivot_expr: (print) => [
+    print("left"),
+    indent([hardline, print(["pivotKw", "args"])]),
+  ],
   pivot_for_in: (print) =>
     group(
       join(line, [
@@ -125,11 +135,13 @@ export const selectMap: CstToDocMap<AllSelectNodes> = {
     ),
   unpivot_expr: (print, node) => [
     print("left"),
-    hardline,
-    (node.nullHandlingKw ? print.spaced : print)([
-      "unpivotKw",
-      "nullHandlingKw",
-      "args",
+    indent([
+      hardline,
+      (node.nullHandlingKw ? print.spaced : print)([
+        "unpivotKw",
+        "nullHandlingKw",
+        "args",
+      ]),
     ]),
   ],
   unpivot_for_in: (print) =>
@@ -143,14 +155,19 @@ export const selectMap: CstToDocMap<AllSelectNodes> = {
   tablesample_expr: (print) =>
     group([
       print("left"),
-      line,
-      print.spaced(["tablesampleKw", "method", "args", "repeatable"]),
+      indent([
+        line,
+        print.spaced(["tablesampleKw", "method", "args", "repeatable"]),
+      ]),
     ]),
   tablesample_method: (print) => print.spaced(["methodKw"]),
   tablesample_percent: (print) => print.spaced(["percent", "percentKw"]),
   tablesample_repeatable: (print) => print.spaced(["repeatableKw", "seed"]),
   for_system_time_as_of_expr: (print) =>
-    group([print("left"), line, print.spaced(["forSystemTimeAsOfKw", "expr"])]),
+    group([
+      print("left"),
+      indent([line, print.spaced(["forSystemTimeAsOfKw", "expr"])]),
+    ]),
   partitioned_table: (print) =>
     print.spaced(["table", "partitionKw", "partitions"]),
   dual_table: (print) => print("dualKw"),
@@ -317,3 +334,6 @@ const hasSingleColumn = (node: SelectClause): boolean => {
   }
   return node.columns.items.filter((item) => !isEmpty(item)).length === 1;
 };
+
+const hasCommaJoin = (node: Node): boolean =>
+  isJoinExpr(node) && (node.operator === "," || hasCommaJoin(node.left));

@@ -24,6 +24,7 @@ export const isMemberExpr = is("member_expr");
 export const isSelectStmt = is("select_stmt");
 export const isCompoundSelectStmt = is("compound_select_stmt");
 export const isListExpr = is("list_expr");
+export const isJoinExpr = is("join_expr");
 export const isCreateFunctionStmt = is("create_function_stmt");
 export const isAlterFunctionStmt = is("alter_function_stmt");
 export const isDropFunctionStmt = is("drop_function_stmt");

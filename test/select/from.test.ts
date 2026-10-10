@@ -5,89 +5,92 @@ describe("select FROM", () => {
   it(`formats join always to multiple lines`, async () => {
     await test(dedent`
       SELECT *
-      FROM
-        client
-        NATURAL JOIN client_sale
+      FROM client
+      NATURAL JOIN client_sale
     `);
   });
 
   it(`formats FROM with a long join to multiple lines`, async () => {
     await test(dedent`
       SELECT *
-      FROM
-        client_relation
-        LEFT JOIN client_sale ON client_sale.client_id = client_relation.id
+      FROM client_relation
+      LEFT JOIN client_sale ON client_sale.client_id = client_relation.id
     `);
   });
 
   it(`formats FROM with multiple joins to multiple lines`, async () => {
     await test(dedent`
       SELECT *
-      FROM
-        client
-        LEFT JOIN client_sale ON client_sale.client_id = client.id
-        RIGHT OUTER JOIN client_attribute ON client_attribute.client_id = client.id
+      FROM client
+      LEFT JOIN client_sale ON client_sale.client_id = client.id
+      RIGHT OUTER JOIN client_attribute ON client_attribute.client_id = client.id
     `);
   });
 
   it(`formats FROM joins with USING-specification`, async () => {
     await test(dedent`
       SELECT *
-      FROM
-        client
-        LEFT JOIN client_sale USING (client_id)
-        RIGHT OUTER JOIN client_attribute USING (client_attrib_id, client_id)
+      FROM client
+      LEFT JOIN client_sale USING (client_id)
+      RIGHT OUTER JOIN client_attribute USING (client_attrib_id, client_id)
     `);
   });
 
   it(`formats long join specifications to separate lines`, async () => {
     await test(dedent`
       SELECT *
-      FROM
-        client
-        LEFT JOIN client_sale
-          ON client_sale.client_id = client.id AND client_sale.type = 287
-        RIGHT OUTER JOIN client_attribute
-          USING (client_attribute_id, fabulously_long_col_name)
+      FROM client
+      LEFT JOIN client_sale
+        ON client_sale.client_id = client.id AND client_sale.type = 287
+      RIGHT OUTER JOIN client_attribute
+        USING (client_attribute_id, fabulously_long_col_name)
     `);
   });
 
   it(`formats table aliases`, async () => {
     await test(dedent`
       SELECT *
-      FROM
-        client AS c
-        LEFT JOIN client_sale AS s ON s.client_id = c.id AND s.type = 287
+      FROM client AS c
+      LEFT JOIN client_sale AS s ON s.client_id = c.id AND s.type = 287
     `);
   });
 
   it(`formats table alias with column aliases`, async () => {
     await testPostgresql(dedent`
       SELECT *
-      FROM
-        standard_client AS client (id, name)
-        JOIN standard_client_sale AS sale (client_id, sale_id)
-          ON sale.client_id = client.id
+      FROM standard_client AS client (id, name)
+      JOIN standard_client_sale AS sale (client_id, sale_id)
+        ON sale.client_id = client.id
     `);
   });
 
   it(`formats joins with subqueries`, async () => {
     await test(dedent`
       SELECT *
-      FROM
-        client
-        LEFT JOIN (SELECT * FROM inventory WHERE price > 0) AS inventory
-          ON inventory.client_id = client.id
+      FROM client
+      LEFT JOIN (SELECT * FROM inventory WHERE price > 0) AS inventory
+        ON inventory.client_id = client.id
     `);
   });
 
   it(`formats joins with table functions`, async () => {
     await test(dedent`
       SELECT *
-      FROM
-        client
-        LEFT JOIN schm.gen_table(1, 2, 3) AS inventory
-          ON inventory.client_id = client.id
+      FROM client
+      LEFT JOIN schm.gen_table(1, 2, 3) AS inventory
+        ON inventory.client_id = client.id
+    `);
+  });
+
+  it(`formats long subquery in FROM`, async () => {
+    await test(dedent`
+      SELECT *
+      FROM (
+        SELECT client_id, count(*) AS sales_count
+        FROM client_sale
+        WHERE price > 0
+        GROUP BY client_id
+      ) AS sales
     `);
   });
 
@@ -100,12 +103,21 @@ describe("select FROM", () => {
     `);
   });
 
-  it(`formats indexing modifiers`, async () => {
+  it(`formats comma-operator cross-joins mixed with joins`, async () => {
     await test(dedent`
       SELECT *
       FROM
-        client INDEXED BY my_idx
-        NATURAL LEFT JOIN inventory NOT INDEXED
+        client,
+        inventory
+        LEFT JOIN client_sale ON client_sale.client_id = client.id
+    `);
+  });
+
+  it(`formats indexing modifiers`, async () => {
+    await test(dedent`
+      SELECT *
+      FROM client INDEXED BY my_idx
+      NATURAL LEFT JOIN inventory NOT INDEXED
     `);
   });
 
@@ -117,9 +129,21 @@ describe("select FROM", () => {
     it(`formats LATERAL subquery`, async () => {
       await testMysql(dedent`
         SELECT *
-        FROM
-          tbl
-          JOIN LATERAL (SELECT * FROM foo) AS t
+        FROM tbl
+        JOIN LATERAL (SELECT * FROM foo) AS t
+      `);
+    });
+
+    it(`formats long LATERAL subquery`, async () => {
+      await testPostgresql(dedent`
+        SELECT client.id, sales.total
+        FROM client
+        LEFT JOIN LATERAL (
+          SELECT sum(client_sale.price) AS total
+          FROM client_sale
+          WHERE client_sale.client_id = client.id
+        ) AS sales
+          ON TRUE
       `);
     });
 
@@ -142,8 +166,7 @@ describe("select FROM", () => {
     it(`formats PIVOT()`, async () => {
       await testBigquery(dedent`
         SELECT *
-        FROM
-          Produce
+        FROM Produce
           PIVOT(SUM(sales) FOR quarter IN ('Q1', 'Q2', 'Q3', 'Q4'))
       `);
     });
@@ -151,8 +174,7 @@ describe("select FROM", () => {
     it(`formats long PIVOT() to multiple lines`, async () => {
       await testBigquery(dedent`
         SELECT *
-        FROM
-          Produce
+        FROM Produce
           PIVOT(
             SUM(sales) AS total_sales, COUNT(*) AS num_records
             FOR quarter
@@ -164,8 +186,7 @@ describe("select FROM", () => {
     it(`formats UNPIVOT()`, async () => {
       await testBigquery(dedent`
         SELECT *
-        FROM
-          Produce
+        FROM Produce
           UNPIVOT(sales FOR quarter IN (Q1, Q2, Q3, Q4))
       `);
     });
@@ -173,8 +194,7 @@ describe("select FROM", () => {
     it(`formats long UNPIVOT() with null-handling options to multiple lines`, async () => {
       await testBigquery(dedent`
         SELECT *
-        FROM
-          Produce
+        FROM Produce
           UNPIVOT INCLUDE NULLS (
             (first_half_sales, second_half_sales)
             FOR semesters
@@ -193,8 +213,7 @@ describe("select FROM", () => {
       it(`formats TABLESPAMPLE operator to multiple lines`, async () => {
         await testBigquery(dedent`
           SELECT *
-          FROM
-            myLongProjectName.myCustomDatasetName.my_table_name
+          FROM myLongProjectName.myCustomDatasetName.my_table_name
             TABLESAMPLE SYSTEM (10 PERCENT)
         `);
       });
@@ -222,8 +241,7 @@ describe("select FROM", () => {
     it(`formats long FOR SYSTEM_TIME AS OF to multiple lines`, async () => {
       await testBigquery(dedent`
         SELECT *
-        FROM
-          my_favorite_table AS fancy_table_name
+        FROM my_favorite_table AS fancy_table_name
           FOR SYSTEM_TIME AS OF '2017-01-01 10:00:00-07:00'
       `);
     });
@@ -251,20 +269,18 @@ describe("select FROM", () => {
     it(`formats ROWS FROM with column definitions`, async () => {
       await testPostgresql(dedent`
         SELECT *
-        FROM
-          ROWS FROM (
-            table_function1(foo, bar) AS (a INT, b TEXT),
-            table_function2(foo, bar, baz) AS (a INT, b TEXT, c TEXT)
-          )
+        FROM ROWS FROM (
+          table_function1(foo, bar) AS (a INT, b TEXT),
+          table_function2(foo, bar, baz) AS (a INT, b TEXT, c TEXT)
+        )
         `);
     });
 
     it(`formats table functions WITH ORDINALITY`, async () => {
       await testPostgresql(dedent`
         SELECT *
-        FROM
-          table_func1() WITH ORDINALITY
-          JOIN ROWS FROM (table_func2(), table_func3()) WITH ORDINALITY
+        FROM table_func1() WITH ORDINALITY
+        JOIN ROWS FROM (table_func2(), table_func3()) WITH ORDINALITY
       `);
     });
   });
