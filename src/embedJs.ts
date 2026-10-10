@@ -1,11 +1,11 @@
 import { Printer } from "prettier";
-import { CreateFunctionStmt, Node } from "sql-parser-cst";
+import { Node } from "sql-parser-cst";
 import {
   isAsClause,
   isCreateFunctionStmt,
-  isLanguageClause,
   isStringLiteral,
 } from "./node_utils";
+import { isJavaScriptLanguageClause } from "./languageClause";
 import { formatBigqueryString } from "./formatBigqueryString";
 
 export const embedJs: NonNullable<Printer<Node>["embed"]> = (path, options) => {
@@ -25,7 +25,3 @@ export const embedJs: NonNullable<Printer<Node>["embed"]> = (path, options) => {
   }
   return null;
 };
-
-const isJavaScriptLanguageClause = (
-  clause: CreateFunctionStmt["clauses"][0],
-): boolean => isLanguageClause(clause) && clause.name.name === "js";

@@ -12,9 +12,9 @@ import {
   isDoStmt,
   isExecuteExpr,
   isExecuteImmediateStmt,
-  isLanguageClause,
   isStringLiteral,
 } from "./node_utils";
+import { isPlpgsqlLanguageClause, isSqlLanguageClause } from "./languageClause";
 import { hardline, indent, stripTrailingHardline } from "./print_utils";
 import { AllPrettierOptions } from "./options";
 import { formatBigqueryString } from "./formatBigqueryString";
@@ -140,16 +140,6 @@ const isRoutine = (
   node: any,
 ): node is CreateFunctionStmt | CreateProcedureStmt =>
   isCreateFunctionStmt(node) || isCreateProcedureStmt(node);
-
-const isSqlLanguageClause = (
-  clause: CreateFunctionStmt["clauses"][0] | CreateProcedureStmt["clauses"][0],
-): boolean =>
-  isLanguageClause(clause) && clause.name.name.toLowerCase() === "sql";
-
-const isPlpgsqlLanguageClause = (
-  clause: CreateFunctionStmt["clauses"][0] | CreateProcedureStmt["clauses"][0],
-): boolean =>
-  isLanguageClause(clause) && clause.name.name.toLowerCase() === "plpgsql";
 
 const detectQuote = (node: StringLiteral): string | undefined => {
   const match = node.text.match(/^('|\$[^$]*\$)/);

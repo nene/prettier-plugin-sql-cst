@@ -36,6 +36,16 @@ describe("update", () => {
     `);
   });
 
+  it(`formats UPDATE with complex targets`, async () => {
+    await testPostgresql(dedent`
+      UPDATE employee
+      SET
+        address.street = 'Wall street',
+        position[2] = 34,
+        applicants[1].title = 'Mr'
+    `);
+  });
+
   it(`formats OR ABORT modifier`, async () => {
     await test(dedent`
       UPDATE OR ABORT employee
