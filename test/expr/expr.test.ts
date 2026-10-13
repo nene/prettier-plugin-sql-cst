@@ -160,7 +160,15 @@ describe("expr", () => {
   });
 
   describe("case", () => {
-    it(`formats CASE expression always on multiple lines`, async () => {
+    it(`formats single-WHEN CASE expression on one line`, async () => {
+      await test(`SELECT CASE WHEN x = 1 THEN 'A' END`);
+    });
+
+    it(`formats single-WHEN CASE expression with base expression on one line`, async () => {
+      await test(`SELECT CASE x WHEN 1 THEN 'A' END`);
+    });
+
+    it(`formats CASE expression with ELSE on multiple lines`, async () => {
       await test(dedent`
         SELECT CASE x
           WHEN 1 THEN 'A'
@@ -192,15 +200,14 @@ describe("expr", () => {
     it(`breaks long WHEN/THEN into separate lines`, async () => {
       await test(
         dedent`
-          SELECT CASE
-            WHEN column_name = 1 THEN
-              result_name
+          SELECT CASE WHEN column_name = 1
+          THEN
+            result_name
           END
         `,
         { printWidth: 35 },
       );
     });
-
     it(`breaks multiple long WHEN/THEN clauses without blank lines between them`, async () => {
       await test(
         dedent`
@@ -232,12 +239,11 @@ describe("expr", () => {
     it(`indents long multi-condition WHEN clauses`, async () => {
       await test(
         dedent`
-          SELECT CASE
-            WHEN
-              column_name = 1
-              AND (other_name = 2 OR other_name = 3)
-            THEN
-              result_name
+          SELECT CASE WHEN
+            column_name = 1
+            AND (other_name = 2 OR other_name = 3)
+          THEN
+            result_name
           END
         `,
         { printWidth: 50 },
@@ -247,10 +253,9 @@ describe("expr", () => {
     it(`indents long multi-expression THEN clauses`, async () => {
       await test(
         dedent`
-          SELECT CASE
-            WHEN column_name = 1 THEN
-              result_name = 1
-              AND other_name = 2
+          SELECT CASE WHEN column_name = 1 THEN
+            result_name = 1
+            AND other_name = 2
           END
         `,
         { printWidth: 45 },
