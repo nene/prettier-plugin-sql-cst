@@ -217,6 +217,15 @@ There are also several SQL-specific options:
 
   _Since 0.21.0_
 
+- **`sqlWrap`**: `"preserve" | "collapse"` (default `"preserve"`)
+
+  How to wrap SQL that could fit on fewer lines.
+  With `"preserve"`, code that's multi-line in the original stays multi-line.
+  With `"collapse"`, the original line breaks are ignored and lines are only broken when they don't fit,
+  like Prettier's [objectWrap][] option does for JavaScript objects.
+
+  _Since 0.24.0_
+
 ## Usage inside VSCode
 
 To use this plugin inside VSCode,
@@ -282,6 +291,7 @@ Though the general principles should be mostly in place by now.
 [printWidth]: https://prettier.io/docs/en/options.html#print-width
 [tabWidth]: https://prettier.io/docs/en/options.html#tab-width
 [useTabs]: https://prettier.io/docs/en/options.html#tabs
+[objectWrap]: https://prettier.io/docs/en/options.html#object-wrap
 [sql-parser-cst]: https://github.com/nene/sql-parser-cst
 [wadler-prettier]: http://homepages.inf.ed.ac.uk/wadler/papers/prettier/prettier.pdf
 [prettier-plugin-embed]: https://github.com/Sec-ant/prettier-plugin-embed

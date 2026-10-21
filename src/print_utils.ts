@@ -1,5 +1,6 @@
 import { Doc, doc, util } from "prettier";
 import { Node, Whitespace } from "sql-parser-cst";
+import { SqlPluginOptions } from "./options";
 import { isArray } from "./utils";
 
 export const {
@@ -21,11 +22,17 @@ export const { stripTrailingHardline } = doc.utils;
 export const join = (sep: Doc, docs: Doc): Doc =>
   isArray(docs) ? origJoin(sep, docs) : docs;
 
-/** True when the Node contains a newline in original source code */
+/**
+ * True when the Node contains a newline in original source code.
+ * Always false with sqlWrap: "collapse", which ignores the original line breaks.
+ */
 export const containsNewline = (
   node: Node,
-  opts: { originalText: string },
+  opts: { originalText: string; sqlWrap: SqlPluginOptions["sqlWrap"] },
 ): boolean => {
+  if (opts.sqlWrap === "collapse") {
+    return false;
+  }
   if (!node.range) {
     throw new Error("containsNewline() expected a Node with range info");
   }
