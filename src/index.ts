@@ -61,7 +61,7 @@ const createParser = (dialect: DialectName): Parser<Node> => ({
   locEnd: (node) => node.range?.[1] as number,
 });
 
-export const parsers: Record<string, Parser<Node>> = {
+export const parsers: Record<DialectName, Parser<Node>> = {
   sqlite: createParser("sqlite"),
   bigquery: createParser("bigquery"),
   mysql: createParser("mysql"),
@@ -70,7 +70,7 @@ export const parsers: Record<string, Parser<Node>> = {
   plpgsql: createParser("plpgsql"),
 };
 
-export const printers: Record<string, Printer> = {
+export const printers: Record<"sql-cst", Printer> = {
   "sql-cst": {
     print: printSql as Printer["print"],
     embed: embed,
