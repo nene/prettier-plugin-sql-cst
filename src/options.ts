@@ -11,6 +11,7 @@ export interface SqlPluginOptions {
   sqlCanonicalSyntax: boolean;
   sqlFinalSemicolon: boolean;
   sqlExperimentalPlpgsql: boolean;
+  sqlWrap: "preserve" | "collapse";
 }
 
 // Prettier builtin options + options of this plugin
@@ -164,5 +165,24 @@ export const options: SupportOptions = {
     description:
       "Enables formatting for PL/pgSQL in PostgreSQL function bodies",
     // Since 0.21.0
+  },
+  sqlWrap: {
+    type: "choice",
+    category: "SQL",
+    default: "preserve",
+    description: "How to wrap SQL that could fit on fewer lines",
+    choices: [
+      {
+        value: "preserve",
+        description:
+          "keeps code multi-line when the original code is multi-line",
+        since: "0.24.0",
+      },
+      {
+        value: "collapse",
+        description: "breaks lines only when they don't fit",
+        since: "0.24.0",
+      },
+    ],
   },
 };
