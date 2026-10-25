@@ -159,6 +159,12 @@ describe("expr", () => {
     `);
   });
 
+  it(`preserves parenthesis around row constructor inside function arguments`, async () => {
+    await testPostgresql(dedent`
+      SELECT array_position(ids, (1, 1)) FROM tbl
+    `);
+  });
+
   describe("case", () => {
     it(`formats CASE expression always on multiple lines`, async () => {
       await test(dedent`

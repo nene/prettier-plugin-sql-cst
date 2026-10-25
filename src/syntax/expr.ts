@@ -80,7 +80,9 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
       // For now this check here patches up the deficiency in the parser.
       !grandParent.distinctKw &&
       !isSelectStmt(node.expr) &&
-      !isCompoundSelectStmt(node.expr)
+      !isCompoundSelectStmt(node.expr) &&
+      // (a, b) is a single row argument, not two arguments
+      !isListExpr(node.expr)
     ) {
       return print("expr");
     }
