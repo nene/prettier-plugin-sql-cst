@@ -33,6 +33,13 @@ describe("policy", () => {
         WITH CHECK (kind = 'public')
       `);
     });
+
+    it(`preserves parenthesis around subquery used as the USING condition`, async () => {
+      await testPostgresql(dedent`
+        CREATE POLICY admin_only ON permissions
+        USING ((SELECT is_admin FROM users WHERE name = current_user))
+      `);
+    });
   });
 
   describe("alter policy", () => {

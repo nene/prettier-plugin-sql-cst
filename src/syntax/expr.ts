@@ -66,8 +66,15 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
     }
   },
   paren_expr: (print, node, path) => {
-    // discard unnecessary nested ((parentheses))
-    if (isParenExpr(node.expr)) {
+    // discard unnecessary nested ((parentheses)),
+    // but not when the inner ones belong to a subquery or a row,
+    // as the outer ones may be required by the enclosing clause
+    if (
+      isParenExpr(node.expr) &&
+      !isSelectStmt(node.expr.expr) &&
+      !isCompoundSelectStmt(node.expr.expr) &&
+      !isListExpr(node.expr.expr)
+    ) {
       return print("expr");
     }
     // Discard unnecessary parenthesis around function arguments
