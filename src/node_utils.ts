@@ -40,7 +40,7 @@ export const isBigqueryQuotedMemberExpr = is("bigquery_quoted_member_expr");
 export const isCreateTriggerStmt = is("create_trigger_stmt");
 export const isExecuteClause = is("execute_clause");
 export const isExecuteImmediateStmt = is("execute_immediate_stmt");
-export const isExecuteExpr = is("execute_expr");
+export const isExecuteImmediateExpr = is("execute_immediate_expr");
 export const isFunctionSignature = is("function_signature");
 
 export const isDataTypeName = is("data_type_name");

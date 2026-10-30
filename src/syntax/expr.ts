@@ -201,7 +201,7 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
   struct_expr: (print) =>
     group(["(", indent([softline, print("expr")]), softline, ")"]),
   typed_expr: (print) => print(["dataType", "expr"]),
-  row_constructor: (print) => print(["rowKw", "row"]),
+  row_constructor: (print) => group([print("rowKw"), "(", print("row"), ")"]),
   array_constructor: (print) => print(["arrayKw", "expr"]),
   quantifier_expr: (print) => print.spaced(["quantifierKw", "expr"]),
   full_text_match_expr: (print) =>
