@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { pretty, test } from "../test_utils";
+import { pretty, test, testBigquery, testPostgresql } from "../test_utils";
 
 describe("expr", () => {
   it(`eliminates unnecessary (((nested))) parenthesis`, async () => {
@@ -52,6 +52,17 @@ describe("expr", () => {
     await test(dedent`
       SELECT count(DISTINCT (foo, bar))
       FROM tbl
+    `);
+  });
+
+  it(`preserves parenthesis around PostgreSQL row constructors`, async () => {
+    await testPostgresql(dedent`
+      SELECT my_func((1, 2))
+    `);
+  });
+  it(`preserves parenthesis around BigQuery structs`, async () => {
+    await testBigquery(dedent`
+      SELECT my_func((1, 2))
     `);
   });
 });
