@@ -10,7 +10,7 @@ import {
   isCreateFunctionStmt,
   isCreateProcedureStmt,
   isDoStmt,
-  isExecuteExpr,
+  isExecuteImmediateExpr,
   isExecuteImmediateStmt,
   isStringLiteral,
 } from "./node_utils";
@@ -54,7 +54,7 @@ export const embedSql: NonNullable<Printer<Node>["embed"]> = (
 
   if (
     options.parser === "plpgsql" &&
-    (isExecuteImmediateStmt(parent) || isExecuteExpr(parent)) &&
+    (isExecuteImmediateStmt(parent) || isExecuteImmediateExpr(parent)) &&
     parent.expr === node &&
     node.text.startsWith("$")
   ) {

@@ -188,7 +188,7 @@ export const proceduralLanguageMap: CstToDocMap<AllProceduralNodes> = {
       : print("returnKw"),
   return_next_stmt: (print) => group(print.spaced(["returnNextKw", "expr"])),
   return_query_stmt: (print, node) => {
-    if (node.expr.type === "execute_expr") {
+    if (node.expr.type === "execute_immediate_expr") {
       return group([print.spaced("returnQueryKw"), " ", print("expr")]);
     } else {
       return group([print.spaced("returnQueryKw"), " ", indent(print("expr"))]);
