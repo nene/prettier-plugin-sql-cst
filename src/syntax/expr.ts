@@ -22,12 +22,7 @@ import {
   isValuesClause,
   isEmpty,
   isArraySubscript,
-  isParenExpr,
-  isFuncArgs,
-  isListExpr,
   isProgram,
-  isSelectStmt,
-  isCompoundSelectStmt,
   isBigqueryQuotedMemberExpr,
   isFuncCall,
   isMemberExpr,
@@ -43,7 +38,7 @@ import {
 import { isString, last } from "../utils";
 import { AllPrettierOptions } from "../options";
 import { AstPath } from "prettier";
-import { isEmptyParenExpr } from "./paren_expr";
+import { isEmptyParenExpr, isParenExprNecessary } from "./paren_expr";
 
 export const exprMap: CstToDocMap<AllExprNodes> = {
   list_expr: (print, node, path) => {
@@ -64,22 +59,10 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
     }
   },
   paren_expr: (print, node, path) => {
+    const parent = path.getParentNode(0);
+    const grandParent = path.getParentNode(1);
     // discard unnecessary nested ((parentheses))
-    if (isParenExpr(node.expr)) {
-      return print("expr");
-    }
-    // Discard unnecessary parenthesis around function arguments
-    const parent = path.getParentNode(0) as Node;
-    const grandParent = path.getParentNode(1) as Node;
-    if (
-      isListExpr(parent) &&
-      isFuncArgs(grandParent) &&
-      // TODO: We really should parse the DISTINCT (...) expression as a separate thing.
-      // For now this check here patches up the deficiency in the parser.
-      !grandParent.distinctKw &&
-      !isSelectStmt(node.expr) &&
-      !isCompoundSelectStmt(node.expr)
-    ) {
+    if (!isParenExprNecessary(node, parent, grandParent)) {
       return print("expr");
     }
     if (isEmptyParenExpr(node)) {
