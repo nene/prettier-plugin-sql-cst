@@ -1,4 +1,4 @@
-import { Node } from "sql-parser-cst";
+import { CompoundSelectStmt, Node, SelectStmt } from "sql-parser-cst";
 import { isObject } from "./utils";
 import { NodeByType } from "./CstToDocMap";
 
@@ -57,3 +57,9 @@ export const isDataType = ([node, ...ancestors]: any[]): boolean =>
   (isIntervalUnitRange(node) && isDataType(ancestors)) ||
   isTimeDataType(node) ||
   isParametricDataType(node);
+
+export const isSelect = (node: Node): node is SelectStmt | CompoundSelectStmt =>
+  isSelectStmt(node) || isCompoundSelectStmt(node);
+
+export const hasComments = (node: Node): boolean =>
+  (node.leading?.length ?? 0) > 0 || (node.trailing?.length ?? 0) > 0;

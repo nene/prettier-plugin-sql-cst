@@ -1,10 +1,10 @@
 import { Node, ParenExpr } from "sql-parser-cst";
 import {
-  isCompoundSelectStmt,
+  hasComments,
   isFuncArgs,
   isListExpr,
   isParenExpr,
-  isSelectStmt,
+  isSelect,
 } from "../node_utils";
 
 export const isEmptyParenExpr = (node: ParenExpr): boolean => {
@@ -50,9 +50,3 @@ export const isParenExprNecessary = (
   }
   return true;
 };
-
-const isSelect = (node: Node): boolean =>
-  isSelectStmt(node) || isCompoundSelectStmt(node);
-
-const hasComments = (node: Node): boolean =>
-  (node.leading?.length ?? 0) > 0 || (node.trailing?.length ?? 0) > 0;
