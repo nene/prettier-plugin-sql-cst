@@ -34,11 +34,7 @@ export const isParenExprNecessary = (
 ) => {
   // nested ((parentheses)) aren't necessary
   // except around (SELECT ...)
-  if (
-    isParenExpr(node.expr) &&
-    !isSelectStmt(node.expr.expr) &&
-    !isCompoundSelectStmt(node.expr.expr)
-  ) {
+  if (isParenExpr(node.expr) && !isSelect(node.expr.expr)) {
     return false;
   }
   // Parenthesis around function arguments aren't necessary
@@ -48,13 +44,15 @@ export const isParenExprNecessary = (
     // TODO: We really should parse the DISTINCT (...) expression as a separate thing.
     // For now this check here patches up the deficiency in the parser.
     !grandParent.distinctKw &&
-    !isSelectStmt(node.expr) &&
-    !isCompoundSelectStmt(node.expr)
+    !isSelect(node.expr)
   ) {
     return false;
   }
   return true;
 };
+
+const isSelect = (node: Node): boolean =>
+  isSelectStmt(node) || isCompoundSelectStmt(node);
 
 const hasComments = (node: Node): boolean =>
   (node.leading?.length ?? 0) > 0 || (node.trailing?.length ?? 0) > 0;
