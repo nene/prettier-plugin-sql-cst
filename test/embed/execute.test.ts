@@ -96,11 +96,24 @@ describe("PL/pgSQL EXECUTE embedding", () => {
 });
 
 describe("BigQuery EXECUTE IMMEDIATE embedding", () => {
+  it("does not introduce conflicting triple quotes through JSON embedding", async () => {
+    const result = await pretty(
+      `EXECUTE IMMEDIATE r'''select JSON '{"message":"a long message that will force this JSON document to wrap","enabled":true}' '''`,
+      { dialect: "bigquery", printWidth: 40 },
+    );
+    expect(result).toContain(
+      `JSON '{"message":"a long message that will force this JSON document to wrap","enabled":true}'`,
+    );
+    await testBigquery(result, { printWidth: 40 });
+  });
   it("formats a command with INTO and named parameters", async () => {
     expect(
-      await pretty('EXECUTE IMMEDIATE "select @id" INTO result USING 1 AS id', {
-        dialect: "bigquery",
-      }),
+      await pretty(
+        "EXECUTE IMMEDIATE r'''select @id''' INTO result USING 1 AS id",
+        {
+          dialect: "bigquery",
+        },
+      ),
     ).toBe(dedent`
       EXECUTE IMMEDIATE
         r'''
@@ -113,7 +126,7 @@ describe("BigQuery EXECUTE IMMEDIATE embedding", () => {
 
   it("preserves backslashes when quoting the formatted command", async () => {
     expect(
-      await pretty(String.raw`EXECUTE IMMEDIATE r"select '\n'"`, {
+      await pretty(String.raw`EXECUTE IMMEDIATE r'''select '\n' '''`, {
         dialect: "bigquery",
       }),
     ).toBe(
@@ -126,9 +139,9 @@ describe("BigQuery EXECUTE IMMEDIATE embedding", () => {
     );
   });
 
-  it("uses double quotes when the command contains triple single quotes", async () => {
+  it("preserves triple double quotes", async () => {
     expect(
-      await pretty(`EXECUTE IMMEDIATE ${JSON.stringify(`select "'''"`)}`, {
+      await pretty(`EXECUTE IMMEDIATE r"""select "'''" """`, {
         dialect: "bigquery",
       }),
     ).toBe(dedent`
@@ -146,6 +159,9 @@ describe("BigQuery EXECUTE IMMEDIATE embedding", () => {
   });
 
   it.each([
+    'EXECUTE IMMEDIATE "select @id"',
+    "EXECUTE IMMEDIATE r'select ?'",
+    "EXECUTE IMMEDIATE '''select 1'''",
     'EXECUTE IMMEDIATE "select " || column_name',
     'EXECUTE IMMEDIATE "unsupported SQL syntax"',
   ])("preserves commands it cannot embed: %s", async (source) => {

@@ -2,6 +2,14 @@ import dedent from "dedent-js";
 import { pretty, testBigquery } from "../test_utils";
 
 describe("LANGUAGE js", () => {
+  it.each(["'return  1'", '"return  1"', "'''return  1'''", "r'return  1'"])(
+    "preserves JavaScript in unsupported quote style: %s",
+    async (body) => {
+      await testBigquery(
+        `CREATE FUNCTION f()\nRETURNS INT64\nLANGUAGE js\nAS ${body}`,
+      );
+    },
+  );
   it(`formats JavaScript FUNCTION`, async () => {
     await testBigquery(dedent`
       CREATE FUNCTION gen_random()
@@ -21,7 +29,7 @@ describe("LANGUAGE js", () => {
           CREATE FUNCTION gen_random()
           RETURNS FLOAT64
           LANGUAGE js
-          AS ' if(true) {return Math.random () *2}'
+          AS r''' if(true) {return Math.random () *2}'''
         `,
         { dialect: "bigquery" },
       ),
@@ -37,14 +45,14 @@ describe("LANGUAGE js", () => {
     `);
   });
 
-  it(`quotes JavaScript in double-quotes when single-quotes can't be used`, async () => {
+  it(`preserves raw double quotes and uppercase prefix`, async () => {
     expect(
       await pretty(
         dedent`
           CREATE FUNCTION contains_quotes(x STRING)
           RETURNS FLOAT64
           LANGUAGE js
-          AS " return /'''/.test(x) "
+          AS R""" return /'''/.test(x) """
         `,
         { dialect: "bigquery" },
       ),
@@ -52,7 +60,7 @@ describe("LANGUAGE js", () => {
       CREATE FUNCTION contains_quotes(x STRING)
       RETURNS FLOAT64
       LANGUAGE js
-      AS r"""
+      AS R"""
         return /'''/.test(x);
       """
     `);
