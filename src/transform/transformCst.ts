@@ -18,7 +18,7 @@ export const transformCst: TransformFn = (
     moveCommentsToRoot,
     stripTrailingCommas,
   ];
-  if (options.sqlFinalSemicolon) {
+  if (options.sqlFinalSemicolon && !cst.psql) {
     transforms.push(addFinalSemicolon);
   }
   if (options.sqlCanonicalSyntax) {

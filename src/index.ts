@@ -41,13 +41,19 @@ export const languages: SupportLanguage[] = [
     name: "Experimental PL/pgSQL",
     parsers: ["plpgsql"],
   },
+  {
+    extensions: [],
+    name: "Experimental psql",
+    parsers: ["psql"],
+  },
 ];
 
-const createParser = (dialect: DialectName): Parser<Node> => ({
+const createParser = (dialect: DialectName, psql = false): Parser<Node> => ({
   parse: (text, options) =>
     transformCst(
       parse(text, {
         dialect,
+        psql,
         includeRange: true,
         includeComments: true,
         filename: options.filepath,
@@ -61,13 +67,14 @@ const createParser = (dialect: DialectName): Parser<Node> => ({
   locEnd: (node) => node.range?.[1] as number,
 });
 
-export const parsers: Record<DialectName, Parser<Node>> = {
+export const parsers: Record<DialectName | "psql", Parser<Node>> = {
   sqlite: createParser("sqlite"),
   bigquery: createParser("bigquery"),
   mysql: createParser("mysql"),
   mariadb: createParser("mariadb"),
   postgresql: createParser("postgresql"),
   plpgsql: createParser("plpgsql"),
+  psql: createParser("postgresql", true),
 };
 
 export const printers: Record<"sql-cst", Printer> = {

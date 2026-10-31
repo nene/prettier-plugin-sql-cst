@@ -119,6 +119,7 @@ The plugin provides the following parsers:
 - `bigquery`
 - `postgresql` (**experimental! expect crashes**)
 - `plpgsql` (**experimental! expect crashes**)
+- `psql` (**experimental!**): formats PostgreSQL SQL between standalone psql commands. Select it explicitly with `--parser psql`; `COPY FROM STDIN` is not supported yet.
 - `mysql` (**experimental! expect crashes**)
 - `mariadb` (**experimental! expect crashes**)
 

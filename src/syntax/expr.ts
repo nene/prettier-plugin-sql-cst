@@ -239,6 +239,9 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
       }
     }
   },
+  psql_variable: (print, node) => node.text,
+  /** cst-ignore: name */
+  psql_identifier: (print, node) => node.text,
   /** cst-ignore: name */
   variable: (print, node, path, options) =>
     isQuotedVariable(node) ? print("text") : printIdentifier(node, options),
