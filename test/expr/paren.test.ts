@@ -65,4 +65,18 @@ describe("expr", () => {
       SELECT my_func((1, 2))
     `);
   });
+
+  it(`preserves double-parenthesis around SELECT in policy clauses`, async () => {
+    await testPostgresql(dedent`
+      CREATE POLICY foo ON my_table
+      USING ((SELECT is_admin))
+      WITH CHECK (
+        (
+          SELECT is_admin
+          UNION
+          SELECT is_moderator
+        )
+      )
+    `);
+  });
 });

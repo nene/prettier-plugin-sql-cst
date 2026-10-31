@@ -33,7 +33,12 @@ export const isParenExprNecessary = (
   grandParent: Node | null,
 ) => {
   // nested ((parentheses)) aren't necessary
-  if (isParenExpr(node.expr)) {
+  // except around (SELECT ...)
+  if (
+    isParenExpr(node.expr) &&
+    !isSelectStmt(node.expr.expr) &&
+    !isCompoundSelectStmt(node.expr.expr)
+  ) {
     return false;
   }
   // Parenthesis around function arguments aren't necessary
