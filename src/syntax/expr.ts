@@ -4,7 +4,6 @@ import {
   Keyword,
   Node,
   Parameter,
-  ParenExpr,
   Variable,
 } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
@@ -34,11 +33,9 @@ import {
   isMemberExpr,
   isCreateFunctionStmt,
   isAlterFunctionStmt,
-  isDropFunctionStmt,
   isAlterActionRename,
   isCreateProcedureStmt,
   isAlterProcedureStmt,
-  isDropProcedureStmt,
   isCreateTriggerStmt,
   isExecuteClause,
   isFunctionSignature,
@@ -46,6 +43,7 @@ import {
 import { isString, last } from "../utils";
 import { AllPrettierOptions } from "../options";
 import { AstPath } from "prettier";
+import { isEmptyParenExpr } from "./paren_expr";
 
 export const exprMap: CstToDocMap<AllExprNodes> = {
   list_expr: (print, node, path) => {
@@ -329,26 +327,3 @@ const isFunctionContext = (
 const isBooleanOp = ({ name }: Keyword) => name === "AND" || name === "OR";
 
 const isCompactOp = (op: string) => op === "->" || op === "->>";
-
-const hasComments = (node: Node): boolean =>
-  (node.leading?.length ?? 0) > 0 || (node.trailing?.length ?? 0) > 0;
-
-const isEmptyParenExpr = (node: ParenExpr): boolean => {
-  if (hasComments(node) || hasComments(node.expr)) {
-    return false;
-  }
-  if (isFuncArgs(node.expr)) {
-    return (
-      node.expr.args.items.length === 0 &&
-      !node.expr.distinctKw &&
-      !node.expr.nullHandlingKw &&
-      !node.expr.orderBy &&
-      !node.expr.limit &&
-      !node.expr.having
-    );
-  }
-  if (isListExpr(node.expr)) {
-    return node.expr.items.length === 0;
-  }
-  return false;
-};
