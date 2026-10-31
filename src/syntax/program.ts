@@ -5,12 +5,37 @@ import { CstToDocMap } from "../CstToDocMap";
 import { AllPrettierOptions } from "src/options";
 
 export const programMap: CstToDocMap<Program> = {
-  program: (print, node, path, options) =>
-    print("statements").map((doc, i) =>
+  program: (print, node, path, options) => {
+    const statements = print("statements");
+    if (node.psql) {
+      if (statements.length === 0) {
+        return statements;
+      }
+      return [
+        ...statements.map((doc, i) => {
+          if (i === 0) {
+            return doc;
+          }
+          const prevNode = node.statements[i - 1];
+          const currentNode = node.statements[i];
+          const separator = hasEmptyLineBetweenNodes(
+            prevNode,
+            currentNode,
+            options,
+          )
+            ? [hardline, hardline]
+            : hardline;
+          return [separator, doc];
+        }),
+        hardline,
+      ];
+    }
+    return statements.map((doc, i) =>
       i === node.statements.length - 1
         ? printFinalStatement(doc, i, node.statements, options)
         : printStatement(doc, i, node.statements, options),
-    ),
+    );
+  },
 };
 
 const printStatement = (

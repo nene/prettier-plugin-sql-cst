@@ -4,7 +4,7 @@ import {
   Identifier,
   StringLiteral,
 } from "sql-parser-cst";
-import { isIdentifier, isLanguageClause } from "./node_utils";
+import { isLanguageClause } from "./node_utils";
 
 export const isJavaScriptLanguageClause = (
   clause: CreateFunctionStmt["clauses"][0],
@@ -22,4 +22,4 @@ export const isPlpgsqlLanguageClause = (
   languageName(clause.name).toLowerCase() === "plpgsql";
 
 const languageName = (node: Identifier | StringLiteral): string =>
-  isIdentifier(node) ? node.name : node.value;
+  node.type === "string_literal" ? node.value : node.name;

@@ -30,6 +30,7 @@ import { parameterMap } from "./parameter";
 import { policyMap } from "./policy";
 import { preparedStatementsMap } from "./prepared_statements";
 import { proceduralLanguageMap } from "./procedural_language";
+import { psqlMap } from "./psql";
 import { procedureMap } from "./procedure";
 import { procClauseMap } from "./proc_clause";
 import { programMap } from "./program";
@@ -79,6 +80,7 @@ export const transformMap: CstToDocMap<Node> = {
   ...policyMap,
   ...preparedStatementsMap,
   ...procClauseMap,
+  ...psqlMap,
   ...proceduralLanguageMap,
   ...procedureMap,
   ...programMap,
