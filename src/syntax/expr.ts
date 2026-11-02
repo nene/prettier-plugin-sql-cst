@@ -96,12 +96,15 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
   postfix_op_expr: (print) => print.spaced(["expr", "operator"]),
   between_expr: (print) =>
     print.spaced(["left", "betweenKw", "begin", "andKw", "end"]),
-  case_expr: (print) => [
-    print.spaced(["caseKw", "expr"]),
-    indent([hardline, join(hardline, print("clauses"))]),
-    hardline,
-    print("endKw"),
-  ],
+  case_expr: (print) => {
+    const ln = print.dynamicLine();
+    return group([
+      print.spaced(["caseKw", "expr"]),
+      indent([ln, join(ln, print("clauses"))]),
+      ln,
+      print("endKw"),
+    ]);
+  },
   case_when: (print, node) => {
     const whenThen = group([
       group([print("whenKw"), indent([line, print("condition")])]),

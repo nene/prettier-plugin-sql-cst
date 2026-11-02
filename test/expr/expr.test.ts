@@ -107,7 +107,21 @@ describe("expr", () => {
   });
 
   describe("case", () => {
-    it(`formats CASE expression always on multiple lines`, async () => {
+    it(`formats single-WHEN CASE expression on one line`, async () => {
+      await test(`SELECT CASE WHEN x = 1 THEN 'A' END`);
+    });
+
+    it(`formats single-WHEN CASE expression with base expression on one line`, async () => {
+      await test(`SELECT CASE x WHEN 1 THEN 'A' END`);
+    });
+
+    it(`formats CASE expression with ELSE on single line (when source is single-line)`, async () => {
+      await test(dedent`
+        SELECT CASE x WHEN 1 THEN 'A' ELSE 'B' END
+      `);
+    });
+
+    it(`formats CASE expression with ELSE on multiple lines (when source is multi-line)`, async () => {
       await test(dedent`
         SELECT CASE x
           WHEN 1 THEN 'A'
