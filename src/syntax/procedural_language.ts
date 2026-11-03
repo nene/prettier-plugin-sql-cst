@@ -2,6 +2,7 @@ import { AllProceduralNodes } from "sql-parser-cst";
 import {
   group,
   hardline,
+  ifBreak,
   indent,
   join,
   line,
@@ -199,7 +200,12 @@ export const proceduralLanguageMap: CstToDocMap<AllProceduralNodes> = {
     ) {
       return group([print.spaced(["returnKw", "expr"])]);
     }
-    return group([print("returnKw"), indent([line, print("expr")])]);
+    return group([
+      print("returnKw"),
+      ifBreak([" ", "("]),
+      indent([line, print("expr")]),
+      ifBreak([line, ")"]),
+    ]);
   },
   return_next_stmt: (print) => group(print.spaced(["returnNextKw", "expr"])),
   return_query_stmt: (print, node) => {
