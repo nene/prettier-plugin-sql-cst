@@ -22,6 +22,16 @@ describe("return", () => {
     `);
   });
 
+  it(`formats RETURN func_call() on same line`, async () => {
+    await testPlpgsql(dedent`
+      RETURN my_function_name(
+        some_long_column_name,
+        another_long_column_name,
+        and_some_more
+      )
+    `);
+  });
+
   it(`formats RETURN NEXT`, async () => {
     await testPlpgsql(dedent`
       RETURN NEXT foo
