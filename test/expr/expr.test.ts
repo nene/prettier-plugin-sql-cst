@@ -20,12 +20,25 @@ describe("expr", () => {
     `);
   });
 
+  // Not a desired behavior. We need something better
+  it(`formats long chain of + operators on single line`, async () => {
+    await test(
+      dedent`
+        SELECT product_price + base_price + tax + special_cut
+      `,
+      { printWidth: 25 },
+    );
+  });
+
   it(`keeps short binary expressions on one line`, async () => {
-    await test(dedent`
-      SELECT *
-      FROM foo
-      WHERE bar = short_func()
-    `);
+    await test(
+      dedent`
+        SELECT *
+        FROM foo
+        WHERE bar = short_func()
+      `,
+      { printWidth: 25 },
+    );
   });
 
   it(`breaks up function arg list, but keeps function name on the same line as = operator`, async () => {
