@@ -45,6 +45,17 @@ describe("expr", () => {
     await test(`SELECT col1 IN (1, 2, 3), col2 NOT IN (4, 5, 6)`);
   });
 
+  it(`formats long IN expression on multiple lines`, async () => {
+    await test(dedent`
+      SELECT col1 IN (
+        'some long value',
+        'another long value',
+        'yet another even longer value',
+        'and yet another value'
+      )
+    `);
+  });
+
   it(`formats LIKE expressions`, async () => {
     await test(`SELECT fname LIKE 'Mar%', lname NOT LIKE '%ony'`);
   });

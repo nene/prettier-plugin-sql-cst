@@ -34,6 +34,7 @@ import {
   isCreateTriggerStmt,
   isExecuteClause,
   isFunctionSignature,
+  isParenExpr,
 } from "../node_utils";
 import { isString, last } from "../utils";
 import { AllPrettierOptions } from "../options";
@@ -85,6 +86,9 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
     if (isString(node.operator) && isCompactOp(node.operator)) {
       // Some operators are better formatted without spaces around them
       return print(["left", "operator", "right"]);
+    }
+    if (isParenExpr(node.right)) {
+      return print.spaced(["left", "operator", "right"]);
     }
     return group([
       print("left"),
