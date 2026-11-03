@@ -43,6 +43,16 @@ describe("return", () => {
     `);
   });
 
+  it(`formats RETURN ( ...expr... ) on same line`, async () => {
+    await testPlpgsql(dedent`
+      RETURN (
+        SELECT *
+        FROM tbl
+        WHERE x > 10
+      )
+    `);
+  });
+
   it(`formats RETURN NEXT`, async () => {
     await testPlpgsql(dedent`
       RETURN NEXT foo
