@@ -90,10 +90,7 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
     if (isParenExpr(node.right)) {
       return print.spaced(["left", "operator", "right"]);
     }
-    return group([
-      print("left"),
-      group([" ", print.spaced("operator"), indent([line, print("right")])]),
-    ]);
+    return print.spaced(["left", "operator", "right"]);
   },
   prefix_op_expr: (print, node) =>
     (isString(node.operator) ? print : print.spaced)(["operator", "expr"]),

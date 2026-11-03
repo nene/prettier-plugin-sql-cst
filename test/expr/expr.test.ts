@@ -28,14 +28,17 @@ describe("expr", () => {
     `);
   });
 
-  it(`breaks long binary expressions into multiple lines with indentation`, async () => {
+  it(`breaks up function arg list, but keeps function name on the same line as = operator`, async () => {
     await test(
       dedent`
         SELECT *
         FROM foo
         WHERE
-          bar =
-            my_func()
+          bar = my_function_name(
+            arg1,
+            arg2,
+            arg3
+          )
       `,
       { printWidth: 15 },
     );
