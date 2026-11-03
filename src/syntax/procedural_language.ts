@@ -8,7 +8,11 @@ import {
   stripTrailingHardline,
 } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
-import { isExecuteImmediateExpr, isFuncCall } from "../node_utils";
+import {
+  isExecuteImmediateExpr,
+  isFuncCall,
+  isRowConstructor,
+} from "../node_utils";
 
 export const proceduralLanguageMap: CstToDocMap<AllProceduralNodes> = {
   // labels
@@ -187,7 +191,7 @@ export const proceduralLanguageMap: CstToDocMap<AllProceduralNodes> = {
     if (!node.expr) {
       return print("returnKw");
     }
-    if (isFuncCall(node.expr)) {
+    if (isFuncCall(node.expr) || isRowConstructor(node.expr)) {
       return group([print.spaced(["returnKw", "expr"])]);
     }
     return group([print("returnKw"), indent([line, print("expr")])]);

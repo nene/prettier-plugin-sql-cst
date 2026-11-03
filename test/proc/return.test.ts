@@ -32,6 +32,17 @@ describe("return", () => {
     `);
   });
 
+  it(`formats RETURN ( , , ) on same line (row_constructor)`, async () => {
+    await testPlpgsql(dedent`
+      RETURN (
+        some_long_column_name,
+        another_long_column_name,
+        and_another_long_column_name,
+        and_some_more
+      )
+    `);
+  });
+
   it(`formats RETURN NEXT`, async () => {
     await testPlpgsql(dedent`
       RETURN NEXT foo

@@ -185,7 +185,17 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
   struct_expr: (print) =>
     group(["(", indent([softline, print("expr")]), softline, ")"]),
   typed_expr: (print) => print(["dataType", "expr"]),
-  row_constructor: (print) => group([print("rowKw"), "(", print("row"), ")"]),
+  row_constructor: (print) => {
+    // The same logic as for paren_expr formatting
+    const lineStyle = print.dynamicLine() === hardline ? hardline : softline;
+    return group([
+      print("rowKw"),
+      "(",
+      indent([lineStyle, print("row")]),
+      lineStyle,
+      ")",
+    ]);
+  },
   array_constructor: (print) => print(["arrayKw", "expr"]),
   quantifier_expr: (print) => print.spaced(["quantifierKw", "expr"]),
   full_text_match_expr: (print) =>

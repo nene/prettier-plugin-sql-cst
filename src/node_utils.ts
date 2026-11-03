@@ -42,6 +42,7 @@ export const isExecuteClause = is("execute_clause");
 export const isExecuteImmediateStmt = is("execute_immediate_stmt");
 export const isExecuteImmediateExpr = is("execute_immediate_expr");
 export const isFunctionSignature = is("function_signature");
+export const isRowConstructor = is("row_constructor");
 
 export const isDataTypeName = is("data_type_name");
 export const isIntervalDataType = is("interval_data_type");
