@@ -10,17 +10,27 @@ export const formatBigqueryString = (
   return async (
     textToDoc: (text: string, options: Options) => Promise<Doc>,
   ) => {
-    const match = node.text.match(/^([rR])('''|""")/);
-    if (!match) {
+    const quotes = detectQuotes(node.text);
+    if (!quotes) {
       return undefined;
     }
 
     const code = await textToDoc(node.value, options);
     return [
-      match[0],
+      quotes[0],
       indent([hardline, stripTrailingHardline(code)]),
       hardline,
-      match[2],
+      quotes[1],
     ];
   };
+};
+
+// Returns the pair of quotes, like [r''', ''']
+// Returns undefined when not dealing with raw triple-quoted strings.
+const detectQuotes = (code: string): [string, string] | undefined => {
+  const match = code.match(/^([rR])('''|""")/);
+  if (!match) {
+    return undefined;
+  }
+  return [match[0], match[2]];
 };
