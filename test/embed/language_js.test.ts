@@ -5,11 +5,15 @@ describe("LANGUAGE js", () => {
   it.each(["'return  1'", '"return  1"', "'''return  1'''", "r'return  1'"])(
     "preserves JavaScript in unsupported quote style: %s",
     async (body) => {
-      await testBigquery(
-        `CREATE FUNCTION f()\nRETURNS INT64\nLANGUAGE js\nAS ${body}`,
-      );
+      await testBigquery(dedent`
+        CREATE FUNCTION f()
+        RETURNS INT64
+        LANGUAGE js
+        AS ${body}
+      `);
     },
   );
+
   it(`formats JavaScript FUNCTION`, async () => {
     await testBigquery(dedent`
       CREATE FUNCTION gen_random()
