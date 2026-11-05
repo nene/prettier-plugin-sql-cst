@@ -30,7 +30,18 @@ describe("LANGUAGE plpgsql", () => {
         `);
       });
 
-      it(`preserves single-quoted string`, async () => {
+      it(`preserves single-quoted string as-is`, async () => {
+        await testPostgresql(
+          dedent`
+              ${code}
+              LANGUAGE plpgsql
+              AS 'BEGIN SELECT 1; END'
+            `,
+          { sqlExperimentalPlpgsql: true },
+        );
+      });
+
+      it(`preserves single-quoted string as-is (regardless of nested quotes)`, async () => {
         await testPostgresql(
           dedent`
               ${code}
@@ -39,9 +50,7 @@ describe("LANGUAGE plpgsql", () => {
             `,
           { sqlExperimentalPlpgsql: true },
         );
-      });
 
-      it(`does not reformat single-quoted SQL string when its source contains $$-quotes`, async () => {
         await testPostgresql(
           dedent`
             ${code}
