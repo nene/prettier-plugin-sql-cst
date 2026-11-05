@@ -259,6 +259,10 @@ Use [prettier-plugin-embed][] together with `prettier-plugin-sql-cst`.
 
 ## Limitations and development status
 
+SQL and PL/pgSQL bodies in PostgreSQL must use dollar quotes to be formatted.
+SQL and JavaScript bodies in BigQuery must use raw triple quotes.
+Other quote styles are preserved without formatting their contents.
+
 Currently this plugin supports two SQL dialects:
 
 - **SQLite** - full support.

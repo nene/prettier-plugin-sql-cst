@@ -30,23 +30,14 @@ describe("LANGUAGE sql", () => {
         `);
       });
 
-      it(`converts single-quoted SQL string to dollar-quoted string`, async () => {
-        expect(
-          await pretty(
-            dedent`
+      it(`preserves single-quoted SQL string`, async () => {
+        await testPostgresql(
+          dedent`
               ${code}
               LANGUAGE sql
               AS 'SELECT ''foo'''
             `,
-            { dialect: "postgresql" },
-          ),
-        ).toBe(dedent`
-          ${code}
-          LANGUAGE sql
-          AS $$
-            SELECT 'foo';
-          $$
-        `);
+        );
       });
 
       it(`does not reformat single-quoted SQL string when its source contains $$-quotes`, async () => {
@@ -75,7 +66,7 @@ describe("LANGUAGE sql", () => {
             dedent`
               ${code}
               LANGUAGE Sql
-              AS 'SELECT 1'
+              AS $$select 1$$
             `,
             { dialect: "postgresql" },
           ),
@@ -94,7 +85,7 @@ describe("LANGUAGE sql", () => {
     expect(
       await pretty(
         dedent`
-          DO LANGUAGE sql 'select 1'
+          DO LANGUAGE sql $$select 1$$
         `,
         { dialect: "postgresql", sqlExperimentalPlpgsql: true },
       ),

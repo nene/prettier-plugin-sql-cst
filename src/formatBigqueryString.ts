@@ -10,29 +10,17 @@ export const formatBigqueryString = (
   return async (
     textToDoc: (text: string, options: Options) => Promise<Doc>,
   ) => {
-    const quotes = detectQuotes(node.value);
-    if (!quotes) {
+    const match = node.text.match(/^([rR])('''|""")/);
+    if (!match) {
       return undefined;
     }
 
     const code = await textToDoc(node.value, options);
     return [
-      quotes[0],
+      match[0],
       indent([hardline, stripTrailingHardline(code)]),
       hardline,
-      quotes[1],
+      match[2],
     ];
   };
-};
-
-// Whether to quote the code with single- or double-quotes.
-// Returns undefined when neither can be used without escaping.
-const detectQuotes = (code: string): [string, string] | undefined => {
-  if (!/'''/.test(code)) {
-    return ["r'''", "'''"];
-  }
-  if (!/"""/.test(code)) {
-    return ['r"""', '"""'];
-  }
-  return undefined;
 };
