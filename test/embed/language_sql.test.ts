@@ -30,7 +30,17 @@ describe("LANGUAGE sql", () => {
         `);
       });
 
-      it(`preserves single-quoted SQL string`, async () => {
+      it(`preserves single-quoted SQL string as-is`, async () => {
+        await testPostgresql(
+          dedent`
+              ${code}
+              LANGUAGE sql
+              AS 'SELECT foo'
+            `,
+        );
+      });
+
+      it(`preserves single-quoted SQL string as-is regardless of nested quotes`, async () => {
         await testPostgresql(
           dedent`
               ${code}
@@ -38,9 +48,6 @@ describe("LANGUAGE sql", () => {
               AS 'SELECT ''foo'''
             `,
         );
-      });
-
-      it(`does not reformat single-quoted SQL string when its source contains $$-quotes`, async () => {
         await testPostgresql(
           dedent`
             ${code}
