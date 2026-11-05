@@ -20,22 +20,38 @@ describe("expr", () => {
     `);
   });
 
-  it(`keeps short binary expressions on one line`, async () => {
-    await test(dedent`
-      SELECT *
-      FROM foo
-      WHERE bar = short_func()
-    `);
+  // Not a desired behavior. We need something better
+  it(`formats long chain of + operators on single line`, async () => {
+    await test(
+      dedent`
+        SELECT product_price + base_price + tax + special_cut
+      `,
+      { printWidth: 25 },
+    );
   });
 
-  it(`breaks long binary expressions into multiple lines with indentation`, async () => {
+  it(`keeps short binary expressions on one line`, async () => {
+    await test(
+      dedent`
+        SELECT *
+        FROM foo
+        WHERE bar = short_func()
+      `,
+      { printWidth: 25 },
+    );
+  });
+
+  it(`breaks up function arg list, but keeps function name on the same line as = operator`, async () => {
     await test(
       dedent`
         SELECT *
         FROM foo
         WHERE
-          bar =
-            my_func()
+          bar = my_function_name(
+            arg1,
+            arg2,
+            arg3
+          )
       `,
       { printWidth: 15 },
     );
@@ -43,6 +59,17 @@ describe("expr", () => {
 
   it(`formats IN expressions`, async () => {
     await test(`SELECT col1 IN (1, 2, 3), col2 NOT IN (4, 5, 6)`);
+  });
+
+  it(`formats long IN expression on multiple lines`, async () => {
+    await test(dedent`
+      SELECT col1 IN (
+        'some long value',
+        'another long value',
+        'yet another even longer value',
+        'and yet another value'
+      )
+    `);
   });
 
   it(`formats LIKE expressions`, async () => {
@@ -106,61 +133,22 @@ describe("expr", () => {
     `);
   });
 
-  it(`eliminates unnecessary (((nested))) parenthesis`, async () => {
-    expect(await pretty(`SELECT (((1 + 2))) * 3`)).toBe(dedent`
-      SELECT (1 + 2) * 3
-    `);
-  });
-
-  it(`preserves comments when eliminating (((nested))) parenthesis`, async () => {
-    expect(await pretty(`SELECT (/*c1*/(/*c2*/(/*c3*/ 1 + 2))) * 3`))
-      .toBe(dedent`
-      SELECT /*c1*/ /*c2*/ (/*c3*/ 1 + 2) * 3
-    `);
-  });
-
-  it(`eliminates unnecessary parenthesis around function arguments`, async () => {
-    expect(await pretty(`SELECT my_func((id), (name))`)).toBe(dedent`
-      SELECT my_func(id, name)
-    `);
-  });
-
-  it(`preserves comments when eliminating func(((arg))) parenthesis`, async () => {
-    expect(await pretty(`SELECT count(/*c1*/(/*c2*/ id))`)).toBe(dedent`
-      SELECT count(/*c1*/ /*c2*/ id)
-    `);
-  });
-
-  it(`preserves parenthesis around SELECT inside function arguments`, async () => {
-    await test(dedent`
-      SELECT coalesce((SELECT foo FROM bar), 'default') FROM tbl
-    `);
-  });
-
-  it(`preserves parenthesis around compound-SELECT inside function arguments`, async () => {
-    await test(dedent`
-      SELECT coalesce(
-        '',
-        (
-          SELECT x FROM xs
-          UNION
-          SELECT y FROM ys
-        )
-      )
-      FROM tbl
-    `);
-  });
-
-  // Issue #73
-  it(`preserves parenthesis around DISTINCT inside function arguments`, async () => {
-    await test(dedent`
-      SELECT count(DISTINCT (foo, bar))
-      FROM tbl
-    `);
-  });
-
   describe("case", () => {
-    it(`formats CASE expression always on multiple lines`, async () => {
+    it(`formats single-WHEN CASE expression on one line`, async () => {
+      await test(`SELECT CASE WHEN x = 1 THEN 'A' END`);
+    });
+
+    it(`formats single-WHEN CASE expression with base expression on one line`, async () => {
+      await test(`SELECT CASE x WHEN 1 THEN 'A' END`);
+    });
+
+    it(`formats CASE expression with ELSE on single line (when source is single-line)`, async () => {
+      await test(dedent`
+        SELECT CASE x WHEN 1 THEN 'A' ELSE 'B' END
+      `);
+    });
+
+    it(`formats CASE expression with ELSE on multiple lines (when source is multi-line)`, async () => {
       await test(dedent`
         SELECT CASE x
           WHEN 1 THEN 'A'

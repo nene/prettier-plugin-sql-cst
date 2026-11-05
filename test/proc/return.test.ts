@@ -1,5 +1,5 @@
 import dedent from "dedent-js";
-import { testBigquery, testMysql, testPlpgsql } from "../test_utils";
+import { pretty, testBigquery, testMysql, testPlpgsql } from "../test_utils";
 
 describe("return", () => {
   it(`formats RETURN statement`, async () => {
@@ -14,11 +14,50 @@ describe("return", () => {
     `);
   });
 
-  it(`indents long RETURN expressions`, async () => {
+  it(`formats RETURN func_call() on same line`, async () => {
     await testPlpgsql(dedent`
-      RETURN
+      RETURN my_function_name(
+        some_long_column_name,
+        another_long_column_name,
+        and_some_more
+      )
+    `);
+  });
+
+  it(`formats RETURN ( , , ) on same line (row_constructor)`, async () => {
+    await testPlpgsql(dedent`
+      RETURN (
+        some_long_column_name,
+        another_long_column_name,
+        and_another_long_column_name,
+        and_some_more
+      )
+    `);
+  });
+
+  it(`formats RETURN ( ...expr... ) on same line`, async () => {
+    await testPlpgsql(dedent`
+      RETURN (
+        SELECT *
+        FROM tbl
+        WHERE x > 10
+      )
+    `);
+  });
+
+  it(`wraps long RETURN expressions inside parenthesis`, async () => {
+    const result = await pretty(
+      dedent`
+        RETURN my_function_name(some_long_column_name)
+          AND other_function_name(another_long_column_name)
+      `,
+      { dialect: "plpgsql" },
+    );
+    expect(result).toBe(dedent`
+      RETURN (
         my_function_name(some_long_column_name)
         AND other_function_name(another_long_column_name)
+      )
     `);
   });
 

@@ -4,7 +4,6 @@ import {
   Keyword,
   Node,
   Parameter,
-  ParenExpr,
   Variable,
 } from "sql-parser-cst";
 import { CstToDocMap } from "../CstToDocMap";
@@ -23,29 +22,24 @@ import {
   isValuesClause,
   isEmpty,
   isArraySubscript,
-  isParenExpr,
-  isFuncArgs,
-  isListExpr,
   isProgram,
-  isSelectStmt,
-  isCompoundSelectStmt,
   isBigqueryQuotedMemberExpr,
   isFuncCall,
   isMemberExpr,
   isCreateFunctionStmt,
   isAlterFunctionStmt,
-  isDropFunctionStmt,
   isAlterActionRename,
   isCreateProcedureStmt,
   isAlterProcedureStmt,
-  isDropProcedureStmt,
   isCreateTriggerStmt,
   isExecuteClause,
   isFunctionSignature,
+  isParenExpr,
 } from "../node_utils";
 import { isString, last } from "../utils";
 import { AllPrettierOptions } from "../options";
 import { AstPath } from "prettier";
+import { isEmptyParenExpr, isParenExprNecessary } from "./paren_expr";
 
 export const exprMap: CstToDocMap<AllExprNodes> = {
   list_expr: (print, node, path) => {
@@ -66,22 +60,10 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
     }
   },
   paren_expr: (print, node, path) => {
+    const parent = path.getParentNode(0);
+    const grandParent = path.getParentNode(1);
     // discard unnecessary nested ((parentheses))
-    if (isParenExpr(node.expr)) {
-      return print("expr");
-    }
-    // Discard unnecessary parenthesis around function arguments
-    const parent = path.getParentNode(0) as Node;
-    const grandParent = path.getParentNode(1) as Node;
-    if (
-      isListExpr(parent) &&
-      isFuncArgs(grandParent) &&
-      // TODO: We really should parse the DISTINCT (...) expression as a separate thing.
-      // For now this check here patches up the deficiency in the parser.
-      !grandParent.distinctKw &&
-      !isSelectStmt(node.expr) &&
-      !isCompoundSelectStmt(node.expr)
-    ) {
+    if (!isParenExprNecessary(node, parent, grandParent)) {
       return print("expr");
     }
     if (isEmptyParenExpr(node)) {
@@ -105,22 +87,25 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
       // Some operators are better formatted without spaces around them
       return print(["left", "operator", "right"]);
     }
-    return group([
-      print("left"),
-      group([" ", print.spaced("operator"), indent([line, print("right")])]),
-    ]);
+    if (isParenExpr(node.right)) {
+      return print.spaced(["left", "operator", "right"]);
+    }
+    return print.spaced(["left", "operator", "right"]);
   },
   prefix_op_expr: (print, node) =>
     (isString(node.operator) ? print : print.spaced)(["operator", "expr"]),
   postfix_op_expr: (print) => print.spaced(["expr", "operator"]),
   between_expr: (print) =>
     print.spaced(["left", "betweenKw", "begin", "andKw", "end"]),
-  case_expr: (print) => [
-    print.spaced(["caseKw", "expr"]),
-    indent([hardline, join(hardline, print("clauses"))]),
-    hardline,
-    print("endKw"),
-  ],
+  case_expr: (print) => {
+    const ln = print.dynamicLine();
+    return group([
+      print.spaced(["caseKw", "expr"]),
+      indent([ln, join(ln, print("clauses"))]),
+      ln,
+      print("endKw"),
+    ]);
+  },
   case_when: (print, node) => {
     const whenThen = group([
       group([print("whenKw"), indent([line, print("condition")])]),
@@ -198,10 +183,9 @@ export const exprMap: CstToDocMap<AllExprNodes> = {
   array_literal_expr: (print) => print(["arrayKw", "expr"]),
   array_expr: (print) =>
     group(["[", indent([softline, print("expr")]), softline, "]"]),
-  struct_expr: (print) =>
-    group(["(", indent([softline, print("expr")]), softline, ")"]),
+  struct_expr: (print) => print("expr"),
   typed_expr: (print) => print(["dataType", "expr"]),
-  row_constructor: (print) => group([print("rowKw"), "(", print("row"), ")"]),
+  row_constructor: (print) => print(["rowKw", "row"]),
   array_constructor: (print) => print(["arrayKw", "expr"]),
   quantifier_expr: (print) => print.spaced(["quantifierKw", "expr"]),
   full_text_match_expr: (print) =>
@@ -329,26 +313,3 @@ const isFunctionContext = (
 const isBooleanOp = ({ name }: Keyword) => name === "AND" || name === "OR";
 
 const isCompactOp = (op: string) => op === "->" || op === "->>";
-
-const hasComments = (node: Node): boolean =>
-  (node.leading?.length ?? 0) > 0 || (node.trailing?.length ?? 0) > 0;
-
-const isEmptyParenExpr = (node: ParenExpr): boolean => {
-  if (hasComments(node) || hasComments(node.expr)) {
-    return false;
-  }
-  if (isFuncArgs(node.expr)) {
-    return (
-      node.expr.args.items.length === 0 &&
-      !node.expr.distinctKw &&
-      !node.expr.nullHandlingKw &&
-      !node.expr.orderBy &&
-      !node.expr.limit &&
-      !node.expr.having
-    );
-  }
-  if (isListExpr(node.expr)) {
-    return node.expr.items.length === 0;
-  }
-  return false;
-};

@@ -1,6 +1,6 @@
 {
   "name": "prettier-plugin-sql-cst",
-  "version": "0.23.1",
+  "version": "0.25.1",
   "description": "Prettier plugin for SQL",
   "contributors": [
     "Abraham Guo <abrahamjguo@gmail.com>",
@@ -26,10 +26,10 @@
     "dist/"
   ],
   "scripts": {
-    "prepublishOnly": "yarn analyze-field-access && yarn test && yarn build",
+    "prepublishOnly": "npm run analyze-field-access && npm test && npm run build",
     "clean": "rm -rf dist",
-    "build": "yarn clean && tsup src/index.ts --format esm --dts --out-dir dist",
-    "test": "yarn node --experimental-vm-modules $(yarn bin jest)",
+    "build": "npm run clean && tsup src/index.ts --format esm --dts --out-dir dist",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "pretty": "prettier -w src/ test/",
     "ts:check": "tsc --noEmit",
     "analyze-field-access": "tsx scripts/analyze-field-access.ts src/index.ts",
@@ -42,7 +42,7 @@
   ],
   "dependencies": {
     "prettier": "^3.0.3",
-    "sql-parser-cst": "^0.43.0"
+    "sql-parser-cst": "^0.44.1"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",

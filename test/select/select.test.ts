@@ -59,14 +59,12 @@ describe("select", () => {
         my_super_long_table_name,
         another_long_table_name
       WHERE
-        my_table_name.x >
-          my_table_name.y
+        my_table_name.x > my_table_name.y
       GROUP BY
         long_col,
         even_longer_col
       HAVING
-        foo >
-          some_long_col_name
+        foo > some_long_col_name
       ORDER BY
         foo ASC,
         bar DESC NULLS FIRST

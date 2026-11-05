@@ -2,13 +2,19 @@ import { AllProceduralNodes } from "sql-parser-cst";
 import {
   group,
   hardline,
+  ifBreak,
   indent,
   join,
   line,
   stripTrailingHardline,
 } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
-import { isExecuteImmediateExpr } from "../node_utils";
+import {
+  isExecuteImmediateExpr,
+  isFuncCall,
+  isParenExpr,
+  isRowConstructor,
+} from "../node_utils";
 
 export const proceduralLanguageMap: CstToDocMap<AllProceduralNodes> = {
   // labels
@@ -183,10 +189,24 @@ export const proceduralLanguageMap: CstToDocMap<AllProceduralNodes> = {
   // CALL
   call_stmt: (print) => group(print.spaced(["callKw", "func"])),
   // RETURN
-  return_stmt: (print, node) =>
-    node.expr
-      ? group([print("returnKw"), indent([line, print("expr")])])
-      : print("returnKw"),
+  return_stmt: (print, node) => {
+    if (!node.expr) {
+      return print("returnKw");
+    }
+    if (
+      isFuncCall(node.expr) ||
+      isRowConstructor(node.expr) ||
+      isParenExpr(node.expr)
+    ) {
+      return group([print.spaced(["returnKw", "expr"])]);
+    }
+    return group([
+      print("returnKw"),
+      ifBreak([" ", "("]),
+      indent([line, print("expr")]),
+      ifBreak([line, ")"]),
+    ]);
+  },
   return_next_stmt: (print) => group(print.spaced(["returnNextKw", "expr"])),
   return_query_stmt: (print, node) => {
     if (isExecuteImmediateExpr(node.expr)) {
