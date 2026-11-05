@@ -66,7 +66,7 @@ describe("LANGUAGE sql", () => {
             dedent`
               ${code}
               LANGUAGE Sql
-              AS $$select 1$$
+              AS $$SELECT 1$$
             `,
             { dialect: "postgresql" },
           ),
@@ -85,7 +85,7 @@ describe("LANGUAGE sql", () => {
     expect(
       await pretty(
         dedent`
-          DO LANGUAGE sql $$select 1$$
+          DO LANGUAGE sql $$SELECT 1$$
         `,
         { dialect: "postgresql", sqlExperimentalPlpgsql: true },
       ),
