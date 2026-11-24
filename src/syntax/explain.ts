@@ -1,8 +1,8 @@
-import { ExplainStmt } from "sql-parser-cst";
+import { AllExplainNodes } from "sql-parser-cst";
 import { group, indent, line } from "../print_utils";
 import { CstToDocMap } from "../CstToDocMap";
 
-export const explainMap: CstToDocMap<ExplainStmt> = {
+export const explainMap: CstToDocMap<AllExplainNodes> = {
   explain_stmt: (print) =>
     group([
       print.spaced(["explainKw", "analyzeKw", "queryPlanKw"]),

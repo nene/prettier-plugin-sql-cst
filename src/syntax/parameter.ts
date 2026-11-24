@@ -22,8 +22,4 @@ export const parameterMap: CstToDocMap<AllParameterNodes> = {
 
   // SHOW
   show_parameter_stmt: (print) => group(print.spaced(["showKw", "name"])),
-
-  /** cst-ignore: value */
-  boolean_on_off_literal: (print, node, path, options) =>
-    printLiteral(node.valueKw, options),
 };

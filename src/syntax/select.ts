@@ -115,6 +115,7 @@ export const selectMap: CstToDocMap<AllSelectNodes> = {
   },
   join_on_specification: (print) => group(print.spaced(["onKw", "expr"])),
   join_using_specification: (print) => group(print.spaced(["usingKw", "expr"])),
+  table_with_columns: (print) => group(print.spaced(["table", "columns"])),
   table_with_inheritance: (print) => [print("table"), " ", "*"],
   table_without_inheritance: (print) => print.spaced(["onlyKw", "table"]),
   indexed_table: (print) => print.spaced(["table", "indexedByKw", "index"]),

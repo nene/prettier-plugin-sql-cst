@@ -43,6 +43,7 @@ import { triggerMap } from "./trigger";
 import { truncateMap } from "./truncate";
 import { typeMap } from "./type";
 import { updateMap } from "./update";
+import { vacuumMap } from "./vacuum";
 import { viewMap } from "./view";
 
 import { bigqueryMap } from "./dialects/bigquery";
@@ -50,7 +51,7 @@ import { mysqlMap } from "./dialects/mysql";
 import { sqliteMap } from "./dialects/sqlite";
 import { postgresqlMap } from "./dialects/postgresql";
 
-export const transformMap: CstToDocMap<Node> = {
+export const transformMap: Partial<CstToDocMap<Node>> = {
   ...aliasMap,
   ...alterActionMap,
   ...alterTableMap,
@@ -94,6 +95,7 @@ export const transformMap: CstToDocMap<Node> = {
   ...truncateMap,
   ...typeMap,
   ...updateMap,
+  ...vacuumMap,
   ...viewMap,
 
   ...bigqueryMap,

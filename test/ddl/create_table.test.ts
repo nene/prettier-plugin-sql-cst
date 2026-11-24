@@ -547,10 +547,10 @@ describe("create table", () => {
     await testPostgresql(dedent`
       CREATE FOREIGN TABLE film (
         title TEXT,
-        ryear INT OPTIONS (column_name 'release_year')
+        ryear INT OPTIONS (COLUMN_NAME 'release_year')
       )
       SERVER film_server
-      OPTIONS (format 'csv', delimiter ',', header 'true')
+      OPTIONS (FORMAT 'csv', DELIMITER ',', HEADER 'true')
     `);
   });
 });
