@@ -1,4 +1,4 @@
-import { test } from "./test_utils";
+import { test, testPostgresql } from "./test_utils";
 
 describe("analyze", () => {
   it(`formats ANALYZE statement`, async () => {
@@ -15,5 +15,9 @@ describe("analyze", () => {
 
   it(`formats plain ANALYZE statement`, async () => {
     await test(`ANALYZE`);
+  });
+
+  it(`formats ANALYZE VERBOSE`, async () => {
+    await testPostgresql(`ANALYZE VERBOSE foo`);
   });
 });
