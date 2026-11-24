@@ -36,4 +36,24 @@ describe("explain", () => {
         WHERE item_count > 10
     `);
   });
+
+  it(`formats EXPLAIN with options`, async () => {
+    await testPostgresql(dedent`
+      EXPLAIN (VERBOSE, FORMAT YAML) SELECT * FROM tbl
+    `);
+  });
+
+  it(`formats EXPLAIN with long options list`, async () => {
+    await testPostgresql(dedent`
+      EXPLAIN (
+        VERBOSE,
+        FORMAT YAML,
+        SERIALIZE BINARY,
+        GENERIC_PLAN ON,
+        SUMMARY OFF,
+        MEMORY OFF
+      )
+        SELECT * FROM tbl
+    `);
+  });
 });
