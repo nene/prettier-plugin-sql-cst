@@ -13,6 +13,10 @@ describe("analyze", () => {
     await test(`ANALYZE foo, bar, baz`);
   });
 
+  it(`formats multiple tables with column names and inheritance modifiers`, async () => {
+    await testPostgresql(`ANALYZE foo *, ONLY bar, baz (a, b)`);
+  });
+
   it(`formats plain ANALYZE statement`, async () => {
     await test(`ANALYZE`);
   });
