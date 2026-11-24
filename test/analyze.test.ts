@@ -24,4 +24,10 @@ describe("analyze", () => {
   it(`formats ANALYZE VERBOSE`, async () => {
     await testPostgresql(`ANALYZE VERBOSE foo`);
   });
+
+  it(`formats ANALYZE with options`, async () => {
+    await testPostgresql(
+      `ANALYZE (VERBOSE, SKIP_LOCKED OFF, BUFFER_USAGE_LIMIT 128) tbl`,
+    );
+  });
 });

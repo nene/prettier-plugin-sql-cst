@@ -4,5 +4,7 @@ import { group } from "../print_utils";
 
 export const analyzeMap: CstToDocMap<AllAnalyzeNodes> = {
   analyze_stmt: (print) =>
-    group(print.spaced(["analyzeKw", "verboseKw", "tableKw", "tables"])),
+    group(
+      print.spaced(["analyzeKw", "verboseKw", "options", "tableKw", "tables"]),
+    ),
 };
