@@ -14,6 +14,11 @@ describe("explain", () => {
     await testPostgresql(`EXPLAIN ANALYZE SELECT 1`);
   });
 
+  it(`formats EXPLAIN VERBOSE statement`, async () => {
+    await testPostgresql(`EXPLAIN VERBOSE SELECT 1`);
+    await testPostgresql(`EXPLAIN ANALYZE VERBOSE SELECT 1`);
+  });
+
   it(`formats long EXPLAIN statement to multiple lines`, async () => {
     await test(dedent`
       EXPLAIN

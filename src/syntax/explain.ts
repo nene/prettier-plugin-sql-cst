@@ -5,7 +5,7 @@ import { CstToDocMap } from "../CstToDocMap";
 export const explainMap: CstToDocMap<AllExplainNodes> = {
   explain_stmt: (print) =>
     group([
-      print.spaced(["explainKw", "analyzeKw", "queryPlanKw"]),
+      print.spaced(["explainKw", "analyzeKw", "verboseKw", "queryPlanKw"]),
       indent([line, print("statement")]),
     ]),
 };
