@@ -30,28 +30,27 @@ describe("LANGUAGE plpgsql", () => {
         `);
       });
 
-      it(`converts single-quoted string to dollar-quoted string`, async () => {
-        expect(
-          await pretty(
-            dedent`
+      it(`preserves single-quoted string as-is`, async () => {
+        await testPostgresql(
+          dedent`
+              ${code}
+              LANGUAGE plpgsql
+              AS 'BEGIN SELECT 1; END'
+            `,
+          { sqlExperimentalPlpgsql: true },
+        );
+      });
+
+      it(`preserves single-quoted string as-is (regardless of nested quotes)`, async () => {
+        await testPostgresql(
+          dedent`
               ${code}
               LANGUAGE plpgsql
               AS 'BEGIN SELECT ''foo''; END'
             `,
-            { dialect: "postgresql", sqlExperimentalPlpgsql: true },
-          ),
-        ).toBe(dedent`
-          ${code}
-          LANGUAGE plpgsql
-          AS $$
-          BEGIN
-            SELECT 'foo';
-          END;
-          $$
-        `);
-      });
+          { sqlExperimentalPlpgsql: true },
+        );
 
-      it(`does not reformat single-quoted SQL string when its source contains $$-quotes`, async () => {
         await testPostgresql(
           dedent`
             ${code}

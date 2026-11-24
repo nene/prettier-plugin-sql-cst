@@ -142,13 +142,5 @@ const isRoutine = (
   isCreateFunctionStmt(node) || isCreateProcedureStmt(node);
 
 const detectQuote = (node: StringLiteral): string | undefined => {
-  const match = node.text.match(/^('|\$[^$]*\$)/);
-  const quote = match?.[1];
-  if (quote === "'") {
-    // Convert `'` quotes to `$$`.
-    // But bail out if the code already contains $$.
-    return node.value.includes("$$") ? undefined : "$$";
-  } else {
-    return quote;
-  }
+  return node.text.match(/^(\$[^$]*\$)/)?.[1];
 };

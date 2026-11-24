@@ -10,7 +10,7 @@ export const formatBigqueryString = (
   return async (
     textToDoc: (text: string, options: Options) => Promise<Doc>,
   ) => {
-    const quotes = detectQuotes(node.value);
+    const quotes = detectQuotes(node.text);
     if (!quotes) {
       return undefined;
     }
@@ -25,14 +25,12 @@ export const formatBigqueryString = (
   };
 };
 
-// Whether to quote the code with single- or double-quotes.
-// Returns undefined when neither can be used without escaping.
+// Returns the pair of quotes, like [r''', ''']
+// Returns undefined when not dealing with raw triple-quoted strings.
 const detectQuotes = (code: string): [string, string] | undefined => {
-  if (!/'''/.test(code)) {
-    return ["r'''", "'''"];
+  const match = code.match(/^([rR])('''|""")/);
+  if (!match) {
+    return undefined;
   }
-  if (!/"""/.test(code)) {
-    return ['r"""', '"""'];
-  }
-  return undefined;
+  return [match[0], match[2]];
 };

@@ -96,11 +96,38 @@ describe("PL/pgSQL EXECUTE embedding", () => {
 });
 
 describe("BigQuery EXECUTE IMMEDIATE embedding", () => {
+  // TODO: Currently the formatting of embedded languages within EXECUTE is disabled.
+  it("does not format embedded JSON", async () => {
+    await testBigquery(
+      dedent`
+        EXECUTE IMMEDIATE
+          r'''
+            SELECT JSON '{"message":"a long message that will force this JSON document to wrap","enabled":true}';
+          '''
+      `,
+      { printWidth: 40 },
+    );
+  });
+  it("does not format embedded JSON (even when it's triple-quoted)", async () => {
+    await testBigquery(
+      dedent`
+        EXECUTE IMMEDIATE
+          r'''
+            SELECT JSON r"""{"message":"a long message that will force this JSON document to wrap","enabled":true}""";
+          '''
+      `,
+      { printWidth: 40 },
+    );
+  });
+
   it("formats a command with INTO and named parameters", async () => {
     expect(
-      await pretty('EXECUTE IMMEDIATE "select @id" INTO result USING 1 AS id', {
-        dialect: "bigquery",
-      }),
+      await pretty(
+        "EXECUTE IMMEDIATE r'''select @id''' INTO result USING 1 AS id",
+        {
+          dialect: "bigquery",
+        },
+      ),
     ).toBe(dedent`
       EXECUTE IMMEDIATE
         r'''
@@ -113,7 +140,7 @@ describe("BigQuery EXECUTE IMMEDIATE embedding", () => {
 
   it("preserves backslashes when quoting the formatted command", async () => {
     expect(
-      await pretty(String.raw`EXECUTE IMMEDIATE r"select '\n'"`, {
+      await pretty(String.raw`EXECUTE IMMEDIATE r'''select '\n' '''`, {
         dialect: "bigquery",
       }),
     ).toBe(
@@ -126,12 +153,8 @@ describe("BigQuery EXECUTE IMMEDIATE embedding", () => {
     );
   });
 
-  it("uses double quotes when the command contains triple single quotes", async () => {
-    expect(
-      await pretty(`EXECUTE IMMEDIATE ${JSON.stringify(`select "'''"`)}`, {
-        dialect: "bigquery",
-      }),
-    ).toBe(dedent`
+  it("preserves triple double quotes", async () => {
+    await testBigquery(dedent`
       EXECUTE IMMEDIATE
         r"""
           SELECT "'''";
@@ -146,6 +169,9 @@ describe("BigQuery EXECUTE IMMEDIATE embedding", () => {
   });
 
   it.each([
+    'EXECUTE IMMEDIATE "select @id"',
+    "EXECUTE IMMEDIATE r'select ?'",
+    "EXECUTE IMMEDIATE '''select 1'''",
     'EXECUTE IMMEDIATE "select " || column_name',
     'EXECUTE IMMEDIATE "unsupported SQL syntax"',
   ])("preserves commands it cannot embed: %s", async (source) => {
