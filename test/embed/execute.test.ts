@@ -96,12 +96,24 @@ describe("PL/pgSQL EXECUTE embedding", () => {
 });
 
 describe("BigQuery EXECUTE IMMEDIATE embedding", () => {
-  it("does not introduce conflicting triple quotes through JSON embedding", async () => {
+  // TODO: Currently the formatting of embedded languages within EXECUTE is disabled.
+  it("does not format embedded JSON", async () => {
     await testBigquery(
       dedent`
         EXECUTE IMMEDIATE
           r'''
             SELECT JSON '{"message":"a long message that will force this JSON document to wrap","enabled":true}';
+          '''
+      `,
+      { printWidth: 40 },
+    );
+  });
+  it("does not format embedded JSON (even when it's triple-quoted)", async () => {
+    await testBigquery(
+      dedent`
+        EXECUTE IMMEDIATE
+          r'''
+            SELECT JSON r"""{"message":"a long message that will force this JSON document to wrap","enabled":true}""";
           '''
       `,
       { printWidth: 40 },
