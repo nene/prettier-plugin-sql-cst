@@ -63,6 +63,25 @@ describe("json", () => {
     );
   });
 
+  it(`formats long JSONB literal to multiple lines inside single quotes`, async () => {
+    expect(
+      await pretty(
+        `SELECT JSONB '{"firstName":"John","lastName":"Doe","inventory":["Pickaxe", "Compass", "Dirt"]}'`,
+        { dialect: "postgresql" },
+      ),
+    ).toBe(
+      dedent`
+        SELECT JSONB '
+          {
+            "firstName": "John",
+            "lastName": "Doe",
+            "inventory": ["Pickaxe", "Compass", "Dirt"]
+          }
+        '
+      `,
+    );
+  });
+
   it(`converts double-quoted JSON literal to single-quoted one`, async () => {
     expect(
       await pretty(String.raw`SELECT JSON "{\"name\":\"John Doe\"}"`, {
@@ -116,6 +135,11 @@ describe("json", () => {
         SELECT JSON '''{ "name": "It's Mr John" }'''
       `,
     );
+  });
+
+  // PostgreSQL has no triple-quoted strings, so skip this case too
+  it(`doesn't format JSONB when it contains single quote character`, async () => {
+    await testPostgresql(`SELECT JSONB '{"name":"It''s Mr John"}'`);
   });
 
   // Just skip formatting in this tricky case for now
