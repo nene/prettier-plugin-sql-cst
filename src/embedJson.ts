@@ -19,10 +19,13 @@ export const embedJson: NonNullable<Printer<Node>["embed"]> = (
     (isJsonLiteral(parent) || isJsonbLiteral(parent))
   ) {
     return async (textToDoc) => {
+      // Only BigQuery has triple-quoted strings
+      const isBigquery = options.parser === "bigquery";
       if (
         containsTripleQuote(node.value) ||
         containsBackslash(node.value) ||
-        isRawString(node)
+        isRawString(node) ||
+        (!isBigquery && containsSingleQuote(node.value))
       ) {
         // Give up for now. Don't format JSON inside the string.
         // Tackle these corner-case in the future.
@@ -33,11 +36,12 @@ export const embedJson: NonNullable<Printer<Node>["embed"]> = (
         parser: "json",
       });
       const inlineQuote = containsSingleQuote(node.value) ? "'''" : "'";
+      const quote = isBigquery ? ifBreak("'''", inlineQuote) : "'";
       return [
-        ifBreak("'''", inlineQuote),
+        quote,
         indent([softline, stripTrailingHardline(json)]),
         softline,
-        ifBreak("'''", inlineQuote),
+        quote,
       ];
     };
   }
